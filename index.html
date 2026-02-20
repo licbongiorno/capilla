@@ -79,193 +79,75 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html, body {
-            overflow-x: hidden; 
-        }
-        
+        html, body { overflow-x: hidden; }
         html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--fondo); 
-            color: var(--texto); 
-            line-height: 1.8; 
-            transition: background 0.3s; 
-            padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
-        }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--fondo); color: var(--texto); line-height: 1.8; transition: background 0.3s; padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
+        body.no-scroll { overflow: hidden; }
         
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--primario); }
+
+        /* --- PRELOADER ANIMADO --- */
+        #preloader { position: fixed; inset: 0; background-color: #1a1210; z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.8s ease-out, visibility 0.8s ease-out; }
+        .preloader-content { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .cross-svg { width: 70px; height: 110px; margin-bottom: 30px; filter: drop-shadow(0 0 0 rgba(193, 154, 107, 0)); animation: glowCross 2s ease-in-out forwards 1s; }
+        .cross-svg line { stroke-dasharray: 150; stroke-dashoffset: 150; animation: drawCross 1.2s ease-in-out forwards; }
+        .preloader-text { opacity: 0; transform: translateY(15px); animation: fadeInText 1s ease-in-out forwards 1.3s; }
+        .preloader-title { font-family: 'Playfair Display', serif; color: var(--acento); font-size: 2.2rem; margin-bottom: 10px; letter-spacing: 2px; }
+        .preloader-quote { color: rgba(255, 255, 255, 0.8); font-size: 1.05rem; font-style: italic; max-width: 350px; line-height: 1.6; }
+        .preloader-quote span { font-weight: 700; font-style: normal; color: var(--acento); font-size: 0.85rem; display: block; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+
+        @keyframes drawCross { to { stroke-dashoffset: 0; } }
+        @keyframes glowCross { to { filter: drop-shadow(0 0 20px rgba(193, 154, 107, 0.7)); } }
+        @keyframes fadeInText { to { opacity: 1; transform: translateY(0); } }
 
         .progress-container { width: 100%; height: 4px; background: transparent; position: fixed; top: 0; z-index: 2001; }
         .progress-bar { height: 100%; background: var(--acento); width: 0%; transition: width 0.1s ease; }
 
         nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
         body.dark-mode nav { background: rgba(18,18,18,0.95); }
-        
         .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; }
         
-        /* --- NAVEGACIÓN Y MENÚ TIPO APP --- */
         .nav-links { display: flex; list-style: none; gap: 20px; transition: 0.3s ease-in-out; }
         .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
-        .nav-links a i { display: none; } 
+        .nav-links a i { display: none; }
         .nav-links a:hover { color: var(--acento); }
         
         .nav-actions { display: flex; gap: 20px; align-items: center; }
         .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.3rem; transition: 0.3s; }
         .icon-btn:hover { color: var(--acento); }
         
-        /* BOTÓN HAMBURGUESA ANIMADO */
-        .menu-toggle { 
-            display: none; 
-            flex-direction: column; 
-            justify-content: space-between;
-            width: 28px;
-            height: 20px;
-            background: none; 
-            border: none; 
-            cursor: pointer; 
-            z-index: 1001;
-        }
-        
-        .menu-toggle span {
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--primario);
-            border-radius: 3px;
-            transition: all 0.3s ease-in-out;
-        }
-        
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { display: block; width: 100%; height: 3px; background-color: var(--primario); border-radius: 3px; transition: all 0.3s ease-in-out; }
         body.dark-mode .menu-toggle span { background-color: var(--acento); }
-        
         .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
         @media (max-width: 900px) {
             .menu-toggle { display: flex; }
-            
-            .nav-links { 
-                position: absolute; 
-                top: 80px; 
-                left: 0; 
-                width: 100%; 
-                background: var(--blanco); 
-                flex-direction: column; 
-                align-items: flex-start;
-                max-height: 0; 
-                overflow: hidden; 
-                opacity: 0;
-                transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; 
-                box-shadow: var(--sombra-fuerte); 
-                z-index: 999;
-                gap: 0;
-            }
-            
+            .nav-links { position: absolute; top: 80px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
             body.dark-mode .nav-links { background: #1a1a1a; border-top: 1px solid #333; }
-            
-            .nav-links.active { 
-                max-height: calc(100vh - 80px); 
-                opacity: 1; 
-                padding: 10px 0 30px 0; 
-                overflow-y: auto;
-            }
-            
-            .nav-links li { 
-                width: 100%; 
-                text-align: left; 
-                border-bottom: 1px solid var(--gold-light); 
-            }
-            
+            .nav-links.active { max-height: calc(100vh - 80px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid var(--gold-light); }
             body.dark-mode .nav-links li { border-bottom: 1px solid #333; }
             .nav-links li:last-child { border-bottom: none; }
-            
-            .nav-links a { 
-                display: flex; 
-                align-items: center;
-                gap: 15px; 
-                padding: 22px 8%; 
-                font-size: 1.1rem; 
-                font-weight: 700;
-                text-transform: none; 
-            }
-            
-            .nav-links a i {
-                display: inline-block; 
-                font-size: 1.3rem;
-                color: var(--acento);
-                width: 25px;
-                text-align: center;
-            }
+            .nav-links a { display: flex; align-items: center; gap: 15px; padding: 22px 8%; font-size: 1.1rem; font-weight: 700; text-transform: none; }
+            .nav-links a i { display: inline-block; font-size: 1.3rem; color: var(--acento); width: 25px; text-align: center; }
         }
 
-        /* --- HERO PROFESIONAL CON PICTURE TAG (MULTIDISPOSITIVO) --- */
-        .hero { 
-            position: relative;
-            min-height: 85vh; 
-            padding: 120px 20px 80px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            text-align: center; 
-            color: white; 
-            overflow: hidden;
-            background-color: var(--primario); /* Color de relleno base estético */
-        }
-        
-        /* Permite que la imagen dentro del picture tome la posición absoluta */
-        picture { display: contents; }
-
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 30%; /* Centrado en desktop (Cruz visible) */
-            z-index: 0;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85));
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
+        .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; }
+        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8)); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
         .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
         .hero-content h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
-        
-        .next-mass-banner {
-            background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px;
-            margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte);
-            display: inline-block;
-        }
-
+        .next-mass-banner { background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px; margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte); display: inline-block; }
         .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-        .quick-btn {
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4);
-            color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700;
-            display: flex; align-items: center; gap: 10px; transition: all 0.3s;
-        }
+        .quick-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; }
         .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); }
 
-        /* --- SECCIONES GLOBALES --- */
-        section { 
-            padding: 100px 8%; 
-            scroll-margin-top: 120px; 
-        }
+        section { padding: 100px 8%; scroll-margin-top: 120px; }
         .bg-white { background-color: var(--blanco); }
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
@@ -280,89 +162,28 @@
         .btn-primary { background: var(--acento); color: white; box-shadow: 0 10px 20px rgba(193, 154, 107, 0.3); }
         .btn-primary:hover { background: #ab855a; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(193, 154, 107, 0.4); }
 
-        /* --- ALIMENTO ESPIRITUAL --- */
-        #versiculo-diario {
-            max-width: 800px; margin: 0 auto; background: var(--blanco); padding: 50px; border-radius: 20px;
-            box-shadow: var(--sombra-fuerte); text-align: center; border-top: 5px solid var(--acento); position: relative;
-        }
+        #versiculo-diario { max-width: 800px; margin: 0 auto; background: var(--blanco); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); text-align: center; border-top: 5px solid var(--acento); position: relative; }
         #versiculo-diario i.fa-quote-left { font-size: 3rem; color: var(--gold-light); position: absolute; top: 30px; left: 30px; }
         .verso-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--primario); margin-bottom: 20px; line-height: 1.4; transition: opacity 0.5s; }
         .verso-cita { font-weight: 700; color: var(--acento); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
-        
         .time { font-size: 3rem; font-weight: 800; color: var(--primario); display: block; margin: 15px 0; font-family: 'Playfair Display', serif; }
 
         .form-box { max-width: 600px; margin: 0 auto; background: var(--fondo); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); }
         .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s; }
         .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); }
 
-        /* --- ALIAS DE DONACIÓN --- */
-        .donar-container {
-            background: var(--blanco); 
-            padding: 50px; 
-            border-radius: 20px; 
-            text-align: center; 
-            max-width: 600px; 
-            margin: 0 auto; 
-            box-shadow: var(--sombra-fuerte);
-            border: 1px solid var(--gold-light);
-        }
-        .alias-box {
-            font-size: clamp(18px, 5vw, 26px);
-            word-break: break-word;
-            text-align: center;
-            letter-spacing: 2px;
-            padding: 20px;
-            background-color: var(--fondo);
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 12px;
-            margin: 25px 0;
-            color: var(--primario);
-            font-weight: 700;
-            font-family: monospace;
-        }
+        .donar-container { background: var(--blanco); padding: 50px; border-radius: 20px; text-align: center; max-width: 600px; margin: 0 auto; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light); }
+        .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; margin: 25px 0; color: var(--primario); font-weight: 700; font-family: monospace; }
         .alias-box span { display: block; }
         body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
 
-        /* --- BOTONES FLOTANTES ESTRUCTURALES --- */
-        .float-container { 
-            position: fixed; 
-            bottom: calc(30px + env(safe-area-inset-bottom)); 
-            right: 30px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            z-index: 9999; 
-            pointer-events: auto;
-        }
-        
-        .f-btn { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
-            transition: transform 0.3s, background 0.3s; 
-            text-decoration: none; 
-            font-size: 1.6rem; 
-        }
+        .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; pointer-events: auto; }
+        .f-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: transform 0.3s, background 0.3s; text-decoration: none; font-size: 1.6rem; }
         .f-btn:hover { transform: scale(1.1); }
-        
         .f-top { background: var(--primario); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
         .f-top.visible { opacity: 1; visibility: visible; }
 
         @media (max-width: 768px) {
-            .hero {
-                min-height: 85vh;
-                padding-top: 100px;
-            }
-            .hero-bg {
-                object-position: center center; /* En móviles centra la imagen vertical (2.webp) */
-            }
             .float-container { right: 15px; bottom: 20px; }
             .f-btn { width: 55px; height: 55px; font-size: 1.4rem; }
         }
@@ -378,7 +199,20 @@
         .social-links a:hover { color: white; transform: translateY(-5px); }
     </style>
 </head>
-<body>
+<body class="no-scroll">
+
+    <div id="preloader">
+        <div class="preloader-content">
+            <svg class="cross-svg" viewBox="0 0 100 150">
+                <line x1="50" y1="10" x2="50" y2="140" stroke="var(--acento)" stroke-width="3" stroke-linecap="round" />
+                <line x1="20" y1="50" x2="80" y2="50" stroke="var(--acento)" stroke-width="3" stroke-linecap="round" />
+            </svg>
+            <div class="preloader-text">
+                <h2 class="preloader-title">Capilla Santa Ana</h2>
+                <p class="preloader-quote">"Donde dos o tres se reúnen en mi nombre, allí estoy yo en medio de ellos."<br><span>— Mateo 18:20</span></p>
+            </div>
+        </div>
+    </div>
 
     <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
@@ -405,10 +239,7 @@
 
     <main>
         <header class="hero">
-            <picture>
-                <source media="(max-width: 768px)" srcset="2.webp">
-                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
-            </picture>
+            <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
             
             <div class="hero-content">
                 <div id="nextMassBanner" class="next-mass-banner"><i class="far fa-clock"></i> Próxima Misa: Cargando...</div>
@@ -488,17 +319,17 @@
             <div class="grid-cards">
                 <div class="card" style="border-top: 5px solid var(--acento);">
                     <i class="fas fa-guitar" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Música y Coro 🎸</h3>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Música y Coro</h3>
                     <p>Si tocás un instrumento o te gusta cantar, sumá tu voz para animar las misas y acercar a otros a Dios mediante la alabanza.</p>
                 </div>
                 <div class="card" style="border-top: 5px solid var(--acento);">
                     <i class="fas fa-palette" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Arte y Redes 🎨</h3>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Arte y Redes</h3>
                     <p>Ayudanos a evangelizar a través de la fotografía, el diseño gráfico y la gestión de nuestras redes sociales para llegar a más corazones.</p>
                 </div>
                 <div class="card" style="border-top: 5px solid var(--acento);">
                     <i class="fas fa-utensils" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Logística y Cocina 🍳</h3>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Logística y Cocina</h3>
                     <p>El motor oculto de la parroquia. Vení a ayudarnos a cocinar y organizar los grandes eventos, locros y retiros comunitarios.</p>
                 </div>
             </div>
@@ -690,9 +521,23 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // --- LÓGICA PRELOADER ANIMADO ---
+        const preloader = document.getElementById('preloader');
+        if (!sessionStorage.getItem('introPlayed')) {
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                document.body.classList.remove('no-scroll');
+                sessionStorage.setItem('introPlayed', 'true');
+                setTimeout(() => preloader.style.display = 'none', 800);
+            }, 3200);
+        } else {
+            preloader.style.display = 'none';
+            document.body.classList.remove('no-scroll');
+        }
+
         cambiarVersiculo();
 
-        // BANNER MISA
         function updateMass() {
             const now = new Date();
             const day = now.getDay(); const hrs = now.getHours();
@@ -709,10 +554,8 @@
         }
         updateMass();
 
-        // MODO OSCURO
         if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
 
-        // SCROLL
         window.onscroll = () => {
             const fTop = document.getElementById("fTop");
             if (window.scrollY > 400) { if(fTop) fTop.classList.add("visible"); } 
@@ -722,17 +565,14 @@
             if(bar) bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
         };
 
-        // ESC A MODAL
         document.addEventListener('keydown', (e) => { 
             if(e.key === "Escape") document.getElementById('modalPray').style.display='none'; 
         });
     });
 
-    // LÓGICA MENÚ APP-STYLE Y HAMBURGUESA
     function toggleMenu() {
         const nav = document.getElementById('navLinks');
         const toggleBtn = document.querySelector('.menu-toggle');
-        
         nav.classList.toggle('active');
         toggleBtn.classList.toggle('active');
     }
