@@ -139,7 +139,6 @@
         
         body.dark-mode .menu-toggle span { background-color: var(--acento); }
         
-        /* Animación "X" */
         .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
@@ -147,7 +146,6 @@
         @media (max-width: 900px) {
             .menu-toggle { display: flex; }
             
-            /* Menú Cortina Mobile */
             .nav-links { 
                 position: absolute; 
                 top: 80px; 
@@ -190,11 +188,11 @@
                 padding: 22px 8%; 
                 font-size: 1.1rem; 
                 font-weight: 700;
-                text-transform: none; /* Letra más amigable en mobile */
+                text-transform: none; 
             }
             
             .nav-links a i {
-                display: inline-block; /* Mostrar íconos en mobile */
+                display: inline-block; 
                 font-size: 1.3rem;
                 color: var(--acento);
                 width: 25px;
@@ -202,21 +200,48 @@
             }
         }
 
-        /* --- HERO AJUSTADO Y PROFESIONAL --- */
+        /* --- HERO PROFESIONAL CON ETIQUETA IMG --- */
         .hero { 
-            min-height: 100vh; 
+            position: relative;
+            min-height: 85vh; 
             padding: 120px 20px 80px;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('1.webp'); 
-            background-size: cover; 
-            background-position: center center; 
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            text-align: center; 
+            color: white; 
+            overflow: hidden;
         }
 
-        .hero h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
-        .hero h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%; /* Mantiene la cruz visible */
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .hero-content h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
         
         .next-mass-banner {
             background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px;
@@ -235,7 +260,7 @@
         /* --- SECCIONES GLOBALES --- */
         section { 
             padding: 100px 8%; 
-            scroll-margin-top: 120px; /* Previene que el nav tape los títulos */
+            scroll-margin-top: 120px; 
         }
         .bg-white { background-color: var(--blanco); }
         .section-header { text-align: center; margin-bottom: 60px; }
@@ -327,11 +352,6 @@
         .f-top.visible { opacity: 1; visibility: visible; }
 
         @media (max-width: 768px) {
-            .hero {
-                min-height: 85vh;
-                background-position: center top;
-                padding-top: 100px;
-            }
             .float-container { right: 15px; bottom: 20px; }
             .f-btn { width: 55px; height: 55px; font-size: 1.4rem; }
         }
@@ -364,7 +384,6 @@
 
         <div class="nav-actions">
             <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
-            
             <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -375,15 +394,19 @@
 
     <main>
         <header class="hero">
-            <div id="nextMassBanner" class="next-mass-banner"><i class="far fa-clock"></i> Próxima Misa: Cargando...</div>
-            <h1 itemprop="name">Bienvenido a Casa</h1>
-            <h2>Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
+            <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
             
-            <div class="quick-links">
-                <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
-                <a href="#intenciones" class="quick-btn"><i class="far fa-envelope"></i> Pedir Oración</a>
-                <a href="#donar" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart"></i> Ayudar a la Capilla</a>
-                <button onclick="document.getElementById('modalPray').style.display='flex'" class="quick-btn" style="cursor: pointer;"><i class="fas fa-praying-hands"></i> Oracional</button>
+            <div class="hero-content">
+                <div id="nextMassBanner" class="next-mass-banner"><i class="far fa-clock"></i> Próxima Misa: Cargando...</div>
+                <h1 itemprop="name">Bienvenido a Casa</h1>
+                <h2>Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
+                
+                <div class="quick-links">
+                    <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
+                    <a href="#intenciones" class="quick-btn"><i class="far fa-envelope"></i> Pedir Oración</a>
+                    <a href="#donar" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart"></i> Ayudar a la Capilla</a>
+                    <button onclick="document.getElementById('modalPray').style.display='flex'" class="quick-btn" style="cursor: pointer;"><i class="fas fa-praying-hands"></i> Oracional</button>
+                </div>
             </div>
         </header>
 
