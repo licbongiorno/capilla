@@ -1,19 +1,37 @@
 <!DOCTYPE html>
-<html lang="es" itemscope itemtype="https://schema.org/Church">
+<html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#5D4037">
+    <meta name="color-scheme" content="light dark">
     
+    <meta name="author" content="Capilla Santa Ana">
+    <meta name="description" content="Bienvenido a tu casa. Sumate a la Capilla Santa Ana en Villa Parque Santa Ana. Horarios de misa, Cáritas, ropero comunitario, sacramentos, casamientos, bautismos y vida comunitaria.">
+    <meta name="keywords" content="Misa, Iglesia Católica, Capilla Santa Ana, Villa Parque Santa Ana, Córdoba, Cáritas, Merendero, Ropero Comunitario, Bautismos, Casamientos, Comunión, Horarios de Misa">
+    <meta name="robots" content="index, follow">
+    <meta name="geo.region" content="AR-X">
+    <meta name="geo.country" content="AR">
+    <meta name="geo.placename" content="Villa Parque Santa Ana">
+    <meta name="geo.position" content="-31.6826622;-64.4578168">
+    <meta name="ICBM" content="-31.6826622, -64.4578168">
+
     <link rel="canonical" href="https://capillasantaana.ar/">
-    <link rel="icon" type="image/png" href="/favicon.png"> <title>Capilla Santa Ana | Horarios de Misa en Villa Parque Santa Ana</title>
-    <meta name="description" content="Capilla Santa Ana en Villa Parque Santa Ana, Córdoba. Encuentros, fe y comunidad. Horarios de misa, catequesis y buzón de intenciones.">
     
-    <meta property="og:title" content="Capilla Santa Ana | Comunidad y Fe">
-    <meta property="og:description" content="Horarios de misa y actividades parroquiales en Villa Parque Santa Ana.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>Capilla Santa Ana | Tu Familia y Refugio en Córdoba</title>
+    
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:title" content="Capilla Santa Ana | Vení a celebrar en familia">
+    <meta property="og:description" content="Horarios de misa, vida sacramental, ayuda social y un espacio de paz para vos en Villa Parque Santa Ana.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://capillasantaana.ar/">
-    <meta property="og:image" content="https://www.dropbox.com/scl/fi/f049z84xn6bozotuzkidp/1.png?rlkey=yv38l8lheby0183uci1sbryrt&st=q3e3hd2g&raw=1">
+    <meta property="og:image" content="https://capillasantaana.ar/1.webp">
 
     <script type="application/ld+json">
     {
@@ -21,7 +39,11 @@
       "@graph": [
         {
           "@type": "Church",
+          "@id": "https://capillasantaana.ar/#church",
           "name": "Capilla Santa Ana",
+          "url": "https://capillasantaana.ar/",
+          "areaServed": { "@type": "Place", "name": "Villa Parque Santa Ana" },
+          "parentOrganization": { "@type": "Organization", "name": "Arquidiócesis de Córdoba" },
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Calle Brochero y Calle 14",
@@ -29,308 +51,574 @@
             "addressRegion": "Córdoba",
             "addressCountry": "AR"
           },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": -31.6826622,
-            "longitude": -64.4578168
-          },
-          "telephone": "+54 9 351 7023789",
-          "url": "https://capillasantaana.ar",
-          "openingHoursSpecification": [{
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Wednesday", "Friday"],
-            "opens": "17:00",
-            "closes": "19:00"
-          }],
-          "sameAs": [
-            "https://www.facebook.com/groups/778166455638473",
-            "https://www.instagram.com/capilla.santa.ana/"
-          ]
+          "geo": { "@type": "GeoCoordinates", "latitude": -31.6826622, "longitude": -64.4578168 }
         },
         {
-          "@type": "FAQPage",
-          "mainEntity": [{
-            "@type": "Question",
-            "name": "¿Cuáles son los horarios de misa?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Misa vespertina los sábados a las 19:00 hs y misa comunitaria los domingos a las 10:30 hs."
-            }
-          }, {
-            "@type": "Question",
-            "name": "¿Cómo puedo dejar una intención?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Puedes usar nuestro buzón de intenciones digital que envía tu pedido directamente por WhatsApp a la parroquia."
-            }
-          }]
+          "@type": "Event",
+          "name": "Santa Misa Dominical",
+          "description": "Celebración de la Eucaristía para toda la familia.",
+          "eventSchedule": { "@type": "Schedule", "repeatFrequency": "P1W", "byDay": "https://schema.org/Sunday", "startTime": "10:30", "scheduleTimezone": "America/Argentina/Cordoba" },
+          "location": { "@id": "https://capillasantaana.ar/#church" }
         }
       ]
     }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
         :root {
-            --primario: #5D4037;    --acento: #C19A6B;      --fondo: #F5F5F0;       
-            --blanco: #FFFFFF;      --texto: #2D2D2D;       --verde-wa: #25D366;
-            --sombra: 0 15px 40px rgba(93, 64, 55, 0.1);    --gold-light: rgba(193, 154, 107, 0.2);
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --google-maps: #4285F4;
+            --gold-light: rgba(193, 154, 107, 0.2); --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.2);
         }
 
         body.dark-mode {
-            --primario: #E0C097;    --acento: #D4A373;      --fondo: #121212;       
-            --blanco: #1E1E1E;      --texto: #E0E0E0;
+            --primario: #E0C097; --acento: #D4A373; --fondo: #121212;
+            --blanco: #1E1E1E; --texto: #E0E0E0; --sombra: 0 10px 30px rgba(0,0,0,0.5);
+            --sombra-fuerte: 0 15px 40px rgba(0, 0, 0, 0.8);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-        body { 
-            font-family: 'Montserrat', sans-serif; background-color: var(--fondo); 
-            color: var(--texto); line-height: 1.8; transition: 0.5s; overflow-x: hidden;
-            padding-bottom: env(safe-area-inset-bottom);
+        
+        html, body {
+            overflow-x: hidden; 
         }
-        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--primario); }
+        
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            line-height: 1.8; 
+            transition: background 0.3s; 
+            padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
+        }
+        
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--primario); }
 
-        /* --- UI COMPONENTS --- */
         .progress-container { width: 100%; height: 4px; background: transparent; position: fixed; top: 0; z-index: 2001; }
         .progress-bar { height: 100%; background: var(--acento); width: 0%; transition: width 0.1s ease; }
 
-        #loader { position: fixed; inset: 0; background: var(--fondo); z-index: 99999; display: flex; justify-content: center; align-items: center; transition: 0.6s ease; }
-        .cross-path { fill: none; stroke: var(--primario); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300; animation: draw 1.5s ease-in-out forwards; }
-        @keyframes draw { to { stroke-dashoffset: 0; } }
+        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
+        body.dark-mode nav { background: rgba(18,18,18,0.95); }
+        
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; }
+        
+        .nav-links { display: flex; list-style: none; gap: 20px; transition: 0.3s ease-in-out; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--acento); }
+        
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.3rem; transition: 0.3s; }
+        .icon-btn:hover { color: var(--acento); }
+        
+        .menu-toggle { display: none; font-size: 1.5rem; color: var(--primario); background: none; border: none; cursor: pointer; }
 
-        /* --- NAV --- */
-        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); }
-        body.dark-mode nav { background: rgba(18,18,18,0.92); }
-        .logo { font-size: 1.1rem; font-weight: 700; color: var(--primario); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { text-decoration: none; color: var(--texto); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            .nav-links { position: absolute; top: 80px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: center; gap: 0; max-height: 0; overflow: hidden; box-shadow: var(--sombra); }
+            .nav-links.active { max-height: 400px; }
+            .nav-links li { width: 100%; text-align: center; border-bottom: 1px solid var(--gold-light); }
+            .nav-links a { display: block; padding: 20px; }
+        }
 
-        /* --- HERO (OPTIMIZADO) --- */
         .hero { 
-            height: 100vh; 
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://www.dropbox.com/scl/fi/f049z84xn6bozotuzkidp/1.png?rlkey=yv38l8lheby0183uci1sbryrt&st=q3e3hd2g&raw=1');
+            min-height: 100vh; 
+            /* RUTA ACTUALIZADA A 1.WEBP */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('1.webp'); 
             background-size: cover; background-position: center; background-attachment: fixed;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; color: white; padding: 0 20px;
+            text-align: center; color: white; padding: 120px 20px 40px; 
         }
-        @media (max-width: 768px) { .hero { background-attachment: scroll; } nav ul { display: none; } }
-        .hero h1 { font-size: clamp(2.8rem, 9vw, 5rem); color: white; margin-bottom: 5px; line-height: 1.1; }
-        .hero h2 { font-size: 1.3rem; color: rgba(255,255,255,0.9); font-weight: 300; font-family: 'Montserrat', sans-serif; font-style: italic; max-width: 700px; margin-bottom: 35px; }
+        
+        @media (max-width: 900px) {
+            .hero {
+                background-attachment: scroll;
+            }
+        }
 
-        /* --- SECCIONES --- */
+        .hero h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .hero h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
+        
+        .next-mass-banner {
+            background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px;
+            margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte);
+            display: inline-block;
+        }
+
+        .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .quick-btn {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4);
+            color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700;
+            display: flex; align-items: center; gap: 10px; transition: all 0.3s;
+        }
+        .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); }
+
         section { padding: 100px 8%; }
         .bg-white { background-color: var(--blanco); }
         .section-header { text-align: center; margin-bottom: 60px; }
-        .divider { width: 50px; height: 2px; background: var(--acento); margin: 20px auto; }
+        .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
+        .section-header p.subtitle { max-width: 700px; margin: 0 auto; font-size: 1.1rem; opacity: 0.9; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
+        
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s; }
+        .card:hover { transform: translateY(-8px); box-shadow: var(--sombra-fuerte); }
+        
+        .btn { padding: 18px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; border: none; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: var(--acento); color: white; box-shadow: 0 10px 20px rgba(193, 154, 107, 0.3); }
+        .btn-primary:hover { background: #ab855a; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(193, 154, 107, 0.4); }
 
-        /* --- CARDS --- */
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .card { background: var(--fondo); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--acento); box-shadow: var(--sombra); }
-        .card i { font-size: 2rem; color: var(--acento); margin-bottom: 20px; }
-        .time { font-size: 2.2rem; font-weight: 700; color: var(--primario); display: block; margin: 10px 0; }
+        /* --- ALIMENTO ESPIRITUAL --- */
+        #versiculo-diario {
+            max-width: 800px; margin: 0 auto; background: var(--blanco); padding: 50px; border-radius: 20px;
+            box-shadow: var(--sombra-fuerte); text-align: center; border-top: 5px solid var(--acento); position: relative;
+        }
+        #versiculo-diario i.fa-quote-left { font-size: 3rem; color: var(--gold-light); position: absolute; top: 30px; left: 30px; }
+        .verso-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--primario); margin-bottom: 20px; line-height: 1.4; transition: opacity 0.5s; }
+        .verso-cita { font-weight: 700; color: var(--acento); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .time { font-size: 3rem; font-weight: 800; color: var(--primario); display: block; margin: 15px 0; font-family: 'Playfair Display', serif; }
 
-        /* --- FAQ --- */
-        .faq-item { background: var(--fondo); margin-bottom: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--gold-light); }
-        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; color: var(--primario); }
-        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: 0.3s ease-out; opacity: 0; }
-        .faq-item.active .faq-answer { padding: 10px 20px 20px; max-height: 200px; opacity: 1; }
+        .form-box { max-width: 600px; margin: 0 auto; background: var(--fondo); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); }
+        .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s; }
+        .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); }
 
-        /* --- BOTONES FLOTANTES (iPHONE FIX) --- */
-        .float-container { position: fixed; bottom: calc(35px + env(safe-area-inset-bottom)); right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 2000; }
-        .f-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s; }
-        .f-wa { background: var(--verde-wa); font-size: 1.8rem; }
-        .f-pray { background: var(--primario); font-size: 1.4rem; }
-        .f-top { background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; }
-        .f-top.visible { opacity: 1; pointer-events: all; }
-
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 3000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--blanco); padding: 30px; border-radius: 20px; width: 95%; max-width: 500px; max-height: 80vh; overflow-y: auto; position: relative; }
-
-        .btn { padding: 15px 30px; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; }
-        .btn-primary { background: var(--acento); color: white; }
-        .btn-outline { background: transparent; border: 2px solid white; color: white; }
-        .btn-outline:hover { background: white; color: var(--primario); }
+        /* --- BOTONES FLOTANTES ESTRUCTURALES --- */
+        .float-container { 
+            position: fixed; 
+            bottom: calc(30px + env(safe-area-inset-bottom)); 
+            right: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            z-index: 9999; 
+            pointer-events: auto;
+        }
+        
+        .f-btn { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
+            transition: transform 0.3s, background 0.3s; 
+            text-decoration: none; 
+            font-size: 1.6rem; 
+        }
+        .f-btn:hover { transform: scale(1.1); }
+        
+        .f-top { background: var(--primario); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .f-top.visible { opacity: 1; visibility: visible; }
+        
+        @media (max-width: 480px) {
+            .f-btn { width: 55px; height: 55px; font-size: 1.4rem; }
+        }
+        
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 99999; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; }
+        .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 650px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+        .modal-close:hover { color: var(--acento); }
+        
+        footer { background: #111; color: #888; padding: 80px 5% 40px; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 30px; margin: 35px 0; }
+        .social-links a { color: #888; font-size: 2.2rem; transition: 0.3s; }
+        .social-links a:hover { color: white; transform: translateY(-5px); }
     </style>
 </head>
 <body>
 
     <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
-    <div id="loader">
-        <svg width="80" height="80" viewBox="0 0 100 100">
-            <path class="cross-path" d="M50 15 V85 M30 40 H70" />
-        </svg>
-    </div>
-
     <nav>
-        <div class="logo"><i class="fas fa-church"></i> Capilla Santa Ana</div>
-        <ul>
-            <li><a href="#eventos">Eventos</a></li>
-            <li><a href="#horarios">Horarios</a></li>
-            <li><a href="#faq">Preguntas</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+        <div class="logo">Capilla Santa Ana</div>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#horarios" onclick="closeMenu()">Misas</a></li>
+            <li><a href="#espiritual" onclick="closeMenu()">Alimento</a></li>
+            <li><a href="#comunidad" onclick="closeMenu()">Comunidad</a></li>
+            <li><a href="#participa" onclick="closeMenu()">Participá</a></li>
+            <li><a href="#donar" onclick="closeMenu()">Donar</a></li>
         </ul>
-        <button aria-label="Cambiar modo oscuro" class="icon-btn" onclick="toggleDarkMode()" style="background:none; border:none; color:var(--primario); cursor:pointer; font-size:1.2rem;">
-            <i class="fas fa-moon" id="theme-icon"></i>
-        </button>
+
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+            <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        </div>
     </nav>
 
-    <header class="hero">
-        <h1 class="fade-in">Capilla Santa Ana</h1>
-        <h2 class="fade-in">Te esperamos para celebrar la Eucaristía y encontrarnos como comunidad en Villa Parque Santa Ana.</h2>
-        <div class="fade-in" style="margin-top:10px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-            <a href="#horarios" class="btn btn-primary" aria-label="Ver horarios de misa">Ver Misas</a>
-            <a href="#contacto" class="btn btn-outline" aria-label="Ver ubicación y contacto"><i class="fas fa-map-marked-alt"></i> Cómo llegar</a>
-        </div>
-    </header>
+    <main>
+        <header class="hero">
+            <div id="nextMassBanner" class="next-mass-banner"><i class="far fa-clock"></i> Próxima Misa: Cargando...</div>
+            <h1 itemprop="name">Bienvenido a Casa</h1>
+            <h2>Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
+            
+            <div class="quick-links">
+                <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
+                <a href="#intenciones" class="quick-btn"><i class="far fa-envelope"></i> Pedir Oración</a>
+                <a href="#donar" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart"></i> Ayudar a la Capilla</a>
+                <button onclick="document.getElementById('modalPray').style.display='flex'" class="quick-btn" style="cursor: pointer;"><i class="fas fa-praying-hands"></i> Oracional</button>
+            </div>
+        </header>
 
-    <section id="eventos" class="bg-white">
-        <div class="section-header">
-            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; color:var(--acento);">Vida Parroquial</p>
-            <h2>Próximos Encuentros</h2>
-            <div class="divider"></div>
-        </div>
-        <div class="grid-cards">
-            <div class="card">
-                <i class="fas fa-pray"></i>
-                <h3>Adoración</h3>
-                <span class="time">Viernes 18:00 hs</span>
-                <p>Momento de silencio frente al Santísimo.</p>
+        <section id="espiritual">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Un mensaje para tu corazón</p>
+                <h2>Alimento Espiritual</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Tómate un minuto en Su presencia. Que esta Palabra calme tu espíritu, renueve tus fuerzas y te acompañe durante toda la semana.</p>
             </div>
-            <div class="card">
-                <i class="fas fa-users"></i>
-                <h3>Catequesis</h3>
-                <span class="time">Sábados 17:00 hs</span>
-                <p>Formación para niños y adultos.</p>
+            
+            <div id="versiculo-diario">
+                <i class="fas fa-quote-left"></i>
+                <div class="verso-texto" id="v-texto">Cargando la Palabra...</div>
+                <div class="verso-cita" id="v-cita"></div>
+                <button onclick="cambiarVersiculo()" class="btn btn-outline" style="margin-top: 30px; color: var(--primario); border-color: var(--primario); padding: 10px 25px; font-size: 0.85rem;">
+                    <i class="fas fa-sync-alt"></i> Leer otro pasaje
+                </button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="horarios">
-        <div class="section-header">
-            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; color:var(--acento);">Sacramentos</p>
-            <h2>Vida Sacramental</h2>
-            <div class="divider"></div>
-        </div>
-        <div class="grid-cards">
-            <div class="card">
-                <i class="fas fa-calendar-day"></i>
-                <h3>Sábados</h3>
-                <span class="time">19:00 hs</span>
-                <p>Misa Vespertina</p>
+        <section id="comunidad" class="bg-white">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Tu Familia Espiritual</p>
+                <h2>Nuestra Vida en Comunidad</h2>
+                <div class="divider"></div>
+                <p class="subtitle">En la Capilla Santa Ana no caminamos solos. Acercate a descubrir los espacios donde crecemos en la fe, compartimos alegrías y ayudamos a los demás.</p>
             </div>
-            <div class="card">
-                <i class="fas fa-church"></i>
-                <h3>Domingos</h3>
-                <span class="time">10:30 hs</span>
-                <p>Misa de la Comunidad</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="faq" class="bg-white">
-        <div class="section-header">
-            <h2>Preguntas Frecuentes</h2>
-            <div class="divider"></div>
-        </div>
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="faq-item">
-                <div class="faq-question">¿Hay confesiones? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Se realizan confesiones 30 minutos antes de cada misa o coordinando vía WhatsApp con la secretaría.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">¿Cómo anotar intenciones? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Puedes usar el buzón flotante en esta web o acercarte a la secretaría los días miércoles y viernes.</div>
-            </div>
-        </div>
-    </section>
-
-    <section style="background: var(--fondo); text-align: center; padding: 50px 8%;">
-        <p style="font-size: 0.9rem; color: var(--primario); font-weight: 500;">
-            <i class="fas fa-shield-alt" style="margin-right: 10px;"></i>
-            Pertenecemos a la Arquidiócesis de Córdoba.
-        </p>
-    </section>
-
-    <section id="contacto" class="bg-white">
-        <div class="section-header"><h2>Ubicación</h2><div class="divider"></div></div>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:40px;">
-            <div>
-                <h3>Visítanos</h3>
-                <p>Calle Brochero y Calle 14, Villa Parque Santa Ana.</p>
-                <p style="margin: 20px 0;"><strong>Secretaría:</strong> Miércoles y Viernes 17 a 19 hs.</p>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <a aria-label="Escribir por WhatsApp" href="https://wa.me/5493517023789" class="btn btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                    <a aria-label="Abrir Google Maps" href="https://www.google.com/maps/dir/?api=1&destination=-31.6826622,-64.4578168" target="_blank" class="btn btn-outline" style="border-color:var(--acento); color:var(--primario);"><i class="fas fa-location-arrow"></i> Navegar GPS</a>
+            <div class="grid-cards">
+                <div class="card">
+                    <i class="fas fa-cross" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Vida Sacramental</h3>
+                    <p>Acompañamos cada etapa de tu vida cristiana: <strong>Bautismos, Primera Comunión, Confirmación, Casamientos (Matrimonios), Confesiones (Reconciliación) y Unción de los enfermos.</strong> Consultá los requisitos en secretaría.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-hands-helping" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Acción Social</h3>
+                    <p>Amor en acción. Asistimos a las familias vulnerables de la zona. <em>Próximamente: Apertura de nuestro Merendero para los niños del barrio.</em> ¡Tu ayuda es vital para lograrlo!</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-tshirt" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Ropero Comunitario</h3>
+                    <p>Un espacio permanente para dar y recibir. Recolectamos ropa, mantas y calzado en buen estado, y lo entregamos con dignidad a quienes más lo necesitan.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cut" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Talleres y Oficios</h3>
+                    <p>Brindamos talleres gratuitos de costura, manualidades y apoyo escolar para fomentar el desarrollo personal, intelectual y laboral de grandes y chicos.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Encuentros y Mateadas</h3>
+                    <p>Celebraciones patronales, ferias, locros y reuniones vecinales. ¡Un espacio seguro, sano y alegre para compartir como la gran familia que somos!</p>
                 </div>
             </div>
-            <div style="border-radius: 20px; overflow: hidden; height: 350px; box-shadow: var(--sombra);">
-                <iframe title="Mapa Capilla Santa Ana" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3395.232371191563!2d-64.4578168!3d-31.6826622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432a15c8e70a68d%3A0xc395f17d748f2178!2sCapilla%20Santa%20Ana!5e0!3m2!1ses!2sar!4v1710000000000!5m2!1ses!2sar" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <footer style="background:#111; color:#777; padding:60px 5%; text-align:center;">
-        <p>© 2026 Capilla Santa Ana. Córdoba, Argentina.</p>
-        <p style="margin-top:10px; font-size:0.8rem;">Alias: <strong style="color:var(--acento);">capilla.santa.ana.vpsa</strong></p>
+        <section id="participa">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">No seas un espectador</p>
+                <h2>Sumá tu Talento al Servicio</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Dios te regaló dones únicos para compartirlos. ¡Animate a ser protagonista! Te invitamos a ser parte activa en nuestras áreas de servicio.</p>
+            </div>
+            <div class="grid-cards">
+                <div class="card" style="border-top: 5px solid var(--acento);">
+                    <i class="fas fa-guitar" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Música y Coro 🎸</h3>
+                    <p>Si tocás un instrumento o te gusta cantar, sumá tu voz para animar las misas y acercar a otros a Dios mediante la alabanza.</p>
+                </div>
+                <div class="card" style="border-top: 5px solid var(--acento);">
+                    <i class="fas fa-palette" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Arte y Redes 🎨</h3>
+                    <p>Ayudanos a evangelizar a través de la fotografía, el diseño gráfico y la gestión de nuestras redes sociales para llegar a más corazones.</p>
+                </div>
+                <div class="card" style="border-top: 5px solid var(--acento);">
+                    <i class="fas fa-utensils" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Logística y Cocina 🍳</h3>
+                    <p>El motor oculto de la parroquia. Vení a ayudarnos a cocinar y organizar los grandes eventos, locros y retiros comunitarios.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="horarios" class="bg-white">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">El centro de nuestra fe</p>
+                <h2>Celebremos la Eucaristía</h2>
+                <div class="divider"></div>
+                <p class="subtitle">La Misa es el momento más importante de nuestra semana para dar gracias, pedir perdón y llenarnos de paz. ¡Te estamos esperando!</p>
+            </div>
+            <div class="grid-cards" style="max-width: 900px; margin: 0 auto;">
+                <div class="card">
+                    <h3 style="font-size: 2rem;">Sábados</h3>
+                    <span class="time">19:00 hs</span>
+                    <p style="font-size: 1.1rem; font-weight: 600;">Misa Vespertina</p>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 2rem;">Domingos</h3>
+                    <span class="time">10:30 hs</span>
+                    <p style="font-size: 1.1rem; font-weight: 600;">Misa Dominical de las Familias</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="donar">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Sostenimiento Parroquial</p>
+                <h2>Tu generosidad es nuestro motor</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Gracias a tu donación, la Capilla mantiene sus puertas abiertas, paga los servicios, sostiene los talleres gratuitos y reúne fondos para el futuro merendero.</p>
+            </div>
+            <div style="background: var(--primario); color: white; padding: 50px; border-radius: 20px; text-align: center; max-width: 600px; margin: 0 auto; box-shadow: var(--sombra-fuerte);">
+                <i class="fas fa-hand-holding-heart" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 15px;">Alias Bancario Oficial</h3>
+                <p style="opacity: 0.9; margin-bottom: 25px; font-size: 1.1rem;">Podés transferir el monto que sientas en tu corazón. Todo suma y es administrado con total transparencia por la comunidad.</p>
+                <strong style="font-family: monospace; font-size: 1.8rem; display: block; margin-bottom: 30px; letter-spacing: 2px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">capilla.santa.ana.vpsa</strong>
+                <button class="btn btn-outline" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem;">
+                    <i class="far fa-copy"></i> Copiar Alias para Transferir
+                </button>
+            </div>
+        </section>
+
+        <section id="intenciones" class="bg-white">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Rezamos por vos y los tuyos</p>
+                <h2>Buzón de Intenciones</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Escribí tu pedido por salud, trabajo, una acción de gracias o por un ser querido que partió. Lo llevaremos directamente al Altar en la próxima Misa.</p>
+            </div>
+            <div class="form-box">
+                <input type="text" id="nombreIntencion" placeholder="Tu nombre (Opcional, para saber quién pide)">
+                <textarea id="textoIntencion" rows="5" placeholder="Escribí aquí tu intención. Ejemplo: 'Pido por la salud de mi madre...' o 'Acción de gracias por el trabajo...'"></textarea>
+                <button onclick="enviarIntencion()" class="btn btn-primary" style="width: 100%;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Enviar Intención al Sacerdote
+                </button>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <div class="section-header">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Nuestras puertas están abiertas</p>
+                <h2>¿Cómo llegar a la Capilla?</h2>
+                <div class="divider"></div>
+            </div>
+            <p style="text-align:center; margin-bottom: 30px; font-size: 1.2rem; font-weight: 600;">Calle Brochero y Calle 14, Villa Parque Santa Ana, Córdoba.</p>
+            
+            <div style="border-radius: 20px; overflow: hidden; height: 450px; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light);">
+                <iframe 
+                    title="Ubicación Capilla Santa Ana en Villa Parque Santa Ana"
+                    src="https://www.google.com/maps?q=-31.6826622,-64.4578168&hl=es&z=17&output=embed"
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="color: white; margin-bottom: 10px; font-size: 2rem;">Capilla Santa Ana</h3>
+        <p style="font-size: 1.1rem;">Dependiente de la Arquidiócesis de Córdoba.</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank" rel="noopener" aria-label="Seguinos en Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank" rel="noopener" aria-label="Seguinos en Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+        
+        <p style="font-size: 0.9rem; border-top: 1px solid #333; padding-top: 30px; margin-top: 20px;">
+            © 2026 Todos los derechos reservados.
+        </p>
+        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
+            Arquitectura Digital por Nicolás Bongiorno
+        </p>
     </footer>
 
     <div class="float-container">
-        <button aria-label="Ir arriba" class="f-btn f-top" id="fTop" onclick="window.scrollTo(0,0)"><i class="fas fa-chevron-up"></i></button>
-        <button aria-label="Oracional" class="f-btn f-pray" onclick="openOracional()"><i class="fas fa-praying-hands"></i></button>
-        <a aria-label="Escribir por WhatsApp" href="https://wa.me/5493517023789" class="f-btn f-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <button aria-label="Ir arriba" class="f-btn f-top" id="fTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+        <a aria-label="Navegar con GPS" href="https://www.google.com/maps?q=-31.6826622,-64.4578168&hl=es&z=17&output=embed" class="f-btn" style="background: var(--google-maps);" target="_blank" rel="noopener">
+            <i class="fas fa-map-marker-alt"></i>
+        </a>
+        <button aria-label="Abrir Oracional" class="f-btn" style="background: var(--primario);" onclick="document.getElementById('modalPray').style.display='flex'">
+            <i class="fas fa-praying-hands"></i>
+        </button>
+        <a aria-label="Hablar por WhatsApp" href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i>
+        </a>
     </div>
 
-    <div id="modalPray" class="modal">
+    <div id="modalPray" class="modal" role="dialog" aria-modal="true" tabindex="-1">
         <div class="modal-content">
-            <button onclick="closeOracional()" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer;">×</button>
-            <h3 style="margin-bottom:20px;">Oracional</h3>
-            <div id="oraciones-lista">
-                <p><strong>Padre Nuestro:</strong> Padre nuestro que estás en el cielo...</p>
-                <hr style="margin:15px 0; opacity:0.1;">
-                <p><strong>Ave María:</strong> Dios te salve María, llena eres de gracia...</p>
+            <button class="modal-close" onclick="document.getElementById('modalPray').style.display='none'" aria-label="Cerrar Oracional">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 style="margin-bottom:30px; text-align: center; border-bottom: 2px solid var(--gold-light); padding-bottom: 15px; font-size: 2rem;">Oracional de Bolsillo</h3>
+            
+            <div class="oracion-bloque">
+                <h4>Padre Nuestro</h4>
+                <p>Padre nuestro, que estás en el cielo, santificado sea tu Nombre; venga a nosotros tu reino; hágase tu voluntad en la tierra como en el cielo. Danos hoy nuestro pan de cada día; perdona nuestras ofensas, como también nosotros perdonamos a los que nos ofenden; no nos dejes caer en la tentación, y líbranos del mal. Amén.</p>
             </div>
-            <button class="btn btn-primary" onclick="closeOracional()" style="margin-top:20px; width:100%;">Cerrar</button>
+            
+            <div class="oracion-bloque">
+                <h4>Ave María</h4>
+                <p>Dios te salve, María, llena eres de gracia; el Señor es contigo. Bendita Tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús. Santa María, Madre de Dios, ruega por nosotros, pecadores, ahora y en la hora de nuestra muerte. Amén.</p>
+            </div>
+
+            <div class="oracion-bloque">
+                <h4>Gloria</h4>
+                <p>Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.</p>
+            </div>
+
+            <div class="oracion-bloque">
+                <h4>El Credo</h4>
+                <p>Creo en Dios, Padre Todopoderoso, Creador del cielo y de la tierra. Creo en Jesucristo, su único Hijo, Nuestro Señor, que fue concebido por obra y gracia del Espíritu Santo, nació de Santa María Virgen, padeció bajo el poder de Poncio Pilato, fue crucificado, muerto y sepultado, descendió a los infiernos, al tercer día resucitó de entre los muertos, subió a los cielos y está sentado a la derecha de Dios, Padre todopoderoso. Desde allí ha de venir a juzgar a vivos y muertos. Creo en el Espíritu Santo, la santa Iglesia católica, la comunión de los santos, el perdón de los pecados, la resurrección de la carne y la vida eterna. Amén.</p>
+            </div>
+
+            <div class="oracion-bloque">
+                <h4>La Salve</h4>
+                <p>Dios te salve, Reina y Madre de misericordia, vida, dulzura y esperanza nuestra; Dios te salve. A Ti llamamos los desterrados hijos de Eva; a Ti suspiramos, gimiendo y llorando, en este valle de lágrimas. Ea, pues, Señora, abogada nuestra, vuelve a nosotros esos tus ojos misericordiosos; y después de este destierro muéstranos a Jesús, fruto bendito de tu vientre. ¡Oh clementísima, oh piadosa, oh dulce Virgen María! Ruega por nosotros. Amén.</p>
+            </div>
+
+            <div class="oracion-bloque">
+                <h4>Ángel de la Guarda</h4>
+                <p>Ángel de Dios, que eres mi custodio, pues la bondad divina me ha encomendado a ti, ilumíname, dirígeme, guárdame. Amén.</p>
+            </div>
+
+            <div class="oracion-bloque">
+                <h4>San Miguel Arcángel</h4>
+                <p>San Miguel Arcángel, defiéndenos en la batalla. Sé nuestro amparo contra la perversidad y asechanzas del demonio. Reprímale Dios, pedimos suplicantes, y tú Príncipe de la Milicia Celestial, arroja al infierno con el divino poder a Satanás y a los otros espíritus malignos que andan dispersos por el mundo para la perdición de las almas. Amén.</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="document.getElementById('modalPray').style.display='none'" style="width:100%; margin-top: 15px; justify-content: center; font-size: 1.1rem;">Cerrar Oracional</button>
         </div>
     </div>
 
     <script>
-        // DARK MODE PERSISTENTE
-        if(localStorage.getItem('theme') === 'dark'){ document.body.classList.add('dark-mode'); updateIcon(true); }
-        function toggleDarkMode(){ 
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateIcon(isDark);
-        }
-        function updateIcon(isDark){ document.getElementById('theme-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon'; }
+    // LISTA DE 10 VERSÍCULOS
+    const versiculos = [
+        { t: "Vengan a mí todos los que están cansados y agobiados, y yo les daré descanso.", c: "Mateo 11:28" },
+        { t: "El Señor es mi pastor, nada me falta; en verdes pastos me hace descansar.", c: "Salmo 23:1-2" },
+        { t: "No se angustien por nada, y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones.", c: "Filipenses 4:6-7" },
+        { t: "Dejo la paz con ustedes; les doy mi paz. No se las doy como la da el mundo. No dejen que sus corazones se turben.", c: "Juan 14:27" },
+        { t: "El Señor tu Dios está en medio de ti, guerrero victorioso; se gozará en ti con alegría, te renovará con su amor.", c: "Sofonías 3:17" },
+        { t: "Todo lo puedo en Cristo que me fortalece.", c: "Filipenses 4:13" },
+        { t: "Confía en el Señor de todo corazón, y no en tu propia inteligencia.", c: "Proverbios 3:5" },
+        { t: "El Señor es mi luz y mi salvación, ¿a quién temeré? El Señor es el baluarte de mi vida.", c: "Salmo 27:1" },
+        { t: "Pero los que confían en el Señor renovarán sus fuerzas; volarán como las águilas.", c: "Isaías 40:31" },
+        { t: "Pongan todas sus preocupaciones y ansiedades en las manos de Dios, porque él cuida de ustedes.", c: "1 Pedro 5:7" }
+    ];
 
-        // LOADER & SCROLL
-        window.addEventListener('load', () => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 600); });
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            document.getElementById("myBar").style.width = (winScroll / height) * 100 + "%";
+    function cambiarVersiculo() {
+        const cajaTexto = document.getElementById('v-texto');
+        const cajaCita = document.getElementById('v-cita');
+        cajaTexto.style.opacity = 0;
+        
+        setTimeout(() => {
+            const random = Math.floor(Math.random() * versiculos.length);
+            cajaTexto.innerText = `"${versiculos[random].t}"`;
+            cajaCita.innerText = versiculos[random].c;
+            cajaTexto.style.opacity = 1;
+        }, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        cambiarVersiculo();
+
+        // BANNER MISA
+        function updateMass() {
+            const now = new Date();
+            const day = now.getDay(); const hrs = now.getHours();
+            let next = "";
+            
+            if (day === 6) { 
+                next = hrs < 19 ? "Misa Hoy a las 19:00 hs" : "Misa Mañana a las 10:30 hs";
+            } else if (day === 0) { 
+                next = hrs < 10 || (hrs === 10 && now.getMinutes() < 30) ? "Misa Hoy a las 10:30 hs" : "Próxima Misa: Sábado 19:00 hs";
+            } else { 
+                next = "Próxima Misa: Sábado 19:00 hs";
+            }
+            document.getElementById('nextMassBanner').innerHTML = `<i class="far fa-clock"></i> <strong>${next}</strong>`;
+        }
+        updateMass();
+
+        // MODO OSCURO
+        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+
+        // SCROLL
+        window.onscroll = () => {
             const fTop = document.getElementById("fTop");
-            if (winScroll > 300) fTop.classList.add("visible"); else fTop.classList.remove("visible");
+            if (window.scrollY > 400) { if(fTop) fTop.classList.add("visible"); } 
+            else { if(fTop) fTop.classList.remove("visible"); }
+            
+            const bar = document.getElementById("myBar");
+            if(bar) bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
         };
 
-        // FAQ INTERACTIVITY
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.addEventListener('click', () => { q.parentElement.classList.toggle('active'); });
+        // ESC A MODAL
+        document.addEventListener('keydown', (e) => { 
+            if(e.key === "Escape") document.getElementById('modalPray').style.display='none'; 
         });
+    });
 
-        // MODAL HANDLERS
-        function openOracional(){ document.getElementById('modalPray').style.display = 'flex'; }
-        function closeOracional(){ document.getElementById('modalPray').style.display = 'none'; }
-        document.addEventListener('keydown', (e) => { if(e.key === "Escape") closeOracional(); });
-        document.getElementById('modalPray').addEventListener('click', function(e){ if(e.target === this) closeOracional(); });
+    // FUNCIONES GLOBALES
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('active');
+        const icon = document.querySelector('.menu-toggle i');
+        if(icon.classList.contains('fa-bars')) {
+            icon.classList.replace('fa-bars', 'fa-times');
+        } else {
+            icon.classList.replace('fa-times', 'fa-bars');
+        }
+    }
+
+    function closeMenu() {
+        if(window.innerWidth <= 900) {
+            document.getElementById('navLinks').classList.remove('active');
+            document.querySelector('.menu-toggle i').classList.replace('fa-times', 'fa-bars');
+        }
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    function enviarIntencion() {
+        const nombre = document.getElementById('nombreIntencion').value.trim();
+        const texto = document.getElementById('textoIntencion').value.trim();
+        if(!texto) { alert("Por favor escribí la intención que llevaremos al altar."); return; }
+        
+        const hora = new Date().getHours();
+        const saludo = hora < 12 ? "Buenos días" : hora < 20 ? "Buenas tardes" : "Buenas noches";
+        const emisor = nombre ? nombre : "un miembro de la comunidad";
+        
+        const msg = encodeURIComponent(`${saludo} Padre/Secretaría. Soy ${emisor}. Quisiera acercar la siguiente intención para la Misa: "${texto}". ¡Muchas gracias y bendiciones!`);
+        window.open(`https://wa.me/5493517023789?text=${msg}`, '_blank');
+    }
+
+    function copiarAlias(btn) {
+        navigator.clipboard.writeText("capilla.santa.ana.vpsa");
+        const oldTxt = btn.innerHTML;
+        btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+        btn.style.backgroundColor = "var(--verde-wa)";
+        btn.style.borderColor = "var(--verde-wa)";
+        btn.style.color = "white";
+        setTimeout(() => { 
+            btn.innerHTML = oldTxt; 
+            btn.style.backgroundColor = "transparent"; 
+            btn.style.borderColor = "white";
+            btn.style.color = "white";
+        }, 3000);
+    }
     </script>
 </body>
 </html>
