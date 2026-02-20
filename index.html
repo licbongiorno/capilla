@@ -108,7 +108,7 @@
         /* --- NAVEGACIÓN Y MENÚ TIPO APP --- */
         .nav-links { display: flex; list-style: none; gap: 20px; transition: 0.3s ease-in-out; }
         .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
-        .nav-links a i { display: none; } /* Ocultar íconos en PC */
+        .nav-links a i { display: none; } 
         .nav-links a:hover { color: var(--acento); }
         
         .nav-actions { display: flex; gap: 20px; align-items: center; }
@@ -200,7 +200,7 @@
             }
         }
 
-        /* --- HERO PROFESIONAL CON ETIQUETA IMG --- */
+        /* --- HERO PROFESIONAL CON PICTURE TAG (MULTIDISPOSITIVO) --- */
         .hero { 
             position: relative;
             min-height: 85vh; 
@@ -211,7 +211,11 @@
             text-align: center; 
             color: white; 
             overflow: hidden;
+            background-color: var(--primario); /* Color de relleno base estético */
         }
+        
+        /* Permite que la imagen dentro del picture tome la posición absoluta */
+        picture { display: contents; }
 
         .hero-bg {
             position: absolute;
@@ -219,7 +223,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 30%; /* Mantiene la cruz visible */
+            object-position: center 30%; /* Centrado en desktop (Cruz visible) */
             z-index: 0;
         }
 
@@ -227,7 +231,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8));
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85));
             z-index: 1;
         }
 
@@ -352,6 +356,13 @@
         .f-top.visible { opacity: 1; visibility: visible; }
 
         @media (max-width: 768px) {
+            .hero {
+                min-height: 85vh;
+                padding-top: 100px;
+            }
+            .hero-bg {
+                object-position: center center; /* En móviles centra la imagen vertical (2.webp) */
+            }
             .float-container { right: 15px; bottom: 20px; }
             .f-btn { width: 55px; height: 55px; font-size: 1.4rem; }
         }
@@ -394,7 +405,10 @@
 
     <main>
         <header class="hero">
-            <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
+            <picture>
+                <source media="(max-width: 768px)" srcset="2.webp">
+                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
+            </picture>
             
             <div class="hero-content">
                 <div id="nextMassBanner" class="next-mass-banner"><i class="far fa-clock"></i> Próxima Misa: Cargando...</div>
@@ -649,7 +663,6 @@
     </div>
 
     <script>
-    // LISTA DE 10 VERSÍCULOS
     const versiculos = [
         { t: "Vengan a mí todos los que están cansados y agobiados, y yo les daré descanso.", c: "Mateo 11:28" },
         { t: "El Señor es mi pastor, nada me falta; en verdes pastos me hace descansar.", c: "Salmo 23:1-2" },
