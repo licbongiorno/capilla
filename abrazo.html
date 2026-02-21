@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Abrazo de Dios - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --bg: #f3f0f7; /* Lavanda Grisáceo muy suave */
+            --overlay: rgba(255, 255, 255, 0.88);
+            --card: #ffffff;
+            --card-back: #80CBC4; /* Verde Agua / Contención */
+            --accent: #9575CD; /* Lavanda */
+            --primario: #455A64;
+            --texto: #263238;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+
+        .main-background {
+            position: fixed; inset: 0;
+            background: linear-gradient(var(--overlay), var(--overlay)), url('2.webp');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+
+        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .floating-word {
+            position: absolute; font-weight: 800; color: rgba(128, 203, 196, 0.15);
+            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+        }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+
+        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
+        .btn-home { color: var(--primario); text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+
+        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
+        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 15px 45px rgba(69, 90, 100, 0.1); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; border: 1px solid rgba(149, 117, 205, 0.2); }
+
+        .front { background: var(--card); color: var(--texto); border-top: 10px solid var(--accent); }
+        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; color: var(--primario); }
+        .verse-box { background: rgba(128, 203, 196, 0.08); padding: 18px; border-radius: 12px; width: 100%; border-left: 4px solid var(--card-back); }
+        .verse-text { font-size: 0.85rem; font-style: italic; color: #546E7A; margin-bottom: 8px; line-height: 1.6; }
+        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--primario); text-transform: uppercase; display: block; text-align: right; }
+        
+        .back { background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f3f0f7 100%); color: var(--accent); transform: rotateY(180deg); }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(149, 117, 205, 0.2)); }
+        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; line-height: 1.1; color: var(--primario); }
+
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        button { background: white; color: var(--primario); border: 1px solid var(--accent); border-radius: 50px; padding: 14px 24px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .btn-main { background: var(--accent); color: white; border-color: var(--accent); }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primario); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; transition: 0.5s; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="main-background"></div>
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="index.html" class="btn-home"><i class="fas fa-chevron-left"></i> Capilla Santa Ana</a>
+        <div class="nav-socials">
+            <a href="https://wa.me/5493517023789" target="_blank" style="color:var(--primario); font-size:1.5rem;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card-scene">
+            <div class="card is-flipped" id="card">
+                <div class="face front">
+                    <p class="question" id="q-text">...</p>
+                    <div class="verse-box">
+                        <p class="verse-text" id="v-text"></p>
+                        <span class="verse-ref" id="v-ref"></span>
+                    </div>
+                </div>
+                <div class="face back">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h2>Abrazo<br>de Dios</h2>
+                    <p style="color:var(--primario); letter-spacing:2px; font-weight:700; font-size:10px; margin-top:15px; text-transform:uppercase;">Sanación y Consuelo</p>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="btn-next" class="btn-main"><i class="fas fa-feather-alt"></i> Recibir Consuelo</button>
+            <button id="btn-share"><i class="fas fa-share-alt"></i> Compartir</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">¡Abrazo enviado! Link copiado.</div>
+
+    <script>
+        const CARTAS = [
+            { id: "ab-1", q: "¿Te permitís llorar sabiendo que Jesús también lloró ante el dolor de sus amigos?", v: "Jesús lloró.", c: "Juan 11:35" },
+            { id: "ab-2", q: "Cuando sentís que el vacío te ahoga, ¿lográs recordar que Dios está más cerca de lo que creés?", v: "El Señor está cerca de los que tienen el corazón roto.", c: "Salmo 34:18" },
+            { id: "ab-3", q: "¿Podés entregar hoy el peso de tus deudas y preocupaciones económicas al cuidado de la Providencia?", v: "No se inquieten por el día de mañana; el mañana se inquietará por sí mismo.", c: "Mateo 6:34" },
+            { id: "ab-4", q: "Frente a la enfermedad, ¿lográs ver tu fragilidad como un espacio donde la fuerza de Dios puede actuar?", v: "Mi gracia te basta, que mi fuerza se muestra perfecta en la flaqueza.", c: "2 Corintios 12:9" },
+            { id: "ab-5", q: "¿Has podido decirle a Dios: 'Señor, no entiendo por qué pasó esto, pero confío en Vos'?", v: "Fíate de Yahveh de todo corazón y no te apoyes en tu propia inteligencia.", c: "Proverbios 3:5" },
+            { id: "ab-6", q: "La muerte no es el final. ¿Sentís la paz de saber que tus seres queridos descansan en los brazos del Padre?", v: "Yo soy la resurrección y la vida. El que cree en mí, aunque muera, vivirá.", c: "Juan 11:25" },
+            { id: "ab-7", q: "En medio de la tormenta familiar, ¿sos capaz de ser el silencio que trae paz en lugar del ruido que divide?", v: "¡Paz! ¡Enmudece! Y el viento cesó y sobrevino una gran bonanza.", c: "Marcos 4:39" },
+            { id: "ab-8", q: "¿Te das permiso para descansar, reconociendo que no podés cargar con todo el mundo sobre tus hombros?", v: "Venid a mí todos los que estáis cansados y agobiados, y yo os aliviaré.", c: "Mateo 11:28" },
+            { id: "ab-9", q: "¿Lográs ver el sufrimiento como una forma de unirte a la cruz de Jesús para salvar al mundo?", v: "El que quiera venir en pos de mí, niéguese a sí mismo, tome su cruz y sígame.", c: "Mateo 16:24" },
+            { id: "ab-10", q: "¿Has buscado hoy un momento de silencio frente al Sagrario para simplemente dejarte mirar por Dios?", v: "Mírame y ten piedad de mí, porque estoy solo y afligido.", c: "Salmo 25:16" },
+            { id: "ab-11", q: "¿Podés perdonarte a vos mismo por aquello que no pudiste evitar o por lo que creés que hiciste mal?", v: "Si nos juzgara nuestro corazón, Dios es mayor que nuestro corazón.", c: "1 Juan 3:20" },
+            { id: "ab-12", q: "Cuando la angustia aprieta el pecho, ¿lográs respirar el nombre de Jesús como un bálsamo de paz?", v: "La paz os dejo, mi paz os doy; no os la doy como el mundo la da.", c: "Juan 14:27" },
+            { id: "ab-13", q: "¿Sos consciente de que cada lágrima tuya es recogida y atesorada por Dios?", v: "Tú llevas la cuenta de mis huidas; pon mis lágrimas en tu redoma.", c: "Salmo 56:8" },
+            { id: "ab-14", q: "Frente a la injusticia que vivís, ¿lográs soltar el deseo de venganza y dejarlo en manos de la Justicia Divina?", v: "No te dejes vencer por el mal; antes bien, vence al mal con el bien.", c: "Romanos 12:21" },
+            { id: "ab-15", q: "¿Qué parte de tu historia necesita hoy ser lavada por el perdón y la ternura de Cristo?", v: "Él sana a los quebrantados de corazón y venda sus heridas.", c: "Salmo 147:3" },
+            { id: "ab-16", q: "A veces Dios no quita la cruz, pero nos da un Cireneo. ¿Aceptás la ayuda de los hermanos en la Capilla?", v: "Ayudaos mutuamente a llevar vuestras cargas.", c: "Gálatas 6:2" },
+            { id: "ab-17", q: "¿Podés ver la enfermedad como un tiempo de desierto donde Dios quiere hablarte a solas al corazón?", v: "He aquí que yo la seduciré, la llevaré al desierto y hablaré a su corazón.", c: "Oseas 2:14" },
+            { id: "ab-18", q: "Aunque hoy todo parezca oscuro, ¿creés que Dios tiene el poder de sacar un bien de este mal?", v: "Sabemos que en todas las cosas Dios interviene para bien de los que le aman.", c: "Romanos 8:28" },
+            { id: "ab-19", q: "¿Has pedido a María que, como Madre Dolorosa, se quede al pie de tu propia cruz hoy?", v: "Junto a la cruz de Jesús estaba su madre.", c: "Juan 19:25" },
+            { id: "ab-20", q: "¿Qué es lo que más te asusta de este momento y por qué no se lo entregás ahora mismo al Espíritu Santo?", v: "No temas, que yo estoy contigo; no desmayes, que yo soy tu Dios.", c: "Isaías 41:10" },
+            { id: "ab-21", q: "La soledad no es vacío cuando Dios habita en ella. ¿Te animás a invitarlo a tu soledad hoy?", v: "Yo estoy con vosotros todos los días hasta el fin del mundo.", c: "Mateo 28:20" },
+            { id: "ab-22", q: "¿Sos capaz de agradecer por el tiempo que compartiste con quien hoy ya no está físicamente?", v: "Yahveh dio, Yahveh quitó: ¡Bendito sea el nombre de Yahveh!", c: "Job 1:21" },
+            { id: "ab-23", q: "Cuando las fuerzas fallan, ¿recordás que es Dios quien camina por vos y te lleva en brazos?", v: "Él da fuerzas al cansado y acrecienta el vigor del que no tiene fuerzas.", c: "Isaías 40:29" },
+            { id: "ab-24", q: "¿Qué pequeña luz de esperanza podés encontrar hoy en medio de tu situación difícil?", v: "La luz brilla en las tinieblas, y las tinieblas no la vencieron.", c: "Juan 1:5" },
+            { id: "ab-25", q: "¿Sentís que Dios te ha abandonado? Recordá que el mismo Jesús sintió eso en la cruz para redimir tu dolor.", v: "Dios mío, Dios mío, ¿por qué me has abandonado?", c: "Mateo 27:46" },
+            { id: "ab-26", q: "¿Podés ver tu dolor como una semilla que, al morir, dará un fruto de mucha compasión por los demás?", v: "Si el grano de trigo no cae en tierra y muere, queda solo; pero si muere, da mucho fruto.", c: "Juan 12:24" },
+            { id: "ab-27", q: "¿Has pedido hoy la gracia de la paciencia para esperar los tiempos de Dios que no son los tuyos?", v: "Si esperamos lo que no vemos, con paciencia lo aguardamos.", c: "Romanos 8:25" },
+            { id: "ab-28", q: "Frente al duelo, ¿lográs mirar al Cielo y sonreír sabiendo que allá no hay más llanto ni dolor?", v: "Él enjugará toda lágrima de sus ojos; y ya no habrá muerte, ni duelo, ni llanto.", c: "Apocalipsis 21:4" },
+            { id: "ab-29", q: "¿Qué le dirías a Jesús sobre el nudo que tenés en la garganta en este momento?", v: "Desahogad ante Él vuestro corazón.", c: "Salmo 62:8" },
+            { id: "ab-30", q: "Aunque camines por valles oscuros, ¿sentís el cayado del Buen Pastor que te guía?", v: "Aunque pase por valles de tinieblas, ningún mal temeré, porque tú vas conmigo.", c: "Salmo 23:4" },
+            { id: "ab-31", q: "¿Sos capaz de pedir perdón por las quejas constantes que ciegan tu capacidad de ver las bendiciones?", v: "Hacedlo todo sin murmuraciones ni discusiones.", c: "Filipenses 2:14" },
+            { id: "ab-32", q: "¿Podés ofrecer tu dolor de hoy por alguien que sufre más que vos en la comunidad?", v: "Llevad los unos las cargas de los otros.", c: "Gálatas 6:2" },
+            { id: "ab-33", q: "En la enfermedad, ¿lográs valorar la vida como un don sagrado que no controlás?", v: "Mis días están en tus manos.", c: "Salmo 31:15" },
+            { id: "ab-34", q: "¿Te permitís ser vulnerable ante Dios, mostrándole tus heridas sin vendas?", v: "Confesaos vuestros pecados unos a otros, y orad unos por otros para ser sanados.", c: "Santiago 5:16" },
+            { id: "ab-35", q: "Frente a la traición o el desengaño, ¿buscás refugio en el corazón de Cristo que fue traspasado por amor?", v: "Uno de los soldados le traspasó el costado con una lanza.", c: "Juan 19:34" },
+            { id: "ab-36", q: "¿Lográs confiar en que Dios proveerá lo necesario para tu familia, incluso en la escasez?", v: "Mi Dios suplirá todas vuestras necesidades conforme a sus riquezas.", c: "Filipenses 4:19" },
+            { id: "ab-37", q: "¿Has dado gracias hoy por las pequeñas manos que te sostienen: un hijo, un vecino, un amigo?", v: "Doy gracias a mi Dios cada vez que me acuerdo de vosotros.", c: "Filipenses 1:3" },
+            { id: "ab-38", q: "Cuando sentís que 'ya no podés más', ¿le entregás ese 'no puedo' al Espíritu de Fortaleza?", v: "Todo lo puedo en Cristo que me fortalece.", c: "Filipenses 4:13" },
+            { id: "ab-39", q: "¿Podés ver en el rostro de los que sufren a Cristo sufriente pidiéndote amor?", v: "Estuve enfermo, y me visitasteis.", c: "Mateo 25:36" },
+            { id: "ab-40", q: "¿Qué promesa de la Biblia te sostiene hoy como un ancla en medio del mar?", v: "Tenemos esta esperanza como ancla del alma, segura y firme.", c: "Hebreos 6:19" },
+            { id: "ab-41", q: "¿Lográs perdonar a Dios por aquello que te quitó y que tanto amabas?", v: "Sea bendito el nombre de Yahveh.", c: "Job 1:21" },
+            { id: "ab-42", q: "Frente al miedo al futuro, ¿podés repetir: 'Jesús, yo confío en Vos'?", v: "No se turbe vuestro corazón ni tenga miedo.", c: "Juan 14:27" },
+            { id: "ab-43", q: "¿Sentís que tu cruz es demasiado pesada? Pedile a Jesús que Él sea tu Cireneo hoy.", v: "Cargad con mi yugo y aprended de mí, que soy sencillo y humilde.", c: "Mateo 11:29" },
+            { id: "ab-44", q: "¿Podés ver la muerte de un cristiano como el nacimiento a la verdadera Vida?", v: "Para mí la vida es Cristo, y el morir una ganancia.", c: "Filipenses 1:21" },
+            { id: "ab-45", q: "¿Has rezado hoy por los que agonizan o los que sufren en soledad en los hospitales?", v: "Rogad unos por otros para que seáis sanados.", c: "Santiago 5:16" },
+            { id: "ab-46", q: "¿Sos consciente de que después de todo Viernes Santo, siempre llega un Domingo de Resurrección?", v: "Al tercer día resucitó.", c: "El Credo" },
+            { id: "ab-47", q: "¿Podés encontrar belleza en medio de las cenizas de tu dolor actual?", v: "Para darles una corona en vez de ceniza, aceite de gozo en vez de luto.", c: "Isaías 61:3" },
+            { id: "ab-48", q: "Cuando no tengas palabras para rezar, dejá que el Espíritu Santo gima por vos.", v: "El Espíritu mismo intercede por nosotros con gemidos inefables.", c: "Romanos 8:26" },
+            { id: "ab-49", q: "¿Qué le dirías a Santa Ana sobre el dolor de ver sufrir a los que uno ama?", v: "Vuestra tristeza se convertirá en gozo.", c: "Juan 16:20" },
+            { id: "ab-50", q: "Si hoy fuera el último día de tu prueba, ¿qué habrás aprendido sobre el amor de Dios?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
+        ];
+
+        const card = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const vText = document.getElementById('v-text');
+        const vRef = document.getElementById('v-ref');
+        const toast = document.getElementById('toast');
+        const nextBtn = document.getElementById('btn-next');
+        const shareBtn = document.getElementById('btn-share');
+
+        let currentIdx = -1;
+        let isFlipped = true;
+        let audioInit = false;
+
+        const noise = new Tone.Noise("white").start();
+        const filter = new Tone.Filter(100, "lowpass").toDestination();
+        noise.connect(filter);
+        noise.volume.value = -60;
+
+        function playSound() {
+            if (!audioInit) { Tone.start(); audioInit = true; }
+            filter.frequency.setValueAtTime(100, Tone.now());
+            filter.frequency.exponentialRampToValueAtTime(3000, Tone.now() + 0.3);
+            noise.volume.setValueAtTime(-15, Tone.now());
+            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+        }
+
+        function render(idx) {
+            currentIdx = idx;
+            const item = CARTAS[idx];
+            qText.textContent = item.q;
+            vText.textContent = `"${item.v}"`;
+            vRef.textContent = item.c;
+            window.location.hash = item.id;
+        }
+
+        function random() {
+            let i;
+            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
+            render(i);
+        }
+
+        function flip() {
+            playSound();
+            card.classList.toggle('is-flipped');
+            isFlipped = !isFlipped;
+        }
+
+        card.addEventListener('click', flip);
+        nextBtn.addEventListener('click', () => {
+            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
+            else { random(); flip(); }
+        });
+
+        shareBtn.addEventListener('click', async () => {
+            if (currentIdx === -1) return;
+            const url = window.location.href;
+            const msg = `🌿 Te comparto este abrazo de paz de la Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
+            if (navigator.share) { try { await navigator.share({ title: 'Abrazo de Dios', text: msg, url: url }); } catch (e) {} }
+            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
+        });
+
+        function initBG() {
+            const bg = document.getElementById('bg');
+            const words = ['PAZ', 'CONSUELO', 'ESPERANZA', 'SANTA ANA', 'REFUGIO'];
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = words[Math.floor(Math.random() * words.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (16 + Math.random() * 28) + 'px';
+                const d = 18 + Math.random() * 25;
+                s.style.animation = `floatUp ${d}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * d}s`;
+                bg.appendChild(s);
+            }
+        }
+
+        window.onload = () => {
+            initBG();
+            const h = window.location.hash.substring(1);
+            const found = CARTAS.findIndex(c => c.id === h);
+            if (found !== -1) render(found); else random();
+        };
+    </script>
+</body>
+</html>

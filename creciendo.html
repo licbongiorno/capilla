@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Creciendo con Jesús - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --bg: #f1f8e9; /* Verde muy clarito */
+            --overlay: rgba(255, 255, 255, 0.9);
+            --card: #ffffff;
+            --accent: #8bc34a; /* Verde Hoja */
+            --primario: #33691e; /* Verde Oscuro */
+            --texto: #263238;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+
+        .main-background {
+            position: fixed; inset: 0;
+            background: linear-gradient(var(--overlay), var(--overlay)), url('2.webp');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+
+        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .floating-word {
+            position: absolute; font-weight: 800; color: rgba(139, 195, 74, 0.12);
+            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+        }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+
+        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
+        .btn-home { color: var(--primario); text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+
+        .card-scene { width: min(85vw, 400px); height: min(65vh, 500px); perspective: 1500px; margin-bottom: 30px; }
+        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 20px 50px rgba(51, 105, 30, 0.15); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; border: 2px solid var(--accent); }
+
+        .front { background: var(--card); color: var(--texto); border-top: 10px solid var(--accent); }
+        .question { font-family: 'Montserrat', sans-serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: var(--primario); }
+        .verse-box { background: rgba(139, 195, 74, 0.05); padding: 15px; border-radius: 12px; width: 100%; border-left: 4px solid var(--accent); }
+        .verse-text { font-size: 0.85rem; font-style: italic; color: #555; margin-bottom: 5px; }
+        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--primario); text-transform: uppercase; display: block; text-align: right; }
+        
+        .back { background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f1f8e9 100%); color: var(--accent); transform: rotateY(180deg); }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--accent); }
+        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; line-height: 1.1; color: var(--primario); }
+
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        button { background: white; color: var(--primario); border: 2px solid var(--accent); border-radius: 50px; padding: 14px 24px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .btn-main { background: var(--accent); color: white; border-color: var(--accent); }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primario); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; transition: 0.5s; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="main-background"></div>
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Volver</a>
+        <div class="nav-socials">
+            <a href="https://wa.me/5493517023789" target="_blank" style="color:var(--primario); font-size:1.5rem;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card-scene">
+            <div class="card is-flipped" id="card">
+                <div class="face front">
+                    <p class="question" id="q-text">...</p>
+                    <div class="verse-box">
+                        <p class="verse-text" id="v-text"></p>
+                        <span class="verse-ref" id="v-ref"></span>
+                    </div>
+                </div>
+                <div class="face back">
+                    <i class="fas fa-seedling"></i>
+                    <h2>Creciendo<br>con Jesús</h2>
+                    <p style="color:var(--primario); letter-spacing:2px; font-weight:700; font-size:10px; margin-top:15px; text-transform:uppercase;">6 a 8 años - Santa Ana</p>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="btn-next" class="btn-main"><i class="fas fa-leaf"></i> Siguiente Carta</button>
+            <button id="btn-share"><i class="fas fa-share-alt"></i> Compartir</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">¡Enlace copiado!</div>
+
+    <script>
+        const CARTAS = [
+            { id: "cr-1", q: "¿Cómo podés ser luz para tus amigos cuando están tristes o peleados?", v: "Ustedes son la luz del mundo.", c: "Mateo 5:14" },
+            { id: "cr-2", q: "Jesús dice que lo que hacés por los demás, se lo hacés a Él. ¿A quién ayudaste hoy?", v: "Cada vez que lo hicieron con uno de mis hermanos, conmigo lo hicieron.", c: "Mateo 25:40" },
+            { id: "cr-3", q: "¿Por qué es importante decir siempre la verdad, aunque a veces nos dé un poquito de miedo?", v: "Digan siempre la verdad unos a otros.", c: "Efesios 4:25" },
+            { id: "cr-4", q: "Si Jesús fuera a tu escuela con vos, ¿en qué lugar se sentaría?", v: "Yo estoy con ustedes todos los días.", c: "Mateo 28:20" },
+            { id: "cr-5", q: "¿Qué significa para vos 'amar al prójimo'? ¿Quién es tu prójimo hoy?", v: "Amarás a tu prójimo como a ti mismo.", c: "Mateo 22:39" },
+            { id: "cr-6", q: "¿Cómo podés demostrarle a tus papás que los amás usando solo tus acciones?", v: "Honra a tu padre y a tu madre.", c: "Éxodo 20:12" },
+            { id: "cr-7", q: "Jesús calmó una tormenta muy fuerte. ¿Qué cosas te dan miedo a vos que Jesús podría calmar?", v: "¡Cálmate! ¡Sosiégate!", c: "Marcos 4:39" },
+            { id: "cr-8", q: "La Iglesia es como una gran familia. ¿Cómo podés ayudar a que tu Capilla sea más linda?", v: "Somos un solo cuerpo en Cristo.", c: "Romanos 12:5" },
+            { id: "cr-9", q: "Cuando rezás el Padrenuestro, ¿en qué parte pensás más?", v: "Venga a nosotros tu Reino.", c: "Mateo 6:10" },
+            { id: "cr-10", q: "María dijo 'Sí' a Dios con mucha valentía. ¿A qué cosa buena le vas a decir 'Sí' hoy?", v: "Hágase en mí según tu palabra.", c: "Lucas 1:38" },
+            { id: "cr-11", q: "Jesús multiplicó los panes y peces porque un niño compartió su merienda. ¿Qué tenés para compartir vos?", v: "Aquí hay un niño que tiene cinco panes y dos pescados.", c: "Juan 6:9" },
+            { id: "cr-12", q: "¿Sabías que Dios te perdona siempre que pedís perdón de corazón? ¿A quién tenés que perdonar hoy?", v: "Perdonen y serán perdonados.", c: "Lucas 6:37" },
+            { id: "cr-13", q: "¿Qué le dirías a Jesús si lo tuvieras sentado al lado tuyo merendando?", v: "Habla, Señor, que tu siervo escucha.", c: "1 Samuel 3:9" },
+            { id: "cr-14", q: "Los 10 Mandamientos son como señales en el camino para no perdernos. ¿Conocés el primero?", v: "Amarás al Señor tu Dios con todo tu corazón.", c: "Mateo 22:37" },
+            { id: "cr-15", q: "¿Cómo cuidás tu cuerpo y tu salud, que son un regalo del Espíritu Santo?", v: "Su cuerpo es templo del Espíritu Santo.", c: "1 Corintios 6:19" },
+            { id: "cr-16", q: "Jesús es el Buen Pastor. ¿Cómo te sentís al saber que Él te busca si te sentís perdido?", v: "El buen pastor da su vida por las ovejas.", c: "Juan 10:11" },
+            { id: "cr-17", q: "¿Por qué creés que es importante ir a Misa los domingos en familia?", v: "Dichosos los que viven en tu casa, Señor.", c: "Salmo 84:4" },
+            { id: "cr-18", q: "San José era un carpintero muy trabajador. ¿Cómo ayudás vos en las tareas de la casa?", v: "Todo lo que hagan, háganlo de corazón.", c: "Colosenses 3:23" },
+            { id: "cr-19", q: "Santa Ana era la abuela de Jesús. ¿Qué le contarías a ella sobre tus amigos?", v: "Los nietos son la corona de los abuelos.", c: "Proverbios 17:6" },
+            { id: "cr-20", q: "La Biblia es una carta de amor de Dios. ¿Tenés alguna historia favorita?", v: "Tu palabra es una lámpara a mis pies.", c: "Salmo 119:105" },
+            { id: "cr-21", q: "¿Qué significa para vos ser un 'discípulo' de Jesús?", v: "Si se aman unos a otros, todos sabrán que son mis discípulos.", c: "Juan 13:35" },
+            { id: "cr-22", q: "Cuando hacés algo malo, ¿te animás a pedir perdón rápido o tratás de esconderlo?", v: "El que confiesa sus faltas hallará misericordia.", c: "Proverbios 28:13" },
+            { id: "cr-23", q: "Dios creó los animales y las plantas. ¿Cómo sos un buen guardián de la naturaleza?", v: "Dios puso al hombre en el jardín para que lo cuidara.", c: "Génesis 2:15" },
+            { id: "cr-24", q: "¿Cómo podés mostrarle a alguien que no conoce a Jesús que Él es puro amor?", v: "Miren cómo se aman.", c: "Dicho de los primeros cristianos" },
+            { id: "cr-25", q: "Jesús dijo: 'Dejen que los niños vengan a mí'. ¿Sentís que Él te abraza cuando rezás?", v: "Él tomaba a los niños en sus brazos y los bendecía.", c: "Marcos 10:16" },
+            { id: "cr-26", q: "El Espíritu Santo es como un viento suave que nos da fuerza. ¿Le pedís ayuda antes de estudiar?", v: "El Espíritu Santo les enseñará todo.", c: "Juan 14:26" },
+            { id: "cr-27", q: "¿Qué le agradecerías a Dios hoy si tuvieras que elegir una sola cosa?", v: "Den gracias al Señor porque es bueno.", c: "Salmo 107:1" },
+            { id: "cr-28", q: "Ser santo es ser amigo de Dios. ¿Qué santo te gustaría ser cuando seas grande?", v: "Sed santos, porque yo soy santo.", c: "1 Pedro 1:16" },
+            { id: "cr-29", q: "¿Por qué es importante compartir no solo lo que nos sobra, sino lo que nos gusta?", v: "Hay más alegría en dar que en recibir.", c: "Hechos 20:35" },
+            { id: "cr-30", q: "Cuando vemos una cruz, recordamos cuánto nos amó Jesús. ¿Le das un beso a tu cruz?", v: "Tanto amó Dios al mundo que dio a su Hijo único.", c: "Juan 3:16" },
+            { id: "cr-31", q: "¿Cómo podés evitar las peleas y ser un pacificador en los juegos?", v: "Felices los que trabajan por la paz.", c: "Mateo 5:9" },
+            { id: "cr-32", q: "¿Sabías que Dios te escucha aunque hables muy, muy bajito en tu corazón?", v: "El Señor está cerca de todos los que lo llaman.", c: "Salmo 145:18" },
+            { id: "cr-33", q: "¿Cómo tratás a los niños que son nuevos en la escuela o el barrio?", v: "Fui extranjero y me hospedaron.", c: "Mateo 25:35" },
+            { id: "cr-34", q: "El agua del Bautismo nos hizo hijos de Dios. ¿Sabés qué día te bautizaron?", v: "Ustedes son hijos de Dios por la fe.", c: "Gálatas 3:26" },
+            { id: "cr-35", q: "¿Qué es lo más valiente que hiciste por seguir a Jesús?", v: "Sé valiente y ten ánimo, Dios está contigo.", c: "Josué 1:9" },
+            { id: "cr-36", q: "Jesús nació en un establo humilde. ¿Cómo podés ser vos más humilde hoy?", v: "Aprendan de mí, que soy sencillo y humilde de corazón.", c: "Mateo 11:29" },
+            { id: "cr-37", q: "¿Rezás por los sacerdotes que nos enseñan sobre Dios?", v: "Oren unos por otros.", c: "Santiago 5:16" },
+            { id: "cr-38", q: "La señal de la cruz es el escudo del cristiano. ¿La hacés con orgullo?", v: "Que mi única gloria sea la cruz de nuestro Señor.", c: "Gálatas 6:14" },
+            { id: "cr-39", q: "¿Cómo podés cuidar tus palabras para no lastimar a nadie?", v: "Pone, Señor, un guardia en mi boca.", c: "Salmo 141:3" },
+            { id: "cr-40", q: "¿Sabías que sos un milagro de Dios? ¡No hay nadie igual a vos en el mundo!", v: "Te doy gracias porque me hiciste maravillosamente.", c: "Salmo 139:14" },
+            { id: "cr-41", q: "¿Qué le dirías a un amigo que está enojado con Dios?", v: "Dios es amor.", c: "1 Juan 4:8" },
+            { id: "cr-42", q: "Jesús sanó a muchos enfermos. ¿Rezamos por alguien que esté enfermito hoy?", v: "La fe los sanará.", c: "Mateo 9:22" },
+            { id: "cr-43", q: "¿Por qué es importante no tener envidia de lo que otros tienen?", v: "Un corazón en paz da vida al cuerpo.", c: "Proverbios 14:30" },
+            { id: "cr-44", q: "El domingo es el día de la Resurrección. ¿Cómo celebrás esa alegría?", v: "¡Este es el día en que actuó el Señor!", c: "Salmo 118:24" },
+            { id: "cr-45", q: "¿Le pedís a tu Ángel de la Guarda que te ayude a elegir siempre el bien?", v: "Sus ángeles ven siempre el rostro de mi Padre.", c: "Mateo 18:10" },
+            { id: "cr-46", q: "¿Cómo podés ser más paciente cuando tenés que esperar algo que querés mucho?", v: "El que es paciente muestra gran inteligencia.", c: "Proverbios 14:29" },
+            { id: "cr-47", q: "¿Qué significa para vos que Jesús sea el 'Pan de Vida'?", v: "Yo soy el pan vivo bajado del cielo.", c: "Juan 6:51" },
+            { id: "cr-48", q: "¿Cómo ayudás a crear paz en tu familia cuando hay discusiones?", v: "Busca la paz y corre tras ella.", c: "Salmo 34:14" },
+            { id: "cr-49", q: "¿Sabías que María nos cuida desde el cielo como nuestra verdadera Madre?", v: "Ahí tienes a tu madre.", c: "Juan 19:27" },
+            { id: "catq-50", q: "¿Estás listo para seguir creciendo como un gran amigo de Jesús?", v: "Crezcan en la gracia y el conocimiento de nuestro Señor.", c: "2 Pedro 3:18" }
+        ];
+
+        const card = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const vText = document.getElementById('v-text');
+        const vRef = document.getElementById('v-ref');
+        const toast = document.getElementById('toast');
+        const nextBtn = document.getElementById('btn-next');
+        const shareBtn = document.getElementById('btn-share');
+
+        let currentIdx = -1;
+        let isFlipped = true;
+        let audioInit = false;
+
+        const noise = new Tone.Noise("white").start();
+        const filter = new Tone.Filter(100, "lowpass").toDestination();
+        noise.connect(filter);
+        noise.volume.value = -60;
+
+        function playSound() {
+            if (!audioInit) { Tone.start(); audioInit = true; }
+            filter.frequency.setValueAtTime(100, Tone.now());
+            filter.frequency.exponentialRampToValueAtTime(3500, Tone.now() + 0.3);
+            noise.volume.setValueAtTime(-15, Tone.now());
+            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+        }
+
+        function render(idx) {
+            currentIdx = idx;
+            const item = CARTAS[idx];
+            qText.textContent = item.q;
+            vText.textContent = `"${item.v}"`;
+            vRef.textContent = item.c;
+            window.location.hash = item.id;
+        }
+
+        function random() {
+            let i;
+            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
+            render(i);
+        }
+
+        function flip() {
+            playSound();
+            card.classList.toggle('is-flipped');
+            isFlipped = !isFlipped;
+        }
+
+        card.addEventListener('click', flip);
+        nextBtn.addEventListener('click', () => {
+            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
+            else { random(); flip(); }
+        });
+
+        shareBtn.addEventListener('click', async () => {
+            if (currentIdx === -1) return;
+            const url = window.location.href;
+            const msg = `🌱 ¡Mirá esta pregunta para charlar con los chicos (6-8 años)!\n\n"${CARTAS[currentIdx].q}"\n\n`;
+            if (navigator.share) { try { await navigator.share({ title: 'Creciendo con Jesús', text: msg, url: url }); } catch (e) {} }
+            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
+        });
+
+        function initBG() {
+            const bg = document.getElementById('bg');
+            const words = ['CAMINO', 'VERDAD', 'VIDA', 'SANTA ANA', 'JESÚS'];
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = words[Math.floor(Math.random() * words.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (16 + Math.random() * 28) + 'px';
+                const d = 16 + Math.random() * 22;
+                s.style.animation = `floatUp ${d}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * d}s`;
+                bg.appendChild(s);
+            }
+        }
+
+        window.onload = () => {
+            initBG();
+            const h = window.location.hash.substring(1);
+            const found = CARTAS.findIndex(c => c.id === h);
+            if (found !== -1) render(found); else random();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Jóvenes en el Mundo - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --bg: #05050a;
+            --card: #ffffff;
+            --card-back: #0070ff; /* Azul Eléctrico */
+            --accent: #00f2ff; /* Neón */
+            --primario: #0a192f;
+            --glow: rgba(0, 242, 255, 0.5);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+
+        .main-background {
+            position: fixed; inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.95)), url('2.webp');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+
+        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .floating-word {
+            position: absolute; font-weight: 900; color: rgba(0, 242, 255, 0.07);
+            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase; letter-spacing: 4px;
+        }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+
+        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
+        .btn-home { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .btn-home:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+
+        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
+        .card { position: relative; width: 100%; height: 100%; border-radius: 20px; box-shadow: 0 0 40px rgba(0, 112, 255, 0.3); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; }
+
+        .front { background: var(--card); color: var(--primario); border-bottom: 8px solid var(--card-back); }
+        .question { font-size: clamp(1.1rem, 4.5vw, 1.4rem); font-weight: 800; line-height: 1.3; margin-bottom: 25px; text-align: center; }
+        .verse-box { background: rgba(0, 112, 255, 0.05); padding: 18px; border-radius: 12px; width: 100%; border-left: 4px solid var(--card-back); }
+        .verse-text { font-size: 0.85rem; font-style: italic; color: #444; margin-bottom: 8px; line-height: 1.5; }
+        .verse-ref { font-size: 0.8rem; font-weight: 900; color: var(--card-back); text-transform: uppercase; display: block; text-align: right; }
+        
+        .back { background: linear-gradient(135deg, #001a3d 0%, #000 100%); color: var(--accent); transform: rotateY(180deg); border: 2px solid var(--card-back); }
+        .back i { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--accent)); }
+        .back h2 { font-size: 2rem; font-weight: 900; margin: 0; line-height: 1; letter-spacing: -1px; text-transform: uppercase; }
+
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        button { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px 25px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        button:hover { background: rgba(0, 112, 255, 0.2); border-color: var(--accent); box-shadow: 0 0 15px var(--glow); }
+        .btn-main { background: var(--card-back); border-color: var(--card-back); color: #fff; }
+
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #000; padding: 12px 30px; border-radius: 10px; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; transition: 0.5s; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="main-background"></div>
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="index.html" class="btn-home"><i class="fas fa-bolt"></i> Capilla Santa Ana</a>
+        <div class="nav-socials">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank" style="color:white; margin-right:15px;"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank" style="color:white;"><i class="fab fa-instagram"></i></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card-scene">
+            <div class="card is-flipped" id="card">
+                <div class="face front">
+                    <p class="question" id="q-text">...</p>
+                    <div class="verse-box">
+                        <p class="verse-text" id="v-text"></p>
+                        <span class="verse-ref" id="v-ref"></span>
+                    </div>
+                </div>
+                <div class="face back">
+                    <i class="fas fa-globe-americas"></i>
+                    <h2>Jóvenes<br>en el Mundo</h2>
+                    <p style="font-size:10px; text-transform:uppercase; letter-spacing:3px; margin-top:20px; font-weight:700; color:var(--accent);">Realidad & Fe</p>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="btn-next" class="btn-main"><i class="fas fa-sync-alt"></i> Siguiente Carta</button>
+            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">¡Link copiado al portapapeles!</div>
+
+    <script>
+        const CARTAS = [
+            { id: "jv-1", q: "¿Buscas tu valor en el número de 'likes' y visualizaciones, o en la certeza de que sos un hijo amado de Dios?", v: "No se amolden al mundo actual, sino sean transformados mediante la renovación de su mente.", c: "Romanos 12:2" },
+            { id: "jv-2", q: "¿Cómo manejas la ansiedad por el futuro? ¿Confías en que Dios ya está en tu mañana esperándote?", v: "No se angustien por el mañana, el cual tendrá sus propios afanes.", c: "Mateo 6:34" },
+            { id: "jv-3", q: "En tus relaciones, ¿estás buscando a alguien que te 'complete' o compartís tu plenitud con el otro?", v: "Ustedes han llegado a la plenitud en Cristo.", c: "Colosenses 2:10" },
+            { id: "jv-4", q: "¿Te da vergüenza decir que vas a la Capilla Santa Ana frente a tus compañeros de facultad o trabajo?", v: "No me avergüenzo del evangelio, porque es poder de Dios para salvación.", c: "Romanos 1:16" },
+            { id: "jv-5", q: "¿Cómo diferencias una amistad sana que te impulsa a crecer de una relación tóxica que te apaga?", v: "El hierro con hierro se afila, y el hombre con el rostro de su amigo.", c: "Proverbios 27:17" },
+            { id: "jv-6", q: "¿Estás usando las redes sociales para conectar de verdad o como una máscara para ocultar tus inseguridades?", v: "La verdad os hará libres.", c: "Juan 8:32" },
+            { id: "jv-7", q: "Cuando sentís que 'no llegás' con las presiones de la vida, ¿te permitís descansar en el Sagrario?", v: "Vengan a mí todos los que están cansados y agobiados, y yo los haré descansar.", c: "Mateo 11:28" },
+            { id: "jv-8", q: "¿Tu noviazgo es un camino de santidad mutua o una búsqueda de satisfacción inmediata?", v: "Huyan de la inmoralidad sexual... su cuerpo es templo del Espíritu Santo.", c: "1 Corintios 6:18-19" },
+            { id: "jv-9", q: "¿Qué harías si supieras que Dios te apoya aunque fracases en ese proyecto que tanto te asusta?", v: "Mira que te mando que te esfuerces y seas valiente; no temas ni desmayes.", c: "Josué 1:9" },
+            { id: "jv-10", q: "¿Cómo vivís la castidad hoy: como una prohibición aburrida o como un cuidado sagrado de tu capacidad de amar?", v: "Bienaventurados los limpios de corazón, porque ellos verán a Dios.", c: "Mateo 5:8" },
+            { id: "jv-11", q: "Frente al discurso del 'hacé lo que sientas', ¿te preguntás alguna vez qué es lo que Dios sueña para vos?", v: "Porque yo sé muy bien los planes que tengo para ustedes, planes de bienestar.", c: "Jeremías 29:11" },
+            { id: "jv-12", q: "¿Estás atrapado en la comparación constante con vidas ajenas que ves en Instagram?", v: "Cada uno examine su propia obra... sin compararse con otros.", c: "Gálatas 6:4" },
+            { id: "jv-13", q: "¿Cómo integrás tu fe en un ambiente universitario o laboral que a veces parece ignorar a Dios?", v: "Ustedes son la sal de la tierra... son la luz del mundo.", c: "Mateo 5:13-14" },
+            { id: "jv-14", q: "¿Sos capaz de apagar el celular 15 minutos al día para hablar con Dios sin notificaciones de por medio?", v: "Quédate en silencio ante el Señor y espéralo con paciencia.", c: "Salmo 37:7" },
+            { id: "jv-15", q: "¿Qué es lo que más te duele del mundo de hoy y qué creés que Jesús haría para sanarlo?", v: "Se compadeció de ellos, porque estaban desamparados como ovejas sin pastor.", c: "Mateo 9:36" },
+            { id: "jv-16", q: "¿Sentís que tu valor depende de tus notas o de tu sueldo? Dios te ama por quién sos, no por lo que hacés.", v: "Miren con cuánto amor nos ha amado el Padre, que nos llamamos hijos de Dios.", c: "1 Juan 3:1" },
+            { id: "jv-17", q: "En medio del vacío que a veces ofrece la noche, ¿encontrás el sentido real en la comunidad de la Capilla?", v: "¡Qué bueno y qué agradable es que los hermanos habiten juntos en armonía!", c: "Salmo 133:1" },
+            { id: "jv-18", q: "¿Te animás a pedir ayuda profesional si sentís que tu salud mental está al límite, sabiendo que Dios también actúa por la ciencia?", v: "Honra al médico... pues también a él lo creó el Señor.", c: "Eclesiástico 38:1" },
+            { id: "jv-19", q: "¿Tu lenguaje y tus memes reflejan la alegría de un resucitado o la amargura de quien no tiene esperanza?", v: "Eviten toda conversación obscena... que sus palabras contribuyan a la edificación.", c: "Efesios 4:29" },
+            { id: "jv-20", q: "Si Jesús te enviara un mensaje de WhatsApp hoy, ¿qué creés que te diría sobre tu situación actual?", v: "No temas, porque yo te redimí; te puse nombre, mío eres tú.", c: "Isaías 43:1" },
+            { id: "jv-21", q: "¿Cómo vivís la rebeldía? ¿Es para destruir o para construir un mundo más parecido al Reino?", v: "Que nadie te menosprecie por ser joven. Sé ejemplo de los creyentes.", c: "1 Timoteo 4:12" },
+            { id: "jv-22", q: "¿Qué lugar ocupa el perdón en tu vida: es una debilidad o la fuerza para sanar tu historia?", v: "Perdonen, y serán perdonados.", c: "Lucas 6:37" },
+            { id: "jv-23", q: "¿Estás buscando la felicidad en el consumo de cosas o en el servicio a los demás?", v: "Hay más alegría en dar que en recibir.", c: "Hechos 20:35" },
+            { id: "jv-24", q: "¿Cómo manejás el deseo de ser 'exitoso' frente al llamado de Jesús de ser fiel?", v: "El que es fiel en lo poco, también en lo más es fiel.", c: "Lucas 16:10" },
+            { id: "jv-25", q: "Frente al porno y la cosificación, ¿te animás a mirar a las personas con la dignidad que Dios les dio?", v: "Glorifiquen a Dios con su cuerpo.", c: "1 Corintios 6:20" },
+            { id: "jv-26", q: "¿Sentís que Dios es un juez que te vigila o un Padre que te espera en la Confesión?", v: "Mientras aún estaba lejos, su padre lo vio y se compadeció.", c: "Lucas 15:20" },
+            { id: "jv-27", q: "¿Qué 'ídolos' modernos (éxito, belleza, dinero) están ocupando el lugar de Dios en tu corazón?", v: "Hijos, guardaos de los ídolos.", c: "1 Juan 5:21" },
+            { id: "jv-28", q: "¿Cómo enfrentás el sentimiento de soledad en un mundo hiperconectado?", v: "Yo estoy con ustedes todos los días, hasta el fin del mundo.", c: "Mateo 28:20" },
+            { id: "jv-29", q: "¿Tu fe es una herencia de tus viejos o ya es un encuentro personal con Cristo?", v: "Yo te conocía solo de oídas, pero ahora mis ojos te ven.", c: "Job 42:5" },
+            { id: "jv-30", q: "¿Qué 'fuego' del Espíritu Santo necesitás encender hoy para salir de la apatía?", v: "No apaguen el Espíritu.", c: "1 Tesalonicenses 5:19" },
+            { id: "jv-31", q: "¿Eres capaz de ser honesto en tus exámenes y trabajos, incluso si todos hacen trampa?", v: "El que camina en integridad camina seguro.", c: "Proverbios 10:9" },
+            { id: "jv-32", q: "¿Cómo respondés al odio en internet: con más violencia o con la paz de Cristo?", v: "Vence con el bien el mal.", c: "Romanos 12:21" },
+            { id: "jv-33", q: "¿Sentís que tu vocación es una carrera para ganar plata o un llamado para servir?", v: "Cada uno ponga al servicio de los demás el don que ha recibido.", c: "1 Pedro 4:10" },
+            { id: "jv-34", q: "¿Te permitís llorar delante de Dios cuando el peso de la vida te supera?", v: "Cercano está el Señor a los quebrantados de corazón.", c: "Salmo 34:18" },
+            { id: "jv-35", q: "¿Cómo vivís la libertad: como hacer lo que quieras o como la capacidad de elegir el bien?", v: "Ustedes fueron llamados a la libertad; pero no la usen para satisfacer la carne.", c: "Gálatas 5:13" },
+            { id: "jv-36", q: "¿Has invitado a alguien de tu entorno a conocer la Capilla Santa Ana?", v: "Vengan y vean.", c: "Juan 1:39" },
+            { id: "jv-37", q: "¿Cómo cuidás tu salud espiritual: con qué alimentás tu mente (música, series, charlas)?", v: "Todo lo que es verdadero, noble, justo, puro... en eso pensad.", c: "Filipenses 4:8" },
+            { id: "jv-38", q: "¿Sentís que la Iglesia es tu casa o un edificio al que vas por compromiso?", v: "Ya no sois extranjeros, sino conciudadanos de los santos y miembros de la familia de Dios.", c: "Efesios 2:19" },
+            { id: "jv-39", q: "¿Qué harías si supieras que Dios te perdona ese error que tanto te castigás?", v: "Si confesamos nuestros pecados, Él es fiel y justo para perdonar.", c: "1 Juan 1:9" },
+            { id: "jv-40", q: "¿Cómo podés ser un 'influencer' de la esperanza en tu círculo de amigos?", v: "Estad siempre preparados para presentar defensa con mansedumbre ante el que os demande razón de vuestra esperanza.", c: "1 Pedro 3:15" },
+            { id: "jv-41", q: "¿Te dejás guiar por el Espíritu Santo en tus salidas y momentos de ocio?", v: "Si vivimos por el Espíritu, andemos también por el Espíritu.", c: "Gálatas 5:25" },
+            { id: "jv-42", q: "¿Qué significa para vos 'cargar la cruz' en este momento de tu juventud?", v: "El que no toma su cruz y sigue en pos de mí, no es digno de mí.", c: "Mateo 10:38" },
+            { id: "jv-43", q: "¿Buscás momentos de retiro y silencio para encontrarte con vos mismo y con Dios?", v: "Venid vosotros solos a un lugar desierto, y descansad un poco.", c: "Marcos 6:31" },
+            { id: "jv-44", q: "¿Cómo manejás el deseo de 'pertenecer' a un grupo sin negociar tus valores?", v: "Es necesario obedecer a Dios antes que a los hombres.", c: "Hechos 5:29" },
+            { id: "jv-45", q: "¿Sabías que tu vida es la única 'Biblia' que muchos de tus amigos van a leer?", v: "Ustedes mismos son nuestra carta... conocida y leída por todos.", c: "2 Corintios 3:2" },
+            { id: "jv-46", q: "¿Cómo vivís la alegría cristiana: es una emoción pasajera o una decisión profunda?", v: "Estad siempre gozosos.", c: "1 Tesalonicenses 5:16" },
+            { id: "jv-47", q: "¿Qué le dirías a Jesús sobre tus miedos más profundos respecto al futuro del país y del mundo?", v: "En el mundo tendréis aflicción; pero confiad, yo he vencido al mundo.", c: "Juan 16:33" },
+            { id: "jv-48", q: "¿Estás dispuesto a ser un 'loco por Cristo' en una sociedad que a veces parece sin sentido?", v: "Nosotros somos locos por amor de Cristo.", c: "1 Corintios 4:10" },
+            { id: "jv-49", q: "¿Cómo podés usar tus estudios o tu trabajo para construir el Reino de Dios hoy?", v: "Todo lo que hagáis, hacedlo de corazón, como para el Señor.", c: "Colosenses 3:23" },
+            { id: "jv-50", q: "Si hoy fuera el último día de tu juventud, ¿podrías decir que amaste de verdad?", v: "Al atardecer de la vida, nos examinarán en el amor.", c: "San Juan de la Cruz" }
+        ];
+
+        const card = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const vText = document.getElementById('v-text');
+        const vRef = document.getElementById('v-ref');
+        const toast = document.getElementById('toast');
+        const nextBtn = document.getElementById('btn-next');
+        const shareBtn = document.getElementById('btn-share');
+
+        let currentIdx = -1;
+        let isFlipped = true;
+        let audioInit = false;
+
+        const noise = new Tone.Noise("white").start();
+        const filter = new Tone.Filter(100, "lowpass").toDestination();
+        noise.connect(filter);
+        noise.volume.value = -60;
+
+        function playSound() {
+            if (!audioInit) { Tone.start(); audioInit = true; }
+            filter.frequency.setValueAtTime(100, Tone.now());
+            filter.frequency.exponentialRampToValueAtTime(8000, Tone.now() + 0.3);
+            noise.volume.setValueAtTime(-15, Tone.now());
+            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+        }
+
+        function render(idx) {
+            currentIdx = idx;
+            const item = CARTAS[idx];
+            qText.textContent = item.q;
+            vText.textContent = `"${item.v}"`;
+            vRef.textContent = item.c;
+            window.location.hash = item.id;
+        }
+
+        function random() {
+            let i;
+            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
+            render(i);
+        }
+
+        function flip() {
+            playSound();
+            card.classList.toggle('is-flipped');
+            isFlipped = !isFlipped;
+        }
+
+        card.addEventListener('click', flip);
+        nextBtn.addEventListener('click', () => {
+            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
+            else { random(); flip(); }
+        });
+
+        shareBtn.addEventListener('click', async () => {
+            if (currentIdx === -1) return;
+            const url = window.location.href;
+            const msg = `⚡ Reflexión para Jóvenes - Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
+            if (navigator.share) { try { await navigator.share({ title: 'Jóvenes en el Mundo', text: msg, url: url }); } catch (e) {} }
+            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
+        });
+
+        function initBG() {
+            const bg = document.getElementById('bg');
+            const words = ['IDENTIDAD', 'TESTIGO', 'JUVENTUD', 'LUZ', 'PROPÓSITO'];
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = words[Math.floor(Math.random() * words.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (16 + Math.random() * 30) + 'px';
+                const d = 12 + Math.random() * 20;
+                s.style.animation = `floatUp ${d}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * d}s`;
+                bg.appendChild(s);
+            }
+        }
+
+        window.onload = () => {
+            initBG();
+            const h = window.location.hash.substring(1);
+            const found = CARTAS.findIndex(c => c.id === h);
+            if (found !== -1) render(found); else random();
+        };
+    </script>
+</body>
+</html>
