@@ -3,122 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Trascendencia y Vida Eterna | Capilla Santa Ana</title>
+    <title>Trascendencia y Vida Eterna - Capilla Santa Ana</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
         :root {
-            --primario: #5D4037; 
-            --acento: #C19A6B;   /* Oro Capilla */
-            --fondo: #F5F5F0;    /* Crema Capilla */
-            --blanco: #FFFFFF;
-            --texto: #2D2D2D;
-            --verde-wa: #25D366;
-            --sombra: 0 10px 30px rgba(0,0,0,0.08);
-            --oro-suave: rgba(193, 154, 107, 0.15);
+            --bg1: #1a1514; /* Café muy oscuro */
+            --bg2: #3e2723; /* Marrón profundo */
+            --card: #FDFBF7; /* Crema suave */
+            --card-back: #C19A6B; /* Oro Capilla */
+            --accent: #D4AF37; /* Oro Brillante */
+            --primario: #5D4037; /* Marrón texto */
+            --texto: #E0E0E0;
         }
 
-        body.dark-mode {
-            --primario: #E0C097; --acento: #D4A373; --fondo: #121212;
-            --blanco: #1E1E1E; --texto: #E0E0E0;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--fondo); 
-            color: var(--texto); 
-            height: 100vh; 
-            overflow: hidden;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background 0.3s;
+            overflow: hidden;
+            color: var(--texto);
         }
 
         /* FONDO DINÁMICO */
         .main-background {
             position: fixed; inset: 0;
-            background: linear-gradient(rgba(245, 245, 240, 0.8), rgba(245, 245, 240, 0.95)), url('2.webp');
+            background: linear-gradient(rgba(26, 21, 20, 0.9), rgba(62, 39, 35, 0.92)), url('2.webp');
             background-size: cover; background-position: center; z-index: -1;
         }
-        body.dark-mode .main-background {
-            background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.95)), url('2.webp');
-            background-size: cover;
-        }
 
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .floating-word {
-            position: absolute; font-weight: 800; color: rgba(193, 154, 107, 0.12);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(212, 175, 55, 0.06); /* Oro transparente */
+            user-select: none;
+            white-space: nowrap;
         }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
-
-        /* NAVEGACIÓN ORIGINAL */
-        nav { 
-            height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
-            display: flex; justify-content: space-between; align-items: center; padding: 0 5%; 
-            border-bottom: 1px solid var(--oro-suave); z-index: 100;
-        }
-        body.dark-mode nav { background: rgba(30, 30, 30, 0.95); }
-        .logo { font-size: 1rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; }
-
-        /* CONTENEDOR DE CARTA */
-        .container { 
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 20px; position: relative; z-index: 2;
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
         }
 
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
-        .card { 
-            position: relative; width: 100%; height: 100%; border-radius: 25px; 
-            box-shadow: 0 20px 50px rgba(193, 154, 107, 0.2); transform-style: preserve-3d; 
-            transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; 
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(193, 154, 107, 0.3);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(193, 154, 107, 0.15); border-color: var(--accent); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
+
+        /* ESCENA DE LA CARTA */
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
         }
         .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
 
-        .face { 
-            position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 40px; border: 2px solid var(--acento); 
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        /* FRENTE: BLANCO Y ORO */
-        .front { background: var(--blanco); color: var(--primario); border-top: 10px solid var(--acento); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; }
-        .verse-box { background: rgba(193, 154, 107, 0.05); padding: 20px; border-radius: 15px; width: 100%; border-left: 4px solid var(--acento); }
-        .verse-text { font-size: 0.9rem; font-style: italic; color: var(--texto); margin-bottom: 8px; line-height: 1.6; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--acento); text-transform: uppercase; display: block; text-align: right; }
-
-        /* DORSO: ORO PROFUNDO */
-        .back { background: radial-gradient(circle at 50% 0%, #D4AF37 0%, #C19A6B 100%); color: var(--blanco); transform: rotateY(180deg); }
-        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--blanco); filter: drop-shadow(0 0 15px rgba(255,255,255,0.4)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0; letter-spacing: 1px; }
-
-        /* BOTONES */
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn { 
-            padding: 16px 32px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; 
-            text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; transition: 0.3s;
-            display: flex; align-items: center; gap: 12px;
+        /* FRENTE DE LA CARTA */
+        .front { background: var(--card); border-top: 10px solid var(--card-back); }
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            color: var(--primario);
+            line-height: 1.4;
         }
-        .btn-main { background: var(--acento); color: white; box-shadow: 0 8px 20px rgba(193, 154, 107, 0.3); }
-        .btn-main:hover { transform: translateY(-3px); background: #ab855a; }
-        .btn-sec { background: var(--blanco); color: var(--primario); border: 1px solid var(--acento); }
-
-        .toast { 
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); 
-            background: var(--primario); color: white; padding: 12px 30px; border-radius: 50px; 
-            font-weight: 700; transition: 0.5s; z-index: 1000; 
+        
+        /* DORSO DE LA CARTA */
+        .back { 
+            background: radial-gradient(circle at 50% 0%, #D4AF37 0%, #C19A6B 70%, #5D4037 100%);
+            transform: rotateY(180deg); 
+            color: white; 
         }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; color: white; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5)); }
+        .verse {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1rem, 4.5vw, 1.15rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #1a1514;
+        }
+        .ref {
+            font-weight: 900;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffffff;
+            opacity: 0.95;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
 
-        footer { padding: 25px; text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--primario); font-weight: 600; }
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { background: var(--card-back); border-color: var(--card-back); color: white; box-shadow: 0 8px 20px rgba(193, 154, 107, 0.4); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.05); color: white; font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); color: var(--accent); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--card-back); color: #1a1514; padding: 12px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -127,195 +191,195 @@
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="logo">Capilla Santa Ana</a>
-        <button class="icon-btn" style="background:none; border:none; cursor:pointer; color:var(--primario); font-size:1.3rem;" onclick="toggleDarkMode()">
-            <i class="fas fa-moon"></i>
-        </button>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
                     <i class="fas fa-star"></i>
-                    <h2>Trascendencia</h2>
-                    <p style="text-transform:uppercase; letter-spacing:4px; font-size:11px; margin-top:15px; font-weight:800; opacity:0.9;">Hacia la Luz Eterna</p>
+                    <p id="v-text" class="verse"></p>
+                    <p id="v-ref" class="ref"></p>
                 </div>
             </div>
         </div>
 
         <div class="actions">
-            <button class="btn btn-main" onclick="nextCard()"><i class="fas fa-sparkles"></i> Otra Carta</button>
-            <button class="btn btn-sec" onclick="share()"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-sparkles"></i> Nueva Reflexión</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <footer>© 2026 Capilla Santa Ana - "La vida no termina, se transforma"</footer>
-    <div id="toast" class="toast">¡Enlace de luz copiado!</div>
+    <div id="toast">¡Enlace copiado!</div>
 
-    <script>
-        const CARTAS = [
-            { id: "tr-1", q: "¿Ves la muerte como un muro infranqueable o como la puerta hacia el abrazo definitivo del Padre?", v: "No se turbe vuestro corazón... en la casa de mi Padre muchas moradas hay.", c: "Juan 14:1-2" },
-            { id: "tr-2", q: "¿Qué huella de luz querés dejar en este mundo antes de partir hacia la eternidad?", v: "Al atardecer de la vida, nos examinarán en el amor.", c: "San Juan de la Cruz" },
-            { id: "tr-3", q: "¿Cómo te imaginás el reencuentro con tus seres queridos en la Gloria de Dios?", v: "Él enjugará toda lágrima de sus ojos; y ya no habrá muerte, ni llanto.", c: "Apocalipsis 21:4" },
-            { id: "tr-4", q: "¿Tu fe en el Cielo te ayuda a vivir con más paz y desapego las dificultades del presente?", v: "Nuestra ciudadanía está en los cielos.", c: "Filipenses 3:20" },
-            { id: "tr-5", q: "¿Sos consciente de que tu alma fue creada para algo mucho más grande que este mundo material?", v: "Nos hiciste, Señor, para ti, y nuestro corazón está inquieto hasta que descanse en ti.", c: "San Agustín" },
-            { id: "tr-6", q: "¿Qué significa para vos 'creer en la resurrección de la carne'? ¿Te da esperanza?", v: "Yo soy la resurrección y la vida; el que cree en mí, aunque esté muerto, vivirá.", c: "Juan 11:25" },
-            { id: "tr-7", q: "¿Le pedís a Jesús que te ayude a perderle el miedo al final del camino para abrazar el comienzo de la Vida?", v: "Para mí el vivir es Cristo, y el morir es ganancia.", c: "Filipenses 1:21" },
-            { id: "tr-8", q: "La eternidad empieza hoy. ¿Estás cultivando en tu interior el Reino de Dios?", v: "El reino de Dios no vendrá con advertencia... el reino de Dios está entre vosotros.", c: "Lucas 17:20-21" },
-            { id: "tr-9", q: "¿Te consuela saber que los que partieron no han desaparecido, sino que nos esperan en la luz?", v: "Yo voy a preparar lugar para vosotros.", c: "Juan 14:2" },
-            { id: "tr-10", q: "¿Cómo podés vivir hoy con la mirada puesta en 'lo que no pasa', en lo eterno?", v: "Las cosas que se ven son temporales, pero las que no se ven son eternas.", c: "2 Corintios 4:18" },
-            { id: "tr-11", q: "¿Sentís la presencia de los ángeles y santos que ya alcanzaron la meta acompañando tus pasos?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
-            { id: "tr-12", q: "¿Qué le dirías a Jesús si pudieras ver hoy un destello de Su Gloria?", v: "Señor, ¡qué bueno es que estemos aquí!", c: "Mateo 17:4" },
-            { id: "tr-13", q: "¿Sos capaz de ver en la belleza de un atardecer una promesa de la hermosura del Cielo?", v: "Los cielos cuentan la gloria de Dios, y el firmamento anuncia la obra de sus manos.", c: "Salmo 19:1" },
-            { id: "tr-14", q: "El tiempo es un regalo breve. ¿Lo estás usando para atesorar bienes en el Cielo?", v: "Haceos tesoros en el cielo, donde ni la polilla ni el orín corrompen.", c: "Mateo 6:20" },
-            { id: "tr-15", q: "¿Rezás por los fieles difuntos, pidiendo que la luz perpetua brille para ellos?", v: "Es una idea santa y piadosa orar por los difuntos.", c: "2 Macabeos 12:45" },
-            { id: "tr-16", q: "¿Qué es lo que más te asombra del misterio de la vida eterna?", v: "Cosas que ojo no vio, ni oído oyó... son las que Dios ha preparado.", c: "1 Corintios 2:9" },
-            { id: "tr-17", q: "¿Sentís que Dios te está llamando a una transformación profunda antes del encuentro final?", v: "Seremos semejantes a él, porque le veremos tal como él es.", c: "1 Juan 3:2" },
-            { id: "tr-18", q: "¿Cómo podés ser un reflejo de la esperanza del cielo para alguien que está sufriendo hoy?", v: "Consolaos unos a otros con estas palabras.", c: "1 Tesalonicenses 4:18" },
-            { id: "tr-19", q: "¿Recordás que no sos de este mundo, sino un peregrino hacia la patria celestial?", v: "Confesando que eran extranjeros y peregrinos sobre la tierra.", c: "Hebreos 11:13" },
-            { id: "tr-20", q: "La santidad es el camino a la trascendencia. ¿Estás buscando ser santo en lo cotidiano?", v: "Sed santos, porque yo soy santo.", c: "1 Pedro 1:16" },
-            { id: "tr-21", q: "¿Qué significa para vos el 'descanso eterno'? ¿Es una paz que ya podés gustar hoy?", v: "Venid a mí... y yo os haré descansar.", c: "Mateo 11:28" },
-            { id: "tr-22", q: "¿Cómo te ayuda la Eucaristía a sentir que el Cielo ya está presente en la tierra?", v: "El que come de este pan vivirá para siempre.", c: "Juan 6:58" },
-            { id: "tr-23", q: "¿Buscás momentos de silencio para escuchar el eco de la eternidad en tu alma?", v: "Estad quietos, y conoced que yo soy Dios.", c: "Salmo 46:10" },
-            { id: "tr-24", q: "¿Qué le pedirías hoy a Santa Ana para que te ayude a preparar tu corazón para Dios?", v: "La oración del justo es poderosa y eficaz.", c: "Santiago 5:16" },
-            { id: "tr-25", q: "¿Sos consciente de que cada acto de bondad es una semilla de eternidad?", v: "Su nombre permanece para siempre; su gloria delante del sol.", c: "Salmo 72:17" },
-            { id: "tr-26", q: "¿Cómo imaginas la música y la alabanza de los ángeles en la presencia de Dios?", v: "Santo, Santo, Santo es el Señor Dios del universo.", c: "Apocalipsis 4:8" },
-            { id: "tr-27", q: "¿Te genera temor o alegría pensar en el Juicio de Dios, que es un Juicio de Amor?", v: "En el amor no hay temor, sino que el perfecto amor echa fuera el temor.", c: "1 Juan 4:18" },
-            { id: "tr-28", q: "¿Qué cambiarías hoy en tu vida si supieras que mañana verás a Dios?", v: "Preparate para venir al encuentro de tu Dios.", c: "Amós 4:12" },
-            { id: "tr-29", q: "¿Sentís que tu vida tiene un propósito que trasciende lo que hacés cada día?", v: "Antes que te formase en el vientre te conocí.", c: "Jeremías 1:5" },
-            { id: "tr-30", q: "¿Cómo vivís la esperanza de que 'todo será nuevo' al final de los tiempos?", v: "He aquí, yo hago nuevas todas las cosas.", c: "Apocalipsis 21:5" },
-            { id: "tr-31", q: "¿Te detienes a contemplar el cielo estrellado y pensar en la inmensidad del Creador?", v: "Los cielos cuentan la gloria de Dios.", c: "Salmo 19:1" },
-            { id: "tr-32", q: "¿Qué es lo que más te motiva a seguir caminando hacia la meta del Cielo?", v: "Prosigo a la meta, al premio del supremo llamamiento de Dios.", c: "Filipenses 3:14" },
-            { id: "tr-33", q: "¿Sos capaz de ofrecer tus dolores por la salvación de las almas?", v: "Cumplo en mi carne lo que falta a las aflicciones de Cristo.", c: "Colosenses 1:24" },
-            { id: "tr-34", q: "¿Cómo te imaginas la luz de la faz de Dios iluminando toda oscuridad?", v: "Allí no habrá más noche... porque el Señor Dios los iluminará.", c: "Apocalipsis 22:5" },
-            { id: "tr-35", q: "¿Qué significa para vos 'vencer al mundo' desde la fe?", v: "Esta es la victoria que ha vencido al mundo, nuestra fe.", c: "1 Juan 5:4" },
-            { id: "tr-36", q: "¿Sentís que el Espíritu Santo es la prenda de tu herencia eterna?", v: "Fuisteis sellados con el Espíritu Santo... las arras de nuestra herencia.", c: "Efesios 1:13-14" },
-            { id: "tr-37", q: "¿Cómo podés vivir hoy con la sencillez de quien sabe que no posee nada definitivo?", v: "Nada hemos traído a este mundo, y nada podremos sacar.", c: "1 Timoteo 6:7" },
-            { id: "tr-38", q: "¿Qué le dirías a alguien que ha perdido la esperanza en la vida eterna?", v: "Dios no es Dios de muertos, sino de vivos.", c: "Mateo 22:32" },
-            { id: "tr-39", q: "¿Has sentido alguna vez una 'nostalgia del Cielo' al estar en oración?", v: "Mi alma tiene sed de Dios, del Dios vivo.", c: "Salmo 42:2" },
-            { id: "tr-40", q: "¿Cómo podés reflejar la luz de Cristo en los lugares más oscuros de tu barrio?", v: "Vosotros sois la luz del mundo.", c: "Mateo 5:14" },
-            { id: "tr-41", q: "¿Te ayuda el Sacramento de la Reconciliación a sentirte más cerca de la patria celestial?", v: "A quienes perdonéis los pecados, les quedan perdonados.", c: "Juan 20:23" },
-            { id: "tr-42", q: "¿Qué virtud querés trabajar hoy para que sea tu corona en el Cielo?", v: "Bienaventurados los misericordiosos, porque ellos alcanzarán misericordia.", c: "Mateo 5:7" },
-            { id: "tr-43", q: "¿Sentís que la oración es un puente que ya te conecta con lo eterno?", v: "Suba mi oración delante de ti como el incienso.", c: "Salmo 141:2" },
-            { id: "tr-44", q: "¿Cómo te preparás para el 'banquete de bodas' que Dios tiene preparado?", v: "Bienaventurados los que son llamados a la cena de las bodas del Cordero.", c: "Apocalipsis 19:9" },
-            { id: "tr-45", q: "¿Sos consciente de que cada misa es una participación en la liturgia celestial?", v: "Santo, Santo, Santo...", c: "Liturgia Eucarística" },
-            { id: "tr-46", q: "¿Qué significa para vos que Dios sea 'el Alfa y la Omega'?", v: "Yo soy el Alfa y la Omega, principio y fin, dice el Señor.", c: "Apocalipsis 1:8" },
-            { id: "tr-47", q: "¿Cómo podés amar sin medida, sabiendo que el Amor es lo único que cruza la muerte?", v: "El amor nunca deja de ser.", c: "1 Corintios 13:8" },
-            { id: "tr-48", q: "¿Te genera paz saber que tu nombre está escrito en los cielos?", v: "Regocijaos de que vuestros nombres están escritos en los cielos.", c: "Lucas 10:20" },
-            { id: "tr-49", q: "¿Qué le dirías a María, Reina del Cielo, al final de este día?", v: "Dios te salve, Reina y Madre de misericordia.", c: "La Salve" },
-            { id: "tr-50", q: "Si hoy fuera el momento del encuentro, ¿podrías decir con paz: 'Señor, aquí estoy'?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
-        ];
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+<script>
+// 50 Cartas para Trascendencia y Vida Eterna
+const CARTAS = [
+    { id: "tr-1", q: "¿Ves la muerte como un muro infranqueable o como la puerta hacia el abrazo definitivo del Padre?", v: "No se turbe vuestro corazón... en la casa de mi Padre muchas moradas hay.", c: "Juan 14:1-2" },
+    { id: "tr-2", q: "¿Qué huella de luz querés dejar en este mundo antes de partir hacia la eternidad?", v: "Al atardecer de la vida, nos examinarán en el amor.", c: "San Juan de la Cruz" },
+    { id: "tr-3", q: "¿Cómo te imaginás el reencuentro con tus seres queridos en la Gloria de Dios?", v: "Él enjugará toda lágrima de sus ojos; y ya no habrá muerte, ni llanto.", c: "Apocalipsis 21:4" },
+    { id: "tr-4", q: "¿Tu fe en el Cielo te ayuda a vivir con más paz y desapego las dificultades del presente?", v: "Nuestra ciudadanía está en los cielos.", c: "Filipenses 3:20" },
+    { id: "tr-5", q: "¿Sos consciente de que tu alma fue creada para algo mucho más grande que este mundo material?", v: "Nos hiciste, Señor, para ti, y nuestro corazón está inquieto hasta que descanse en ti.", c: "San Agustín" },
+    { id: "tr-6", q: "¿Qué significa para vos 'creer en la resurrección de la carne'? ¿Te da esperanza?", v: "Yo soy la resurrección y la vida; el que cree en mí, aunque esté muerto, vivirá.", c: "Juan 11:25" },
+    { id: "tr-7", q: "¿Le pedís a Jesús que te ayude a perderle el miedo al final del camino para abrazar el comienzo de la Vida?", v: "Para mí el vivir es Cristo, y el morir es ganancia.", c: "Filipenses 1:21" },
+    { id: "tr-8", q: "La eternidad empieza hoy. ¿Estás cultivando en tu interior el Reino de Dios?", v: "El reino de Dios no vendrá con advertencia... el reino de Dios está entre vosotros.", c: "Lucas 17:20-21" },
+    { id: "tr-9", q: "¿Te consuela saber que los que partieron no han desaparecido, sino que nos esperan en la luz?", v: "Yo voy a preparar lugar para vosotros.", c: "Juan 14:2" },
+    { id: "tr-10", q: "¿Cómo podés vivir hoy con la mirada puesta en 'lo que no pasa', en lo eterno?", v: "Las cosas que se ven son temporales, pero las que no se ven son eternas.", c: "2 Corintios 4:18" },
+    { id: "tr-11", q: "¿Sentís la presencia de los ángeles y santos que ya alcanzaron la meta acompañando tus pasos?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
+    { id: "tr-12", q: "¿Qué le dirías a Jesús si pudieras ver hoy un destello de Su Gloria?", v: "Señor, ¡qué bueno es que estemos aquí!", c: "Mateo 17:4" },
+    { id: "tr-13", q: "¿Sos capaz de ver en la belleza de un atardecer una promesa de la hermosura del Cielo?", v: "Los cielos cuentan la gloria de Dios, y el firmamento anuncia la obra de sus manos.", c: "Salmo 19:1" },
+    { id: "tr-14", q: "El tiempo es un regalo breve. ¿Lo estás usando para atesorar bienes en el Cielo?", v: "Haceos tesoros en el cielo, donde ni la polilla ni el orín corrompen.", c: "Mateo 6:20" },
+    { id: "tr-15", q: "¿Rezás por los fieles difuntos, pidiendo que la luz perpetua brille para ellos?", v: "Es una idea santa y piadosa orar por los difuntos.", c: "2 Macabeos 12:45" },
+    { id: "tr-16", q: "¿Qué es lo que más te asombra del misterio de la vida eterna?", v: "Cosas que ojo no vio, ni oído oyó... son las que Dios ha preparado.", c: "1 Corintios 2:9" },
+    { id: "tr-17", q: "¿Sentís que Dios te está llamando a una transformación profunda antes del encuentro final?", v: "Seremos semejantes a él, porque le veremos tal como él es.", c: "1 Juan 3:2" },
+    { id: "tr-18", q: "¿Cómo podés ser un reflejo de la esperanza del cielo para alguien que está sufriendo hoy?", v: "Consolaos unos a otros con estas palabras.", c: "1 Tesalonicenses 4:18" },
+    { id: "tr-19", q: "¿Recordás que no sos de este mundo, sino un peregrino hacia la patria celestial?", v: "Confesando que eran extranjeros y peregrinos sobre la tierra.", c: "Hebreos 11:13" },
+    { id: "tr-20", q: "La santidad es el camino a la trascendencia. ¿Estás buscando ser santo en lo cotidiano?", v: "Sed santos, porque yo soy santo.", c: "1 Pedro 1:16" },
+    { id: "tr-21", q: "¿Qué significa para vos el 'descanso eterno'? ¿Es una paz que ya podés gustar hoy?", v: "Venid a mí... y yo os haré descansar.", c: "Mateo 11:28" },
+    { id: "tr-22", q: "¿Cómo te ayuda la Eucaristía a sentir que el Cielo ya está presente en la tierra?", v: "El que come de este pan vivirá para siempre.", c: "Juan 6:58" },
+    { id: "tr-23", q: "¿Buscás momentos de silencio para escuchar el eco de la eternidad en tu alma?", v: "Estad quietos, y conoced que yo soy Dios.", c: "Salmo 46:10" },
+    { id: "tr-24", q: "¿Qué le pedirías hoy a Santa Ana para que te ayude a preparar tu corazón para Dios?", v: "La oración del justo es poderosa y eficaz.", c: "Santiago 5:16" },
+    { id: "tr-25", q: "¿Sos consciente de que cada acto de bondad es una semilla de eternidad?", v: "Su nombre permanece para siempre; su gloria delante del sol.", c: "Salmo 72:17" },
+    { id: "tr-26", q: "¿Cómo imaginas la música y la alabanza de los ángeles en la presencia de Dios?", v: "Santo, Santo, Santo es el Señor Dios del universo.", c: "Apocalipsis 4:8" },
+    { id: "tr-27", q: "¿Te genera temor o alegría pensar en el Juicio de Dios, que es un Juicio de Amor?", v: "En el amor no hay temor, sino que el perfecto amor echa fuera el temor.", c: "1 Juan 4:18" },
+    { id: "tr-28", q: "¿Qué cambiarías hoy en tu vida si supieras que mañana verás a Dios?", v: "Preparate para venir al encuentro de tu Dios.", c: "Amós 4:12" },
+    { id: "tr-29", q: "¿Sentís que tu vida tiene un propósito que trasciende lo que hacés cada día?", v: "Antes que te formase en el vientre te conocí.", c: "Jeremías 1:5" },
+    { id: "tr-30", q: "¿Cómo vivís la esperanza de que 'todo será nuevo' al final de los tiempos?", v: "He aquí, yo hago nuevas todas las cosas.", c: "Apocalipsis 21:5" },
+    { id: "tr-31", q: "¿Te detienes a contemplar el cielo estrellado y pensar en la inmensidad del Creador?", v: "Los cielos cuentan la gloria de Dios.", c: "Salmo 19:1" },
+    { id: "tr-32", q: "¿Qué es lo que más te motiva a seguir caminando hacia la meta del Cielo?", v: "Prosigo a la meta, al premio del supremo llamamiento de Dios.", c: "Filipenses 3:14" },
+    { id: "tr-33", q: "¿Sos capaz de ofrecer tus dolores por la salvación de las almas?", v: "Cumplo en mi carne lo que falta a las aflicciones de Cristo.", c: "Colosenses 1:24" },
+    { id: "tr-34", q: "¿Cómo te imaginas la luz de la faz de Dios iluminando toda oscuridad?", v: "Allí no habrá más noche... porque el Señor Dios los iluminará.", c: "Apocalipsis 22:5" },
+    { id: "tr-35", q: "¿Qué significa para vos 'vencer al mundo' desde la fe?", v: "Esta es la victoria que ha vencido al mundo, nuestra fe.", c: "1 Juan 5:4" },
+    { id: "tr-36", q: "¿Sentís que el Espíritu Santo es la prenda de tu herencia eterna?", v: "Fuisteis sellados con el Espíritu Santo... las arras de nuestra herencia.", c: "Efesios 1:13-14" },
+    { id: "tr-37", q: "¿Cómo podés vivir hoy con la sencillez de quien sabe que no posee nada definitivo?", v: "Nada hemos traído a este mundo, y nada podremos sacar.", c: "1 Timoteo 6:7" },
+    { id: "tr-38", q: "¿Qué le dirías a alguien que ha perdido la esperanza en la vida eterna?", v: "Dios no es Dios de muertos, sino de vivos.", c: "Mateo 22:32" },
+    { id: "tr-39", q: "¿Has sentido alguna vez una 'nostalgia del Cielo' al estar en oración?", v: "Mi alma tiene sed de Dios, del Dios vivo.", c: "Salmo 42:2" },
+    { id: "tr-40", q: "¿Cómo podés reflejar la luz de Cristo en los lugares más oscuros de tu barrio?", v: "Vosotros sois la luz del mundo.", c: "Mateo 5:14" },
+    { id: "tr-41", q: "¿Te ayuda el Sacramento de la Reconciliación a sentirte más cerca de la patria celestial?", v: "A quienes perdonéis los pecados, les quedan perdonados.", c: "Juan 20:23" },
+    { id: "tr-42", q: "¿Qué virtud querés trabajar hoy para que sea tu corona en el Cielo?", v: "Bienaventurados los misericordiosos, porque ellos alcanzarán misericordia.", c: "Mateo 5:7" },
+    { id: "tr-43", q: "¿Sentís que la oración es un puente que ya te conecta con lo eterno?", v: "Suba mi oración delante de ti como el incienso.", c: "Salmo 141:2" },
+    { id: "tr-44", q: "¿Cómo te preparás para el 'banquete de bodas' que Dios tiene preparado?", v: "Bienaventurados los que son llamados a la cena de las bodas del Cordero.", c: "Apocalipsis 19:9" },
+    { id: "tr-45", q: "¿Sos consciente de que cada misa es una participación en la liturgia celestial?", v: "Santo, Santo, Santo...", c: "Liturgia Eucarística" },
+    { id: "tr-46", q: "¿Qué significa para vos que Dios sea 'el Alfa y la Omega'?", v: "Yo soy el Alfa y la Omega, principio y fin, dice el Señor.", c: "Apocalipsis 1:8" },
+    { id: "tr-47", q: "¿Cómo podés amar sin medida, sabiendo que el Amor es lo único que cruza la muerte?", v: "El amor nunca deja de ser.", c: "1 Corintios 13:8" },
+    { id: "tr-48", q: "¿Te genera paz saber que tu nombre está escrito en los cielos?", v: "Regocijaos de que vuestros nombres están escritos en los cielos.", c: "Lucas 10:20" },
+    { id: "tr-49", q: "¿Qué le dirías a María, Reina del Cielo, al final de este día?", v: "Dios te salve, Reina y Madre de misericordia.", c: "La Salve" },
+    { id: "tr-50", q: "Si hoy fuera el momento del encuentro, ¿podrías decir con paz: 'Señor, aquí estoy'?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
+];
 
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+// Configuración de Sonido
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(4000, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(4000, Tone.now() + 0.3);
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
+
+// Inicialización
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    // Remueve la clase para que inicie mostrando la pregunta de frente
+    document.getElementById("card").classList.remove("is-flipped"); 
+}
 
-        function nextCard() {
-            if (!isFlipped) {
-                flip();
-                setTimeout(() => { random(); flip(); }, 600);
-            } else {
-                random();
-                flip();
-            }
-        }
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+        
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
 
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `✨ Reflexión de Trascendencia - Capilla Santa Ana:\n\n"${c.q}"\n\n`;
 
-        function share() {
-            const url = window.location.href;
-            const msg = `✨ Reflexión de Trascendencia - Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            if (navigator.share) {
-                navigator.share({ title: 'Trascendencia', text: msg, url: url });
-            } else {
-                navigator.clipboard.writeText(msg + url).then(() => {
-                    const toast = document.getElementById('toast');
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 3000);
-                });
-            }
-        }
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Trascendencia', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('.icon-btn i');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        }
+function initBG() {
+    const words = ['ETERNO', 'CIELO', 'LUZ', 'VIDA', 'PAZ', 'SANTA ANA', 'ESPERANZA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 25;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['ETERNO', 'CIELO', 'LUZ', 'VIDA', 'PAZ', 'SANTA ANA'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 15 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        card.addEventListener('click', flip);
-        window.onload = () => {
-            if(localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.querySelector('.icon-btn i').classList.replace('fa-moon', 'fa-sun');
-            }
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
