@@ -13,56 +13,176 @@
 
     <style>
         :root {
-            --bg: #0f0a0a;
+            --bg1: #0f0a0a;
+            --bg2: #241113;
             --card: #FFF9F9;
             --card-back: #722F37; /* Rojo Vino / Pasión Sacrificada */
             --accent: #D4AF37; /* Oro */
             --primario: #3E1F22;
+            --texto: #E0E0E0;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--texto);
+        }
 
+        /* FONDO DINÁMICO */
         .main-background {
             position: fixed; inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.96)), url('2.webp');
+            background: linear-gradient(rgba(0,0,0,0.88), rgba(15, 10, 10, 0.96)), url('2.webp');
             background-size: cover; background-position: center; z-index: -1;
         }
 
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .floating-word {
-            position: absolute; font-weight: 800; color: rgba(212, 175, 55, 0.05);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(212, 175, 55, 0.05); /* Oro transparente */
+            user-select: none;
+            white-space: nowrap;
         }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
 
-        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
-        .btn-home { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .btn-home:hover { color: var(--accent); }
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); }
 
-        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
 
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
-        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.7); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        /* ESCENA DE LA CARTA */
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
         .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
 
-        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; }
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
 
-        .front { background: var(--card); color: var(--primario); border-left: 10px solid var(--card-back); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
-        .verse-box { background: rgba(114, 47, 55, 0.06); padding: 18px; border-radius: 12px; width: 100%; border-right: 3px solid var(--accent); }
-        .verse-text { font-size: 0.85rem; font-style: italic; color: #444; margin-bottom: 5px; line-height: 1.5; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--card-back); text-transform: uppercase; display: block; text-align: right; }
+        /* FRENTE DE LA CARTA */
+        .front { background: var(--card); border-top: 10px solid var(--card-back); }
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            color: var(--primario);
+            line-height: 1.4;
+        }
         
-        .back { background: radial-gradient(circle at 50% 0%, #8b3a43 0%, #4a1e23 70%, #000 100%); color: var(--accent); transform: rotateY(180deg); border: 2px dashed rgba(212, 175, 55, 0.4); }
-        .back i { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.4)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0; line-height: 1.1; color: var(--accent); }
+        /* DORSO DE LA CARTA */
+        .back { 
+            background: radial-gradient(circle at 50% 0%, #8b3a43 0%, #4a1e23 70%, #000 100%);
+            transform: rotateY(180deg); 
+            color: var(--accent); 
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+        }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.4)); }
+        .verse {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1rem, 4.5vw, 1.15rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #FFF9F9;
+        }
+        .ref {
+            font-weight: 800;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            opacity: 0.9;
+        }
 
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        button { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 15px 25px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-main { background: var(--card-back); border-color: var(--card-back); color: #fff; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.5s; z-index: 1000; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { background: var(--card-back); border-color: var(--card-back); color: white; box-shadow: 0 8px 20px rgba(114, 47, 55, 0.4); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.05); color: white; font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); color: var(--accent); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--card-back); color: white; padding: 12px 25px; border-radius: 50px;
+            font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -71,174 +191,195 @@
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Volver a la Web</a>
-        <div class="nav-socials">
-            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
-        </div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
                     <i class="fas fa-heart"></i>
-                    <h2>Unidos<br>en Cristo</h2>
-                    <p style="font-size:10px; text-transform:uppercase; letter-spacing:2px; margin-top:15px; opacity:0.8;">Matrimonios Santa Ana</p>
+                    <p id="v-text" class="verse"></p>
+                    <p id="v-ref" class="ref"></p>
                 </div>
             </div>
         </div>
+
         <div class="actions">
-            <button id="btn-next" class="btn-main"><i class="fas fa-dove"></i> Nueva Reflexión</button>
-            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-dove"></i> Nueva Reflexión</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">¡Enlace copiado!</div>
+    <div id="toast">¡Enlace copiado!</div>
 
-    <script>
-        const CARTAS = [
-            { id: "mat-1", q: "¿Cómo podemos hacer que nuestra casa sea hoy un reflejo del amor que Jesús tiene por su Iglesia?", v: "Maridos, amad a vuestras mujeres como Cristo amó a la Iglesia.", c: "Efesios 5:25" },
-            { id: "mat-2", q: "¿Cuándo fue la última vez que rezamos juntos como pareja, dándole gracias a Dios por nuestro vínculo?", v: "Donde dos o tres están reunidos en mi nombre, allí estoy yo.", c: "Mateo 18:20" },
-            { id: "mat-3", q: "¿Hay algún rencor pequeño que esté ensuciando nuestro amor y que debamos soltar antes de que termine el día?", v: "No se ponga el sol sobre vuestro enojo.", c: "Efesios 4:26" },
-            { id: "mat-4", q: "¿Cómo podemos fortalecer nuestra paciencia mutua siguiendo el ejemplo de San Joaquín y Santa Ana?", v: "Sopórtense unos a otros con amor.", c: "Colosenses 3:13" },
-            { id: "mat-5", q: "¿Estamos cuidando nuestra intimidad como un regalo sagrado de Dios para nuestra unión?", v: "Lo que Dios unió, no lo separe el hombre.", c: "Marcos 10:9" },
-            { id: "mat-6", q: "¿Qué virtud de mi cónyuge es la que más agradezco hoy a Dios?", v: "Doy gracias a mi Dios cada vez que me acuerdo de vosotros.", c: "Filipenses 1:3" },
-            { id: "mat-7", q: "¿Cómo estamos educando a nuestros hijos en el amor a Dios? ¿Somos su primer ejemplo de fe?", v: "Instruye al niño en su camino, y aun cuando fuere viejo no se apartará de él.", c: "Proverbios 22:6" },
-            { id: "mat-8", q: "En los momentos de crisis, ¿buscamos primero la guía del Espíritu Santo o intentamos resolverlo solos?", v: "Fíate del Señor de todo tu corazón, y no te apoyes en tu propia prudencia.", c: "Proverbios 3:5" },
-            { id: "mat-9", q: "¿Nuestras palabras hacia el otro hoy fueron para edificar o para herir?", v: "Ninguna palabra corrompida salga de vuestra boca, sino la que sea buena para la necesaria edificación.", c: "Efesios 4:29" },
-            { id: "mat-10", q: "¿Cómo podemos ser hoy una pareja que sirva a los demás en la Capilla Santa Ana?", v: "Servíos por amor los unos a los otros.", c: "Gálatas 5:13" },
-            { id: "mat-11", q: "¿Estamos permitiendo que el cansancio del trabajo nos robe la alegría de estar juntos?", v: "Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar.", c: "Mateo 11:28" },
-            { id: "mat-12", q: "¿Recordamos que nuestro matrimonio es un sacramento, es decir, un canal de la Gracia de Dios?", v: "La gracia de nuestro Señor Jesucristo sea con vosotros.", c: "1 Tesalonicenses 5:28" },
-            { id: "mat-13", q: "¿Buscamos momentos de silencio compartido para escuchar lo que Dios quiere de nuestra familia?", v: "Quédate en silencio ante el Señor, y espera en él.", c: "Salmo 37:7" },
-            { id: "mat-14", q: "¿Cómo podemos renovar hoy nuestro 'Sí' del día de la boda en los pequeños detalles?", v: "Hágase en mí según tu palabra.", c: "Lucas 1:38" },
-            { id: "mat-15", q: "¿Estamos orando por los matrimonios que están atravesando dificultades en nuestro barrio?", v: "Orad los unos por los otros, para que seáis sanados.", c: "Santiago 5:16" },
-            { id: "mat-16", q: "¿Nuestra casa es un lugar de acogida para los amigos y la familia, como la casa de Nazaret?", v: "No os olvidéis de la hospitalidad.", c: "Hebreos 13:2" },
-            { id: "mat-17", q: "¿Cómo manejamos nuestras diferencias económicas? ¿Confiamos en la Providencia de Dios?", v: "Mi Dios, pues, suplirá todo lo que os falta conforme a sus riquezas.", c: "Filipenses 4:19" },
-            { id: "mat-18", q: "¿Estamos pidiendo la intercesión de la Virgen María para que nunca falte el 'vino' de la alegría en nuestro hogar?", v: "No tienen vino... Haced lo que él os diga.", c: "Juan 2:3-5" },
-            { id: "mat-19", q: "¿Nuestra prioridad sigue siendo Dios, luego nuestro cónyuge y luego el resto de las obligaciones?", v: "Buscad primeramente el reino de Dios y su justicia.", c: "Mateo 6:33" },
-            { id: "mat-20", q: "¿Somos capaces de pedir perdón humildemente cuando nos equivocamos con el otro?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
-            { id: "mat-21", q: "¿Cómo podemos vivir hoy la castidad matrimonial como un respeto profundo al cuerpo del otro?", v: "¿O ignoráis que vuestro cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
-            { id: "mat-22", q: "¿Qué sacrificio pequeño podemos hacer hoy el uno por el otro para demostrar nuestro amor?", v: "Nadie tiene mayor amor que este, que uno ponga su vida por sus amigos.", c: "Juan 15:13" },
-            { id: "mat-23", q: "¿Estamos agradeciendo a Dios por los años de vida compartidos, sean pocos o muchos?", v: "Toda buena dádiva y todo don perfecto desciende de lo alto.", c: "Santiago 1:17" },
-            { id: "mat-24", q: "¿Cómo podemos ser hoy 'sal y luz' para otras parejas jóvenes que nos miran?", v: "Así alumbre vuestra luz delante de los hombres.", c: "Mateo 5:16" },
-            { id: "mat-25", q: "¿Estamos protegiendo nuestro matrimonio de las distracciones y tentaciones del mundo digital?", v: "Velad y orad, para que no entréis en tentación.", c: "Mateo 26:41" },
-            { id: "mat-26", q: "¿Reconocemos que Jesús es el 'tercer socio' en nuestro vínculo matrimonial?", v: "Cordón de tres dobleces no se rompe pronto.", c: "Eclesiastés 4:12" },
-            { id: "mat-27", q: "¿Cómo podemos cultivar más la ternura en nuestra comunicación diaria?", v: "Sed bondadosos unos con otros, misericordiosos.", c: "Efesios 4:32" },
-            { id: "mat-28", q: "¿Le pedimos al Espíritu Santo que renueve nuestro amor cada mañana?", v: "El amor de Dios ha sido derramado en nuestros corazones por el Espíritu Santo.", c: "Romanos 5:5" },
-            { id: "mat-29", q: "¿Estamos abiertos a la vida y a la voluntad de Dios en nuestro plan familiar?", v: "He aquí, herencia del Señor son los hijos.", c: "Salmo 127:3" },
-            { id: "mat-30", q: "¿Buscamos la santidad juntos, ayudándonos a ser mejores personas cada día?", v: "Sed santos, porque yo soy santo.", c: "1 Pedro 1:16" },
-            { id: "mat-31", q: "¿Cómo podemos honrar hoy la historia de amor de nuestros padres y abuelos?", v: "Honra a tu padre y a tu madre.", c: "Éxodo 20:12" },
-            { id: "mat-32", q: "¿Somos capaces de reírnos juntos y no tomarnos todo con tanta rigidez?", v: "El corazón alegre constituye buen remedio.", c: "Proverbios 17:22" },
-            { id: "mat-33", q: "¿Qué carga de mi cónyuge puedo ayudar a llevar hoy para aliviar su peso?", v: "Sobrellevad los unos las cargas de los otros.", c: "Gálatas 6:2" },
-            { id: "mat-34", q: "¿Estamos asistiendo a la Eucaristía juntos como fuente de nuestra fortaleza?", v: "Yo soy el pan de vida.", c: "Juan 6:48" },
-            { id: "mat-35", q: "¿Cómo podemos ser más generosos el uno con el otro en el uso del tiempo libre?", v: "El amor no busca lo suyo.", c: "1 Corintios 13:5" },
-            { id: "mat-36", q: "¿Nuestra casa es un refugio de paz o un lugar de tensiones constantes?", v: "La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones.", c: "Filipenses 4:7" },
-            { id: "mat-37", q: "¿Leemos la Biblia juntos para descubrir qué nos dice Dios como matrimonio?", v: "Lámpara es a mis pies tu palabra, y lumbrera a mi camino.", c: "Salmo 119:105" },
-            { id: "mat-38", q: "¿Cómo podemos demostrar hoy fidelidad, no solo física sino también en los pensamientos y el corazón?", v: "Bienaventurados los de limpio corazón, porque ellos verán a Dios.", c: "Mateo 5:8" },
-            { id: "mat-39", q: "¿Estamos orando por la salud física y espiritual del otro cada día?", v: "Amado, yo deseo que tú seas prosperado en todas las cosas, y que tengas salud.", c: "3 Juan 1:2" },
-            { id: "mat-40", q: "¿Qué nuevo proyecto podemos emprender juntos que glorifique a Dios?", v: "Haced todo para la gloria de Dios.", c: "1 Corintios 10:31" },
-            { id: "mat-41", q: "¿Nuestra confianza mutua está basada en la sinceridad y en la Verdad que es Cristo?", v: "Hablad verdad cada uno con su prójimo.", c: "Efesios 4:25" },
-            { id: "mat-42", q: "¿Cómo podemos mejorar nuestra escucha activa, prestando atención al corazón del otro?", v: "Sea cada uno pronto para oír, tardo para hablar.", c: "Santiago 1:19" },
-            { id: "mat-43", q: "¿Estamos pidiendo la bendición de San José para la protección de nuestro hogar?", v: "Levántate y toma al niño y a su madre.", c: "Mateo 2:13" },
-            { id: "mat-44", q: "¿Recordamos que el amor es paciente y todo lo soporta?", v: "El amor es sufrido, es benigno... todo lo sufre, todo lo cree.", c: "1 Corintios 13:4-7" },
-            { id: "mat-45", q: "¿Cómo podemos vivir hoy la pobreza de espíritu, no apegándonos a las cosas materiales?", v: "Bienaventurados los pobres en espíritu, porque de ellos es el reino de los cielos.", c: "Mateo 5:3" },
-            { id: "mat-46", q: "¿Estamos siendo agradecidos con Dios por el techo y la comida que compartimos?", v: "Dad gracias en todo, porque esta es la voluntad de Dios.", c: "1 Tesalonicenses 5:18" },
-            { id: "mat-47", q: "¿Cómo podemos renovar la pasión y el romance bajo la bendición de Dios?", v: "Yo soy de mi amado, y mi amado es mío.", c: "Cantar de los Cantares 6:3" },
-            { id: "mat-48", q: "¿Estamos orando por nuestros sacerdotes y por las vocaciones consagradas?", v: "Rogad, pues, al Señor de la mies, que envíe obreros a su mies.", c: "Mateo 9:38" },
-            { id: "mat-49", q: "¿Nuestra fe se traduce en actos de caridad hacia los más pobres de Santa Ana?", v: "La fe sin obras está muerta.", c: "Santiago 2:26" },
-            { id: "mat-50", q: "¿Estamos listos para decir juntos: 'Señor, aquí estamos, hágase en nosotros tu voluntad'?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" }
-        ];
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
-        const toast = document.getElementById('toast');
-        const nextBtn = document.getElementById('btn-next');
-        const shareBtn = document.getElementById('btn-share');
+<script>
+// 50 Cartas para Matrimonio
+const CARTAS = [
+    { id: "mat-1", q: "¿Cómo podemos hacer que nuestra casa sea hoy un reflejo del amor que Jesús tiene por su Iglesia?", v: "Maridos, amad a vuestras mujeres como Cristo amó a la Iglesia.", c: "Efesios 5:25" },
+    { id: "mat-2", q: "¿Cuándo fue la última vez que rezamos juntos como pareja, dándole gracias a Dios por nuestro vínculo?", v: "Donde dos o tres están reunidos en mi nombre, allí estoy yo.", c: "Mateo 18:20" },
+    { id: "mat-3", q: "¿Hay algún rencor pequeño que esté ensuciando nuestro amor y que debamos soltar antes de que termine el día?", v: "No se ponga el sol sobre vuestro enojo.", c: "Efesios 4:26" },
+    { id: "mat-4", q: "¿Cómo podemos fortalecer nuestra paciencia mutua siguiendo el ejemplo de San Joaquín y Santa Ana?", v: "Sopórtense unos a otros con amor.", c: "Colosenses 3:13" },
+    { id: "mat-5", q: "¿Estamos cuidando nuestra intimidad como un regalo sagrado de Dios para nuestra unión?", v: "Lo que Dios unió, no lo separe el hombre.", c: "Marcos 10:9" },
+    { id: "mat-6", q: "¿Qué virtud de mi cónyuge es la que más agradezco hoy a Dios?", v: "Doy gracias a mi Dios cada vez que me acuerdo de vosotros.", c: "Filipenses 1:3" },
+    { id: "mat-7", q: "¿Cómo estamos educando a nuestros hijos en el amor a Dios? ¿Somos su primer ejemplo de fe?", v: "Instruye al niño en su camino, y aun cuando fuere viejo no se apartará de él.", c: "Proverbios 22:6" },
+    { id: "mat-8", q: "En los momentos de crisis, ¿buscamos primero la guía del Espíritu Santo o intentamos resolverlo solos?", v: "Fíate del Señor de todo tu corazón, y no te apoyes en tu propia prudencia.", c: "Proverbios 3:5" },
+    { id: "mat-9", q: "¿Nuestras palabras hacia el otro hoy fueron para edificar o para herir?", v: "Ninguna palabra corrompida salga de vuestra boca, sino la que sea buena para la necesaria edificación.", c: "Efesios 4:29" },
+    { id: "mat-10", q: "¿Cómo podemos ser hoy una pareja que sirva a los demás en la Capilla Santa Ana?", v: "Servíos por amor los unos a los otros.", c: "Gálatas 5:13" },
+    { id: "mat-11", q: "¿Estamos permitiendo que el cansancio del trabajo nos robe la alegría de estar juntos?", v: "Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar.", c: "Mateo 11:28" },
+    { id: "mat-12", q: "¿Recordamos que nuestro matrimonio es un sacramento, es decir, un canal de la Gracia de Dios?", v: "La gracia de nuestro Señor Jesucristo sea con vosotros.", c: "1 Tesalonicenses 5:28" },
+    { id: "mat-13", q: "¿Buscamos momentos de silencio compartido para escuchar lo que Dios quiere de nuestra familia?", v: "Quédate en silencio ante el Señor, y espera en él.", c: "Salmo 37:7" },
+    { id: "mat-14", q: "¿Cómo podemos renovar hoy nuestro 'Sí' del día de la boda en los pequeños detalles?", v: "Hágase en mí según tu palabra.", c: "Lucas 1:38" },
+    { id: "mat-15", q: "¿Estamos orando por los matrimonios que están atravesando dificultades en nuestro barrio?", v: "Orad los unos por los otros, para que seáis sanados.", c: "Santiago 5:16" },
+    { id: "mat-16", q: "¿Nuestra casa es un lugar de acogida para los amigos y la familia, como la casa de Nazaret?", v: "No os olvidéis de la hospitalidad.", c: "Hebreos 13:2" },
+    { id: "mat-17", q: "¿Cómo manejamos nuestras diferencias económicas? ¿Confiamos en la Providencia de Dios?", v: "Mi Dios, pues, suplirá todo lo que os falta conforme a sus riquezas.", c: "Filipenses 4:19" },
+    { id: "mat-18", q: "¿Estamos pidiendo la intercesión de la Virgen María para que nunca falte el 'vino' de la alegría en nuestro hogar?", v: "No tienen vino... Haced lo que él os diga.", c: "Juan 2:3-5" },
+    { id: "mat-19", q: "¿Nuestra prioridad sigue siendo Dios, luego nuestro cónyuge y luego el resto de las obligaciones?", v: "Buscad primeramente el reino de Dios y su justicia.", c: "Mateo 6:33" },
+    { id: "mat-20", q: "¿Somos capaces de pedir perdón humildemente cuando nos equivocamos con el otro?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
+    { id: "mat-21", q: "¿Cómo podemos vivir hoy la castidad matrimonial como un respeto profundo al cuerpo del otro?", v: "¿O ignoráis que vuestro cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
+    { id: "mat-22", q: "¿Qué sacrificio pequeño podemos hacer hoy el uno por el otro para demostrar nuestro amor?", v: "Nadie tiene mayor amor que este, que uno ponga su vida por sus amigos.", c: "Juan 15:13" },
+    { id: "mat-23", q: "¿Estamos agradeciendo a Dios por los años de vida compartidos, sean pocos o muchos?", v: "Toda buena dádiva y todo don perfecto desciende de lo alto.", c: "Santiago 1:17" },
+    { id: "mat-24", q: "¿Cómo podemos ser hoy 'sal y luz' para otras parejas jóvenes que nos miran?", v: "Así alumbre vuestra luz delante de los hombres.", c: "Mateo 5:16" },
+    { id: "mat-25", q: "¿Estamos protegiendo nuestro matrimonio de las distracciones y tentaciones del mundo digital?", v: "Velad y orad, para que no entréis en tentación.", c: "Mateo 26:41" },
+    { id: "mat-26", q: "¿Reconocemos que Jesús es el 'tercer socio' en nuestro vínculo matrimonial?", v: "Cordón de tres dobleces no se rompe pronto.", c: "Eclesiastés 4:12" },
+    { id: "mat-27", q: "¿Cómo podemos cultivar más la ternura en nuestra comunicación diaria?", v: "Sed bondadosos unos con otros, misericordiosos.", c: "Efesios 4:32" },
+    { id: "mat-28", q: "¿Le pedimos al Espíritu Santo que renueve nuestro amor cada mañana?", v: "El amor de Dios ha sido derramado en nuestros corazones por el Espíritu Santo.", c: "Romanos 5:5" },
+    { id: "mat-29", q: "¿Estamos abiertos a la vida y a la voluntad de Dios en nuestro plan familiar?", v: "He aquí, herencia del Señor son los hijos.", c: "Salmo 127:3" },
+    { id: "mat-30", q: "¿Buscamos la santidad juntos, ayudándonos a ser mejores personas cada día?", v: "Sed santos, porque yo soy santo.", c: "1 Pedro 1:16" },
+    { id: "mat-31", q: "¿Cómo podemos honrar hoy la historia de amor de nuestros padres y abuelos?", v: "Honra a tu padre y a tu madre.", c: "Éxodo 20:12" },
+    { id: "mat-32", q: "¿Somos capaces de reírnos juntos y no tomarnos todo con tanta rigidez?", v: "El corazón alegre constituye buen remedio.", c: "Proverbios 17:22" },
+    { id: "mat-33", q: "¿Qué carga de mi cónyuge puedo ayudar a llevar hoy para aliviar su peso?", v: "Sobrellevad los unos las cargas de los otros.", c: "Gálatas 6:2" },
+    { id: "mat-34", q: "¿Estamos asistiendo a la Eucaristía juntos como fuente de nuestra fortaleza?", v: "Yo soy el pan de vida.", c: "Juan 6:48" },
+    { id: "mat-35", q: "¿Cómo podemos ser más generosos el uno con el otro en el uso del tiempo libre?", v: "El amor no busca lo suyo.", c: "1 Corintios 13:5" },
+    { id: "mat-36", q: "¿Nuestra casa es un refugio de paz o un lugar de tensiones constantes?", v: "La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones.", c: "Filipenses 4:7" },
+    { id: "mat-37", q: "¿Leemos la Biblia juntos para descubrir qué nos dice Dios como matrimonio?", v: "Lámpara es a mis pies tu palabra, y lumbrera a mi camino.", c: "Salmo 119:105" },
+    { id: "mat-38", q: "¿Cómo podemos demostrar hoy fidelidad, no solo física sino también en los pensamientos y el corazón?", v: "Bienaventurados los de limpio corazón, porque ellos verán a Dios.", c: "Mateo 5:8" },
+    { id: "mat-39", q: "¿Estamos orando por la salud física y espiritual del otro cada día?", v: "Amado, yo deseo que tú seas prosperado en todas las cosas, y que tengas salud.", c: "3 Juan 1:2" },
+    { id: "mat-40", q: "¿Qué nuevo proyecto podemos emprender juntos que glorifique a Dios?", v: "Haced todo para la gloria de Dios.", c: "1 Corintios 10:31" },
+    { id: "mat-41", q: "¿Nuestra confianza mutua está basada en la sinceridad y en la Verdad que es Cristo?", v: "Hablad verdad cada uno con su prójimo.", c: "Efesios 4:25" },
+    { id: "mat-42", q: "¿Cómo podemos mejorar nuestra escucha activa, prestando atención al corazón del otro?", v: "Sea cada uno pronto para oír, tardo para hablar.", c: "Santiago 1:19" },
+    { id: "mat-43", q: "¿Estamos pidiendo la bendición de San José para la protección de nuestro hogar?", v: "Levántate y toma al niño y a su madre.", c: "Mateo 2:13" },
+    { id: "mat-44", q: "¿Recordamos que el amor es paciente y todo lo soporta?", v: "El amor es sufrido, es benigno... todo lo sucre, todo lo cree.", c: "1 Corintios 13:4-7" },
+    { id: "mat-45", q: "¿Cómo podemos vivir hoy la pobreza de espíritu, no apegándonos a las cosas materiales?", v: "Bienaventurados los pobres en espíritu, porque de ellos es el reino de los cielos.", c: "Mateo 5:3" },
+    { id: "mat-46", q: "¿Estamos siendo agradecidos con Dios por el techo y la comida que compartimos?", v: "Dad gracias en todo, porque esta es la voluntad de Dios.", c: "1 Tesalonicenses 5:18" },
+    { id: "mat-47", q: "¿Cómo podemos renovar la pasión y el romance bajo la bendición de Dios?", v: "Yo soy de mi amado, y mi amado es mío.", c: "Cantar de los Cantares 6:3" },
+    { id: "mat-48", q: "¿Estamos orando por nuestros sacerdotes y por las vocaciones consagradas?", v: "Rogad, pues, al Señor de la mies, que envíe obreros a su mies.", c: "Mateo 9:38" },
+    { id: "mat-49", q: "¿Nuestra fe se traduce en actos de caridad hacia los más pobres de Santa Ana?", v: "La fe sin obras está muerta.", c: "Santiago 2:26" },
+    { id: "mat-50", q: "¿Estamos listos para decir juntos: 'Señor, aquí estamos, hágase en nosotros tu voluntad'?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" }
+];
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+// Configuración de Sonido
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(5000, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(5000, Tone.now() + 0.3);
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
+
+// Inicialización
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    // Remueve la clase para que inicie mostrando la pregunta de frente
+    document.getElementById("card").classList.remove("is-flipped"); 
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+        
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
 
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
 
-        card.addEventListener('click', flip);
-        nextBtn.addEventListener('click', () => {
-            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
-            else { random(); flip(); }
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `💍 Mirá esta reflexión para nuestro matrimonio:\n\n"${c.q}"\n\n`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Vínculo Sagrado', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
         });
+    }
+}
 
-        shareBtn.addEventListener('click', async () => {
-            if (currentIdx === -1) return;
-            const url = window.location.href;
-            const msg = `💍 Mirá esta reflexión para nuestro matrimonio:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            if (navigator.share) { try { await navigator.share({ title: 'Matrimonio Católico', text: msg, url: url }); } catch (e) {} }
-            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
-        });
+function initBG() {
+    const words = ['AMOR', 'FIDELIDAD', 'SACRAMENTO', 'SANTA ANA', 'UNIDAD', 'COMPROMISO'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 32) + "px";
+        const duration = 15 + Math.random() * 25;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['AMOR', 'FIDELIDAD', 'SACRAMENTO', 'SANTA ANA', 'UNIDAD'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 32) + 'px';
-                const d = 15 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        window.onload = () => {
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
