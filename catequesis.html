@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Cartas de Catequesis - Capilla Santa Ana</title>
+    <title>Catequesis - Capilla Santa Ana</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
@@ -17,127 +16,170 @@
             --bg: #0d0d0f;
             --card: #F5F5F0;
             --card-back: #1a1210;
-            --accent: #C19A6B;
+            --accent: #C19A6B; /* Dorado Capilla */
             --accent-hover: #ab855a;
             --primario: #5D4037;
+            --texto: #E0E0E0;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        html, body { 
-            height: 100%; 
-            margin: 0; 
-            overflow: hidden; 
-            background: var(--bg);
+        body {
             font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--texto);
         }
 
-        /* --- FONDO CON IMAGEN 2.WEBP --- */
+        /* FONDO CON IMAGEN */
         .main-background {
             position: fixed;
             inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), url('2.webp');
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('2.webp');
             background-size: cover;
             background-position: center;
             z-index: -1;
         }
 
-        /* --- TEXTO FLOTANTE "SANTA ANA" --- */
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .floating-word {
-            position: absolute; font-weight: 800; color: rgba(193, 154, 107, 0.04);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(193, 154, 107, 0.05);
+            user-select: none;
+            white-space: nowrap;
+            transform: rotate(45deg);
         }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
-
-        /* --- NAVEGACIÓN --- */
-        nav {
-            position: relative; z-index: 10;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%;
-        }
-        .btn-home {
-            color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem;
-            display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px;
-        }
-        .btn-home:hover { color: var(--accent); }
-        .nav-socials { display: flex; gap: 15px; }
-        .nav-socials a { color: #fff; font-size: 1.2rem; transition: 0.3s; }
-
-        /* --- ESCENA DE LA CARTA --- */
-        .container {
-            position: relative; z-index: 2; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(45deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(45deg); opacity: 0; }
         }
 
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
+
+        /* ESCENA DE LA CARTA */
         .card-scene {
-            width: min(85vw, 400px);
-            height: min(65vh, 520px);
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
             perspective: 1500px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
-
         .card {
-            position: relative; width: 100%; height: 100%; border-radius: 25px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
             cursor: pointer;
         }
         .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
 
         .face {
-            position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px;
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        /* FRENTE: PREGUNTA */
         .front { 
-            background: var(--card); color: var(--primario); 
-            border-left: 10px solid var(--accent); 
+            background: var(--card); 
+            border-left: 10px solid var(--accent);
+            color: var(--primario);
         }
-        .question { 
-            font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.5rem);
-            font-weight: 700; line-height: 1.4; margin-bottom: 20px; 
-        }
-        .verse-box { 
-            background: rgba(193, 154, 107, 0.1); padding: 15px; border-radius: 12px; 
-            width: 100%; border-right: 3px solid var(--accent);
-        }
-        .verse-text { font-size: 0.9rem; font-style: italic; color: #444; margin-bottom: 5px; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; display: block; text-align: right; }
         
-        .hint { position: absolute; bottom: 15px; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; }
-
-        /* DORSO: LOGO */
-        .back {
+        .back { 
             background: radial-gradient(circle at 50% 0%, #2e1d17 0%, #1a1210 70%, #000 100%);
-            color: var(--accent); transform: rotateY(180deg);
+            transform: rotateY(180deg); 
+            color: var(--accent);
             border: 2px dashed rgba(193, 154, 107, 0.3);
         }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .verse-box {
+            background: rgba(193, 154, 107, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            width: 100%;
+            border-right: 3px solid var(--accent);
+        }
+        
+        .verse-text { font-size: 0.95rem; font-style: italic; color: #444; margin-bottom: 5px; }
+        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; display: block; text-align: right; }
+
         .back i { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(193,154,107,0.4)); }
         .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; line-height: 1.1; }
-        .back p { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; margin-top: 20px; opacity: 0.7; }
 
-        /* BOTONES */
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        button {
-            background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50px; padding: 15px 25px; font-weight: 700; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; gap: 10px;
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
-        button:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
-        .btn-main { background: var(--accent); border-color: var(--accent); color: #1a1210; }
-        .btn-main:hover { background: var(--accent-hover); }
+        .btn-main { background: var(--accent); color: #1a1210; }
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 1.3rem; }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; }
 
         /* TOAST */
-        .toast {
+        #toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: #25D366; color: white; padding: 12px 30px; border-radius: 50px;
-            font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.5s; z-index: 1000;
+            background: #25D366; color: white; padding: 12px 25px; border-radius: 50px;
+            font-weight: 600; font-size: 13px; transition: 0.5s; z-index: 1000;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -146,193 +188,245 @@
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Volver a la Web</a>
-        <div class="nav-socials">
-            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
-        </div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
-                
+            <div id="card" class="card is-flipped">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
+                    <p id="q-text" class="question">...</p>
                     <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
+                        <p id="v-text" class="verse-text"></p>
+                        <span id="v-ref" class="verse-ref"></span>
                     </div>
-                    <span class="hint">Tocar para volver</span>
                 </div>
-
                 <div class="face back">
                     <i class="fas fa-church"></i>
                     <h2>Catequesis<br>Santa Ana</h2>
-                    <p>Preparando el corazón</p>
+                    <p style="margin-top:15px; font-size:10px; letter-spacing:2px;">TOCAR PARA REVELAR</p>
                 </div>
-
             </div>
         </div>
 
         <div class="actions">
-            <button id="btn-next" class="btn-main"><i class="fas fa-hand-sparkles"></i> Sacar otra carta</button>
-            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-hand-sparkles"></i> Otra Carta</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">¡Enlace copiado para compartir!</div>
+    <div id="toast">¡Enlace copiado para compartir!</div>
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-    <script>
-        // --- 50 CARTAS DE CATEQUESIS ---
-        const CARTAS = [
-            { id: "c1", q: "¿Por qué creés que Dios nos creó por amor y no por obligación?", v: "Dios es amor, y el que permanece en el amor permanece en Dios.", c: "1 Juan 4:16" },
-            { id: "c2", q: "¿Qué sentís al saber que Dios te pensó y te amó desde antes de que nacieras?", v: "Antes de formarte en el vientre materno, yo te conocía.", c: "Jeremías 1:5" },
-            { id: "c3", q: "Dios es Padre, Hijo y Espíritu Santo. ¿Cómo te ayuda saber que Dios es una familia de amor?", v: "Bautizándolos en el nombre del Padre, y del Hijo, y del Espíritu Santo.", c: "Mateo 28:19" },
-            { id: "c4", q: "Si Dios creó todo y vio que era bueno, ¿cómo estás cuidando la creación que Él nos regaló?", v: "Y vio Dios todo lo que había hecho, y era bueno en gran manera.", c: "Génesis 1:31" },
-            { id: "c5", q: "¿Confiás en que Dios, como un buen Padre, sabe lo que necesitás antes de que se lo pidas?", v: "Su Padre sabe de qué tienen necesidad antes de que se lo pidan.", c: "Mateo 6:8" },
-            { id: "c6", q: "¿Qué significa para vos que Jesús haya elegido nacer pobre en un pesebre?", v: "Lo acostó en un pesebre, porque no había lugar para ellos en la posada.", c: "Lucas 2:7" },
-            { id: "c7", q: "Jesús es Dios y Hombre. ¿Te da paz saber que Él también sintió cansancio y miedo?", v: "Jesús lloró.", c: "Juan 11:35" },
-            { id: "c8", q: "De todos los milagros de Jesús, ¿cuál es el que más te llama la atención?", v: "Los ciegos ven, los cojos andan, los leprosos son limpiados.", c: "Mateo 11:5" },
-            { id: "c9", q: "Jesús entregó su vida en la cruz por vos. ¿Qué respuesta le querés dar a ese amor inmenso?", v: "Nadie tiene mayor amor que el que da la vida por sus amigos.", c: "Juan 15:13" },
-            { id: "c10", q: "¡Jesús resucitó! ¿Cómo cambia tu vida saber que la muerte no tiene la última palabra?", v: "No está aquí; ¡ha resucitado!", c: "Lucas 24:6" },
-            { id: "c11", q: "En el Bautismo recibimos el Espíritu Santo. ¿Le pedís fuerza cuando tenés miedo?", v: "Recibirán poder cuando el Espíritu Santo descienda sobre ustedes.", c: "Hechos 1:8" },
-            { id: "c12", q: "¿Cuál de los dones del Espíritu Santo sentís que necesitás más hoy?", v: "Reposará sobre él el Espíritu del Señor.", c: "Isaías 11:2" },
-            { id: "c13", q: "El Espíritu Santo nos guía a la verdad. ¿Sabés escuchar esa voz suave en tu corazón?", v: "El Espíritu Santo les enseñará todas las cosas.", c: "Juan 14:26" },
-            { id: "c14", q: "Los Sacramentos son abrazos de Dios. ¿Te preparás con alegría para recibirlos?", v: "De su plenitud todos hemos recibido gracia sobre gracia.", c: "Juan 1:16" },
-            { id: "c15", q: "En tu Bautismo te convertiste en hijo de Dios. ¿Te sentís parte de esta gran familia?", v: "Todos ustedes son hijos de Dios mediante la fe.", c: "Gálatas 3:26" },
-            { id: "c16", q: "Dios siempre nos espera. ¿Ves la Confesión como un abrazo de misericordia?", v: "Cuando aún estaba lejos, su padre lo vio y se compadeció.", c: "Lucas 15:20" },
-            { id: "c17", q: "Para confesarnos bien hay que arrepentirse. ¿Te cuesta reconocer tus errores ante Jesús?", v: "Crea en mí, oh Dios, un corazón limpio.", c: "Salmo 51:10" },
-            { id: "c18", q: "Al confesarte, tu alma queda limpia. ¿Qué sentís al escuchar que Dios te perdona?", v: "Si confesamos nuestros pecados, Él es fiel para perdonarnos.", c: "1 Juan 1:9" },
-            { id: "c19", q: "En la Misa, el pan se convierte en el Cuerpo de Jesús. ¿Creés de corazón en este milagro?", v: "Yo soy el pan vivo que ha bajado del cielo.", c: "Juan 6:51" },
-            { id: "c20", q: "La Comunión es alimento para el alma. ¿Con qué amor te preparás para recibirlo?", v: "Examínese cada uno a sí mismo, y entonces coma del pan.", c: "1 Corintios 11:28" },
-            { id: "c21", q: "La Misa es revivir el sacrificio de Jesús. ¿Participás con atención o te distraés?", v: "Hagan esto en memoria de mí.", c: "Lucas 22:19" },
-            { id: "c22", q: "Cuando comulgás, sos un 'sagrario vivo'. ¿Tus actitudes demuestran que Jesús vive en vos?", v: "Ya no vivo yo, mas vive Cristo en mí.", c: "Gálatas 2:20" },
-            { id: "c23", q: "El Domingo es el Día del Señor. ¿Es la Misa el momento más importante de tu semana?", v: "Acuérdate del día de reposo para santificarlo.", c: "Éxodo 20:8" },
-            { id: "c24", q: "La Iglesia la fundó Jesús sobre Pedro. ¿Rezás por el Papa Francisco y nuestros sacerdotes?", v: "Tú eres Pedro, y sobre esta roca edificaré mi iglesia.", c: "Mateo 16:18" },
-            { id: "c25", q: "En la cruz, Jesús nos dio a María. ¿Le hablás a la Virgen cuando estás triste?", v: "Ahí tienes a tu madre.", c: "Juan 19:27" },
-            { id: "c26", q: "María dijo 'Sí' a Dios sin dudar. ¿Te animás a decirle que sí a Dios hoy?", v: "He aquí la sierva del Señor; hágase en mí según tu palabra.", c: "Lucas 1:38" },
-            { id: "c27", q: "Rezar el Rosario es meditar la vida de Jesús con María. ¿Lo rezás en familia?", v: "Bendita tú entre las mujeres, y bendito el fruto de tu vientre.", c: "Lucas 1:42" },
-            { id: "c28", q: "Los Santos son nuestros amigos en el Cielo. ¿Conocés la vida de tu Santo preferido?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
-            { id: "c29", q: "El primer mandamiento es amar a Dios sobre todo. ¿Es Él el centro de tu vida?", v: "Amarás al Señor tu Dios con todo tu corazón.", c: "Mateo 22:37" },
-            { id: "c30", q: "Amar al prójimo. ¿A quién necesitás tratar con más paciencia hoy?", v: "Amarás a tu prójimo como a ti mismo.", c: "Mateo 22:39" },
-            { id: "c31", q: "'Honrar a padre y madre'. ¿Sos agradecido con el esfuerzo que hacen tus padres?", v: "Hijos, obedezcan a sus padres en el Señor.", c: "Efesios 6:1" },
-            { id: "c32", q: "Dios nos pide decir siempre la verdad. ¿Evitás el chisme y la mentira?", v: "Desechando la mentira, hablad verdad cada uno con su prójimo.", c: "Efesios 4:25" },
-            { id: "c33", q: "No robar incluye no quitarle la paz o el tiempo a los demás. ¿Sos honesto?", v: "El que robaba, no robe más, sino trabaje.", c: "Efesios 4:28" },
-            { id: "c34", q: "Jesús nos manda amarnos. ¿Hacés sacrificios reales por el bien de tus amigos?", v: "Que se amen unos a otros; como yo los he amado.", c: "Juan 13:34" },
-            { id: "c35", q: "Si Dios te perdona siempre, ¿por qué a veces te cuesta tanto perdonar a los demás?", v: "Perdonen, y serán perdonados.", c: "Lucas 6:37" },
-            { id: "c36", q: "Rezar es hablar con Dios como un amigo. ¿Le contás tus alegrías y miedos?", v: "Entra en tu cuarto y ora a tu Padre que está en secreto.", c: "Mateo 6:6" },
-            { id: "c37", q: "En el Padrenuestro decimos 'hágase tu voluntad'. ¿Lo decís de corazón?", v: "Hágase tu voluntad, como en el cielo, así también en la tierra.", c: "Mateo 6:10" },
-            { id: "c38", q: "¿Confiás en que Dios sabe cuál es el momento perfecto para responder tu oración?", v: "Mis pensamientos no son los pensamientos de ustedes.", c: "Isaías 55:8" },
-            { id: "c39", q: "Dios tiene un sueño para tu vida. ¿Le preguntás qué quiere Él de vos?", v: "Señor, ¿qué quieres que yo haga?", c: "Hechos 9:6" },
-            { id: "c40", q: "Ayudar en la Capilla es servir a Jesús. ¿Te animás a ayudar en algo?", v: "Sirviendo de buena voluntad, como al Señor.", c: "Efesios 6:7" },
-            { id: "c41", q: "¿Tenés valentía para defender tu fe aunque otros se burlen?", v: "No me avergüenzo del evangelio, porque es poder de Dios.", c: "Romanos 1:16" },
-            { id: "c42", q: "Dios nos da fuerza contra la tentación. ¿Le pedís ayuda cuando te sentís débil?", v: "Fiel es Dios, que no los dejará ser tentados más de lo que pueden resistir.", c: "1 Corintios 10:13" },
-            { id: "c43", q: "Tu cuerpo es templo del Espíritu Santo. ¿Lo cuidás de las cosas malas de internet?", v: "¿Acaso no saben que su cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
-            { id: "c44", q: "La Señal de la Cruz nos protege. ¿La hacés con respeto o a las apuradas?", v: "Todo lo que hagan, háganlo en el nombre del Señor Jesús.", c: "Colosenses 3:17" },
-            { id: "c45", q: "Las Obras de Misericordia son amor en acción. ¿Ayudaste a alguien hoy?", v: "Tuve hambre, y me dieron de comer.", c: "Mateo 25:35" },
-            { id: "c46", q: "En la catequesis conocemos a Jesús para amarlo. ¿Tenés un corazón dispuesto?", v: "El Señor da la sabiduría y el conocimiento.", c: "Proverbios 2:6" },
-            { id: "c47", q: "Tu Ángel de la Guarda te cuida siempre. ¿Rezás la oración al acostarte?", v: "Él dará orden a sus ángeles para que te guarden.", c: "Salmo 91:11" },
-            { id: "c48", q: "Nuestra meta es el Cielo. ¿Tus acciones de hoy te acercan a Dios?", v: "Nuestra ciudadanía está en los cielos.", c: "Filipenses 3:20" },
-            { id: "c49", q: "Como bautizado, sos un misionero. ¿Te animás a contarle a alguien de Jesús?", v: "Vayan por todo el mundo y prediquen el evangelio.", c: "Marcos 16:15" },
-            { id: "c50", q: "La fe necesita oración diaria. ¿A qué hora vas a hablar con Dios hoy?", v: "Perseveren en la oración con acción de gracias.", c: "Colosenses 4:2" }
-        ];
+<script>
+const CARTAS = [
+    { id: "c1", q: "¿Por qué creés que Dios nos creó por amor y no por obligación?", v: "Dios es amor, y el que permanece en el amor permanece en Dios.", c: "1 Juan 4:16" },
+    { id: "c2", q: "¿Qué sentís al saber que Dios te pensó y te amó desde antes de que nacieras?", v: "Antes de formarte en el vientre materno, yo te conocía.", c: "Jeremías 1:5" },
+    { id: "c3", q: "Dios es Padre, Hijo y Espíritu Santo. ¿Cómo te ayuda saber que Dios es una familia de amor?", v: "Bautizándolos en el nombre del Padre, y del Hijo, y del Espíritu Santo.", c: "Mateo 28:19" },
+    { id: "c4", q: "Si Dios creó todo y vio que era bueno, ¿cómo estás cuidando la creación que Él nos regaló?", v: "Y vio Dios todo lo que había hecho, y era bueno en gran manera.", c: "Génesis 1:31" },
+    { id: "c5", q: "¿Confiás en que Dios, como un buen Padre, sabe lo que necesitás antes de que se lo pidas?", v: "Su Padre sabe de qué tienen necesidad antes de que se lo pidan.", c: "Mateo 6:8" },
+    { id: "c6", q: "¿Qué significa para vos que Jesús haya elegido nacer pobre en un pesebre?", v: "Lo acostó en un pesebre, porque no había lugar para ellos en la posada.", c: "Lucas 2:7" },
+    { id: "c7", q: "Jesús es Dios y Hombre. ¿Te da paz saber que Él también sintió cansancio y miedo?", v: "Jesús lloró.", c: "Juan 11:35" },
+    { id: "c8", q: "De todos los milagros de Jesús, ¿cuál es el que más te llama la atención?", v: "Los ciegos ven, los cojos andan, los leprosos son limpiados.", c: "Mateo 11:5" },
+    { id: "c9", q: "Jesús entregó su vida en la cruz por vos. ¿Qué respuesta le querés dar a ese amor inmenso?", v: "Nadie tiene mayor amor que el que dar la vida por sus amigos.", c: "Juan 15:13" },
+    { id: "c10", q: "¡Jesús resucitó! ¿Cómo cambia tu vida saber que la muerte no tiene la última palabra?", v: "No está aquí; ¡ha resucitado!", c: "Lucas 24:6" },
+    { id: "c11", q: "En el Bautismo recibimos el Espíritu Santo. ¿Le pedís fuerza cuando tenés miedo?", v: "Recibirán poder cuando el Espíritu Santo descienda sobre ustedes.", c: "Hechos 1:8" },
+    { id: "c12", q: "¿Cuál de los dones del Espíritu Santo sentís que necesitás más hoy?", v: "Reposará sobre él el Espíritu del Señor.", c: "Isaías 11:2" },
+    { id: "c13", q: "El Espíritu Santo nos guía a la verdad. ¿Sabés escuchar esa voz suave en tu corazón?", v: "El Espíritu Santo les enseñará todas las cosas.", c: "Juan 14:26" },
+    { id: "c14", q: "Los Sacramentos son abrazos de Dios. ¿Te preparás con alegría para recibirlos?", v: "De su plenitud todos hemos recibido gracia sobre gracia.", c: "Juan 1:16" },
+    { id: "c15", q: "En tu Bautismo te convertiste en hijo de Dios. ¿Te sentís parte de esta gran familia?", v: "Todos ustedes son hijos de Dios mediante la fe.", c: "Gálatas 3:26" },
+    { id: "c16", q: "Dios siempre nos espera. ¿Ves la Confesión como un abrazo de misericordia?", v: "Cuando aún estaba lejos, su padre lo vio y se compadeció.", c: "Lucas 15:20" },
+    { id: "c17", q: "Para confesarnos bien hay que arrepentirse. ¿Te cuesta reconocer tus errores ante Jesús?", v: "Crea en mí, oh Dios, un corazón limpio.", c: "Salmo 51:10" },
+    { id: "c18", q: "Al confesarte, tu alma queda limpia. ¿Qué sentís al escuchar que Dios te perdona?", v: "Si confesamos nuestros pecados, Él es fiel para perdonarnos.", c: "1 Juan 1:9" },
+    { id: "c19", q: "En la Misa, el pan se convierte en el Cuerpo de Jesús. ¿Creés de corazón en este milagro?", v: "Yo soy el pan vivo que ha bajado del cielo.", c: "Juan 6:51" },
+    { id: "c20", q: "La Comunión es alimento para el alma. ¿Con qué amor te preparás para recibirlo?", v: "Examínese cada uno a sí mismo, y entonces coma del pan.", c: "1 Corintios 11:28" },
+    { id: "c21", q: "La Misa es revivir el sacrificio de Jesús. ¿Participás con atención o te distraés?", v: "Hagan esto en memoria de mí.", c: "Lucas 22:19" },
+    { id: "c22", q: "Cuando comulgás, sos un 'sagrario vivo'. ¿Tus actitudes demuestran que Jesús vive en vos?", v: "Ya no vivo yo, mas vive Cristo en mí.", c: "Gálatas 2:20" },
+    { id: "c23", q: "El Domingo es el Día del Señor. ¿Es la Misa el momento más importante de tu semana?", v: "Acuérdate del día de reposo para santificarlo.", c: "Éxodo 20:8" },
+    { id: "c24", q: "La Iglesia la fundó Jesús sobre Pedro. ¿Rezás por el Papa Francisco y nuestros sacerdotes?", v: "Tú eres Pedro, y sobre esta roca edificaré mi iglesia.", c: "Mateo 16:18" },
+    { id: "c25", q: "En la cruz, Jesús nos dio a María. ¿Le hablás a la Virgen cuando estás triste?", v: "Ahí tienes a tu madre.", c: "Juan 19:27" },
+    { id: "c26", q: "María dijo 'Sí' a Dios sin dudar. ¿Te animás a decirle que sí a Dios hoy?", v: "He aquí la sierva del Señor; hágase en mí según tu palabra.", c: "Lucas 1:38" },
+    { id: "c27", q: "Rezar el Rosario es meditar la vida de Jesús con María. ¿Lo rezás en familia?", v: "Bendita tú entre las mujeres, y bendito el fruto de tu vientre.", c: "Lucas 1:42" },
+    { id: "c28", q: "Los Santos son nuestros amigos en el Cielo. ¿Conocés la vida de tu Santo preferido?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
+    { id: "c29", q: "El primer mandamiento es amar a Dios sobre todo. ¿Es Él el centro de tu vida?", v: "Amarás al Señor tu Dios con todo tu corazón.", c: "Mateo 22:37" },
+    { id: "c30", q: "Amar al prójimo. ¿A quién necesitás tratar con más paciencia hoy?", v: "Amarás a tu prójimo como a ti mismo.", c: "Mateo 22:39" },
+    { id: "c31", q: "'Honrar a padre y madre'. ¿Sos agradecido con el esfuerzo que hacen tus padres?", v: "Hijos, obedezcan a sus padres en el Señor.", c: "Efesios 6:1" },
+    { id: "c32", q: "Dios nos pide decir siempre la verdad. ¿Evitás el chisme y la mentira?", v: "Desechando la mentira, hablad verdad cada uno con su prójimo.", c: "Efesios 4:25" },
+    { id: "c33", q: "No robar incluye no quitarle la paz o el tiempo a los demás. ¿Sos honesto?", v: "El que robaba, no robe más, sino trabaje.", c: "Efesios 4:28" },
+    { id: "c34", q: "Jesús nos manda amarnos. ¿Hacés sacrificios reales por el bien de tus amigos?", v: "Que se amen unos a otros; como yo los he amado.", c: "Juan 13:34" },
+    { id: "c35", q: "Si Dios te perdona siempre, ¿por qué a veces te cuesta tanto perdonar a los demás?", v: "Perdonen, y serán perdonados.", c: "Lucas 6:37" },
+    { id: "c36", q: "Rezar es hablar con Dios como un amigo. ¿Le contás tus alegrías y miedos?", v: "Entra en tu cuarto y ora a tu Padre que está en secreto.", c: "Mateo 6:6" },
+    { id: "c37", q: "En el Padrenuestro decimos 'hágase tu voluntad'. ¿Lo decís de corazón?", v: "Hágase tu voluntad, como en el cielo, así también en la tierra.", c: "Mateo 6:10" },
+    { id: "c38", q: "¿Confiás en que Dios sabe cuál es el momento perfecto para responder tu oración?", v: "Mis pensamientos no son los pensamientos de ustedes.", c: "Isaías 55:8" },
+    { id: "c39", q: "Dios tiene un sueño para tu vida. ¿Le preguntás qué quiere Él de vos?", v: "Señor, ¿qué quieres que yo haga?", c: "Hechos 9:6" },
+    { id: "c40", q: "Ayudar en la Capilla es servir a Jesús. ¿Te animás a ayudar en algo?", v: "Sirviendo de buena voluntad, como al Señor.", c: "Efesios 6:7" },
+    { id: "c41", q: "¿Tenés valentía para defender tu fe aunque otros se burlen?", v: "No me avergüenzo del evangelio, porque es poder de Dios.", c: "Romanos 1:16" },
+    { id: "c42", q: "Dios nos da fuerza contra la tentación. ¿Le pedís ayuda cuando te sentís débil?", v: "Fiel es Dios, que no los dejará ser tentados más de lo que pueden resistir.", c: "1 Corintios 10:13" },
+    { id: "c43", q: "Tu cuerpo es templo del Espíritu Santo. ¿Lo cuidás de las cosas malas de internet?", v: "¿Acaso no saben que su cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
+    { id: "c44", q: "La Señal de la Cruz nos protege. ¿La hacés con respeto o a las apuradas?", v: "Todo lo que hagan, háganlo en el nombre del Señor Jesús.", c: "Colosenses 3:17" },
+    { id: "c45", q: "Las Obras de Misericordia son amor en acción. ¿Ayudaste a alguien hoy?", v: "Tuve hambre, y me dieron de comer.", c: "Mateo 25:35" },
+    { id: "c46", q: "En la catequesis conocemos a Jesús para amarlo. ¿Tenés un corazón dispuesto?", v: "El Señor da la sabiduría y el conocimiento.", c: "Proverbios 2:6" },
+    { id: "c47", q: "Tu Ángel de la Guarda te cuida siempre. ¿Rezás la oración al acostarte?", v: "Él dará orden a sus ángeles para que te guarden.", c: "Salmo 91:11" },
+    { id: "c48", q: "Nuestra meta es el Cielo. ¿Tus acciones de hoy te acercan a Dios?", v: "Nuestra ciudadanía está en los cielos.", c: "Filipenses 3:20" },
+    { id: "c49", q: "Como bautizado, sos un misionero. ¿Te animás a contarle a alguien de Jesús?", v: "Vayan por todo el mundo y prediquen el evangelio.", c: "Marcos 16:15" },
+    { id: "c50", q: "La fe necesita oración diaria. ¿A qué hora vas a hablar con Dios hoy?", v: "Perseveren en la oración con acción de gracias.", c: "Colosenses 4:2" },
+    { id: "c51", q: "¿Qué bienaventuranza sentís que Jesús te está pidiendo vivir hoy con más fuerza?", v: "Bienaventurados los limpios de corazón, porque ellos verán a Dios.", c: "Mateo 5:8" },
+    { id: "c52", q: "Ser pobre de espíritu es reconocer que necesitamos a Dios. ¿Te sentís autosuficiente?", v: "Bienaventurados los pobres de espíritu.", c: "Mateo 5:3" },
+    { id: "c53", q: "¿Te animás a ser un constructor de paz en medio de las peleas de tus amigos?", v: "Bienaventurados los que trabajan por la paz.", c: "Mateo 5:9" },
+    { id: "c54", q: "Cuando sufrís una injusticia, ¿recordás que Jesús está de tu lado?", v: "Bienaventurados los que padecen persecución por causa de la justicia.", c: "Mateo 5:10" },
+    { id: "c55", q: "¿Qué significa para vos 'dar de comer al hambriento' en tu barrio hoy?", v: "Porque tuve hambre, y me disteis de comer.", c: "Mateo 25:35" },
+    { id: "c56", q: "Visitar a un enfermo es visitar a Jesús. ¿Conocés a alguien que necesite un llamado hoy?", v: "Estuve enfermo, y me visitasteis.", c: "Mateo 25:36" },
+    { id: "c57", q: "Dar buen consejo es una obra de misericordia. ¿Ayudás a tus amigos a elegir lo bueno?", v: "El que gana almas es sabio.", c: "Proverbios 11:30" },
+    { id: "c58", q: "¿Sos capaz de sufrir con paciencia los defectos de los demás por amor a Dios?", v: "Soportándoos unos a otros con amor.", c: "Efesios 4:2" },
+    { id: "c59", q: "Rezar por los difuntos es un acto de caridad. ¿Te acordás de tus seres queridos?", v: "Es un pensamiento santo y piadoso rogar por los difuntos.", c: "2 Macabeos 12:45" },
+    { id: "c60", q: "¿Cómo podés consolar al que está triste hoy con un gesto sencillo?", v: "Consolad, consolad a mi pueblo, dice vuestro Dios.", c: "Isaías 40:1" },
+    { id: "c61", q: "La Prudencia nos ayuda a elegir el bien. ¿Pensás antes de actuar o sos impulsivo?", v: "El avisado ve el mal y se esconde.", c: "Proverbios 22:3" },
+    { id: "c62", q: "La Justicia es dar a cada uno lo suyo. ¿Sos justo con el tiempo de tus padres?", v: "Haced justicia y juicio, que más agrada a Dios que el sacrificio.", c: "Proverbios 21:3" },
+    { id: "c63", q: "La Fortaleza nos ayuda a vencer el miedo. ¿Le pedís a Dios valentía?", v: "Mirad que os mando que os esforcéis y seáis valientes.", c: "Josué 1:9" },
+    { id: "c64", q: "La Templanza nos ayuda a dominarnos. ¿Podés decirle que no a un capricho hoy?", v: "El que se domina a sí mismo vale más que el que conquista ciudades.", c: "Proverbios 16:32" },
+    { id: "c65", q: "La Fe es un regalo. ¿Le das gracias a Dios por el don de creer?", v: "Auméntanos la fe.", c: "Lucas 17:5" },
+    { id: "c66", q: "La Esperanza es confiar en las promesas de Dios. ¿Te desanimás rápido?", v: "La esperanza no avergüenza.", c: "Romanos 5:5" },
+    { id: "c67", q: "La Caridad es amar como Jesús nos amó. ¿Es el amor el motor de tus acciones?", v: "El mayor de ellos es el amor.", c: "1 Corintios 13:13" },
+    { id: "c68", q: "Jesús dijo 'Yo soy el Camino'. ¿Sentís que vas por la senda que Él te marca?", v: "Yo soy el camino, y la verdad, y la vida.", c: "Juan 14:6" },
+    { id: "c69", q: "La Biblia es la carta de amor de Dios para vos. ¿La abrís a veces en casa?", v: "Lámpara es a mis pies tu palabra.", c: "Salmo 119:105" },
+    { id: "c70", q: "Dios nos habla en el silencio. ¿Hacés un ratito de silencio antes de dormir?", v: "Estad quietos, y conoced que yo soy Dios.", c: "Salmo 46:10" },
+    { id: "c71", q: "¿Qué le preguntarías a Jesús si lo tuvieras sentado frente a vos hoy?", v: "Maestro, ¿dónde vives? Venid y veréis.", c: "Juan 1:38-39" },
+    { id: "c72", q: "La humildad es andar en verdad. ¿Reconocés tus dones sin orgullo?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
+    { id: "c73", q: "Los mandamientos son caminos de libertad. ¿Ves alguno como una carga difícil?", v: "Sus mandamientos no son gravosos.", c: "1 Juan 5:3" },
+    { id: "c74", q: "Santificar las fiestas es celebrar la vida con Dios. ¿Cómo vivís el domingo?", v: "Este es el día que hizo el Señor.", c: "Salmo 118:24" },
+    { id: "c75", q: "No tomar el nombre de Dios en vano. ¿Respetás el nombre de lo sagrado?", v: "Santo y temible es su nombre.", c: "Salmo 111:9" },
+    { id: "c76", q: "¿Sos capaz de alegrarte de corazón por el éxito de un compañero?", v: "Gozaos con los que se gozan.", c: "Romanos 12:15" },
+    { id: "c77", q: "La pureza de intención es hacer las cosas para agradar a Dios y no para que te vean.", v: "Tu Padre que ve en lo secreto te recompensará.", c: "Mateo 6:6" },
+    { id: "c78", q: "Pedir perdón a un hermano es condición para que Dios nos perdone. ¿A quién debés perdonar?", v: "Ve primero a reconciliarte.", c: "Mateo 5:24" },
+    { id: "c79", q: "La generosidad no es dar lo que sobra. ¿Qué podés compartir hoy?", v: "Dios ama al dador alegre.", c: "2 Corintios 9:7" },
+    { id: "c80", q: "¿Te acordás de dar gracias a Dios por el plato de comida cada día?", v: "Dad gracias en todo.", c: "1 Tesalonicenses 5:18" },
+    { id: "c81", q: "La Confirmación nos hace soldados de Cristo. ¿Estás listo para dar testimonio?", v: "No te avergüences de dar testimonio.", c: "2 Timoteo 1:8" },
+    { id: "c82", q: "¿Cómo podés mostrar el amor de Jesús en el patio de tu escuela?", v: "En esto conocerán que sois mis discípulos.", c: "Juan 13:35" },
+    { id: "c83", q: "El Espíritu Santo nos regala la Alegría. ¿Sos una persona que transmite esperanza?", v: "Estad siempre gozosos.", c: "1 Tesalonicenses 5:16" },
+    { id: "c84", q: "La oración de petición es buena, pero ¿te acordás de adorar y alabar a Dios?", v: "Grande es el Señor.", c: "Salmo 145:3" },
+    { id: "c85", q: "San José fue el custodio de Jesús. ¿Le pedís que cuide a tu familia?", v: "José hizo como el ángel le había mandado.", c: "Mateo 1:24" },
+    { id: "c86", q: "Santa Ana y San Joaquín fueron los abuelos de Jesús. ¿Rezás por tus abuelos?", v: "La corona de los ancianos son los nietos.", c: "Proverbios 17:6" },
+    { id: "c87", q: "Cada Misa es un encuentro real con Jesús. ¿Lo saludás al entrar a la Capilla?", v: "El Señor está en su santo templo.", c: "Habacuc 2:20" },
+    { id: "c88", q: "El Sagrario es el lugar más importante. ¿Le hacés una genuflexión con amor?", v: "Para que se doble toda rodilla.", c: "Filipenses 2:10" },
+    { id: "c89", q: "Jesús dijo: 'Dejad que los niños vengan a mí'. ¿Sentís que sos su amigo preferido?", v: "De los tales es el reino de los cielos.", c: "Mateo 19:14" },
+    { id: "c90", q: "La obediencia por amor nos hace sabios. ¿Te cuesta obedecer a la primera?", v: "El que guarda el mandamiento guarda su alma.", c: "Proverbios 19:16" },
+    { id: "c91", q: "¿Qué significa para vos que Jesús te llame 'amigo' y no 'siervo'?", v: "Os he llamado amigos.", c: "Juan 15:15" },
+    { id: "c92", q: "El pecado es decirle 'No' al amor de Dios. ¿Qué te aleja hoy de Su abrazo?", v: "Me levantaré e iré a mi padre.", c: "Lucas 15:18" },
+    { id: "c93", q: "Jesús venció al mundo. ¿Confiás en Él cuando las cosas salen mal?", v: "Confiad, yo he vencido al mundo.", c: "Juan 16:33" },
+    { id: "c94", q: "La eternidad es vivir siempre con Dios. ¿Te imaginás cómo será el Cielo?", v: "Cosas que ojo no vio, ni oído oyó.", c: "1 Corintios 2:9" },
+    { id: "c95", q: "El Espíritu Santo nos da Sabiduría. ¿Ves las cosas como Dios las ve?", v: "Si alguno tiene falta de sabiduría, pídala a Dios.", c: "Santiago 1:5" },
+    { id: "c96", q: "La perseverancia es no bajar los brazos. ¿Seguís rezando aunque parezca que no pasa nada?", v: "El que persevere hasta el fin será salvado.", c: "Mateo 24:13" },
+    { id: "c97", q: "Nuestra vida es un regalo para los demás. ¿A quién vas a ayudar mañana?", v: "Ponga al servicio de los demás el don recibido.", c: "1 Pedro 4:10" },
+    { id: "c98", q: "Jesús es el Buen Pastor. ¿Reconocés Su voz entre tanto ruido?", v: "Mis ovejas oyen mi voz, y yo las conozco.", c: "Juan 10:27" },
+    { id: "c99", q: "¿Estás dispuesto a ser luz para el mundo hoy?", v: "Vosotros sois la luz del mundo.", c: "Mateo 5:14" },
+    { id: "c100", q: "Dios te ama personalmente por tu nombre. ¿Le das gracias por tu vida?", v: "Te he llamado por tu nombre; tú eres mío.", c: "Isaías 43:1" }
+];
 
-        // --- LÓGICA ---
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
-        const toast = document.getElementById('toast');
-        const nextBtn = document.getElementById('btn-next');
-        const shareBtn = document.getElementById('btn-share');
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+// Configuración de Sonido sutil
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(3000, Tone.now() + 0.3);
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(5000, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+// Inicialización de lógica con parámetro URL
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    document.getElementById("card").classList.add("is-flipped"); // Empieza mostrando el logo
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
-
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
-
-        card.addEventListener('click', flip);
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
         
-        nextBtn.addEventListener('click', () => {
-            if (!isFlipped) {
-                flip();
-                setTimeout(() => { random(); flip(); }, 600);
-            } else {
-                random();
-                flip();
-            }
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
+
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
+
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `📖 Carta de Catequesis - Capilla Santa Ana:\n\n"${c.q}"\n\n`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Catequesis Santa Ana', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
         });
+    }
+}
 
-        shareBtn.addEventListener('click', async () => {
-            if (currentIdx === -1) return;
-            const url = window.location.href;
-            const msg = `Te comparto esta carta de Catequesis de la Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            
-            if (navigator.share) {
-                try { await navigator.share({ title: 'Carta Catequesis', text: msg, url: url }); } catch (e) {}
-            } else {
-                navigator.clipboard.writeText(msg + url).then(() => {
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 3000);
-                });
-            }
-        });
+function initBG() {
+    const bg = document.getElementById("bg");
+    for(let i=0; i<25; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = "SANTA ANA";
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            for (let i = 0; i < 25; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = 'SANTA ANA';
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 15 + Math.random() * 20;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        window.onload = () => {
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
