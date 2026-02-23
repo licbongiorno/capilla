@@ -34,7 +34,7 @@
             font-family: 'Montserrat', sans-serif; 
             background-color: var(--fondo); 
             color: var(--texto); 
-            height: 100vh; 
+            min-height: 100vh; 
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -54,10 +54,14 @@
 
         .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
         .floating-word {
-            position: absolute; font-weight: 800; color: rgba(46, 125, 50, 0.1);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+            position: absolute; font-weight: 800; color: rgba(46, 125, 50, 0.08);
+            user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
         }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+        @keyframes floatUp { 
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; } 
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; } 
+        }
 
         /* NAVEGACIÓN ORIGINAL */
         nav { 
@@ -74,51 +78,56 @@
             padding: 20px; position: relative; z-index: 2;
         }
 
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
         .card { 
-            position: relative; width: 100%; height: 100%; border-radius: 25px; 
-            box-shadow: 0 20px 50px rgba(27, 94, 32, 0.15); transform-style: preserve-3d; 
-            transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; 
+            width: 100%; height: 100%; position: relative; border-radius: 25px; 
+            transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(.4, .2, .2, 1), opacity 0.3s; cursor: pointer; 
         }
         .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
 
         .face { 
             position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 40px; border: 2px solid var(--bosque-light); 
+            padding: 40px; border: 2px solid var(--bosque-light); text-align: center;
+            box-shadow: 0 20px 50px rgba(27, 94, 32, 0.15);
         }
 
-        /* FRENTE: BLANCO Y ORO CON DETALLE VERDE */
-        .front { background: var(--blanco); color: var(--primario); border-top: 10px solid var(--bosque); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; }
-        .verse-box { background: rgba(46, 125, 50, 0.05); padding: 20px; border-radius: 15px; width: 100%; border-left: 4px solid var(--acento); }
-        .verse-text { font-size: 0.9rem; font-style: italic; color: var(--texto); margin-bottom: 8px; line-height: 1.6; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--bosque-light); text-transform: uppercase; display: block; text-align: right; }
-
-        /* DORSO: VERDE BOSQUE Y ORO */
+        /* FRENTE: LA PREGUNTA */
+        .front { background: var(--blanco); border-top: 10px solid var(--bosque); }
+        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 5vw, 1.55rem); font-weight: 700; color: var(--primario); line-height: 1.4; }
+        
+        /* DORSO: EL VERSÍCULO */
         .back { background: radial-gradient(circle at 50% 0%, #2E7D32 0%, #1B5E20 100%); color: var(--blanco); transform: rotateY(180deg); }
-        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--acento); filter: drop-shadow(0 0 15px rgba(193,154,107,0.4)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; letter-spacing: 1px; }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--acento); filter: drop-shadow(0 0 15px rgba(193,154,107,0.4)); opacity: 0.9; }
+        .verse-text { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 4.5vw, 1.25rem); font-style: italic; margin-bottom: 15px; line-height: 1.5; color: var(--blanco); }
+        .verse-ref { font-weight: 800; font-size: .85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--acento); opacity: 0.9; }
 
-        /* BOTONES */
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn { 
-            padding: 16px 32px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; 
-            text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; transition: 0.3s;
-            display: flex; align-items: center; gap: 12px;
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1; padding: 16px; border-radius: 18px; border: none; font-family: 'Montserrat', sans-serif;
+            font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
+            transition: .3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
         .btn-main { background: var(--bosque); color: white; box-shadow: 0 8px 20px rgba(27, 94, 32, 0.3); }
-        .btn-main:hover { transform: translateY(-3px); background: var(--bosque-light); }
-        .btn-sec { background: var(--blanco); color: var(--primario); border: 1px solid var(--acento); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: var(--blanco); color: var(--primario); font-size: 1.3rem; border: 1px solid var(--acento); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
 
         .toast { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); 
             background: var(--bosque); color: white; padding: 12px 30px; border-radius: 50px; 
-            font-weight: 700; transition: 0.5s; z-index: 1000; 
+            font-weight: 700; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        footer { padding: 25px; text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--primario); font-weight: 600; }
+        footer { padding: 15px; text-align: center; font-size: 0.75rem; opacity: 0.7; color: var(--primario); font-weight: 600; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
@@ -135,30 +144,26 @@
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
                     <i class="fas fa-leaf"></i>
-                    <h2>Hermana Tierra</h2>
-                    <p style="text-transform:uppercase; letter-spacing:4px; font-size:11px; margin-top:15px; font-weight:800; opacity:0.9;">Cuidado de la Creación</p>
+                    <p id="v-text" class="verse-text"></p>
+                    <p id="v-ref" class="verse-ref"></p>
                 </div>
             </div>
         </div>
 
         <div class="actions">
-            <button class="btn btn-main" onclick="nextCard()"><i class="fas fa-seedling"></i> Otra Reflexión</button>
-            <button class="btn btn-sec" onclick="share()"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-seedling"></i> Siguiente</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
+    <div id="toast" class="toast">¡Enlace copiado! Listos para compartir.</div>
     <footer>© 2026 Capilla Santa Ana - "Alabado seas, mi Señor"</footer>
-    <div id="toast" class="toast">¡Reflexión compartida!</div>
 
     <script>
         const CARTAS = [
@@ -214,14 +219,9 @@
             { id: "ec-50", q: "Si hoy el Señor te preguntara: '¿Qué hiciste con el jardín que te di?', ¿qué le responderías?", v: "El que es fiel en lo poco, también en lo más es fiel.", c: "Lucas 16:10" }
         ];
 
-        let currentIdx = -1;
-        let isFlipped = true;
+        let currentIdx = 0;
+        let deck = [...CARTAS];
         let audioInit = false;
-
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
 
         const noise = new Tone.Noise("white").start();
         const filter = new Tone.Filter(100, "lowpass").toDestination();
@@ -236,47 +236,66 @@
             noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
         }
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
+        function initMazo() {
+            const params = new URLSearchParams(window.location.search);
+            const cardIdRequested = params.get("card");
+
+            if (cardIdRequested) {
+                const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+                if (foundIndex !== -1) {
+                    currentIdx = foundIndex;
+                } else {
+                    deck.sort(() => Math.random() - 0.5);
+                }
+            } else {
+                deck.sort(() => Math.random() - 0.5);
+            }
+            renderCard();
+        }
+
+        function renderCard() {
+            const c = CARTAS[currentIdx];
+            document.getElementById("q-text").innerText = c.q;
+            document.getElementById("v-text").innerText = `"${c.v}"`;
+            document.getElementById("v-ref").innerText = c.c;
+            document.getElementById("card").classList.remove("is-flipped"); 
         }
 
         function nextCard() {
-            if (!isFlipped) {
-                flip();
-                setTimeout(() => { random(); flip(); }, 600);
-            } else {
-                random();
-                flip();
-            }
+            const cardElement = document.getElementById("card");
+            cardElement.classList.add("slide-out");
+            
+            setTimeout(() => {
+                let next;
+                do {
+                    next = Math.floor(Math.random() * CARTAS.length);
+                } while (next === currentIdx);
+                
+                currentIdx = next;
+                renderCard();
+                cardElement.classList.remove("slide-out");
+            }, 300);
         }
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
-
-        function flip() {
+        function flipCard() {
             playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
+            document.getElementById("card").classList.toggle("is-flipped");
         }
 
-        function share() {
-            const url = window.location.href;
-            const msg = `🌿 Reflexión Hermana Tierra - Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
+        async function shareCard() {
+            const c = CARTAS[currentIdx];
+            const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+            const text = `🌿 Reflexión Hermana Tierra - Capilla Santa Ana:\n\n"${c.q}"\n\n`;
+
             if (navigator.share) {
-                navigator.share({ title: 'Hermana Tierra', text: msg, url: url });
+                try {
+                    await navigator.share({ title: 'Hermana Tierra', text: text, url: url });
+                } catch (e) { console.log("Compartir cancelado"); }
             } else {
-                navigator.clipboard.writeText(msg + url).then(() => {
-                    const toast = document.getElementById('toast');
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 3000);
+                navigator.clipboard.writeText(text + url).then(() => {
+                    const toast = document.getElementById("toast");
+                    toast.classList.add("show");
+                    setTimeout(() => toast.classList.remove("show"), 3000);
                 });
             }
         }
@@ -290,31 +309,32 @@
         }
 
         function initBG() {
-            const bg = document.getElementById('bg');
             const words = ['CREACIÓN', 'TIERRA', 'VIDA', 'PAZ', 'NATURALEZA', 'SANTA ANA'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 15 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
+            const bg = document.getElementById("bg");
+            for(let i=0; i<18; i++) {
+                const s = document.createElement("span");
+                s.className = "floating-word";
+                s.innerText = words[Math.floor(Math.random()*words.length)];
+                s.style.left = Math.random() * 100 + "vw";
+                s.style.fontSize = (16 + Math.random() * 30) + "px";
+                const duration = 15 + Math.random() * 25;
+                s.style.animation = `floatUp ${duration}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * duration}s`;
                 bg.appendChild(s);
             }
         }
 
-        card.addEventListener('click', flip);
+        document.getElementById("card").onclick = flipCard;
+        document.getElementById("btn-next").onclick = nextCard;
+        document.getElementById("btn-share").onclick = shareCard;
+
         window.onload = () => {
             if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.querySelector('.icon-btn i').classList.replace('fa-moon', 'fa-sun');
             }
             initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
+            initMazo();
         };
     </script>
 </body>
