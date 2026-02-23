@@ -13,57 +13,175 @@
 
     <style>
         :root {
-            --bg: #0d1b1e; /* Azul Petróleo Muy Oscuro */
-            --overlay: rgba(13, 27, 30, 0.85);
+            --bg1: #0d1b1e; /* Azul Petróleo Muy Oscuro */
+            --bg2: #1c313a;
             --card: #FFFBF5;
             --card-back: #A0522D; /* Terracota */
             --accent: #4DB6AC; /* verde azulado claro */
             --primario: #263238;
-            --texto: #37474f;
+            --texto: #E0E0E0;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--texto);
+        }
 
+        /* FONDO DINÁMICO */
         .main-background {
             position: fixed; inset: 0;
-            background: linear-gradient(var(--overlay), var(--overlay)), url('2.webp');
+            background: linear-gradient(rgba(13, 27, 30, 0.9), rgba(28, 49, 58, 0.92)), url('2.webp');
             background-size: cover; background-position: center; z-index: -1;
         }
 
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .floating-word {
-            position: absolute; font-weight: 800; color: rgba(160, 82, 45, 0.1);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(160, 82, 45, 0.08); /* Terracota transparente */
+            user-select: none;
+            white-space: nowrap;
         }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
 
-        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
-        .btn-home { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(160, 82, 45, 0.3);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(160, 82, 45, 0.15); border-color: var(--card-back); }
 
-        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
 
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
-        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        /* ESCENA DE LA CARTA */
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
         .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
 
-        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; border: 1px solid rgba(160, 82, 45, 0.2); }
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            border: 1px solid rgba(160, 82, 45, 0.2);
+        }
 
-        .front { background: var(--card); color: var(--texto); border-left: 10px solid var(--card-back); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; color: var(--primario); }
-        .verse-box { background: rgba(160, 82, 45, 0.08); padding: 18px; border-radius: 12px; width: 100%; border-right: 3px solid var(--card-back); }
-        .verse-text { font-size: 0.85rem; font-style: italic; color: #546E7A; margin-bottom: 8px; line-height: 1.6; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--card-back); text-transform: uppercase; display: block; text-align: right; }
+        /* FRENTE DE LA CARTA */
+        .front { background: var(--card); border-left: 10px solid var(--card-back); }
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            color: var(--primario);
+            line-height: 1.4;
+        }
         
-        .back { background: radial-gradient(circle at 50% 0%, #a0522d 0%, #5d2e1a 70%, #000 100%); color: #fff; transform: rotateY(180deg); }
-        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--accent); filter: drop-shadow(0 0 10px rgba(77,182,172,0.4)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; line-height: 1.1; }
+        /* DORSO DE LA CARTA */
+        .back { 
+            background: radial-gradient(circle at 50% 0%, #a0522d 0%, #5d2e1a 70%, #000 100%);
+            transform: rotateY(180deg); 
+            color: white; 
+        }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--accent); filter: drop-shadow(0 0 15px rgba(77, 182, 172, 0.4)); }
+        .verse {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1rem, 4.5vw, 1.15rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #FFFBF5;
+        }
+        .ref {
+            font-weight: 800;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            opacity: 0.9;
+        }
 
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        button { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; padding: 14px 24px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-main { background: var(--card-back); border-color: var(--card-back); color: white; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #001b1e; padding: 12px 30px; border-radius: 50px; font-weight: 800; transition: 0.5s; z-index: 1000; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { background: var(--card-back); border-color: var(--card-back); color: white; box-shadow: 0 8px 20px rgba(160, 82, 45, 0.4); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.05); color: white; font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(77, 182, 172, 0.15); border-color: var(--accent); color: var(--accent); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--accent); color: #001b1e; padding: 12px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--card-back);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -72,174 +190,195 @@
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Capilla Santa Ana</a>
-        <div class="nav-socials">
-            <a href="https://www.facebook.com/groups/778166455638473" target="_blank" style="color:white; margin-right:15px;"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank" style="color:white;"><i class="fab fa-instagram"></i></a>
-        </div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
                     <i class="fas fa-hand-holding-heart"></i>
-                    <h2>Corazón de<br>Servidor</h2>
-                    <p style="color:var(--accent); letter-spacing:3px; font-weight:700; font-size:10px; margin-top:15px; text-transform:uppercase;">Comunidad Santa Ana</p>
+                    <p id="v-text" class="verse"></p>
+                    <p id="v-ref" class="ref"></p>
                 </div>
             </div>
         </div>
+
         <div class="actions">
-            <button id="btn-next" class="btn-main"><i class="fas fa-hammer"></i> Nueva Reflexión</button>
-            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-hammer"></i> Nueva Reflexión</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">¡Enlace copiado para la comunidad!</div>
+    <div id="toast">¡Enlace copiado!</div>
 
-    <script>
-        const CARTAS = [
-            { id: "sv-1", q: "¿Sirves para que Dios sea glorificado, o buscas inconscientemente el reconocimiento de los demás?", v: "No a nosotros, Señor, sino a tu nombre da gloria.", c: "Salmo 115:1" },
-            { id: "sv-2", q: "¿Te permites descansar sabiendo que la obra es de Dios y no depende únicamente de tus fuerzas?", v: "Es en vano que madruguen... pues Dios da el descanso a sus amados.", c: "Salmo 127:2" },
-            { id: "sv-3", q: "Cuando el servicio en la Capilla te agota, ¿vuelves a la fuente que es la oración o sigues por inercia?", v: "Vengan a mí los que están cansados y agobiados, que yo los aliviaré.", c: "Mateo 11:28" },
-            { id: "sv-4", q: "¿Eres capaz de trabajar en equipo aceptando que otros tengan ideas distintas a las tuyas?", v: "Sed de un mismo sentir, teniendo el mismo amor, unidos en alma.", c: "Filipenses 2:2" },
-            { id: "sv-5", q: "¿Tu servicio nace de la alegría del encuentro con Cristo o del miedo a decir 'no' a un compromiso?", v: "Cada uno dé como propuso en su corazón... porque Dios ama al dador alegre.", c: "2 Corintios 9:7" },
-            { id: "sv-6", q: "¿Estás descuidando a tu propia familia (tu primera iglesia) por exceso de actividades parroquiales?", v: "El que no provee para los suyos, y especialmente para los de su casa, ha negado la fe.", c: "1 Timoteo 5:8" },
-            { id: "sv-7", q: "¿Cómo manejas la frustración cuando un proyecto en la comunidad no sale como esperabas?", v: "Sabemos que Dios dispone todas las cosas para el bien de los que lo aman.", c: "Romanos 8:28" },
-            { id: "sv-8", q: "El verdadero servidor no elige qué hacer, sino que está disponible. ¿Qué te cuesta más aceptar hoy?", v: "He aquí la esclava del Señor; hágase en mí según tu palabra.", c: "Lucas 1:38" },
-            { id: "sv-9", q: "¿Ves en el hermano difícil de tu grupo un obstáculo o una oportunidad para practicar la caridad?", v: "Sopórtense unos a otros con amor.", c: "Efesios 4:2" },
-            { id: "sv-10", q: "Como catequista o misionero, ¿hablas de Dios o dejas que Dios hable a través de tu vida?", v: "Ya no vivo yo, mas vive Cristo en mí.", c: "Gálatas 2:20" },
-            { id: "sv-11", q: "¿Has dado gracias hoy por el don de poder servir a los demás en Santa Ana?", v: "Doy gracias a Cristo Jesús... que me tuvo por fiel, poniéndome en el ministerio.", c: "1 Timoteo 1:12" },
-            { id: "sv-12", q: "¿Sos capaz de retirarte a tiempo para dejar que otros nuevos tomen la posta y crezcan?", v: "Es necesario que Él crezca, y que yo mengüe.", c: "Juan 3:30" },
-            { id: "sv-13", q: "En el coro, ¿cantas para que se luzca tu voz o para elevar el alma de la asamblea?", v: "Cantad con gracia en vuestros corazones al Señor.", c: "Colosenses 3:16" },
-            { id: "sv-14", q: "¿Cómo respondes a las críticas sobre tu servicio: con orgullo o con humildad de corazón?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
-            { id: "sv-15", q: "El cansancio apostólico es sagrado si se ofrece. ¿Le has entregado hoy tus pies cansados al Señor?", v: "¡Cuán hermosos son los pies de los que anuncian la paz!", c: "Romanos 10:15" },
-            { id: "sv-16", q: "¿Rezas por tus compañeros de servicio, especialmente por aquellos con los que menos coincides?", v: "Oren unos por otros.", c: "Santiago 5:16" },
-            { id: "sv-17", q: "Servir en Cáritas es tocar la carne de Cristo. ¿Miras a los ojos a quien recibe tu ayuda?", v: "Lo que hicisteis con uno de estos mis hermanos más pequeños, conmigo lo hicisteis.", c: "Mateo 25:40" },
-            { id: "sv-18", q: "¿Te sientes dueño/a de tu lugar en la parroquia o te sientes un administrador de paso?", v: "Somos siervos inútiles; hemos hecho lo que debíamos hacer.", c: "Lucas 17:10" },
-            { id: "sv-19", q: "¿Buscas la unidad de la comunidad o tus comentarios alimentan la división?", v: "Os ruego que habléis todos una misma cosa, y que no haya entre vosotros divisiones.", c: "1 Corintios 1:10" },
-            { id: "sv-20", q: "Cuando no hay ganas de ir a servir, ¿qué es lo que te mueve a levantarte?", v: "El amor de Cristo nos apremia.", c: "2 Corintios 5:14" },
-            { id: "sv-21", q: "¿Sabes poner límites sanos a tus tareas para no terminar odiando lo que antes amabas?", v: "Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.", c: "Eclesiastés 3:1" },
-            { id: "sv-22", q: "¿Qué lugar ocupa el silencio en tu vida de servidor? Sin silencio, el servicio se vuelve ruido.", v: "En el descanso y en el silencio estará vuestra fortaleza.", c: "Isaías 30:15" },
-            { id: "sv-23", q: "¿Confías en que Dios capacita a los que llama, aunque te sientas insuficiente?", v: "Nuestra capacidad proviene de Dios.", c: "2 Corintios 3:5" },
-            { id: "sv-24", q: "¿Cómo vives el anonimato? ¿Puedes servir sabiendo que nadie se dará cuenta?", v: "Que no sepa tu mano izquierda lo que hace tu derecha.", c: "Mateo 6:3" },
-            { id: "sv-25", q: "En las reuniones de equipo, ¿escuchas con el corazón o solo esperas tu turno para hablar?", v: "Sea cada uno pronto para oír, tardo para hablar.", c: "Santiago 1:19" },
-            { id: "sv-26", q: "¿Te comparas con otros servidores o celebras los dones que Dios les dio a ellos?", v: "Hay diversidad de dones, pero el Espíritu es el mismo.", c: "1 Corintios 12:4" },
-            { id: "sv-27", q: "¿Cómo llevas la cruz de la incomprensión dentro de la misma iglesia?", v: "Si el mundo os aborrece, sabed que a mí me ha aborrecido antes que a vosotros.", c: "Juan 15:18" },
-            { id: "sv-28", q: "El servicio más grande es el que no se ve. ¿Haces las tareas humildes con el mismo amor que las grandes?", v: "El que quiera ser el primero, será el servidor de todos.", c: "Marcos 10:44" },
-            { id: "sv-29", q: "¿Estás orando por tu párroco y por los líderes de tu comunidad?", v: "Rogad por nosotros.", c: "1 Tesalonicenses 5:25" },
-            { id: "sv-30", q: "¿Tu formación espiritual va a la par de tu formación técnica para el servicio?", v: "Procura con diligencia presentarte a Dios aprobado, como obrero que no tiene de qué avergonzarse.", c: "2 Timoteo 2:15" },
-            { id: "sv-31", q: "Cuando cometes un error en la tarea parroquial, ¿te hundes en la culpa o pides perdón y sigues?", v: "Siete veces cae el justo, y otras tantas se levanta.", c: "Proverbios 24:16" },
-            { id: "sv-32", q: "¿Ves tu servicio como una carga o como un regalo de la misericordia de Dios?", v: "Teniendo nosotros este ministerio según la misericordia que hemos recibido, no desmayamos.", c: "2 Corintios 4:1" },
-            { id: "sv-33", q: "¿Sabes reírte de ti mismo para no tomarte el servicio con una seriedad excesiva?", v: "El corazón alegre hermosea el rostro.", c: "Proverbios 15:13" },
-            { id: "sv-34", q: "¿Estás atento a los servidores que están desanimados para darles una palabra de aliento?", v: "Consolaos unos a otros, y edificaos unos a otros.", c: "1 Tesalonicenses 5:11" },
-            { id: "sv-35", q: "A veces sembramos y otros cosechan. ¿Aceptas con paz no ver los frutos de tu trabajo?", v: "Uno es el que siembra, y otro es el que siega.", c: "Juan 4:37" },
-            { id: "sv-36", q: "¿Cómo es tu relación con la Eucaristía? ¿Es el combustible de tu entrega?", v: "El que come mi carne y bebe mi sangre, en mí permanece.", c: "Juan 6:56" },
-            { id: "sv-37", q: "¿Eres dócil a las sugerencias de mejora o te pones a la defensiva?", v: "El que ama la instrucción ama la sabiduría.", c: "Proverbios 12:1" },
-            { id: "sv-38", q: "Frente a la burocracia o los problemas de organización, ¿mantienes la paz interior?", v: "Dios no es Dios de confusión, sino de paz.", c: "1 Corintios 14:33" },
-            { id: "sv-39", q: "¿Pides la ayuda del Espíritu Santo antes de empezar cada tarea en la Capilla?", v: "Sin mí nada podéis hacer.", c: "Juan 15:5" },
-            { id: "sv-40", q: "¿Cómo vives la hospitalidad con los que llegan por primera vez a Santa Ana?", v: "No os olvidéis de la hospitalidad, porque por ella algunos hospedaron ángeles sin saberlo.", c: "Hebreos 13:2" },
-            { id: "sv-41", q: "¿Tu servicio te hace más humilde o te hace sentir más 'importante'?", v: "No hagáis nada por rivalidad o vanagloria.", c: "Filipenses 2:3" },
-            { id: "sv-42", q: "¿Estás dispuesto a dejar tu puesto si Dios te pide servir en otro lado menos lucido?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" },
-            { id: "sv-43", q: "¿Cómo cuidas la limpieza y el orden de las cosas sagradas que te toca usar?", v: "Limpiaos los que lleváis los utensilios del Señor.", c: "Isaías 52:11" },
-            { id: "sv-44", q: "¿Sabes descansar en Dios cuando los resultados humanos son escasos?", v: "Estad quietos, y conoced que yo soy Dios.", c: "Salmo 46:10" },
-            { id: "sv-45", q: "¿Reconoces que eres solo un instrumento en las manos del Alfarero?", v: "He aquí que como el barro en la mano del alfarero, así sois vosotros en mi mano.", c: "Jeremías 18:6" },
-            { id: "sv-46", q: "¿Te permites ser ayudado por otros cuando ya no tienes fuerzas?", v: "Cargad con mi yugo... porque mi yugo es suave y mi carga ligera.", c: "Mateo 11:29-30" },
-            { id: "sv-47", q: "¿Cómo es tu caridad con los servidores más antiguos o los más jóvenes?", v: "Honraos unos a otros.", c: "Romanos 12:10" },
-            { id: "sv-48", q: "¿Ves el cansancio del servicio como una ofrenda de amor?", v: "Me gastaré y me desgastaré por vuestras almas.", c: "2 Corintios 12:15" },
-            { id: "sv-49", q: "¿Recuerdas que el primer 'servicio' es simplemente estar a los pies de Jesús?", v: "María ha escogido la mejor parte, la cual no le será quitada.", c: "Lucas 10:42" },
-            { id: "sv-50", q: "Si hoy terminara tu misión en la tierra, ¿podrías decir: 'He peleado la buena batalla'?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
-        ];
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
-        const toast = document.getElementById('toast');
-        const nextBtn = document.getElementById('btn-next');
-        const shareBtn = document.getElementById('btn-share');
+<script>
+// 50 Cartas para Servidores
+const CARTAS = [
+    { id: "sv-1", q: "¿Sirves para que Dios sea glorificado, o buscas inconscientemente el reconocimiento de los demás?", v: "No a nosotros, Señor, sino a tu nombre da gloria.", c: "Salmo 115:1" },
+    { id: "sv-2", q: "¿Te permites descansar sabiendo que la obra es de Dios y no depende únicamente de tus fuerzas?", v: "Es en vano que madruguen... pues Dios da el descanso a sus amados.", c: "Salmo 127:2" },
+    { id: "sv-3", q: "Cuando el servicio en la Capilla te agota, ¿vuelves a la fuente que es la oración o sigues por inercia?", v: "Vengan a mí los que están cansados y agobiados, que yo los aliviaré.", c: "Mateo 11:28" },
+    { id: "sv-4", q: "¿Eres capaz de trabajar en equipo aceptando que otros tengan ideas distintas a las tuyas?", v: "Sed de un mismo sentir, teniendo el mismo amor, unidos en alma.", c: "Filipenses 2:2" },
+    { id: "sv-5", q: "¿Tu servicio nace de la alegría del encuentro con Cristo o del miedo a decir 'no' a un compromiso?", v: "Cada uno dé como propuso en su corazón... porque Dios ama al dador alegre.", c: "2 Corintios 9:7" },
+    { id: "sv-6", q: "¿Estás descuidando a tu propia familia (tu primera iglesia) por exceso de actividades parroquiales?", v: "El que no provee para los suyos, y especialmente para los de su casa, ha negado la fe.", c: "1 Timoteo 5:8" },
+    { id: "sv-7", q: "¿Cómo manejas la frustración cuando un proyecto en la comunidad no sale como esperabas?", v: "Sabemos que Dios dispone todas las cosas para el bien de los que lo aman.", c: "Romanos 8:28" },
+    { id: "sv-8", q: "El verdadero servidor no elige qué hacer, sino que está disponible. ¿Qué te cuesta más aceptar hoy?", v: "He aquí la esclava del Señor; hágase en mí según tu palabra.", c: "Lucas 1:38" },
+    { id: "sv-9", q: "¿Ves en el hermano difícil de tu grupo un obstáculo o una oportunidad para practicar la caridad?", v: "Sopórtense unos a otros con amor.", c: "Efesios 4:2" },
+    { id: "sv-10", q: "Como catequista o misionero, ¿hablas de Dios o dejas que Dios hable a través de tu vida?", v: "Ya no vivo yo, mas vive Cristo en mí.", c: "Gálatas 2:20" },
+    { id: "sv-11", q: "¿Has dado gracias hoy por el don de poder servir a los demás en Santa Ana?", v: "Doy gracias a Cristo Jesús... que me tuvo por fiel, poniéndome en el ministerio.", c: "1 Timoteo 1:12" },
+    { id: "sv-12", q: "¿Sos capaz de retirarte a tiempo para dejar que otros nuevos tomen la posta y crezcan?", v: "Es necesario que Él crezca, y que yo mengüe.", c: "Juan 3:30" },
+    { id: "sv-13", q: "En el coro, ¿cantas para que se luzca tu voz o para elevar el alma de la asamblea?", v: "Cantad con gracia en vuestros corazones al Señor.", c: "Colosenses 3:16" },
+    { id: "sv-14", q: "¿Cómo respondes a las críticas sobre tu servicio: con orgullo o con humildad de corazón?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
+    { id: "sv-15", q: "El cansancio apostólico es sagrado si se ofrece. ¿Le has entregado hoy tus pies cansados al Señor?", v: "¡Cuán hermosos son los pies de los que anuncian la paz!", c: "Romanos 10:15" },
+    { id: "sv-16", q: "¿Rezas por tus compañeros de servicio, especialmente por aquellos con los que menos coincides?", v: "Oren unos por otros.", c: "Santiago 5:16" },
+    { id: "sv-17", q: "Servir en Cáritas es tocar la carne de Cristo. ¿Miras a los ojos a quien recibe tu ayuda?", v: "Lo que hicisteis con uno de estos mis hermanos más pequeños, conmigo lo hicisteis.", c: "Mateo 25:40" },
+    { id: "sv-18", q: "¿Te sientes dueño/a de tu lugar en la parroquia o te sientes un administrador de paso?", v: "Somos siervos inútiles; hemos hecho lo que debíamos hacer.", c: "Lucas 17:10" },
+    { id: "sv-19", q: "¿Buscas la unidad de la comunidad o tus comentarios alimentan la división?", v: "Os ruego que habléis todos una misma cosa, y que no haya entre vosotros divisiones.", c: "1 Corintios 1:10" },
+    { id: "sv-20", q: "Cuando no hay ganas de ir a servir, ¿qué es lo que te mueve a levantarte?", v: "El amor de Cristo nos apremia.", c: "2 Corintios 5:14" },
+    { id: "sv-21", q: "¿Sabes poner límites sanos a tus tareas para no terminar odiando lo que antes amabas?", v: "Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.", c: "Eclesiastés 3:1" },
+    { id: "sv-22", q: "¿Qué lugar ocupa el silencio en tu vida de servidor? Sin silencio, el servicio se vuelve ruido.", v: "En el descanso y en el silencio estará vuestra fortaleza.", c: "Isaías 30:15" },
+    { id: "sv-23", q: "¿Confías en que Dios capacita a los que llama, aunque te sientas insuficiente?", v: "Nuestra capacidad proviene de Dios.", c: "2 Corintios 3:5" },
+    { id: "sv-24", q: "¿Cómo vives el anonimato? ¿Puedes servir sabiendo que nadie se dará cuenta?", v: "Que no sepa tu mano izquierda lo que hace tu derecha.", c: "Mateo 6:3" },
+    { id: "sv-25", q: "En las reuniones de equipo, ¿escuchas con el corazón o solo esperas tu turno para hablar?", v: "Sea cada uno pronto para oír, tardo para hablar.", c: "Santiago 1:19" },
+    { id: "sv-26", q: "¿Te comparas con otros servidores o celebras los dones que Dios les dio a ellos?", v: "Hay diversidad de dones, pero el Espíritu es el mismo.", c: "1 Corintios 12:4" },
+    { id: "sv-27", q: "¿Cómo llevas la cruz de la incomprensión dentro de la misma iglesia?", v: "Si el mundo os aborrece, sabed que a mí me ha aborrecido antes que a vosotros.", c: "Juan 15:18" },
+    { id: "sv-28", q: "El servicio más grande es el que no se ve. ¿Haces las tareas humildes con el mismo amor que las grandes?", v: "El que quiera ser el primero, será el servidor de todos.", c: "Marcos 10:44" },
+    { id: "sv-29", q: "¿Estás orando por tu párroco y por los líderes de tu comunidad?", v: "Rogad por nosotros.", c: "1 Tesalonicenses 5:25" },
+    { id: "sv-30", q: "¿Tu formación espiritual va a la par de tu formación técnica para el servicio?", v: "Procura con diligencia presentarte a Dios aprobado, como obrero que no tiene de qué avergonzarse.", c: "2 Timoteo 2:15" },
+    { id: "sv-31", q: "Cuando cometes un error en la tarea parroquial, ¿te hundes en la culpa o pides perdón y sigues?", v: "Siete veces cae el justo, y otras tantas se levanta.", c: "Proverbios 24:16" },
+    { id: "sv-32", q: "¿Ves tu servicio como una carga o como un regalo de la misericordia de Dios?", v: "Teniendo nosotros este ministerio según la misericordia que hemos recibido, no desmayamos.", c: "2 Corintios 4:1" },
+    { id: "sv-33", q: "¿Sabes reírte de ti mismo para no tomarte el servicio con una seriedad excesiva?", v: "El corazón alegre hermosea el rostro.", c: "Proverbios 15:13" },
+    { id: "sv-34", q: "¿Estás atento a los servidores que están desanimados para darles una palabra de aliento?", v: "Consolaos unos a otros, y edificaos unos a otros.", c: "1 Tesalonicenses 5:11" },
+    { id: "sv-35", q: "A veces sembramos y otros cosechan. ¿Aceptas con paz no ver los frutos de tu trabajo?", v: "Uno es el que siembra, y otro es el que siega.", c: "Juan 4:37" },
+    { id: "sv-36", q: "¿Cómo es tu relación con la Eucaristía? ¿Es el combustible de tu entrega?", v: "El que come mi carne y bebe mi sangre, en mí permanece.", c: "Juan 6:56" },
+    { id: "sv-37", q: "¿Eres dócil a las sugerencias de mejora o te pones a la defensiva?", v: "El que ama la instrucción ama la sabiduría.", c: "Proverbios 12:1" },
+    { id: "sv-38", q: "Frente a la burocracia o los problemas de organización, ¿mantienes la paz interior?", v: "Dios no es Dios de confusión, sino de paz.", c: "1 Corintios 14:33" },
+    { id: "sv-39", q: "¿Pides la ayuda del Espíritu Santo antes de empezar cada tarea en la Capilla?", v: "Sin mí nada podéis hacer.", c: "Juan 15:5" },
+    { id: "sv-40", q: "¿Cómo vives la hospitalidad con los que llegan por primera vez a Santa Ana?", v: "No os olvidéis de la hospitalidad, porque por ella algunos hospedaron ángeles sin saberlo.", c: "Hebreos 13:2" },
+    { id: "sv-41", q: "¿Tu servicio te hace más humilde o te hace sentir más 'importante'?", v: "No hagáis nada por rivalidad o vanagloria.", c: "Filipenses 2:3" },
+    { id: "sv-42", q: "¿Estás dispuesto a dejar tu puesto si Dios te pide servir en otro lado menos lucido?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" },
+    { id: "sv-43", q: "¿Cómo cuidas la limpieza y el orden de las cosas sagradas que te toca usar?", v: "Limpiaos los que lleváis los utensilios del Señor.", c: "Isaías 52:11" },
+    { id: "sv-44", q: "¿Sabes descansar en Dios cuando los resultados humanos son escasos?", v: "Estad quietos, y conoced que yo soy Dios.", c: "Salmo 46:10" },
+    { id: "sv-45", q: "¿Reconoces que eres solo un instrumento en las manos del Alfarero?", v: "He aquí que como el barro en la mano del alfarero, así sois vosotros en mi mano.", c: "Jeremías 18:6" },
+    { id: "sv-46", q: "¿Te permites ser ayudado por otros cuando ya no tienes fuerzas?", v: "Cargad con mi yugo... porque mi yugo es suave y mi carga ligera.", c: "Mateo 11:29-30" },
+    { id: "sv-47", q: "¿Cómo es tu caridad con los servidores más antiguos o los más jóvenes?", v: "Honraos unos a otros.", c: "Romanos 12:10" },
+    { id: "sv-48", q: "¿Ves el cansancio del servicio como una ofrenda de amor?", v: "Me gastaré y me desgastaré por vuestras almas.", c: "2 Corintios 12:15" },
+    { id: "sv-49", q: "¿Recuerdas que el primer 'servicio' es simplemente estar a los pies de Jesús?", v: "María ha escogido la mejor parte, la cual no le será quitada.", c: "Lucas 10:42" },
+    { id: "sv-50", q: "Si hoy terminara tu misión en la tierra, ¿podrías decir: 'He peleado la buena batalla'?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
+];
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+// Configuración de Sonido
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(4500, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(4500, Tone.now() + 0.3);
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
+
+// Inicialización
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    // Remueve la clase para que inicie mostrando la pregunta de frente
+    document.getElementById("card").classList.remove("is-flipped"); 
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+        
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
 
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
 
-        card.addEventListener('click', flip);
-        nextBtn.addEventListener('click', () => {
-            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
-            else { random(); flip(); }
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `🛠️ Reflexión para servidores - Capilla Santa Ana:\n\n"${c.q}"\n\n`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Corazón de Servidor', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
         });
+    }
+}
 
-        shareBtn.addEventListener('click', async () => {
-            if (currentIdx === -1) return;
-            const url = window.location.href;
-            const msg = `🛠️ Reflexión para servidores - Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            if (navigator.share) { try { await navigator.share({ title: 'Servidores', text: msg, url: url }); } catch (e) {} }
-            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
-        });
+function initBG() {
+    const words = ['SERVICIO', 'HUMILDAD', 'ENTREGA', 'SANTA ANA', 'MISIÓN', 'COMUNIDAD', 'AMOR'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 25;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['SERVICIO', 'HUMILDAD', 'ENTREGA', 'SANTA ANA', 'MISIÓN'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 15 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        window.onload = () => {
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
