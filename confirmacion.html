@@ -7,239 +7,372 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
         :root {
-            --bg: #0a0a0b;
+            --bg1: #0a0a0b;
+            --bg2: #1a0f0a;
             --card: #FFFBF5;
             --card-back: #2b1d17;
             --accent: #E67E22; /* Color fuego/viento */
             --accent-hover: #D35400;
             --primario: #4E342E;
+            --texto: #E0E0E0;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
-
-        .main-background {
-            position: fixed; inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('2.webp');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
-        .floating-word {
-            position: absolute; font-weight: 800; color: rgba(230, 126, 34, 0.05);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
-        }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
-
-        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
-        .btn-home { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .btn-home:hover { color: var(--accent); }
-
-        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
-        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
-        .card.is-flipped { transform: rotateY(180deg); }
-
-        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; }
-
-        .front { background: var(--card); color: var(--primario); border-left: 10px solid var(--accent); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
-        .verse-box { background: rgba(230, 126, 34, 0.08); padding: 15px; border-radius: 12px; width: 100%; border-right: 3px solid var(--accent); }
-        .verse-text { font-size: 0.85rem; font-style: italic; color: #444; margin-bottom: 5px; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; display: block; text-align: right; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        .back { background: radial-gradient(circle at 50% 0%, #3e2723 0%, #1a0f0a 70%, #000 100%); color: var(--accent); transform: rotateY(180deg); border: 2px dashed rgba(230, 126, 34, 0.3); }
-        .back i { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(230,126,34,0.5)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0; line-height: 1.1; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--texto);
+        }
 
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        button { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 15px 25px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-main { background: var(--accent); border-color: var(--accent); color: #fff; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.5s; z-index: 1000; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(230, 126, 34, 0.08); /* Fuego transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.2); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
+
+        /* ESCENA DE LA CARTA */
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
+            cursor: pointer;
+        }
+        .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* FRENTE DE LA CARTA */
+        .front { background: var(--card); border-top: 10px solid var(--accent); }
+        
+        /* DORSO DE LA CARTA */
+        .back { 
+            background: radial-gradient(circle at 50% 0%, #3e2723 0%, #1a0f0a 70%, #000 100%);
+            transform: rotateY(180deg); 
+            color: white; 
+            border: 2px dashed rgba(230, 126, 34, 0.3);
+        }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            color: var(--primario);
+            line-height: 1.4;
+        }
+        
+        .verse {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 4.5vw, 1.25rem);
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #F5F5F0;
+        }
+        
+        .ref {
+            font-weight: 800;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            opacity: 0.9;
+        }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { background: var(--accent); color: white; box-shadow: 0 8px 20px rgba(230, 126, 34, 0.3); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 1.3rem; }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px;
+            font-weight: 700; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="main-background"></div>
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Volver a la Web</a>
-        <div class="nav-socials">
-            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
-        </div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
-                    <i class="fas fa-fire-alt"></i>
-                    <h2>Sello del<br>Espíritu</h2>
-                    <p>Confirmación Santa Ana</p>
+                    <i class="fas fa-fire-alt" style="font-size:4rem;margin-bottom:20px; opacity: 0.9; color: var(--accent); filter: drop-shadow(0 0 15px rgba(230,126,34,0.5));"></i>
+                    <p id="v-text" class="verse"></p>
+                    <p id="v-ref" class="ref"></p>
                 </div>
             </div>
         </div>
+
         <div class="actions">
-            <button id="btn-next" class="btn-main"><i class="fas fa-wind"></i> Invocar otra Carta</button>
-            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-wind"></i> Invocar otra</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">¡Enlace copiado!</div>
+    <div id="toast">¡Enlace copiado! Listos para compartir.</div>
 
-    <script>
-        const CARTAS = [
-            { id: "cf-1", q: "¿Estás listo para dejar de ser un espectador y convertirte en un protagonista de la fe en tu comunidad?", v: "Ustedes son la sal de la tierra y la luz del mundo.", c: "Mateo 5:13" },
-            { id: "cf-2", q: "¿Qué significa para vos recibir el mismo Espíritu que impulsó a los Apóstoles a salir del miedo en Pentecostés?", v: "Se les aparecieron lenguas como de fuego y se posaron sobre cada uno de ellos.", c: "Hechos 2:3" },
-            { id: "cf-3", q: "El Don de Fortaleza: ¿Le pedís al Espíritu Santo valor para defender tus valores cristianos frente a las burlas?", v: "No te avergüences de dar testimonio de nuestro Señor.", c: "2 Timoteo 1:8" },
-            { id: "cf-4", q: "El Don de Sabiduría: ¿Buscás ver las cosas con los ojos de Dios o te dejás llevar por las modas del mundo?", v: "Si a alguno le falta sabiduría, pídasela a Dios.", c: "Santiago 1:5" },
-            { id: "cf-5", q: "En la Confirmación el Obispo te ungirá con el Santo Crisma. ¿Sos consciente de que ahora llevás 'el aroma de Cristo'?", v: "Somos para Dios el buen olor de Cristo.", c: "2 Corintios 2:15" },
-            { id: "cf-6", q: "¿Qué compromiso real estás dispuesto a asumir en la Capilla Santa Ana después de confirmarte?", v: "Cada uno ponga al servicio de los demás el don que ha recibido.", c: "1 Pedro 4:10" },
-            { id: "cf-7", q: "¿Cómo podés ser un 'testigo de Cristo' en tu grupo de amigos sin necesidad de dar discursos, solo con tu ejemplo?", v: "Ustedes serán mis testigos hasta los confines de la tierra.", c: "Hechos 1:8" },
-            { id: "cf-8", q: "El Don de Consejo: ¿Acudís al Espíritu Santo antes de tomar una decisión que puede cambiar tu futuro?", v: "El Paráclito les enseñará todas las cosas.", c: "Juan 14:26" },
-            { id: "cf-9", q: "La Confirmación completa la gracia del Bautismo. ¿Sentís que tu fe ha crecido desde que eras niño?", v: "Cuando yo era niño, hablaba como niño... pero cuando fui hombre, dejé las cosas de niño.", c: "1 Corintios 13:11" },
-            { id: "cf-10", q: "¿Rezás habitualmente pidiendo los Frutos del Espíritu (paz, alegría, paciencia, bondad)?", v: "El fruto del Espíritu es amor, alegría, paz, paciencia.", c: "Gálatas 5:22" },
-            { id: "cf-11", q: "El Don de Piedad: ¿Ves a Dios como un Juez lejano o como un Padre tierno con el que podés hablar con confianza?", v: "Ustedes han recibido un espíritu de hijos adoptivos, que nos hace exclamar: ¡Abba, Padre!", c: "Romanos 8:15" },
-            { id: "cf-12", q: "Elegir un nombre de Santo para la Confirmación es elegir un modelo. ¿Qué virtud de tu santo querés imitar?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
-            { id: "cf-13", q: "El Padrino o Madrina debe ser tu guía. ¿Lo elegiste por amistad social o porque te ayuda a estar cerca de Dios?", v: "El hierro con hierro se afila, y el hombre con el rostro de su amigo.", c: "Proverbios 27:17" },
-            { id: "cf-14", q: "El Don de Entendimiento: ¿Le pedís al Espíritu que te ayude a comprender las verdades de la Biblia cuando las leés?", v: "Entonces les abrió la mente para que comprendieran las Escrituras.", c: "Lucas 24:45" },
-            { id: "cf-15", q: "¿Estás dispuesto a perdonar a quienes te han herido, como señal de que el Espíritu de Amor vive en vos?", v: "Sean bondadosos y compasivos unos con otros, perdonándose mutuamente.", c: "Efesios 4:32" },
-            { id: "cf-16", q: "Confirmarse es decir 'Sí' a la Iglesia. ¿Te sentís responsable de la misión de la Capilla Santa Ana?", v: "Ustedes son el cuerpo de Cristo, y cada uno es un miembro de él.", c: "1 Corintios 12:27" },
-            { id: "cf-17", q: "El Don de Ciencia: ¿Podés descubrir la mano de Dios en la belleza de la naturaleza y en los avances de la ciencia?", v: "Los cielos cuentan la gloria de Dios.", c: "Salmo 19:1" },
-            { id: "cf-18", q: "El Don de Temor de Dios: No es miedo, es respeto y asombro. ¿Te duele ofender a Dios porque lo amás?", v: "El principio de la sabiduría es el temor del Señor.", c: "Proverbios 1:7" },
-            { id: "cf-19", q: "¿Cómo pensás alimentar tu fe después de la ceremonia? ¿Vas a seguir viniendo a la Eucaristía?", v: "El que come mi carne y bebe mi sangre tiene vida eterna.", c: "Juan 6:54" },
-            { id: "cf-20", q: "¿Sos capaz de reconocer tus propios dones para ponerlos al servicio de los que más sufren?", v: "La manifestación del Espíritu se le da a cada uno para el bien común.", c: "1 Corintios 12:7" },
-            { id: "cf-21", q: "María estuvo en el Cenáculo con los Apóstoles. ¿Le pedís a la Virgen que te enseñe a recibir al Espíritu?", v: "Todos ellos perseveraban unánimes en la oración con María.", c: "Hechos 1:14" },
-            { id: "cf-22", q: "¿Qué es lo que más te asusta de ser un cristiano coherente en el mundo de hoy?", v: "No temas, que yo estoy contigo.", c: "Isaías 41:10" },
-            { id: "cf-23", q: "La Confirmación te da un 'carácter' indeleble, una marca que no se borra nunca. ¿Te sentís orgulloso de llevarla?", v: "Ustedes han sido sellados con el Espíritu Santo prometido.", c: "Efesios 1:13" },
-            { id: "cf-24", q: "¿Cómo podés ayudar a que otros jóvenes descubran la alegría de seguir a Jesús?", v: "Vayan y hagan discípulos a todas las naciones.", c: "Mateo 28:19" },
-            { id: "cf-25", q: "¿Sos consciente de que el Espíritu Santo es el 'Dulce Huésped del alma'? ¿Cuidás tu interior para que Él esté cómodo?", v: "¿No saben que su cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
-            { id: "cf-26", q: "¿Qué palabra o frase del rito de Confirmación te llega más profundamente al corazón?", v: "Recibe por esta señal el don del Espíritu Santo.", c: "Rito de Confirmación" },
-            { id: "cf-27", q: "¿Te comprometés a defender la vida y la dignidad humana en todas sus etapas?", v: "Antes de formarte en el vientre, te conocí.", c: "Jeremías 1:5" },
-            { id: "cf-28", q: "¿Sos capaz de ver en el Obispo al sucesor de los Apóstoles que viene a transmitirte la Gracia?", v: "Entonces les imponían las manos y recibían el Espíritu Santo.", c: "Hechos 8:17" },
-            { id: "cf-29", q: "¿Qué le preguntarías al Espíritu Santo si pudieras hablar cara a cara con Él hoy?", v: "El Espíritu mismo intercede por nosotros con gemidos inefables.", c: "Romanos 8:26" },
-            { id: "cf-30", q: "¿Estás dispuesto a ser 'luz' en los lugares donde hay oscuridad (odio, envidia, tristeza)?", v: "Ustedes eran antes oscuridad, pero ahora son luz en el Señor.", c: "Efesios 5:8" },
-            { id: "cf-31", q: "¿Buscás la unidad en tu familia o alimentás las divisiones?", v: "Esfuércense por mantener la unidad del Espíritu mediante el vínculo de la paz.", c: "Efesios 4:3" },
-            { id: "cf-32", q: "¿Cómo usás las redes sociales? ¿Reflejan que sos un joven que se va a confirmar?", v: "Hagan todo para la gloria de Dios.", c: "1 Corintios 10:31" },
-            { id: "cf-33", q: "¿Cuál es el 'fuego' que el Espíritu Santo necesita encender en tu vida hoy?", v: "He venido a traer fuego a la tierra, ¡y cuánto desearía que ya estuviera ardiendo!", c: "Lucas 12:49" },
-            { id: "cf-34", q: "¿Reconocés que sin la oración diaria tu fe se puede secar?", v: "Estén siempre alegres, oren sin cesar.", c: "1 Tesalonicenses 5:16-17" },
-            { id: "cf-35", q: "¿Sos generoso con tu tiempo para escuchar a alguien que está solo?", v: "Sobrellevad los unos las cargas de los otros.", c: "Gálatas 6:2" },
-            { id: "cf-36", q: "La Confirmación es un envío. ¿Hacia dónde creés que Dios te está enviando hoy?", v: "Como el Padre me envió, así también yo los envío.", c: "Juan 20:21" },
-            { id: "cf-37", q: "¿Qué vicio o mala costumbre querés dejar en el altar el día de tu Confirmación?", v: "Si el Espíritu los guía, ya no están bajo la ley.", c: "Gálatas 5:18" },
-            { id: "cf-38", q: "¿Te sentís parte de la Iglesia Universal o solo de tu pequeño grupo?", v: "Hay un solo cuerpo y un solo Espíritu.", c: "Efesios 4:4" },
-            { id: "cf-39", q: "¿Cómo podés vivir la castidad y el respeto a tu propio cuerpo como un regalo del Espíritu?", v: "Glorifiquen a Dios con su cuerpo.", c: "1 Corintios 6:20" },
-            { id: "cf-40", q: "¿Qué significa para vos que Dios te llame por tu nombre y te elija para esta misión?", v: "No temas, porque yo te redimí; te puse nombre, mío eres tú.", c: "Isaías 43:1" },
-            { id: "cf-41", q: "¿Estás preparado para sufrir incomprensiones por seguir a Jesús?", v: "Dichosos serán ustedes cuando los insulten por mi causa.", c: "Mateo 5:11" },
-            { id: "cf-42", q: "¿Cómo está tu humildad? ¿Reconocés que todo lo bueno que hay en vos viene de Dios?", v: "¿Qué tienes que no hayas recibido?", c: "1 Corintios 4:7" },
-            { id: "cf-43", q: "¿Te gusta leer la vida de los Santos para ver cómo el Espíritu Santo actuó en ellos?", v: "Imítenme a mí, como yo imito a Cristo.", c: "1 Corintios 11:1" },
-            { id: "cf-44", q: "¿Qué le agradecerías a tus catequistas por este tiempo de preparación?", v: "Doy gracias a Dios cada vez que me acuerdo de ustedes.", c: "Filipenses 1:3" },
-            { id: "cf-45", q: "¿Sentís que la Eucaristía es el centro de tu fuerza espiritual?", v: "Mi carne es verdadera comida y mi sangre es verdadera bebida.", c: "Juan 6:55" },
-            { id: "cf-46", q: "¿Sos capaz de pedir perdón de rodillas ante Dios en el sacramento de la Reconciliación?", v: "Si confesamos nuestros pecados, Él es fiel y justo para perdonar.", c: "1 Juan 1:9" },
-            { id: "cf-47", q: "¿Cómo vas a testimoniar tu fe en tu futuro trabajo o estudio?", v: "Ustedes son una carta de Cristo.", c: "2 Corintios 3:3" },
-            { id: "cf-48", q: "¿Rezás al Espíritu Santo antes de estudiar o rendir un examen?", v: "El Espíritu de verdad los guiará a toda la verdad.", c: "Juan 16:13" },
-            { id: "cf-49", q: "¿Sos consciente de que la Confirmación no es el final del camino, sino el verdadero comienzo?", v: "El que comenzó en ustedes la buena obra, la perfeccionará.", c: "Filipenses 1:6" },
-            { id: "cf-50", q: "¿Te animás a decir hoy: 'Espíritu Santo, aquí estoy, enviame a donde quieras'?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" }
-        ];
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
-        const toast = document.getElementById('toast');
-        const nextBtn = document.getElementById('btn-next');
-        const shareBtn = document.getElementById('btn-share');
+<script>
+// 50 Cartas de Confirmación
+const CARTAS = [
+    { id: "cf-1", q: "¿Estás listo para dejar de ser un espectador y convertirte en un protagonista de la fe en tu comunidad?", v: "Ustedes son la sal de la tierra y la luz del mundo.", c: "Mateo 5:13" },
+    { id: "cf-2", q: "¿Qué significa para vos recibir el mismo Espíritu que impulsó a los Apóstoles a salir del miedo en Pentecostés?", v: "Se les aparecieron lenguas como de fuego y se posaron sobre cada uno de ellos.", c: "Hechos 2:3" },
+    { id: "cf-3", q: "El Don de Fortaleza: ¿Le pedís al Espíritu Santo valor para defender tus valores cristianos frente a las burlas?", v: "No te avergüences de dar testimonio de nuestro Señor.", c: "2 Timoteo 1:8" },
+    { id: "cf-4", q: "El Don de Sabiduría: ¿Buscás ver las cosas con los ojos de Dios o te dejás llevar por las modas del mundo?", v: "Si a alguno le falta sabiduría, pídasela a Dios.", c: "Santiago 1:5" },
+    { id: "cf-5", q: "En la Confirmación el Obispo te ungirá con el Santo Crisma. ¿Sos consciente de que ahora llevás 'el aroma de Cristo'?", v: "Somos para Dios el buen olor de Cristo.", c: "2 Corintios 2:15" },
+    { id: "cf-6", q: "¿Qué compromiso real estás dispuesto a asumir en la Capilla Santa Ana después de confirmarte?", v: "Cada uno ponga al servicio de los demás el don que ha recibido.", c: "1 Pedro 4:10" },
+    { id: "cf-7", q: "¿Cómo podés ser un 'testigo de Cristo' en tu grupo de amigos sin necesidad de dar discursos, solo con tu ejemplo?", v: "Ustedes serán mis testigos hasta los confines de la tierra.", c: "Hechos 1:8" },
+    { id: "cf-8", q: "El Don de Consejo: ¿Acudís al Espíritu Santo antes de tomar una decisión que puede cambiar tu futuro?", v: "El Paráclito les enseñará todas las cosas.", c: "Juan 14:26" },
+    { id: "cf-9", q: "La Confirmación completa la gracia del Bautismo. ¿Sentís que tu fe ha crecido desde que eras niño?", v: "Cuando yo era niño, hablaba como niño... pero cuando fui hombre, dejé las cosas de niño.", c: "1 Corintios 13:11" },
+    { id: "cf-10", q: "¿Rezás habitualmente pidiendo los Frutos del Espíritu (paz, alegría, paciencia, bondad)?", v: "El fruto del Espíritu es amor, alegría, paz, paciencia.", c: "Gálatas 5:22" },
+    { id: "cf-11", q: "El Don de Piedad: ¿Ves a Dios como un Juez lejano o como un Padre tierno con el que podés hablar con confianza?", v: "Ustedes han recibido un espíritu de hijos adoptivos, que nos hace exclamar: ¡Abba, Padre!", c: "Romanos 8:15" },
+    { id: "cf-12", q: "Elegir un nombre de Santo para la Confirmación es elegir un modelo. ¿Qué virtud de tu santo querés imitar?", v: "Estamos rodeados por una gran nube de testigos.", c: "Hebreos 12:1" },
+    { id: "cf-13", q: "El Padrino o Madrina debe ser tu guía. ¿Lo elegiste por amistad social o porque te ayuda a estar cerca de Dios?", v: "El hierro con hierro se afila, y el hombre con el rostro de su amigo.", c: "Proverbios 27:17" },
+    { id: "cf-14", q: "El Don de Entendimiento: ¿Le pedís al Espíritu que te ayude a comprender las verdades de la Biblia cuando las leés?", v: "Entonces les abrió la mente para que comprendieran las Escrituras.", c: "Lucas 24:45" },
+    { id: "cf-15", q: "¿Estás dispuesto a perdonar a quienes te han herido, como señal de que el Espíritu de Amor vive en vos?", v: "Sean bondadosos y compasivos unos con otros, perdonándose mutuamente.", c: "Efesios 4:32" },
+    { id: "cf-16", q: "Confirmarse es decir 'Sí' a la Iglesia. ¿Te sentís responsable de la misión de la Capilla Santa Ana?", v: "Ustedes son el cuerpo de Cristo, y cada uno es un miembro de él.", c: "1 Corintios 12:27" },
+    { id: "cf-17", q: "El Don de Ciencia: ¿Podés descubrir la mano de Dios en la belleza de la naturaleza y en los avances de la ciencia?", v: "Los cielos cuentan la gloria de Dios.", c: "Salmo 19:1" },
+    { id: "cf-18", q: "El Don de Temor de Dios: No es miedo, es respeto y asombro. ¿Te duele ofender a Dios porque lo amás?", v: "El principio de la sabiduría es el temor del Señor.", c: "Proverbios 1:7" },
+    { id: "cf-19", q: "¿Cómo pensás alimentar tu fe después de la ceremonia? ¿Vas a seguir viniendo a la Eucaristía?", v: "El que come mi carne y bebe mi sangre tiene vida eterna.", c: "Juan 6:54" },
+    { id: "cf-20", q: "¿Sos capaz de reconocer tus propios dones para ponerlos al servicio de los que más sufren?", v: "La manifestación del Espíritu se le da a cada uno para el bien común.", c: "1 Corintios 12:7" },
+    { id: "cf-21", q: "María estuvo en el Cenáculo con los Apóstoles. ¿Le pedís a la Virgen que te enseñe a recibir al Espíritu?", v: "Todos ellos perseveraban unánimes en la oración con María.", c: "Hechos 1:14" },
+    { id: "cf-22", q: "¿Qué es lo que más te asusta de ser un cristiano coherente en el mundo de hoy?", v: "No temas, que yo estoy contigo.", c: "Isaías 41:10" },
+    { id: "cf-23", q: "La Confirmación te da un 'carácter' indeleble, una marca que no se borra nunca. ¿Te sentís orgulloso de llevarla?", v: "Ustedes han sido sellados con el Espíritu Santo prometido.", c: "Efesios 1:13" },
+    { id: "cf-24", q: "¿Cómo podés ayudar a que otros jóvenes descubran la alegría de seguir a Jesús?", v: "Vayan y hagan discípulos a todas las naciones.", c: "Mateo 28:19" },
+    { id: "cf-25", q: "¿Sos consciente de que el Espíritu Santo es el 'Dulce Huésped del alma'? ¿Cuidás tu interior para que Él esté cómodo?", v: "¿No saben que su cuerpo es templo del Espíritu Santo?", c: "1 Corintios 6:19" },
+    { id: "cf-26", q: "¿Qué palabra o frase del rito de Confirmación te llega más profundamente al corazón?", v: "Recibe por esta señal el don del Espíritu Santo.", c: "Rito de Confirmación" },
+    { id: "cf-27", q: "¿Te comprometés a defender la vida y la dignidad humana en todas sus etapas?", v: "Antes de formarte en el vientre, te conocí.", c: "Jeremías 1:5" },
+    { id: "cf-28", q: "¿Sos capaz de ver en el Obispo al sucesor de los Apóstoles que viene a transmitirte la Gracia?", v: "Entonces les imponían las manos y recibían el Espíritu Santo.", c: "Hechos 8:17" },
+    { id: "cf-29", q: "¿Qué le preguntarías al Espíritu Santo si pudieras hablar cara a cara con Él hoy?", v: "El Espíritu mismo intercede por nosotros con gemidos inefables.", c: "Romanos 8:26" },
+    { id: "cf-30", q: "¿Estás dispuesto a ser 'luz' en los lugares donde hay oscuridad (odio, envidia, tristeza)?", v: "Ustedes eran antes oscuridad, pero ahora son luz en el Señor.", c: "Efesios 5:8" },
+    { id: "cf-31", q: "¿Buscás la unidad en tu familia o alimentás las divisiones?", v: "Esfuércense por mantener la unidad del Espíritu mediante el vínculo de la paz.", c: "Efesios 4:3" },
+    { id: "cf-32", q: "¿Cómo usás las redes sociales? ¿Reflejan que sos un joven que se va a confirmar?", v: "Hagan todo para la gloria de Dios.", c: "1 Corintios 10:31" },
+    { id: "cf-33", q: "¿Cuál es el 'fuego' que el Espíritu Santo necesita encender en tu vida hoy?", v: "He venido a traer fuego a la tierra, ¡y cuánto desearía que ya estuviera ardiendo!", c: "Lucas 12:49" },
+    { id: "cf-34", q: "¿Reconocés que sin la oración diaria tu fe se puede secar?", v: "Estén siempre alegres, oren sin cesar.", c: "1 Tesalonicenses 5:16-17" },
+    { id: "cf-35", q: "¿Sos generoso con tu tiempo para escuchar a alguien que está solo?", v: "Sobrellevad los unos las cargas de los otros.", c: "Gálatas 6:2" },
+    { id: "cf-36", q: "La Confirmación es un envío. ¿Hacia dónde creés que Dios te está enviando hoy?", v: "Como el Padre me envió, así también yo los envío.", c: "Juan 20:21" },
+    { id: "cf-37", q: "¿Qué vicio o mala costumbre querés dejar en el altar el día de tu Confirmación?", v: "Si el Espíritu los guía, ya no están bajo la ley.", c: "Gálatas 5:18" },
+    { id: "cf-38", q: "¿Te sentís parte de la Iglesia Universal o solo de tu pequeño grupo?", v: "Hay un solo cuerpo y un solo Espíritu.", c: "Efesios 4:4" },
+    { id: "cf-39", q: "¿Cómo podés vivir la castidad y el respeto a tu propio cuerpo como un regalo del Espíritu?", v: "Glorifiquen a Dios con su cuerpo.", c: "1 Corintios 6:20" },
+    { id: "cf-40", q: "¿Qué significa para vos que Dios te llame por tu nombre y te elija para esta misión?", v: "No temas, porque yo te redimí; te puse nombre, mío eres tú.", c: "Isaías 43:1" },
+    { id: "cf-41", q: "¿Estás preparado para sufrir incomprensiones por seguir a Jesús?", v: "Dichosos serán ustedes cuando los insulten por mi causa.", c: "Mateo 5:11" },
+    { id: "cf-42", q: "¿Cómo está tu humildad? ¿Reconocés que todo lo bueno que hay en vos viene de Dios?", v: "¿Qué tienes que no hayas recibido?", c: "1 Corintios 4:7" },
+    { id: "cf-43", q: "¿Te gusta leer la vida de los Santos para ver cómo el Espíritu Santo actuó en ellos?", v: "Imítenme a mí, como yo imito a Cristo.", c: "1 Corintios 11:1" },
+    { id: "cf-44", q: "¿Qué le agradecerías a tus catequistas por este tiempo de preparación?", v: "Doy gracias a Dios cada vez que me acuerdo de ustedes.", c: "Filipenses 1:3" },
+    { id: "cf-45", q: "¿Sentís que la Eucaristía es el centro de tu fuerza espiritual?", v: "Mi carne es verdadera comida y mi sangre es verdadera bebida.", c: "Juan 6:55" },
+    { id: "cf-46", q: "¿Sos capaz de pedir perdón de rodillas ante Dios en el sacramento de la Reconciliación?", v: "Si confesamos nuestros pecados, Él es fiel y justo para perdonar.", c: "1 Juan 1:9" },
+    { id: "cf-47", q: "¿Cómo vas a testimoniar tu fe en tu futuro trabajo o estudio?", v: "Ustedes son una carta de Cristo.", c: "2 Corintios 3:3" },
+    { id: "cf-48", q: "¿Rezás al Espíritu Santo antes de estudiar o rendir un examen?", v: "El Espíritu de verdad los guiará a toda la verdad.", c: "Juan 16:13" },
+    { id: "cf-49", q: "¿Sos consciente de que la Confirmación no es el final del camino, sino el verdadero comienzo?", v: "El que comenzó en ustedes la buena obra, la perfeccionará.", c: "Filipenses 1:6" },
+    { id: "cf-50", q: "¿Te animás a decir hoy: 'Espíritu Santo, aquí estoy, enviame a donde quieras'?", v: "Heme aquí, envíame a mí.", c: "Isaías 6:8" }
+];
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+// Configuración de Sonido sutil
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(7000, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(7000, Tone.now() + 0.3); // Sonido tipo "viento"
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
+
+// Inicialización
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    // Remueve la clase para que inicie mostrando el frente (la pregunta)
+    document.getElementById("card").classList.remove("is-flipped"); 
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+        
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
 
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
 
-        card.addEventListener('click', flip);
-        nextBtn.addEventListener('click', () => {
-            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
-            else { random(); flip(); }
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `🔥 Mirá esta reflexión para la Confirmación:\n\n"${c.q}"\n\n`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Confirmación', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
         });
+    }
+}
 
-        shareBtn.addEventListener('click', async () => {
-            if (currentIdx === -1) return;
-            const url = window.location.href;
-            const msg = `🔥 Mirá esta reflexión para la Confirmación:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            if (navigator.share) { try { await navigator.share({ title: 'Confirmación', text: msg, url: url }); } catch (e) {} }
-            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
-        });
+function initBG() {
+    const words = ['ESPÍRITU SANTO', 'SANTA ANA', 'PENTECOSTÉS', 'TESTIGO', 'FUEGO', 'DONES'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['ESPÍRITU SANTO', 'SANTA ANA', 'PENTECOSTÉS', 'TESTIGO'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 15 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        window.onload = () => {
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
