@@ -7,238 +7,367 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
         :root {
-            --bg: #fdfdfb;
-            --overlay: rgba(255, 255, 255, 0.92);
+            --bg1: #FDFDFB; /* Blanco cálido */
+            --bg2: #F5EFEB; /* Crema muy suave */
             --card: #ffffff;
             --card-back: #C19A6B; /* Dorado Capilla */
-            --accent: #D4AF37; /* Oro */
-            --primario: #5D4037;
+            --accent: #D4AF37; /* Oro Eucarístico */
+            --primario: #5D4037; /* Marrón cálido */
+            --texto: #4A4A4A;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
-
-        .main-background {
-            position: fixed; inset: 0;
-            background: linear-gradient(var(--overlay), var(--overlay)), url('2.webp');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
-        .floating-word {
-            position: absolute; font-weight: 800; color: rgba(212, 175, 55, 0.08);
-            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
-        }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
-
-        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
-        .btn-home { color: var(--primario); text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-
-        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-
-        .card-scene { width: min(85vw, 400px); height: min(65vh, 500px); perspective: 1500px; margin-bottom: 30px; }
-        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
-        .card.is-flipped { transform: rotateY(180deg); }
-
-        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; border: 1px solid rgba(212, 175, 55, 0.2); }
-
-        .front { background: var(--card); color: var(--primario); border-top: 10px solid var(--accent); }
-        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
-        .verse-box { background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 12px; width: 100%; border-left: 4px solid var(--accent); }
-        .verse-text { font-size: 0.85rem; font-style: italic; color: #555; margin-bottom: 5px; }
-        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; display: block; text-align: right; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        .back { background: radial-gradient(circle at 50% 0%, #ffffff 0%, #fdfbf5 100%); color: var(--accent); transform: rotateY(180deg); }
-        .back i { font-size: 4.5rem; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
-        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; line-height: 1.1; color: var(--primario); }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--texto);
+        }
 
-        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        button { background: white; color: var(--primario); border: 1px solid var(--accent); border-radius: 50px; padding: 14px 24px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-main { background: var(--accent); color: white; border-color: var(--accent); }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primario); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.5s; z-index: 1000; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(212, 175, 55, 0.08); /* Letras en dorado transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--primario);
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(193,154,107,0.2);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
+
+        /* ESCENA DE LA CARTA */
+        .card-scene {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/3;
+            perspective: 1500px;
+            margin-bottom: 25px;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
+            cursor: pointer;
+        }
+        .card.is-flipped { transform: rotateY(180deg); }
+        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden;
+            box-shadow: 0 15px 45px rgba(93, 64, 55, 0.12);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        /* FRENTE DE LA CARTA */
+        .front { background: var(--card); border-top: 10px solid var(--accent); }
+        
+        /* DORSO DE LA CARTA */
+        .back { 
+            background: linear-gradient(135deg, var(--card-back), #9A774F); 
+            transform: rotateY(180deg); 
+            color: white; 
+            border: 2px dashed rgba(255,255,255,0.4);
+        }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.55rem);
+            font-weight: 700;
+            color: var(--primario);
+            line-height: 1.4;
+        }
+        
+        .verse {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 4.5vw, 1.25rem);
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .ref {
+            font-weight: 800;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 400px; display: flex; gap: 12px; }
+        .btn-action {
+            flex: 1;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { background: var(--accent); color: white; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { flex: 0 0 70px; background: white; color: var(--primario); font-size: 1.3rem; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .6; font-weight: 600; letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--primario); color: white; padding: 12px 25px; border-radius: 50px;
+            font-weight: 600; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="main-background"></div>
     <div class="bg-words" id="bg"></div>
 
     <nav>
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Volver</a>
-        <div class="nav-socials">
-            <a href="https://www.facebook.com/groups/778166455638473" target="_blank" style="color:var(--primario)"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank" style="color:var(--primario)"><i class="fab fa-instagram"></i></a>
-        </div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
     </nav>
 
     <div class="container">
         <div class="card-scene">
-            <div class="card is-flipped" id="card">
+            <div id="card" class="card">
                 <div class="face front">
-                    <p class="question" id="q-text">...</p>
-                    <div class="verse-box">
-                        <p class="verse-text" id="v-text"></p>
-                        <span class="verse-ref" id="v-ref"></span>
-                    </div>
+                    <p id="q-text" class="question">Cargando...</p>
                 </div>
                 <div class="face back">
-                    <i class="fas fa-bread-slice"></i>
-                    <h2>Pan de Vida</h2>
-                    <p style="color:var(--primario); letter-spacing:2px; font-weight:700; font-size:10px; margin-top:15px; text-transform:uppercase;">Comunión Santa Ana</p>
+                    <i class="fas fa-bread-slice" style="font-size:4rem;margin-bottom:20px; opacity: 0.9;"></i>
+                    <p id="v-text" class="verse"></p>
+                    <p id="v-ref" class="ref"></p>
                 </div>
             </div>
         </div>
+
         <div class="actions">
-            <button id="btn-next" class="btn-main"><i class="fas fa-star"></i> Otra Reflexión</button>
-            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-redo-alt"></i> Siguiente</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">¡Enlace copiado!</div>
+    <div id="toast">¡Enlace copiado! Listos para compartir.</div>
 
-    <script>
-        const CARTAS = [
-            { id: "com-1", q: "Jesús te dice: 'Yo soy el pan de vida'. ¿Cómo te sentís al saber que Él quiere vivir dentro de tu corazón?", v: "El que come de este pan vivirá para siempre.", c: "Juan 6:51" },
-            { id: "com-2", q: "¿Qué es lo primero que le vas a decir a Jesús cuando lo recibas en tu Primera Comunión?", v: "Señor, no soy digno de que entres en mi casa, pero una palabra tuya bastará para sanarme.", c: "Mateo 8:8" },
-            { id: "com-3", q: "La Eucaristía es el regalo más grande. ¿Sos capaz de compartir tu alegría con los que están tristes?", v: "Dadles vosotros de comer.", c: "Lucas 9:13" },
-            { id: "com-4", q: "En la Última Cena, Jesús lavó los pies de sus amigos. ¿A quién podrías ayudar hoy con humildad?", v: "Os he dado ejemplo para que lo que yo he hecho, vosotros también lo hagáis.", c: "Juan 13:15" },
-            { id: "com-5", q: "El Sagrario es la casita de Jesús en la Capilla. ¿Lo saludás cuando pasás por la puerta de la iglesia?", v: "Sabed que yo estoy con vosotros todos los días.", c: "Mateo 28:20" },
-            { id: "com-6", q: "Comulgar significa 'Común-unión' con Jesús y con los hermanos. ¿Perdonaste a quien te hizo enojar?", v: "Si te acuerdas de que tu hermano tiene algo contra ti... ve primero a reconciliarte.", c: "Mateo 5:23-24" },
-            { id: "com-7", q: "Jesús se quedó en un pedacito de pan para estar siempre cerca tuyo. ¿Le das las gracias hoy?", v: "Tomad y comed, este es mi cuerpo.", c: "Mateo 26:26" },
-            { id: "com-8", q: "¿Sabías que los ángeles rodean el altar en cada Misa? ¿Te imaginás rezando junto a ellos?", v: "Santo, Santo, Santo es el Señor Dios del Universo.", c: "Isaías 6:3" },
-            { id: "com-9", q: "Después de comulgar, Jesús está en vos de una forma especial. ¿Qué favor le pedirías para tu familia?", v: "Pedid y se os dará; buscad y hallaréis.", c: "Mateo 7:7" },
-            { id: "com-10", q: "María estuvo al pie de la cruz y también en la mesa con los apóstoles. ¿Le pedís a Ella que te prepare para recibir a su Hijo?", v: "Haced lo que Él os diga.", c: "Juan 2:5" },
-            { id: "com-11", q: "¿Te acordás del nombre del sacerdote que te dará la Comunión? Él actúa en nombre de Jesús.", v: "El que a vosotros recibe, a mí me recibe.", c: "Mateo 10:40" },
-            { id: "com-12", q: "La Hostia parece pan, pero es Jesús. Eso se llama Fe. ¿Le decís hoy: 'Señor, yo creo en Vos'?", v: "Dichosos los que crean sin haber visto.", c: "Juan 20:29" },
-            { id: "com-13", q: "¿Qué le regalarías a Jesús hoy? No hace falta dinero, Él prefiere tus buenas acciones.", v: "Misericordia quiero, que no sacrificio.", c: "Mateo 9:13" },
-            { id: "com-14", q: "Cuando decimos 'Amén' al comulgar, estamos diciendo 'Así es, yo creo'. ¿Lo decís con fuerza en tu corazón?", v: "El que come mi carne y bebe mi sangre tiene vida eterna.", c: "Juan 6:54" },
-            { id: "com-15", q: "¿Acompañás a tus papás a Misa con alegría o te cuesta levantarte?", v: "¡Qué alegría cuando me dijeron: Vamos a la casa del Señor!", c: "Salmo 122:1" },
-            { id: "com-16", q: "Jesús multiplicó los panes para que nadie tenga hambre. ¿Cómo podrías ayudar a Cáritas de la Capilla?", v: "Tuve hambre y me disteis de comer.", c: "Mateo 25:35" },
-            { id: "com-17", q: "La Eucaristía nos da fuerza para ser valientes. ¿Te animás a defender a un compañero que sufre burlas?", v: "Ámense unos a otros como yo los he amado.", c: "Juan 15:12" },
-            { id: "com-18", q: "¿Qué le preguntarías a Santa Ana sobre cómo era Jesús cuando era chiquito?", v: "Dejen que los niños se acerquen a mí.", c: "Marcos 10:14" },
-            { id: "com-19", q: "Estar en gracia de Dios es tener el alma limpia. ¿Hiciste un buen examen de conciencia?", v: "Crea en mí, oh Dios, un corazón puro.", c: "Salmo 51:12" },
-            { id: "com-20", q: "Jesús nos invita a su mesa como amigos. ¿Te sentís feliz de ser invitado por el Rey del Cielo?", v: "Ya no os llamo siervos, sino amigos.", c: "Juan 15:15" },
-            { id: "com-21", q: "¿Sabías que cada vez que vas a Misa, el Cielo baja a la tierra?", v: "Venga a nosotros tu Reino.", c: "Mateo 6:10" },
-            { id: "com-22", q: "¿Qué significa para vos la palabra 'Eucaristía'? Significa Acción de Gracias.", v: "Dad gracias al Señor porque es bueno.", c: "Salmo 118:1" },
-            { id: "com-23", q: "¿Cómo podés ser luz en tu escuela después de recibir a Jesús?", v: "Brille vuestra luz delante de los hombres.", c: "Mateo 5:16" },
-            { id: "com-24", q: "Jesús es la vid y nosotros las ramas. Si estamos unidos a Él, damos mucho fruto de amor.", v: "El que permanece en mí y yo en él, ese da mucho fruto.", c: "Juan 15:5" },
-            { id: "com-25", q: "Tu vela de Comunión representa la luz de la fe. ¿Vas a cuidar que no se apague nunca?", v: "Yo soy la luz del mundo.", c: "Juan 8:12" },
-            { id: "com-26", q: "¿Qué es lo que más te gusta de la Capilla Santa Ana?", v: "Mi casa será llamada casa de oración.", c: "Mateo 21:13" },
-            { id: "com-27", q: "Al comulgar, recibís el abrazo más grande del universo. ¿Lo habías pensado así?", v: "Como el Padre me ha amado, así os he amado yo.", c: "Juan 15:9" },
-            { id: "com-28", q: "Jesús conoce tu nombre y todos tus sueños. ¿Le contás tus secretos al rezar?", v: "Te he llamado por tu nombre, tú eres mío.", c: "Isaías 43:1" },
-            { id: "com-29", q: "¿Rezás por los niños que todavía no conocen a Jesús?", v: "Id por todo el mundo y predicad el Evangelio.", c: "Marcos 16:15" },
-            { id: "com-30", q: "La Biblia es la Palabra de Dios. ¿Te gusta escuchar las lecturas en la Misa?", v: "No solo de pan vive el hombre, sino de toda palabra que sale de Dios.", c: "Mateo 4:4" },
-            { id: "com-31", q: "¿Le pedís a tu Ángel de la Guarda que te ayude a portarte bien en la Iglesia?", v: "Sus ángeles en el cielo ven siempre el rostro de mi Padre.", c: "Mateo 18:10" },
-            { id: "com-32", q: "El vino en el cáliz se convierte en la Sangre de Jesús. Es el sello de su amistad eterna.", v: "Este es el cáliz de mi sangre, sangre de la alianza nueva y eterna.", c: "Lucas 22:20" },
-            { id: "com-33", q: "Hacer la comunión es un compromiso de amor. ¿Prometés ser fiel a Jesús toda la vida?", v: "Sé fiel hasta la muerte y te daré la corona de la vida.", c: "Apocalipsis 2:10" },
-            { id: "com-34", q: "¿Qué canción de la misa es la que más te hace pensar en Dios?", v: "Cantad al Señor un cántico nuevo.", c: "Salmo 98:1" },
-            { id: "com-35", q: "Jesús dijo: 'Dejen que los niños vengan a mí'. Él te estaba llamando a vos.", v: "El que recibe a un niño como este en mi nombre, a mí me recibe.", c: "Mateo 18:5" },
-            { id: "com-36", q: "El sacerdote levanta la Hostia y dice: 'Este es el Cordero de Dios'. ¿Lo mirás con amor?", v: "He aquí el Cordero de Dios, que quita el pecado del mundo.", c: "Juan 1:29" },
-            { id: "com-37", q: "¿Podrías estar un minuto en silencio absoluto solo para sentir la presencia de Dios?", v: "Estad quietos y sabed que yo soy Dios.", c: "Salmo 46:10" },
-            { id: "com-38", q: "La paz que nos damos en misa es la paz de Jesús. ¿Se la das a todos con sinceridad?", v: "La paz os dejo, mi paz os doy.", c: "Juan 14:27" },
-            { id: "com-39", q: "¿Cómo podés ser más obediente con tus papás por amor a Jesús?", v: "Hijos, obedeced a vuestros padres en todo.", c: "Colosenses 3:20" },
-            { id: "com-40", q: "¿Te gusta el aroma a incienso o las flores del altar? Todo es para dar gloria a Dios.", v: "Suba mi oración delante de ti como el incienso.", c: "Salmo 141:2" },
-            { id: "com-41", q: "Ser cristiano es ser valiente. ¿Te animás a decir que vas a misa aunque otros no vayan?", v: "Si Dios está con nosotros, ¿quién contra nosotros?", c: "Romanos 8:31" },
-            { id: "com-42", q: "¿Qué parte de la Misa es tu favorita?", v: "Este es el día que hizo el Señor; nos gozaremos en él.", c: "Salmo 118:24" },
-            { id: "com-43", q: "Cuando comulgamos, todos somos uno en Jesús. ¿Tratás a tus compañeros como hermanos?", v: "Todos vosotros sois uno en Cristo Jesús.", c: "Gálatas 3:28" },
-            { id: "com-44", q: "La Primera Comunión no es la 'Última'. ¿Vas a seguir viniendo a visitar a Jesús?", v: "Permaneced en mí, y yo en vosotros.", c: "Juan 15:4" },
-            { id: "com-45", q: "¿Rezás antes de comer para agradecer los alimentos?", v: "Bendice, Señor, estos alimentos.", c: "Oración tradicional" },
-            { id: "com-46", q: "¿Qué le dirías a un niño que tiene miedo de confesarse?", v: "No temas, porque yo estoy contigo.", c: "Isaías 41:10" },
-            { id: "com-47", q: "¿Sabías que Santa Ana cuidaba a la Virgen María como tus papás te cuidan a vos?", v: "Honra a tu padre y a tu madre.", c: "Éxodo 20:12" },
-            { id: "com-48", q: "Jesús es el Buen Pastor y vos sos su ovejita querida. ¿Escuchás su voz?", v: "Mis ovejas oyen mi voz, y yo las conozco, y me siguen.", c: "Juan 10:27" },
-            { id: "com-49", q: "La gracia de Dios es como una semilla. ¿La vas a regar con la oración diaria?", v: "Crezcan en la gracia y el conocimiento de nuestro Señor.", c: "2 Pedro 3:18" },
-            { id: "com-50", q: "Si hoy fuera tu Primera Comunión, ¿qué sentiría tu corazón?", v: "Mi corazón se alegra en el Señor.", c: "1 Samuel 2:1" }
-        ];
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
 
-        const card = document.getElementById('card');
-        const qText = document.getElementById('q-text');
-        const vText = document.getElementById('v-text');
-        const vRef = document.getElementById('v-ref');
-        const toast = document.getElementById('toast');
-        const nextBtn = document.getElementById('btn-next');
-        const shareBtn = document.getElementById('btn-share');
+<script>
+// 50 Cartas de Eucaristía y Primera Comunión
+const CARTAS = [
+    { id: "e-1", q: "¿Qué sentís al saber que Jesús te ama tanto que quiso quedarse en un pedacito de pan para estar siempre con vos?", v: "Yo soy el pan vivo bajado del cielo.", c: "Juan 6:51" },
+    { id: "e-2", q: "¿Te diste cuenta de que al comulgar, tu corazón se convierte en la casita de Jesús?", v: "El que come mi carne y bebe mi sangre permanece en mí, y yo en él.", c: "Juan 6:56" },
+    { id: "e-3", q: "Jesús invita a todos a su mesa. ¿A quién invitarías vos a compartir la alegría de tu Primera Comunión?", v: "Vengan a mí todos los que están cansados y agobiados, y yo los aliviaré.", c: "Mateo 11:28" },
+    { id: "e-4", q: "¿Le pediste a la Virgen María que te ayude a preparar tu corazón para recibir a Jesús por primera vez?", v: "Hagan todo lo que Él les diga.", c: "Juan 2:5" },
+    { id: "e-5", q: "La Hostia parece muy frágil y pequeña, pero tiene el poder de darnos la vida eterna. ¿Creés en ese gran milagro?", v: "El que coma de este pan, vivirá para siempre.", c: "Juan 6:58" },
+    { id: "e-6", q: "Cuando decimos 'Amén' al recibir la Hostia, estamos diciendo 'Sí, creo que es Jesús'. ¿Lo decís con fuerza y alegría?", v: "Todo es posible para el que cree.", c: "Marcos 9:23" },
+    { id: "e-7", q: "Después de comulgar tenés a Jesús adentro tuyo. ¿Qué es lo primero que le vas a contar en ese ratito de silencio?", v: "Entra en tu cuarto, cierra la puerta y ora a tu Padre que está en lo secreto.", c: "Mateo 6:6" },
+    { id: "e-8", q: "Comulgar nos da fuerzas para perdonar a los demás. ¿Hay alguien a quien necesites perdonar hoy?", v: "Perdónense mutuamente, así como Dios los perdonó a ustedes en Cristo.", c: "Efesios 4:32" },
+    { id: "e-9", q: "¿Sabías que cada vez que vas a Misa, participás de la misma Última Cena que Jesús tuvo con sus amigos?", v: "Hagan esto en memoria mía.", c: "Lucas 22:19" },
+    { id: "e-10", q: "Eucaristía significa 'Acción de Gracias'. ¿Por qué tres cosas querés darle las gracias a Jesús hoy?", v: "Den gracias en todo, porque esta es la voluntad de Dios.", c: "1 Tesalonicenses 5:18" },
+    { id: "e-11", q: "Para recibir a Jesús, el alma tiene que estar limpia. ¿Ves el sacramento de la Confesión como un baño para tu corazón?", v: "Lávame más y más de mi maldad, y límpiame de mi pecado.", c: "Salmo 51:2" },
+    { id: "e-12", q: "¿Te pusiste a pensar que los santos que más admirás se hicieron santos gracias a la Eucaristía?", v: "El pan que yo daré es mi carne para la vida del mundo.", c: "Juan 6:51" },
+    { id: "e-13", q: "Comulgar no es un premio para los perfectos, sino una medicina para los débiles. ¿Le pedís a Jesús que sane tus heridas?", v: "No necesitan médico los sanos, sino los enfermos.", c: "Mateo 9:12" },
+    { id: "e-14", q: "La Misa es una fiesta de familia. ¿Cómo podés ayudar a que en tu casa los domingos sean un día especial para Dios?", v: "Acuérdate del día de reposo para santificarlo.", c: "Éxodo 20:8" },
+    { id: "e-15", q: "Al recibir a Jesús, te convertís en un pequeño sagrario por las calles. ¿Tus actitudes demuestran que lo llevás adentro?", v: "Ya no vivo yo, mas vive Cristo en mí.", c: "Gálatas 2:20" },
+    { id: "e-16", q: "Si Jesús te preguntara hoy: '¿Por qué querés hacer la Primera Comunión?', ¿qué le responderías?", v: "Señor, tú lo sabes todo; tú sabes que te amo.", c: "Juan 21:17" },
+    { id: "e-17", q: "¿Sabías que cuando el sacerdote levanta la Hostia, los ángeles del cielo bajan al altar a adorar a Jesús?", v: "Y de repente apareció con el ángel una multitud de los ejércitos celestiales.", c: "Lucas 2:13" },
+    { id: "e-18", q: "Jesús te elige hoy como su amigo especial. ¿Prometés visitarlo a menudo en la Capilla?", v: "Los he llamado amigos, porque todo lo que oí de mi Padre se los he dado a conocer.", c: "Juan 15:15" },
+    { id: "e-19", q: "¿Te animás a ofrecerle hoy a Jesús aquello que más te cuesta hacer, como regalo por su visita?", v: "Cada uno ponga al servicio de los demás el don que ha recibido.", c: "1 Pedro 4:10" },
+    { id: "e-20", q: "Cuando vemos la Hostia Blanca, vemos paz. ¿Cómo podés llevar esa paz de la Eucaristía a tu escuela?", v: "Bienaventurados los que trabajan por la paz.", c: "Mateo 5:9" },
+    { id: "e-21", q: "Jesús se multiplicó en los panes para dar de comer a miles. Hoy se multiplica en todos los sagrarios del mundo por amor a vos.", v: "Tomó los cinco panes y los dos peces, miró al cielo y los bendijo.", c: "Marcos 6:41" },
+    { id: "e-22", q: "¿Qué vas a sentir la primera vez que sientas el gusto del pan consagrado en tu boca?", v: "Gusten y vean qué bueno es el Señor.", c: "Salmo 34:8" },
+    { id: "e-23", q: "La Eucaristía nos hace hermanos porque comemos del mismo Pan. ¿Tratás a tus compañeros de catequesis como hermanos?", v: "Puesto que el pan es uno, nosotros, que somos muchos, somos un solo cuerpo.", c: "1 Corintios 10:17" },
+    { id: "e-24", q: "La luz de la vela en tu Bautismo se vuelve a encender en tu Comunión. ¿Estás listo para ser luz en el mundo?", v: "Ustedes son la luz del mundo.", c: "Mateo 5:14" },
+    { id: "e-25", q: "Si hoy fuera tu última Misa, ¿con cuánta atención y amor la vivirías?", v: "Deseé ardientemente comer esta Pascua con ustedes.", c: "Lucas 22:15" },
+    { id: "e-26", q: "En la Misa decimos: 'Señor, no soy digno de que entres en mi casa'. ¿Le pedís a Jesús que con una palabra te sane?", v: "Pero una palabra tuya bastará para sanarme.", c: "Mateo 8:8" },
+    { id: "e-27", q: "A Jesús le encanta cuando los niños se acercan a Él. ¿Sentís que su abrazo en la Eucaristía es el mejor abrazo del mundo?", v: "Dejen que los niños vengan a mí.", c: "Marcos 10:14" },
+    { id: "e-28", q: "El pan se hace con muchos granos de trigo molidos. Para unirnos a Jesús, a veces hay que 'moler' nuestro egoísmo.", v: "Si el grano de trigo no cae en tierra y muere, queda solo; pero si muere, da mucho fruto.", c: "Juan 12:24" },
+    { id: "e-29", q: "La Comunión es un compromiso. Al recibirlo, le prometés a Jesús intentar ser cada día un poco mejor.", v: "El que dice que permanece en Él, debe andar como Él anduvo.", c: "1 Juan 2:6" },
+    { id: "e-30", q: "¿Sabías que cuando comulgás, el cielo entero se alegra y celebra con vos?", v: "Hay gozo delante de los ángeles de Dios por un pecador que se arrepiente.", c: "Lucas 15:10" },
+    { id: "e-31", q: "El que comulga seguido tiene más fuerza para vencer las tentaciones. ¿Vas a seguir viniendo a Misa después de tomar la Comunión?", v: "Mi carne es verdadera comida, y mi sangre es verdadera bebida.", c: "Juan 6:55" },
+    { id: "e-32", q: "¿Vas a invitar a tus papás y padrinos a que te acompañen a comulgar todos los domingos?", v: "Yo y mi casa serviremos al Señor.", c: "Josué 24:15" },
+    { id: "e-33", q: "Durante el ofertorio entregamos pan y vino. ¿Qué esfuerzo o alegría tuya le querés ofrecer hoy a Dios en el altar?", v: "Preséntense ustedes mismos a Dios como ofrenda viva, santa y agradable.", c: "Romanos 12:1" },
+    { id: "e-34", q: "El Padre Nuestro es la oración de los hijos de Dios. ¿La rezás sabiendo que Dios es tu Papá del cielo?", v: "Padre nuestro, que estás en los cielos.", c: "Mateo 6:9" },
+    { id: "e-35", q: "El Sagrario siempre tiene una lucecita roja encendida. Significa que el Dueño está en casa esperándote. ¿Lo saludás al pasar?", v: "He aquí, yo estoy a la puerta y llamo.", c: "Apocalipsis 3:20" },
+    { id: "e-36", q: "El sacerdote actúa en nombre de Jesús. ¿Le das las gracias a Dios por tener sacerdotes que nos dan la Eucaristía?", v: "A quienes perdonen los pecados, les quedan perdonados.", c: "Juan 20:23" },
+    { id: "e-37", q: "En el cielo no necesitaremos comulgar porque veremos a Jesús cara a cara. La Eucaristía es un pedacito de cielo en la tierra.", v: "Ahora vemos por espejo, oscuramente; mas entonces veremos cara a cara.", c: "1 Corintios 13:12" },
+    { id: "e-38", q: "La Primera Comunión no es el final de la catequesis, ¡es solo el comienzo de la gran aventura de la fe!", v: "Corramos con paciencia la carrera que tenemos por delante, puestos los ojos en Jesús.", c: "Hebreos 12:1-2" },
+    { id: "e-39", q: "¿Qué canción te gusta cantarle a Jesús para decirle que lo querés mucho cuando está en tu corazón?", v: "Cantaré al Señor toda mi vida; cantaré salmos a mi Dios mientras exista.", c: "Salmo 104:33" },
+    { id: "e-40", q: "Comulgar es decir 'Amén' a vivir como Jesús vivió: ayudando, consolando y amando sin límites.", v: "Hagan todo con amor.", c: "1 Corintios 16:14" },
+    { id: "e-41", q: "¿Te gustaría ser monaguillo o ayudar en la Misa estando cerquita del altar de Jesús?", v: "Mejor es un día en tus atrios que mil fuera de ellos.", c: "Salmo 84:10" },
+    { id: "e-42", q: "Antes de comulgar, nos damos la paz. No podés abrazar a Jesús si estás peleado con tu hermano.", v: "Ve primero y reconcíliate con tu hermano, y entonces vuelve y presenta tu ofrenda.", c: "Mateo 5:24" },
+    { id: "e-43", q: "El silencio después de comulgar es oro. No te distraigas mirando qué hacen los demás, es el momento para estar a solas con Él.", v: "Guarda silencio ante el Señor, y espera en Él.", c: "Salmo 37:7" },
+    { id: "e-44", q: "La Eucaristía hace crecer en nosotros el amor a los pobres. ¿Sos capaz de compartir tus juguetes con los que menos tienen?", v: "Lo que hicieron por uno de mis hermanos más pequeños, por mí lo hicieron.", c: "Mateo 25:40" },
+    { id: "e-45", q: "¿Qué frase de Jesús querés llevar grabada en tu corazón como recuerdo de tu Primera Comunión?", v: "Yo estoy con ustedes todos los días, hasta el fin del mundo.", c: "Mateo 28:20" },
+    { id: "e-46", q: "Carlo Acutis, un chico joven que fue Santo, decía que la Eucaristía era su 'Autopista hacia el Cielo'. ¿Querés subirte a esa autopista?", v: "Dirígeme por la senda de tus mandamientos.", c: "Salmo 119:35" },
+    { id: "e-47", q: "María, la mamá de Jesús, fue el primer sagrario al llevarlo en su panza. Pedile que te enseñe a recibirlo con su misma dulzura.", v: "Bendita tú entre las mujeres, y bendito el fruto de tu vientre.", c: "Lucas 1:42" },
+    { id: "e-48", q: "¿Alguna vez lloraste de alegría? Ese día vas a sentir la alegría inmensa de recibir al Rey del Universo entero.", v: "Mi corazón se alegra en el Señor.", c: "1 Samuel 2:1" },
+    { id: "e-49", q: "Recibís a Jesús en las manos o en la boca, pero en realidad entra directamente al centro de tu alma.", v: "Cristo habite por la fe en sus corazones.", c: "Efesios 3:17" },
+    { id: "e-50", q: "¡No tengas miedo! Jesús está emocionado esperando el momento en que por fin vas a recibirlo. Te ama tal cual sos.", v: "No temas, porque yo te he redimido; te he llamado por tu nombre, tú eres mío.", c: "Isaías 43:1" }
+];
 
-        let currentIdx = -1;
-        let isFlipped = true;
-        let audioInit = false;
+let currentIdx = 0;
+let deck = [...CARTAS];
+let audioInit = false;
 
-        const noise = new Tone.Noise("white").start();
-        const filter = new Tone.Filter(100, "lowpass").toDestination();
-        noise.connect(filter);
-        noise.volume.value = -60;
+// Configuración de Sonido sutil
+const noise = new Tone.Noise("white").start();
+const filter = new Tone.Filter(100, "lowpass").toDestination();
+noise.connect(filter);
+noise.volume.value = -60;
 
-        function playSound() {
-            if (!audioInit) { Tone.start(); audioInit = true; }
-            filter.frequency.setValueAtTime(100, Tone.now());
-            filter.frequency.exponentialRampToValueAtTime(4000, Tone.now() + 0.3);
-            noise.volume.setValueAtTime(-15, Tone.now());
-            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+function playSound() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    filter.frequency.setValueAtTime(100, Tone.now());
+    filter.frequency.exponentialRampToValueAtTime(3000, Tone.now() + 0.3);
+    noise.volume.setValueAtTime(-15, Tone.now());
+    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+}
+
+// Inicialización
+function initMazo() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            deck.sort(() => Math.random() - 0.5);
         }
+    } else {
+        deck.sort(() => Math.random() - 0.5);
+    }
+    renderCard();
+}
 
-        function render(idx) {
-            currentIdx = idx;
-            const item = CARTAS[idx];
-            qText.textContent = item.q;
-            vText.textContent = `"${item.v}"`;
-            vRef.textContent = item.c;
-            window.location.hash = item.id;
-        }
+function renderCard() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    document.getElementById("v-text").innerText = `"${c.v}"`;
+    document.getElementById("v-ref").innerText = c.c;
+    // AQUÍ ESTABA EL ERROR: Ahora se asegura de remover la clase para mostrar el frente (la pregunta)
+    document.getElementById("card").classList.remove("is-flipped"); 
+}
 
-        function random() {
-            let i;
-            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
-            render(i);
-        }
+function nextCard() {
+    const cardElement = document.getElementById("card");
+    cardElement.classList.add("slide-out");
+    
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+        
+        currentIdx = next;
+        renderCard();
+        cardElement.classList.remove("slide-out");
+    }, 300);
+}
 
-        function flip() {
-            playSound();
-            card.classList.toggle('is-flipped');
-            isFlipped = !isFlipped;
-        }
+function flipCard() {
+    playSound();
+    document.getElementById("card").classList.toggle("is-flipped");
+}
 
-        card.addEventListener('click', flip);
-        nextBtn.addEventListener('click', () => {
-            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
-            else { random(); flip(); }
+async function shareCard() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `🤍 Mirá esta reflexión sobre la Comunión - Capilla Santa Ana:\n\n"${c.q}"\n\n`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Primera Comunión', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
         });
+    }
+}
 
-        shareBtn.addEventListener('click', async () => {
-            if (currentIdx === -1) return;
-            const url = window.location.href;
-            const msg = `🤍 Mirá esta reflexión para la Primera Comunión:\n\n"${CARTAS[currentIdx].q}"\n\n`;
-            if (navigator.share) { try { await navigator.share({ title: 'Comunión', text: msg, url: url }); } catch (e) {} }
-            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
-        });
+function initBG() {
+    const words = ['PAN DE VIDA', 'EUCARISTÍA', 'AMÉN', 'SANTA ANA', 'COMUNIÓN'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['PAN DE VIDA', 'SANTA ANA', 'EUCARESTÍA', 'AMÉN', 'COMUNIÓN'];
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.fontSize = (16 + Math.random() * 30) + 'px';
-                const d = 18 + Math.random() * 25;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+document.getElementById("card").onclick = flipCard;
+document.getElementById("btn-next").onclick = nextCard;
+document.getElementById("btn-share").onclick = shareCard;
 
-        window.onload = () => {
-            initBG();
-            const h = window.location.hash.substring(1);
-            const found = CARTAS.findIndex(c => c.id === h);
-            if (found !== -1) render(found); else random();
-        };
-    </script>
+initBG();
+initMazo();
+</script>
 </body>
 </html>
