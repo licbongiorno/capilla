@@ -8,179 +8,202 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
 <style>
 :root{
-    --bg:#f4f2f8;
-    --card:#ffffff;
-    --card-back:#80CBC4;
-    --accent:#9575CD;
-    --primario:#455A64;
+--bg1:#f4f2f8;
+--bg2:#ece7f5;
+--card:#ffffff;
+--card-back:#80CBC4;
+--accent:#9575CD;
+--primario:#455A64;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
-    font-family:'Montserrat',sans-serif;
-    background:linear-gradient(180deg,#f4f2f8 0%,#ece7f5 100%);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
+font-family:'Montserrat',sans-serif;
+background:linear-gradient(180deg,var(--bg1),var(--bg2));
+min-height:100vh;
+display:flex;
+flex-direction:column;
+overflow-x:hidden;
+}
+
+/* FONDO PALABRAS */
+.bg-words{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:0;
+overflow:hidden;
+}
+
+.floating-word{
+position:absolute;
+font-family:'Playfair Display',serif;
+font-weight:800;
+color:rgba(149,117,205,0.08);
+animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+from{transform:translateY(100vh) rotate(-5deg);opacity:0}
+20%{opacity:1}
+to{transform:translateY(-120vh) rotate(5deg);opacity:0}
 }
 
 /* NAV */
 nav{
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
+padding:20px;
+display:flex;
+justify-content:space-between;
+z-index:2;
+position:relative;
 }
+
 .nav-btn{
-    background:rgba(255,255,255,0.7);
-    padding:10px 18px;
-    border-radius:50px;
-    text-decoration:none;
-    color:var(--primario);
-    font-weight:700;
-    font-size:.8rem;
-    display:flex;
-    gap:8px;
-    align-items:center;
+background:rgba(255,255,255,0.7);
+padding:10px 18px;
+border-radius:50px;
+text-decoration:none;
+color:var(--primario);
+font-weight:700;
+font-size:.8rem;
+display:flex;
+gap:8px;
+align-items:center;
 }
 
 /* CONTENEDOR */
 .container{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:2;
+position:relative;
 }
 
 /* CARTA */
 .card-scene{
-    width:100%;
-    max-width:420px;
-    aspect-ratio:2/3;
-    perspective:1500px;
-    margin-bottom:30px;
+width:100%;
+max-width:420px;
+aspect-ratio:2/3;
+perspective:1500px;
+margin-bottom:20px;
 }
 
 .card{
-    width:100%;
-    height:100%;
-    position:relative;
-    transform-style:preserve-3d;
-    transition:transform .6s cubic-bezier(.4,.2,.2,1),opacity .3s;
-    cursor:pointer;
+width:100%;
+height:100%;
+position:relative;
+transform-style:preserve-3d;
+transition:transform .6s cubic-bezier(.4,.2,.2,1),opacity .3s;
+cursor:pointer;
 }
 
 .card.is-flipped{transform:rotateY(180deg)}
 .card.slide-out{transform:translateX(80px) rotateZ(8deg);opacity:0}
 
 .face{
-    position:absolute;
-    inset:0;
-    border-radius:25px;
-    padding:35px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    backface-visibility:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+position:absolute;
+inset:0;
+border-radius:25px;
+padding:35px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+backface-visibility:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
 .front{
-    background:var(--card);
-    border-top:8px solid var(--accent);
+background:var(--card);
+border-top:8px solid var(--accent);
 }
 
 .back{
-    background:var(--card-back);
-    transform:rotateY(180deg);
-    color:white;
+background:var(--card-back);
+transform:rotateY(180deg);
+color:white;
 }
 
 .question{
-    font-family:'Playfair Display',serif;
-    font-size:1.45rem;
-    font-weight:700;
-    color:var(--primario);
-    line-height:1.4;
+font-family:'Playfair Display',serif;
+font-size:1.45rem;
+font-weight:700;
+color:var(--primario);
+line-height:1.4;
 }
 
 .verse{
-    font-family:'Playfair Display',serif;
-    font-size:1.2rem;
-    font-style:italic;
-    margin-bottom:15px;
+font-family:'Playfair Display',serif;
+font-size:1.2rem;
+font-style:italic;
+margin-bottom:15px;
 }
 
 .ref{
-    font-weight:800;
-    font-size:.9rem;
-    text-transform:uppercase;
+font-weight:800;
+font-size:.9rem;
+text-transform:uppercase;
+}
+
+/* CONTADOR */
+.counter{
+margin-bottom:15px;
+font-size:12px;
+opacity:.6;
 }
 
 /* BOTONES */
 .actions{
-    width:100%;
-    max-width:420px;
-    display:flex;
-    gap:12px;
+width:100%;
+max-width:420px;
+display:flex;
+gap:12px;
 }
 
 .btn-action{
-    flex:1;
-    padding:16px;
-    border-radius:15px;
-    border:none;
-    font-weight:700;
-    cursor:pointer;
-    text-transform:uppercase;
-    transition:.3s;
+flex:1;
+padding:16px;
+border-radius:15px;
+border:none;
+font-weight:700;
+cursor:pointer;
+text-transform:uppercase;
+transition:.3s;
 }
 
 .btn-main{
-    background:var(--accent);
-    color:white;
+background:var(--accent);
+color:white;
 }
 
 .btn-sec{
-    flex:0 0 70px;
-    background:white;
-    font-size:1.2rem;
+flex:0 0 70px;
+background:white;
+font-size:1.2rem;
 }
 
 /* FOOTER */
 .mazo-footer{
-    text-align:center;
-    padding:15px;
-    font-size:11px;
-    opacity:.6;
-}
-
-/* DESKTOP */
-@media(min-width:900px){
-    .container{
-        flex-direction:row;
-        gap:60px;
-    }
-    .actions{
-        flex-direction:column;
-        max-width:200px;
-    }
-    .btn-sec{
-        flex:1;
-    }
+text-align:center;
+padding:15px;
+font-size:11px;
+opacity:.6;
 }
 </style>
 </head>
 
 <body>
+
+<div class="bg-words" id="bg"></div>
 
 <nav>
 <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
@@ -189,10 +212,12 @@ nav{
 
 <div class="container">
 
+<div class="counter" id="counter"></div>
+
 <div class="card-scene">
 <div id="card" class="card">
 <div class="face front">
-<p id="q-text" class="question">...</p>
+<p id="q-text" class="question"></p>
 </div>
 <div class="face back">
 <i class="fas fa-hand-holding-heart" style="font-size:4rem;margin-bottom:20px;"></i>
@@ -214,8 +239,6 @@ Nicolás Bongiorno – Capilla Santa Ana
 </footer>
 
 <script>
-/* ===== ENGINE INTEGRADO ===== */
-
 const CARTAS=[
 { q:"¿Te permitís llorar sabiendo que Jesús también lloró ante el dolor de sus amigos?", v:"Jesús lloró.", r:"Juan 11:35"},
 { q:"Cuando sentís que el vacío te ahoga, ¿recordás que Dios está más cerca de lo que creés?", v:"El Señor está cerca de los que tienen el corazón roto.", r:"Salmo 34:18"},
@@ -223,28 +246,35 @@ const CARTAS=[
 ];
 
 let currentIdx=0;
-let deck=[...CARTAS].sort(()=>Math.random()-0.5);
-let animating=false;
+let deck=[...CARTAS];
+
+/* PARAMETRO URL */
+const params=new URLSearchParams(window.location.search);
+if(params.has("card")){
+const idx=parseInt(params.get("card"));
+if(!isNaN(idx) && idx>=0 && idx<CARTAS.length){
+currentIdx=idx;
+}
+}else{
+deck.sort(()=>Math.random()-0.5);
+}
 
 function renderCard(){
 const c=deck[currentIdx];
 document.getElementById("q-text").innerText=c.q;
 document.getElementById("v-text").innerText=c.v;
 document.getElementById("v-ref").innerText=c.r;
+document.getElementById("counter").innerText=(currentIdx+1)+" / "+deck.length;
 document.getElementById("card").classList.remove("is-flipped");
 }
 
 function nextCard(){
-if(animating)return;
-animating=true;
 const card=document.getElementById("card");
 card.classList.add("slide-out");
-
 setTimeout(()=>{
 currentIdx=(currentIdx+1)%deck.length;
 renderCard();
 card.classList.remove("slide-out");
-animating=false;
 },300);
 }
 
@@ -253,19 +283,37 @@ document.getElementById("card").classList.toggle("is-flipped");
 }
 
 async function shareCard(){
+const url=window.location.origin+window.location.pathname+"?card="+currentIdx;
 const c=deck[currentIdx];
 const text=`Reflexión - Abrazo de Dios
 
 "${c.q}"
 
 ${c.v} (${c.r})
-https://www.capillasantaana.com.ar/abrazo.html`;
+${url}`;
 
 if(navigator.share){
-await navigator.share({text});
+await navigator.share({text,url});
 }else{
 navigator.clipboard.writeText(text);
-alert("Texto copiado para compartir.");
+alert("Enlace copiado para compartir.");
+}
+}
+
+/* PALABRAS FLOTANTES */
+function initBG(){
+const words=["CONSUELO","ESPERANZA","PAZ","MISERICORDIA","REFUGIO","AMOR","SANTA ANA"];
+const bg=document.getElementById("bg");
+for(let i=0;i<18;i++){
+const s=document.createElement("span");
+s.className="floating-word";
+s.innerText=words[Math.floor(Math.random()*words.length)];
+s.style.left=Math.random()*100+"vw";
+s.style.fontSize=(20+Math.random()*40)+"px";
+const duration=15+Math.random()*20;
+s.style.animationDuration=duration+"s";
+s.style.animationDelay="-"+Math.random()*duration+"s";
+bg.appendChild(s);
 }
 }
 
@@ -273,6 +321,7 @@ document.getElementById("card").onclick=flipCard;
 document.getElementById("btn-next").onclick=nextCard;
 document.getElementById("btn-share").onclick=shareCard;
 
+initBG();
 renderCard();
 </script>
 
