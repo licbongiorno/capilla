@@ -19,8 +19,8 @@
     --primario:#455A64;
 }
 
-/* RESET */
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
     font-family:'Montserrat',sans-serif;
     background:linear-gradient(180deg,#f4f2f8 0%,#ece7f5 100%);
@@ -48,7 +48,7 @@ nav{
     align-items:center;
 }
 
-/* CONTENEDOR CENTRAL */
+/* CONTENEDOR */
 .container{
     flex:1;
     display:flex;
@@ -163,7 +163,7 @@ nav{
     opacity:.6;
 }
 
-/* DESKTOP MEJORA */
+/* DESKTOP */
 @media(min-width:900px){
     .container{
         flex-direction:row;
@@ -213,15 +213,67 @@ nav{
 Nicolás Bongiorno – Capilla Santa Ana
 </footer>
 
-<script src="mazo-engine.js"></script>
 <script>
+/* ===== ENGINE INTEGRADO ===== */
+
 const CARTAS=[
 { q:"¿Te permitís llorar sabiendo que Jesús también lloró ante el dolor de sus amigos?", v:"Jesús lloró.", r:"Juan 11:35"},
 { q:"Cuando sentís que el vacío te ahoga, ¿recordás que Dios está más cerca de lo que creés?", v:"El Señor está cerca de los que tienen el corazón roto.", r:"Salmo 34:18"},
 { q:"¿Podés entregar hoy el peso de tus deudas al cuidado de la Providencia?", v:"No se inquieten por el día de mañana.", r:"Mateo 6:34"}
 ];
 
-window.onload=()=>MazoEngine.init(CARTAS,"Abrazo de Dios");
+let currentIdx=0;
+let deck=[...CARTAS].sort(()=>Math.random()-0.5);
+let animating=false;
+
+function renderCard(){
+const c=deck[currentIdx];
+document.getElementById("q-text").innerText=c.q;
+document.getElementById("v-text").innerText=c.v;
+document.getElementById("v-ref").innerText=c.r;
+document.getElementById("card").classList.remove("is-flipped");
+}
+
+function nextCard(){
+if(animating)return;
+animating=true;
+const card=document.getElementById("card");
+card.classList.add("slide-out");
+
+setTimeout(()=>{
+currentIdx=(currentIdx+1)%deck.length;
+renderCard();
+card.classList.remove("slide-out");
+animating=false;
+},300);
+}
+
+function flipCard(){
+document.getElementById("card").classList.toggle("is-flipped");
+}
+
+async function shareCard(){
+const c=deck[currentIdx];
+const text=`Reflexión - Abrazo de Dios
+
+"${c.q}"
+
+${c.v} (${c.r})
+https://www.capillasantaana.com.ar/abrazo.html`;
+
+if(navigator.share){
+await navigator.share({text});
+}else{
+navigator.clipboard.writeText(text);
+alert("Texto copiado para compartir.");
+}
+}
+
+document.getElementById("card").onclick=flipCard;
+document.getElementById("btn-next").onclick=nextCard;
+document.getElementById("btn-share").onclick=shareCard;
+
+renderCard();
 </script>
 
 </body>
