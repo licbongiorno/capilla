@@ -1,133 +1,228 @@
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Abrazo de Dios - Capilla Santa Ana</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abrazo de Dios - Capilla Santa Ana</title>
 
-    <style>
-        :root {
-            --bg: #f3f0f7;
-            --overlay: rgba(255, 255, 255, 0.88);
-            --card: #ffffff;
-            --card-back: #80CBC4;
-            --accent: #9575CD;
-            --primario: #455A64;
-            --texto: #263238;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        html, body { height: 100%; overflow: hidden; font-family: 'Montserrat', sans-serif; background-color: var(--bg); }
+<style>
+:root{
+    --bg:#f4f2f8;
+    --card:#ffffff;
+    --card-back:#80CBC4;
+    --accent:#9575CD;
+    --primario:#455A64;
+}
 
-        /* FONDO */
-        .main-background { position: fixed; inset: 0; background: radial-gradient(circle, var(--bg) 0%, #e8e4f1 100%); z-index: -1; }
-        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
-        .floating-word { position: absolute; font-weight: 800; color: rgba(149, 117, 205, 0.1); font-family: 'Playfair Display', serif; bottom: -100px; }
-        @keyframes floatUp { from { transform: translateY(0) rotate(-5deg); opacity: 0; } 10% { opacity: 1; } to { transform: translateY(-120vh) rotate(5deg); opacity: 0; } }
+/* RESET */
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:'Montserrat',sans-serif;
+    background:linear-gradient(180deg,#f4f2f8 0%,#ece7f5 100%);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
 
-        /* NAV */
-        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 20px; display: flex; justify-content: space-between; z-index: 100; }
-        .nav-btn { background: rgba(255,255,255,0.6); color: var(--primario); text-decoration: none; padding: 10px 18px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px); text-transform: uppercase; }
+/* NAV */
+nav{
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+}
+.nav-btn{
+    background:rgba(255,255,255,0.7);
+    padding:10px 18px;
+    border-radius:50px;
+    text-decoration:none;
+    color:var(--primario);
+    font-weight:700;
+    font-size:.8rem;
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
 
-        /* CONTENEDOR */
-        .container { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+/* CONTENEDOR CENTRAL */
+.container{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
 
-        /* CARTA */
-        .card-scene { width: min(85vw, 360px); aspect-ratio: 2/3; perspective: 1500px; margin-bottom: 30px; }
-        .card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), opacity 0.3s ease; cursor: pointer; }
-        .card.is-flipped { transform: rotateY(180deg); }
-        .card.slide-out { transform: translateX(100px) rotateZ(10deg); opacity: 0; transition: 0.3s; }
+/* CARTA */
+.card-scene{
+    width:100%;
+    max-width:420px;
+    aspect-ratio:2/3;
+    perspective:1500px;
+    margin-bottom:30px;
+}
 
-        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; padding: 35px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 15px 45px rgba(0,0,0,0.1); }
-        .front { background: var(--card); border-top: 10px solid var(--accent); }
-        .back { background: var(--card-back); transform: rotateY(180deg); color: white; }
+.card{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform .6s cubic-bezier(.4,.2,.2,1),opacity .3s;
+    cursor:pointer;
+}
 
-        .theme-tag { display: none; background: rgba(149, 117, 205, 0.1); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
-        .question { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primario); font-weight: 700; line-height: 1.4; }
-        
-        .back i { font-size: 4rem; margin-bottom: 20px; }
-        .verse { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; margin-bottom: 15px; }
-        .ref { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; }
+.card.is-flipped{transform:rotateY(180deg)}
+.card.slide-out{transform:translateX(80px) rotateZ(8deg);opacity:0}
 
-        /* ACCIONES */
-        .actions { display: flex; gap: 12px; width: min(85vw, 360px); }
-        .btn-action { flex: 1; padding: 16px; border-radius: 15px; border: none; font-family: 'Montserrat', sans-serif; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-main { background: var(--accent); color: white; }
-        .btn-sec { flex: 0 0 60px; background: white; color: var(--primario); font-size: 1.2rem; }
+.face{
+    position:absolute;
+    inset:0;
+    border-radius:25px;
+    padding:35px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    backface-visibility:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
 
-        .mazo-footer { position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 10px; opacity: 0.5; font-weight: 600; }
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 50px; transition: 0.4s; z-index: 1000; }
-        .toast.show { bottom: 30px; }
-    </style>
+.front{
+    background:var(--card);
+    border-top:8px solid var(--accent);
+}
+
+.back{
+    background:var(--card-back);
+    transform:rotateY(180deg);
+    color:white;
+}
+
+.question{
+    font-family:'Playfair Display',serif;
+    font-size:1.45rem;
+    font-weight:700;
+    color:var(--primario);
+    line-height:1.4;
+}
+
+.verse{
+    font-family:'Playfair Display',serif;
+    font-size:1.2rem;
+    font-style:italic;
+    margin-bottom:15px;
+}
+
+.ref{
+    font-weight:800;
+    font-size:.9rem;
+    text-transform:uppercase;
+}
+
+/* BOTONES */
+.actions{
+    width:100%;
+    max-width:420px;
+    display:flex;
+    gap:12px;
+}
+
+.btn-action{
+    flex:1;
+    padding:16px;
+    border-radius:15px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    text-transform:uppercase;
+    transition:.3s;
+}
+
+.btn-main{
+    background:var(--accent);
+    color:white;
+}
+
+.btn-sec{
+    flex:0 0 70px;
+    background:white;
+    font-size:1.2rem;
+}
+
+/* FOOTER */
+.mazo-footer{
+    text-align:center;
+    padding:15px;
+    font-size:11px;
+    opacity:.6;
+}
+
+/* DESKTOP MEJORA */
+@media(min-width:900px){
+    .container{
+        flex-direction:row;
+        gap:60px;
+    }
+    .actions{
+        flex-direction:column;
+        max-width:200px;
+    }
+    .btn-sec{
+        flex:1;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="main-background"></div>
-    <div class="bg-words" id="bg"></div>
+<nav>
+<a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
+<a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
+</nav>
 
-    <nav>
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
-        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i> Mazos</a>
-    </nav>
+<div class="container">
 
-    <div class="container">
-        <div class="card-scene">
-            <div id="card" class="card">
-                <div class="face front">
-                    <span id="card-theme" class="theme-tag"></span>
-                    <p id="q-text" class="question">...</p>
-                </div>
-                <div class="face back">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <p id="v-text" class="verse"></p>
-                    <p id="v-ref" class="ref"></p>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button id="btn-next" class="btn-action btn-main">Recibir Consuelo</button>
-            <button id="btn-share" class="btn-action btn-sec"><i class="fas fa-share-alt"></i></button>
-        </div>
-    </div>
+<div class="card-scene">
+<div id="card" class="card">
+<div class="face front">
+<p id="q-text" class="question">...</p>
+</div>
+<div class="face back">
+<i class="fas fa-hand-holding-heart" style="font-size:4rem;margin-bottom:20px;"></i>
+<p id="v-text" class="verse"></p>
+<p id="v-ref" class="ref"></p>
+</div>
+</div>
+</div>
 
-    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
-    <div id="toast" class="toast"></div>
+<div class="actions">
+<button id="btn-next" class="btn-action btn-main">Siguiente Carta</button>
+<button id="btn-share" class="btn-action btn-sec"><i class="fas fa-share-alt"></i></button>
+</div>
 
-    <script src="mazo-engine.js"></script>
-    <script>
-        const CARTAS = [
-            { q: "¿Te permitís llorar sabiendo que Jesús también lloró ante el dolor de sus amigos?", v: "Jesús lloró.", r: "Juan 11:35", t: "Duelo" },
-            { q: "Cuando sentís que el vacío te ahoga, ¿lográs recordar que Dios está más cerca de lo que creés?", v: "El Señor está cerca de los que tienen el corazón roto.", r: "Salmo 34:18", t: "Consuelo" },
-            { q: "¿Podés entregar hoy el peso de tus deudas al cuidado de la Providencia?", v: "No se inquieten por el día de mañana.", r: "Mateo 6:34", t: "Providencia" },
-            // ... (Pega aquí el resto de tus 50 cartas manteniendo el formato {q, v, r, t})
-        ];
+</div>
 
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['PAZ', 'CONSUELO', 'ESPERANZA', 'SANTA ANA', 'REFUGIO'];
-            for (let i = 0; i < 15; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                const d = 15 + Math.random() * 15;
-                s.style.animation = `floatUp ${d}s linear infinite`;
-                s.style.animationDelay = `-${Math.random() * d}s`;
-                bg.appendChild(s);
-            }
-        }
+<footer class="mazo-footer">
+Nicolás Bongiorno – Capilla Santa Ana
+</footer>
 
-        window.onload = () => {
-            initBG();
-            MazoEngine.init(CARTAS, "Abrazo de Dios");
-        };
-    </script>
+<script src="mazo-engine.js"></script>
+<script>
+const CARTAS=[
+{ q:"¿Te permitís llorar sabiendo que Jesús también lloró ante el dolor de sus amigos?", v:"Jesús lloró.", r:"Juan 11:35"},
+{ q:"Cuando sentís que el vacío te ahoga, ¿recordás que Dios está más cerca de lo que creés?", v:"El Señor está cerca de los que tienen el corazón roto.", r:"Salmo 34:18"},
+{ q:"¿Podés entregar hoy el peso de tus deudas al cuidado de la Providencia?", v:"No se inquieten por el día de mañana.", r:"Mateo 6:34"}
+];
+
+window.onload=()=>MazoEngine.init(CARTAS,"Abrazo de Dios");
+</script>
+
 </body>
 </html>
