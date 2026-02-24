@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
@@ -31,6 +32,15 @@
     <meta property="og:url" content="https://capillasantaana.ar/">
     <meta property="og:image" content="https://capillasantaana.ar/1.webp">
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // REEMPLAZÁ G-XXXXXXXXXX POR TU ID REAL
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
     <style>
         :root {
             --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
@@ -56,7 +66,6 @@
             transition: background 0.3s; 
             padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
         }
-        /* Bloquea scroll durante la animación */
         body.no-scroll { overflow: hidden; }
         
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--primario); }
@@ -113,7 +122,6 @@
         /* --- HERO --- */
         .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; }
         
-        /* Fundamental para que la etiqueta <picture> no rompa el position: absolute de la imagen */
         picture { display: contents; }
         
         .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; }
@@ -138,7 +146,7 @@
         .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
         
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
-        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s; }
+        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
         .card:hover { transform: translateY(-8px); box-shadow: var(--sombra-fuerte); }
         
         .btn { padding: 18px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; border: none; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -183,7 +191,6 @@
     </style>
 </head>
 <body>
-
     <div id="preloader">
         <div class="preloader-content">
             <svg class="cross-svg" viewBox="0 0 100 150">
@@ -196,7 +203,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
     
     <nav>
@@ -259,7 +266,7 @@
                     <i class="fas fa-sync-alt"></i> Leer otro pasaje
                 </button>
             </div>
-    
+            
             <div style="text-align: center; margin-top: 60px; padding: 0 15px;">
                 <h3 style="font-size: 2.2rem; margin-bottom: 20px; font-family: 'Playfair Display', serif; color: var(--primario);">Encuentros con la Palabra</h3>
                 <p style="margin-bottom: 35px; font-size: 1.15rem; max-width: 800px; margin-left: auto; margin-right: auto; opacity: 0.9; line-height: 1.6;">
@@ -278,37 +285,66 @@
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Tu Familia Espiritual</p>
                 <h2>Nuestra Vida en Comunidad</h2>
                 <div class="divider"></div>
-                <p class="subtitle">En la Capilla Santa Ana no caminamos solos. Acercate a descubrir los espacios donde crecemos en la fe, compartimos alegrías y ayudamos a los demás.</p>
+                <p class="subtitle">No caminamos solos. Acercate a descubrir los espacios donde crecemos en la fe, compartimos alegrías y ayudamos a los demás.</p>
             </div>
+            
             <div class="grid-cards">
+                
                 <div class="card">
-                    <i class="fas fa-cross" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Vida Sacramental</h3>
-                    <p>Acompañamos cada etapa de tu vida cristiana: <strong>Bautismos, Primera Comunión, Confirmación, Casamientos (Matrimonios), Confesiones (Reconciliación) y Unción de los enfermos.</strong> Consultá los requisitos en secretaría.</p>
+                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Grupos Juveniles</h3>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="far fa-clock"></i> Sábados 16:30 hs</p>
+                    <p style="margin-bottom: 15px;">Sala de Catequesis</p>
+                    
+                    <ul style="text-align: left; list-style: none; padding-left: 0; font-size: 0.95rem; margin-bottom: 20px;">
+                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Pre-Juvenil:</strong> 12 a 14 años</li>
+                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Juvenil:</strong> 15+ años</li>
+                    </ul>
+                    
+                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento);">
+                        <strong>Requisitos de Confirmación:</strong><br>Fotocopia de DNI y Certificado de Bautismo.<br><br>
+                        <strong>Coordinadores (Escribinos):</strong><br>
+                        <a href="https://wa.me/5493547660037" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Gonza</a> | 
+                        <a href="https://wa.me/5493547652406" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Vero</a> | 
+                        <a href="https://wa.me/5493513012845" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Mari</a>
+                    </div>
                 </div>
+
                 <div class="card">
-                    <i class="fas fa-hands-helping" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Acción Social</h3>
-                    <p>Amor en acción. Brindamos asistencia a quienes atraviesan situaciones de vulnerabilidad en nuestra comunidad. <em>Próximamente: Apertura de un Merendero comunitario para familias.</em> ¡Tu ayuda es vital para lograrlo!</p>
+                    <i class="fas fa-pray" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Camino de Vida</h3>
+                    <p style="font-weight: 700; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Jubileo 2025 - Peregrinos de Esperanza</p>
+                    <p style="margin-bottom: 20px;">Encuentro profundo de La Palabra y Adoración Eucarística.</p>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto;">
+                        <i class="far fa-calendar-alt"></i> Jueves 19:00 hs
+                    </p>
                 </div>
+
                 <div class="card">
-                    <i class="fas fa-tshirt" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
+                    <i class="fas fa-tshirt" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Ropero Comunitario</h3>
-                    <p>Un espacio permanente para dar y recibir. Recolectamos ropa, mantas y calzado en buen estado, y lo entregamos con dignidad a quienes más lo necesitan.</p>
+                    <p style="font-style: italic; margin-bottom: 15px;">Modalidad "Lleve y Traiga"</p>
+                    <p style="margin-bottom: 20px;">Un espacio comunitario permanente preparado para intercambiar o retirar prendas con dignidad.</p>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto; line-height: 1.8;">
+                        <i class="far fa-clock"></i> Martes 17:00 hs<br>
+                        <i class="far fa-clock"></i> Jueves 16:30 hs
+                    </p>
                 </div>
+
                 <div class="card">
-                    <i class="fas fa-cut" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Talleres y Oficios</h3>
-                    <p>Brindamos talleres gratuitos de costura, manualidades y apoyo escolar para fomentar el desarrollo personal, intelectual y laboral de grandes y chicos.</p>
+                    <i class="fas fa-cross" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Vida Sacramental</h3>
+                    <p>Acompañamos cada etapa de tu vida cristiana: <strong>Bautismos, Primera Comunión, Confirmación, Casamientos, Confesiones y Unción de los enfermos.</strong></p>
                 </div>
+
                 <div class="card">
-                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 25px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Encuentros y Mateadas</h3>
-                    <p>Celebraciones patronales, ferias, locros y reuniones vecinales. ¡Un espacio seguro, sano y alegre para compartir como la gran familia que somos!</p>
+                    <i class="fas fa-hands-helping" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Talleres</h3>
+                    <p>Brindamos apoyo solidario a familias en vulnerabilidad y fomentamos el desarrollo a través de talleres de oficios y manualidades.</p>
                 </div>
+
             </div>
         </section>
-
         <section id="participa">
             <div class="section-header">
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">No seas un espectador</p>
@@ -357,20 +393,30 @@
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Sostenimiento Parroquial</p>
                 <h2>Tu generosidad es nuestro motor</h2>
                 <div class="divider"></div>
-                <p class="subtitle">Gracias a tu donación, la Capilla mantiene sus puertas abiertas, paga los servicios, sostiene los talleres y reúne fondos para el futuro merendero.</p>
+                <p class="subtitle">Gracias a tu donación, la Capilla mantiene sus puertas abiertas, paga los servicios, sostiene los talleres y reúne fondos para nuestra labor.</p>
             </div>
+            
             <div class="donar-container">
                 <i class="fas fa-hand-holding-heart" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
                 <h3 style="color: var(--primario); font-size: 1.8rem; margin-bottom: 15px;">Alias Bancario Oficial</h3>
-                <p style="opacity: 0.9; margin-bottom: 25px; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo suma y es administrado con total transparencia por la comunidad.</p>
+                <p style="opacity: 0.9; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo suma y es administrado con total transparencia.</p>
                 
                 <div class="alias-box">
                     <span id="alias-text">capillas.fatima.ag</span>
                 </div>
                 
-                <button class="btn btn-primary" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem;">
+                <button class="btn btn-primary" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem; margin-bottom: 25px;">
                     <i class="far fa-copy"></i> Copiar Alias para Transferir
                 </button>
+
+                <div style="border-top: 1px solid var(--gold-light); padding-top: 20px; text-align: center;">
+                    <p style="font-size: 0.95rem; color: var(--texto); margin-bottom: 15px; font-weight: 600;">
+                        Una vez realizada la transferencia, por favor envianos el comprobante para nuestro registro:
+                    </p>
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" rel="noopener" aria-label="Enviar comprobante por WhatsApp" class="btn" style="background: var(--verde-wa); color: white; width: 100%;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Enviar Comprobante
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -399,7 +445,7 @@
             
             <div style="border-radius: 20px; overflow: hidden; height: 450px; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light);">
                 <iframe 
-                    title="Capilla Santa Ana - Villa Parque Santa Ana"
+                    title="Ubicación en el mapa de Capilla Santa Ana - Villa Parque Santa Ana"
                     src="https://www.google.com/maps?q=Calle+Brochero+y+Calle+14,+Villa+Parque+Santa+Ana,+Córdoba&output=embed"
                     width="100%" 
                     height="100%" 
@@ -491,7 +537,7 @@
     // BLOQUEO INICIAL SEGURO POR JS
     document.body.classList.add("no-scroll");
 
-    // LÓGICA PRELOADER CON FALLBACK (EVITA CONGELAMIENTO)
+    // LÓGICA PRELOADER
     window.addEventListener("load", function () {
         const preloader = document.getElementById("preloader");
         document.body.classList.remove("no-scroll");
@@ -499,19 +545,14 @@
         if (preloader) {
             preloader.style.opacity = "0";
             preloader.style.visibility = "hidden";
-            setTimeout(() => {
-                preloader.remove();
-            }, 800);
+            setTimeout(() => { preloader.remove(); }, 800);
         }
     });
 
-    // Failsafe: si por algún motivo load no dispara
     setTimeout(function(){
         const preloader = document.getElementById("preloader");
         document.body.classList.remove("no-scroll");
-        if(preloader){
-            preloader.style.display = "none";
-        }
+        if(preloader) preloader.style.display = "none";
     }, 4000);
 
     const versiculos = [
@@ -543,10 +584,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         cambiarVersiculo();
         
-        // MODO OSCURO
         if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
         
-        // SCROLL
         window.onscroll = () => {
             const fTop = document.getElementById("fTop");
             if (window.scrollY > 400) { if(fTop) fTop.classList.add("visible"); } 
@@ -556,17 +595,14 @@
             if(bar) bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
         };
         
-        // ESC A MODAL
         document.addEventListener('keydown', (e) => { 
             if(e.key === "Escape") document.getElementById('modalPray').style.display='none'; 
         });
     });
     
-    // LÓGICA MENÚ APP-STYLE Y HAMBURGUESA
     function toggleMenu() {
         const nav = document.getElementById('navLinks');
         const toggleBtn = document.querySelector('.menu-toggle');
-        
         nav.classList.toggle('active');
         toggleBtn.classList.toggle('active');
     }
