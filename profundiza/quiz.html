@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafíos de Fe | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        /* PALETA DE COLORES ORIGINAL DE LA CAPILLA */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
+            
+            /* Colores de Dificultad */
+            --dif-facil: #4CAF50;
+            --dif-medio: #FF9800;
+            --dif-dificil: #F44336;
+        }
+
+        body.dark-mode {
+            --primario: #E0C097; 
+            --acento: #D4A373; 
+            --fondo: #121212;
+            --blanco: #1E1E1E; 
+            --texto: #E0E0E0; 
+            --sombra: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            transition: background 0.3s;
+        }
+
+        /* NAVBAR */
+        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
+        body.dark-mode nav { background: rgba(18,18,18,0.95); }
+        
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; }
+        .nav-volver { font-size: 0.9rem; font-weight: 700; color: var(--texto); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .nav-volver:hover { color: var(--acento); }
+
+        header.hero-mini { 
+            padding: 160px 5% 60px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('../assets/hero-bg.jpg'); /* Ajustá la ruta de tu imagen */
+            background-size: cover; 
+            background-position: center;
+            color: white;
+        }
+
+        .section-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 10px; color: white; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
+
+        /* CONTENEDOR DE CATEGORÍAS */
+        .category-section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 50px 8% 20px;
+        }
+        
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--primario);
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gold-light);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* GRILLA DE CARTAS */
+        .grid-desafios { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .mazo-card { 
+            background: var(--blanco); 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            border: 1px solid var(--gold-light); 
+            box-shadow: var(--sombra); 
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mazo-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: var(--sombra-fuerte);
+            border-color: var(--acento);
+        }
+
+        /* BADGES DE DIFICULTAD */
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #333;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 5px 35px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .badge.facil { background: var(--dif-facil); }
+        .badge.medio { background: var(--dif-medio); }
+        .badge.dificil { background: var(--dif-dificil); }
+
+        .mazo-card i.main-icon { font-size: 3.5rem; margin-bottom: 20px; color: var(--acento); transition: 0.3s; }
+        .mazo-card:hover i.main-icon { transform: scale(1.1); }
+        
+        .mazo-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primario); margin-bottom: 10px; }
+        .mazo-card p { font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; line-height: 1.5; }
+        
+        .btn-abrir {
+            padding: 12px 28px;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--primario);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--acento);
+            transition: 0.3s;
+        }
+        
+        .mazo-card:hover .btn-abrir {
+            background: var(--acento);
+            color: white;
+        }
+
+        /* FOOTER Y FLOTANTES */
+        footer { background: #111; color: #888; padding: 60px 5% 30px; text-align: center; margin-top: 60px; }
+        .social-links a { color: #888; font-size: 1.8rem; margin: 0 15px; transition: 0.3s; }
+        .social-links a:hover { color: white; }
+
+        .float-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; }
+        .f-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 1.4rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: 0.3s; }
+        .f-btn:hover { transform: scale(1.1); }
+
+        @media (max-width: 768px) {
+            .category-section { padding: 40px 5% 10px; }
+            .category-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="../index.html" class="nav-volver"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="#" class="logo" style="margin: 0 auto; padding-right: 60px;">Santa Ana</a>
+        <button class="icon-btn" style="background:none; border:none; cursor:pointer; color:var(--primario); font-size:1.3rem; position:absolute; right:5%;" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header class="hero-mini">
+        <div class="section-header">
+            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.85rem; color:var(--acento); font-weight: 800; margin-bottom:10px;">Aprender jugando</p>
+            <h1>Desafíos y Preguntas</h1>
+            <div class="divider"></div>
+            <p style="max-width:700px; margin: 0 auto; opacity:0.9; line-height: 1.6;">Poné a prueba lo que sabés, aprendé cosas nuevas sobre la fe y divertite. Elegí tu edad y el nivel de dificultad para empezar.</p>
+        </div>
+    </header>
+
+    <section class="category-section">
+        <h2 class="category-title"><i class="fas fa-child" style="color: #4CAF50;"></i> Para los más chicos</h2>
+        <div class="grid-desafios">
+            <a href="ninos-facil.html" class="mazo-card">
+                <div class="badge facil">Fácil</div>
+                <i class="fas fa-star main-icon" style="color: #FFC107;"></i>
+                <h3>Nivel Inicial</h3>
+                <p>Preguntas súper divertidas y fáciles sobre las historias más lindas de Jesús.</p>
+                <span class="btn-abrir">Jugar Ahora</span>
+            </a>
+
+            <a href="ninos-medio.html" class="mazo-card">
+                <div class="badge medio">Medio</div>
+                <i class="fas fa-map main-icon" style="color: #FF9800;"></i>
+                <h3>Aventura Bíblica</h3>
+                <p>Ideal para chicos de comunión. Un recorrido por los milagros y los sacramentos.</p>
+                <span class="btn-abrir">Jugar Ahora</span>
+            </a>
+
+            <a href="ninos-dificil.html" class="mazo-card">
+                <div class="badge dificil">Difícil</div>
+                <i class="fas fa-trophy main-icon" style="color: #F44336;"></i>
+                <h3>Modo Campeón</h3>
+                <p>Para los que ya saben bastante. Detalles sobre profetas, la Misa y los santos.</p>
+                <span class="btn-abrir">Jugar Ahora</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="category-section">
+        <h2 class="category-title"><i class="fas fa-fire" style="color: #FF5722;"></i> Jóvenes y Adolescentes</h2>
+        <div class="grid-desafios">
+            <a href="jovenes-facil.html" class="mazo-card">
+                <div class="badge facil">Fácil</div>
+                <i class="fas fa-bolt main-icon" style="color: #00BCD4;"></i>
+                <h3>Base Firme</h3>
+                <p>Un repaso general y dinámico sobre los pilares básicos de nuestra fe cristiana.</p>
+                <span class="btn-abrir">Empezar Reto</span>
+            </a>
+
+            <a href="jovenes-medio.html" class="mazo-card">
+                <div class="badge medio">Medio</div>
+                <i class="fas fa-compass main-icon" style="color: #3F51B5;"></i>
+                <h3>Mundo y Fe</h3>
+                <p>Respuestas a preguntas clave que todo joven católico se hace hoy en día.</p>
+                <span class="btn-abrir">Empezar Reto</span>
+            </a>
+
+            <a href="jovenes-dificil.html" class="mazo-card">
+                <div class="badge dificil">Difícil</div>
+                <i class="fas fa-skull-crossbones main-icon" style="color: #9C27B0;"></i>
+                <h3>Modo Experto</h3>
+                <p>Apologética, historia difícil de la Iglesia, filosofía y ciencia. Nivel Jefe Final.</p>
+                <span class="btn-abrir">Empezar Reto</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="category-section" style="margin-bottom: 40px;">
+        <h2 class="category-title"><i class="fas fa-book-reader" style="color: #795548;"></i> Adultos</h2>
+        <div class="grid-desafios">
+            <a href="adultos-facil.html" class="mazo-card">
+                <div class="badge facil">Fácil</div>
+                <i class="fas fa-seedling main-icon" style="color: #8BC34A;"></i>
+                <h3>Renovar la Fe</h3>
+                <p>Ideal para refrescar conceptos esenciales: sacramentos, mandamientos y la Misa.</p>
+                <span class="btn-abrir">Ingresar</span>
+            </a>
+
+            <a href="adultos-medio.html" class="mazo-card">
+                <div class="badge medio">Medio</div>
+                <i class="fas fa-wine-glass-alt main-icon" style="color: #E91E63;"></i>
+                <h3>Profundidad</h3>
+                <p>Doctrina Social, teología moral y el Magisterio de la Iglesia. Para pensar un poco más.</p>
+                <span class="btn-abrir">Ingresar</span>
+            </a>
+
+            <a href="adultos-dificil.html" class="mazo-card">
+                <div class="badge dificil">Difícil</div>
+                <i class="fas fa-landmark main-icon" style="color: #607D8B;"></i>
+                <h3>Alta Teología</h3>
+                <p>Herejías históricas, encíclicas, dogmas complejos y filosofía tomista avanzada.</p>
+                <span class="btn-abrir">Ingresar</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <h3 style="color: white; margin-bottom: 10px; font-family: 'Playfair Display', serif;">Capilla Santa Ana</h3>
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 20px;">© 2026 Arquitectura Digital por Nicolás Bongiorno</p>
+    </footer>
+
+    <div class="float-container">
+        <a href="../index.html" class="f-btn" style="background: var(--primario);" title="Volver al Inicio">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Cargar tema guardado
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.icon-btn i').classList.replace('fa-moon', 'fa-sun');
+        }
+    </script>
+</body>
+</html>
