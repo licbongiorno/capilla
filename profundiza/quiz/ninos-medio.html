@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Niños (Medio) - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Niños Medio: Aventura (Violetas y Amarillos) */
+            --bg1: #7E57C2; /* Violeta claro */
+            --bg2: #311B92; /* Violeta profundo */
+            --box-bg: #FFFFFF; /* Caja blanca */
+            --accent: #FFCA28; /* Amarillo Ámbar */
+            --accent-hover: #FFB300;
+            --texto-oscuro: #311B92; /* Violeta oscuro para texto */
+            --texto-claro: #FFFFFF;
+            --correcto: #00E676; /* Verde alegre */
+            --incorrecto: #FF5252; /* Rojo suave */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto-oscuro);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.15);
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--texto-oscuro);
+            font-weight: 800;
+            font-size: .85rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .nav-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 100px 20px 40px; 
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--box-bg);
+            border-radius: 25px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 4px solid var(--accent); 
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(5deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 6vw, 1.6rem);
+            font-weight: 900;
+            color: var(--texto-oscuro);
+            line-height: 1.3;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: #EDE7F6; /* Violetita muy claro */
+            border: 2px solid #D1C4E9;
+            padding: 18px 15px;
+            border-radius: 18px;
+            color: var(--texto-oscuro);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: #FFF8E1; /* Amarillito al pasar el mouse */
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: var(--correcto);
+            border-color: #00C853;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 230, 118, 0.4);
+        }
+        .opt-btn.incorrect {
+            background: var(--incorrecto);
+            border-color: #D50000;
+            color: white;
+            opacity: 0.85;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 20px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: var(--texto-oscuro);
+            display: none;
+            padding: 18px;
+            background: #FFF8E1;
+            border-radius: 15px;
+            border-left: 6px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 450px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: var(--texto-oscuro); box-shadow: 0 6px 15px rgba(255, 202, 40, 0.4); display: flex; border: 2px solid #FFF; }
+        .btn-main:active { transform: scale(0.95); }
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.9); color: var(--bg2); border: 2px solid white; font-size: 1.4rem; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); }
+        .btn-sec:hover { background: white; transform: scale(1.05); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: white; color: var(--texto-oscuro); padding: 15px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 14px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 3px solid var(--bg2);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:450px; margin-bottom:12px; text-align:center;">
+            <span style="background:var(--accent); color:var(--texto-oscuro); padding:6px 18px; border-radius:20px; font-size:0.9rem; font-weight:900; text-transform:uppercase; letter-spacing:2px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); border: 2px solid #FFF;">Nivel Intermedio</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-arrow-right"></i> Siguiente</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado! Listos para jugar.</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS NIVEL MEDIO PARA NIÑOS (8-11 años)
+const CARTAS = [
+    { id: "nm-1", q: "¿A qué ciudad le pidió Dios a Jonás que fuera a predicar?", opts: ["Jerusalén", "Nínive", "Roma", "Belén"], corr: 1, feed: "¡A Nínive! Jonás no quería ir porque los consideraba enemigos, pero Dios lo perdonó y también perdonó a la ciudad cuando se arrepintieron." },
+    { id: "nm-2", q: "¿Cuál de estos NO es uno de los cuatro Evangelios?", opts: ["Mateo", "Marcos", "Pablo", "Juan"], corr: 2, feed: "¡Exacto! Los 4 Evangelios son Mateo, Marcos, Lucas y Juan. San Pablo escribió muchas cartas, pero no un Evangelio." },
+    { id: "nm-3", q: "¿Qué significa la palabra 'Evangelio'?", opts: ["Buena Noticia", "Libro antiguo", "Reglas de oro", "Historia triste"], corr: 0, feed: "Significa 'Buena Noticia'. ¡Es la mejor noticia del mundo: que Dios nos ama y envió a Jesús a salvarnos!" },
+    { id: "nm-4", q: "¿A qué edad se perdió Jesús en el Templo de Jerusalén?", opts: ["A los 5 años", "A los 12 años", "A los 18 años", "A los 30 años"], corr: 1, feed: "A los 12 años. María y José lo buscaron desesperados por 3 días, hasta que lo encontraron hablando con los maestros de la ley." },
+    { id: "nm-5", q: "En la parábola del Sembrador, ¿qué es la 'semilla' que cae en la tierra?", opts: ["El dinero", "La Palabra de Dios", "Las buenas obras", "La salud"], corr: 1, feed: "La semilla es la Palabra de Dios. Depende de cómo esté la 'tierra' de nuestro corazón para que crezca o se seque." },
+    { id: "nm-6", q: "¿Qué mandamiento nos pide amar y obedecer a nuestros papás?", opts: ["El Primer Mandamiento", "El Cuarto Mandamiento", "El Octavo Mandamiento", "El Décimo Mandamiento"], corr: 1, feed: "El Cuarto Mandamiento: 'Honrarás a tu padre y a tu madre'. Significa quererlos, respetarlos y ayudarlos siempre." },
+    { id: "nm-7", q: "¿Quién fue el hombre más sabio del Antiguo Testamento que construyó el gran Templo?", opts: ["El Rey David", "Moisés", "El Rey Salomón", "Josué"], corr: 2, feed: "El Rey Salomón. Era hijo de David, y cuando Dios le dijo 'Pídeme lo que quieras', en vez de riqueza, ¡pidió Sabiduría!" },
+    { id: "nm-8", q: "¿Qué le pasó a Daniel cuando lo arrojaron al foso de los leones?", opts: ["Luchó contra ellos y ganó", "Dios cerró la boca de los leones y no le hicieron nada", "Se hizo amigo y jugó con ellos", "Los leones estaban dormidos"], corr: 1, feed: "Como Daniel no dejó de rezar a Dios, Dios envió a su ángel para cerrar la boca de los leones y protegerlo." },
+    { id: "nm-9", q: "¿Con qué alimento Jesús nos enseñó que Él se queda siempre con nosotros?", opts: ["Con manzanas", "Con leche y miel", "Con el Pan y el Vino", "Con pescado asado"], corr: 2, feed: "En la Última Cena, Jesús tomó Pan y Vino y nos regaló la Eucaristía, donde Él se queda de verdad." },
+    { id: "nm-10", q: "¿Quién era el Faraón?", opts: ["El papá de Moisés", "El Rey de Egipto que tenía esclavizado al pueblo de Dios", "El hermano de Jesús", "Un profeta"], corr: 1, feed: "El Faraón era el rey de Egipto. Dios mandó a Moisés a decirle: '¡Deja salir a mi pueblo!'." },
+    { id: "nm-11", q: "¿Qué significa la palabra 'Amén'?", opts: ["Que así sea / Es verdad", "Hasta mañana", "Por favor", "Te quiero"], corr: 0, feed: "Significa 'Que así sea' o 'Yo creo firmemente en esto'. La decimos al final de las oraciones como si fuera nuestra firma." },
+    { id: "nm-12", q: "¿Cuántos días creó Dios el mundo antes de descansar en el séptimo día?", opts: ["3 días", "6 días", "10 días", "40 días"], corr: 1, feed: "Dios creó todo en 6 días y descansó el séptimo (el Domingo para nosotros). ¡Nos enseña que el descanso también es sagrado!" },
+    { id: "nm-13", q: "¿Qué celebramos en Pentecostés?", opts: ["El nacimiento de la Virgen", "La llegada de los Reyes Magos", "La venida del Espíritu Santo sobre los Apóstoles", "El fin del mundo"], corr: 2, feed: "Cincuenta días después de la Pascua, el Espíritu Santo bajó como lenguas de fuego para darles mucha valentía a los apóstoles." },
+    { id: "nm-14", q: "¿A quién le dijo Jesús: 'Tú eres piedra, y sobre esta piedra edificaré mi Iglesia'?", opts: ["A Juan", "A Santiago", "A Pedro", "A Pablo"], corr: 2, feed: "¡A Simón Pedro! Lo eligió para ser el primer Papa, el encargado de cuidar y guiar a toda la familia de la Iglesia." },
+    { id: "nm-15", q: "¿Cuál es el mandamiento nuevo que nos dejó Jesús?", opts: ["No robarás", "Santificar las fiestas", "Ámense los unos a los otros como Yo los he amado", "No mentirás"], corr: 2, feed: "Ese 'como yo los he amado' es el secreto. Jesús nos enseñó a amar a los demás entregando todo, ¡incluso perdonando a los que nos hacen mal!" },
+    { id: "nm-16", q: "Antes de llamarse Pablo y escribir muchas cartas, ¿cómo se llamaba este apóstol?", opts: ["Saulo", "Simón", "Mateo", "Zacarías"], corr: 0, feed: "Se llamaba Saulo de Tarso. Antes perseguía a los cristianos, hasta que Jesús se le apareció en el camino y le cambió la vida." },
+    { id: "nm-17", q: "En la Misa, ¿qué momento es el más importante de todos?", opts: ["El canto de entrada", "La Consagración (cuando el pan se hace Cuerpo de Jesús)", "La paz", "Las ofrendas"], corr: 1, feed: "La Consagración. Es cuando el sacerdote repite las palabras de Jesús en la Última Cena y ocurre el gran milagro de la Eucaristía." },
+    { id: "nm-18", q: "¿Qué profeta fue llevado al cielo en un carro de fuego?", opts: ["Elías", "Isaías", "Jeremías", "Juan el Bautista"], corr: 0, feed: "El profeta Elías. Fue un hombre de tanta fe y tan cercano a Dios que subió al cielo en un carro brillante de fuego." },
+    { id: "nm-19", q: "¿Qué mujer valiente del Antiguo Testamento salvó a su pueblo de ser destruido?", opts: ["Rut", "Rebeca", "La Reina Ester", "Sara"], corr: 2, feed: "La Reina Ester arriesgó su propia vida para pedirle al Rey que no lastimara al pueblo judío. ¡Dios premia la valentía!" },
+    { id: "nm-20", q: "Jesús dijo: 'Yo soy el Camino, la Verdad y...' ¿qué más?", opts: ["La Paz", "La Vida", "El Amor", "La Alegría"], corr: 1, feed: "'... y la Vida'. Nadie llega a Dios Padre sino es a través de las enseñanzas y el amor de Jesús." },
+    { id: "nm-21", q: "¿En qué monte le dio Dios los 10 Mandamientos a Moisés?", opts: ["Monte Carmelo", "Monte Tabor", "Monte Sinaí", "Monte Calvario"], corr: 2, feed: "En el Monte Sinaí. Allí Dios hizo una alianza (un pacto de amigos) con su pueblo para protegerlos siempre." },
+    { id: "nm-22", q: "¿Qué milagro hizo Jesús en las Bodas de Caná?", opts: ["Caminó sobre el agua", "Curó a un ciego", "Transformó el agua en el mejor vino", "Multiplicó los panes"], corr: 2, feed: "Fue su primer milagro. Lo hizo porque su mamá, María, se dio cuenta de que a los novios se les había acabado la bebida y quiso ayudarlos." },
+    { id: "nm-23", q: "Cuando un sacerdote nos confiesa, ¿quién nos está perdonando realmente?", opts: ["El sacerdote solamente", "El Papa", "Jesús, que usa al sacerdote", "Un ángel"], corr: 2, feed: "¡Jesús mismo! Él le dio a los sacerdotes la autoridad de perdonar pecados en Su nombre para que tengamos la seguridad de ser perdonados." },
+    { id: "nm-24", q: "¿Cómo se llama el 'Ayudante' o 'Consolador' que Jesús prometió enviarnos?", opts: ["Un profeta", "El Espíritu Santo", "Un soldado", "Un maestro de la ley"], corr: 1, feed: "El Espíritu Santo. Es la tercera persona de la Trinidad y nos da fuerza, inteligencia y alegría para ser buenos cristianos." },
+    { id: "nm-25", q: "En la parábola de los talentos, ¿qué le pasó al sirviente que escondió su moneda por miedo?", opts: ["Fue premiado", "Su amo se enojó porque no la hizo crecer", "Se la robaron", "Compró un campo"], corr: 1, feed: "El amo (Dios) nos da dones y talentos para que los usemos ayudando a los demás, ¡no para esconderlos por vergüenza!" },
+    { id: "nm-26", q: "¿Qué hizo Jesús antes de la Última Cena para enseñarnos a ser humildes?", opts: ["Lavó los pies a sus discípulos", "Cocinó la comida", "Se puso una corona de oro", "Limpió la mesa"], corr: 0, feed: "Les lavó los pies. En esa época, lavar los pies era el trabajo de los esclavos, pero Jesús demostró que el líder es el que sirve a los demás." },
+    { id: "nm-27", q: "¿Cuántas veces le dijo Jesús a Pedro que debíamos perdonar a los demás?", opts: ["Solo 1 vez", "7 veces", "70 veces 7 (o sea, siempre)", "Hasta que nos cansemos"], corr: 2, feed: "Jesús usó el número '70 veces 7' para decir que el perdón no tiene límites. Tenemos que perdonar siempre, como Dios nos perdona." },
+    { id: "nm-28", q: "¿A quién le dijo Jesús en la cruz: 'Madre, ahí tienes a tu hijo'?", opts: ["A San Pedro", "Al Apóstol Juan", "Al soldado romano", "A Lázaro"], corr: 1, feed: "Se lo dijo a Juan. En ese momento, Jesús nos regaló a la Virgen María para que sea la mamá de todos nosotros." },
+    { id: "nm-29", q: "¿Cómo se llama el tiempo de alegría de 4 semanas que nos prepara para la Navidad?", opts: ["Cuaresma", "Adviento", "Pascua", "Tiempo Ordinario"], corr: 1, feed: "¡El Adviento! Encendemos velitas semana a semana mientras esperamos con mucha alegría el cumpleaños de Jesús." },
+    { id: "nm-30", q: "¿Quién engañó a Eva en el jardín del Edén disfrazado de serpiente?", opts: ["Un ángel bueno", "El diablo (o demonio)", "Un dinosaurio", "Caín"], corr: 1, feed: "El demonio usó la mentira para hacerle creer a Adán y Eva que Dios no quería lo mejor para ellos." },
+    { id: "nm-31", q: "¿Qué le regaló el papá al Hijo Pródigo cuando volvió a casa arrepentido?", opts: ["Un castigo muy duro", "Lo echó de la casa", "Un anillo, ropa nueva y una gran fiesta", "Lo mandó a cuidar cerdos"], corr: 2, feed: "¡Hizo una fiesta gigante! Así es Dios: cuando nos equivocamos y volvemos a pedir perdón, Él se pone súper feliz." },
+    { id: "nm-32", q: "¿Cuál de estos NO es un Sacramento?", opts: ["Bautismo", "Confirmación", "Rezar el Rosario", "Unción de los Enfermos"], corr: 2, feed: "El Rosario es una oración hermosa, pero los Sacramentos son 7 regalos especiales donde Dios actúa directamente en nuestra alma." },
+    { id: "nm-33", q: "¿Por qué Moisés no pudo cruzar hacia la Tierra Prometida?", opts: ["Porque no sabía nadar", "Porque falleció antes, pero Dios se la dejó ver desde un monte", "Porque se perdió", "Porque decidió volver a Egipto"], corr: 1, feed: "Moisés lideró al pueblo por 40 años en el desierto. Dios le permitió ver la tierra hermosa desde el monte Nebo antes de morir." },
+    { id: "nm-34", q: "¿Quién era el gigante que se reía del pueblo de Israel hasta que David lo venció?", opts: ["Sansón", "Goliat", "Faraón", "Herodes"], corr: 1, feed: "Goliat daba mucho miedo, pero David le dijo: 'Tú vienes con espada y lanza, pero yo vengo en el nombre de Dios'." },
+    { id: "nm-35", q: "Cuando rezamos el Credo decimos: 'Creo en Dios, Padre...'", opts: ["Todopoderoso", "Muy inteligente", "Trabajador", "Que vive en las nubes"], corr: 0, feed: "Todopoderoso, Creador del cielo y de la tierra. Porque para Dios no hay nada imposible." },
+    { id: "nm-36", q: "¿Qué le pidió el Rey Salomón a Dios cuando era joven?", opts: ["Mucho oro y dinero", "Un castillo de cristal", "Un corazón sabio para gobernar bien a la gente", "Ganar todas las guerras"], corr: 2, feed: "Pidió Sabiduría. Como no pidió cosas egoístas, a Dios le gustó tanto que le dio sabiduría ¡y también paz y riqueza!" },
+    { id: "nm-37", q: "En la Última Cena, ¿quién se recostó sobre el pecho de Jesús porque era su amigo más joven?", opts: ["Pedro", "Judas", "Mateo", "Juan"], corr: 3, feed: "El apóstol Juan, conocido como 'el discípulo amado'. Fue el único de los apóstoles que no escapó y se quedó al lado de la cruz con María." },
+    { id: "nm-38", q: "¿De qué nos limpia el sacramento del Bautismo?", opts: ["Del barro de jugar", "Del pecado original", "De las enfermedades", "De la mala suerte"], corr: 1, feed: "Nos limpia del pecado original, nos llena del Espíritu Santo y nos hace oficialmente 'Hijos de Dios'." },
+    { id: "nm-39", q: "¿A quién se le apareció el ángel Gabriel en sueños para decirle que no tenga miedo de casarse con María?", opts: ["A los Reyes Magos", "A San José", "A los pastores", "A Zacarías"], corr: 1, feed: "A San José. El ángel le explicó en un sueño que el bebé que esperaba María era el Hijo de Dios." },
+    { id: "nm-40", q: "¿Qué oración repetimos muchas veces en el Rosario mientras pensamos en la vida de Jesús?", opts: ["El Credo", "El Padre Nuestro", "El Ave María", "El Salve"], corr: 2, feed: "En cada 'Misterio' rezamos 10 Ave Marías. Es como darle una rosita a la Virgen María con cada oración." },
+    { id: "nm-41", q: "Cuando Jesús multiplicó los panes, ¿quién había llevado los 5 panes y los 2 peces?", opts: ["Un panadero rico", "Un niño pequeño que quiso compartir", "Los apóstoles", "Los soldados"], corr: 1, feed: "¡Un niño! Fíjate qué importante: Jesús usó lo poquito que un nene quiso compartir para hacer un milagro gigante." },
+    { id: "nm-42", q: "¿Quién era San Juan Bautista?", opts: ["El hermano de Jesús", "El primo de Jesús que preparó el camino para Él", "El primer Papa", "Un Rey de Israel"], corr: 1, feed: "Era primo de Jesús. Vivía en el desierto y le decía a la gente que cambiara su corazón porque el Salvador ya llegaba." },
+    { id: "nm-43", q: "El Domingo de Ramos recordamos cuando Jesús entró a Jerusalén. ¿En qué iba montado?", opts: ["En un camello", "En un caballo blanco de guerra", "En un burrito humilde", "Caminando"], corr: 2, feed: "Eligió un burrito, que es un animal de trabajo y paz, para demostrar que Él no era un rey violento, sino el Rey del Amor." },
+    { id: "nm-44", q: "¿Quién traicionó a Jesús dándole un beso a cambio de 30 monedas?", opts: ["Caifás", "Pilato", "Judas Iscariote", "Pedro"], corr: 2, feed: "Judas era uno de los 12 apóstoles. Es muy triste porque Jesús lo quería mucho, pero Judas se dejó engañar por el dinero." },
+    { id: "nm-45", q: "¿Qué hacen los padrinos de Bautismo?", opts: ["Solo dan regalos en los cumpleaños", "Prometen ayudar a los papás a enseñarles la fe cristiana al ahijado", "Le eligen la ropa", "Le dan un nombre nuevo"], corr: 1, feed: "Tienen una misión súper importante: rezar por vos y ser un ejemplo para que siempre seas un buen amigo de Jesús." },
+    { id: "nm-46", q: "En la Biblia, ¿quién fue tragado por una ballena (o gran pez)?", opts: ["Jonás", "Noé", "Moisés", "Pedro"], corr: 0, feed: "Jonás. Huyó en un barco porque no quería hacerle caso a Dios, pero después de 3 días en el pez, se arrepintió y fue a cumplir su misión." },
+    { id: "nm-47", q: "¿Qué le dijo Jesús al paralítico al que bajaron por un agujero en el techo?", opts: ["'Cuidado con la cabeza'", "'Tus pecados te son perdonados, levántate y camina'", "'Vuelve mañana'", "'Ese techo era nuevo'"], corr: 1, feed: "Como había tanta gente, los amigos del paralítico rompieron el techo para acercarlo a Jesús. ¡A Jesús le encantó la fe de esos amigos!" },
+    { id: "nm-48", q: "¿De qué color es la ropa que usa el sacerdote (los ornamentos) en Cuaresma?", opts: ["Blanco", "Verde", "Morado (Violeta)", "Rojo"], corr: 2, feed: "Morado. Es el color que usamos en la Iglesia para pensar, pedir perdón y prepararnos para la Pascua." },
+    { id: "nm-49", q: "¿Qué Santo era un niño muy valiente que defendió la Eucaristía para que no la pisaran?", opts: ["San Tarsicio", "San Francisco", "San José", "San Agustín"], corr: 0, feed: "San Tarsicio. Era un niño acólito de los primeros cristianos y dio su vida protegiendo las hostias consagradas de unos jóvenes malos." },
+    { id: "nm-50", q: "¿Es verdad que tenemos que amar incluso a nuestros enemigos?", opts: ["No, a los enemigos se los ignora", "Solo a los amigos", "Sí, Jesús dijo 'Amen a sus enemigos y recen por los que los molestan'", "Depende de qué nos hicieron"], corr: 2, feed: "¡Es lo más difícil de ser cristiano! Pero Jesús nos pide que no devolvamos mal por mal, sino que seamos luz y perdonemos." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido Mágico para Niños (Campanitas / Marimba)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "triangle" },
+    envelope: { attack: 0.02, decay: 0.2, sustain: 0.1, release: 0.5 }
+}).toDestination();
+synth.volume.value = -8;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Tintineo claro
+    synth.triggerAttackRelease("E5", "16n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Campanita alegre ascendente
+    const now = Tone.now();
+    synth.triggerAttackRelease("C5", "16n", now);
+    synth.triggerAttackRelease("G5", "16n", now + 0.1);
+    synth.triggerAttackRelease("C6", "8n", now + 0.2);
+}
+
+// Inicialización
+function initQuiz() {
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    // Emojis exploradores / aventura
+    const iconitos = ['🔍', '🧭', '🗺️', '💡'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="font-size: 1.3rem; margin-right:10px;">${iconitos[index]}</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto); font-size:1.2rem;"></i> ¡Excelente!</strong><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-info-circle" style="color:#FFB300; font-size:1.2rem;"></i> ¡Casi, pero no! La respuesta es:</strong><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 300);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `🔍 ¡Desafío de Aventura Bíblica para Chicos!\n\n"${c.q}"\n\n¿Sabés la respuesta? Entrá acá: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Niños (Medio)', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['AMISTAD', 'AVENTURA', 'MILAGROS', 'JESÚS', 'FE', 'CAPILLA SANTA ANA', 'ALEGRÍA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 25) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

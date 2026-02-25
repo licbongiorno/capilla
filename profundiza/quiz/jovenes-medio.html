@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Jóvenes - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Moderna Juvenil: Azules profundos y Cian Neón */
+            --bg1: #0A1128;
+            --bg2: #16213E;
+            --box-bg: rgba(26, 38, 70, 0.85);
+            --accent: #00F2FF; /* Cian brillante */
+            --accent-hover: #00D2FC;
+            --texto: #FFFFFF;
+            --correcto: #00FF87; /* Verde Neón */
+            --incorrecto: #FF3366; /* Rosa/Rojo Neón */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto; /* Permite scroll en celulares */
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(0, 242, 255, 0.05); /* Cian muy transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(10, 17, 40, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(0, 242, 255, 0.2); border-color: var(--accent); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; /* Evita que se corte arriba en celulares */
+            padding: 100px 20px 40px; /* Espacio para el nav fijo */
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--box-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(5deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.45rem);
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 15px;
+            color: var(--texto);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: rgba(0, 242, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: rgba(0, 255, 135, 0.15);
+            border-color: var(--correcto);
+            color: #fff;
+        }
+        .opt-btn.incorrect {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: var(--incorrecto);
+            opacity: 0.7;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #E0E0E0;
+            display: none;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 450px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: #0A1128; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2); display: flex; }
+        .btn-main:active { transform: scale(0.95); }
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.1); color: var(--accent); border: 1px solid rgba(0,242,255,0.3); font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(0, 242, 255, 0.1); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--accent); color: #0A1128; padding: 12px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-bolt"></i> Otra Pregunta</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado! Listos para desafiar.</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS PARA JÓVENES
+const CARTAS = [
+    { id: "j-1", q: "¿Cuál es el mensaje principal de la parábola del Hijo Pródigo?", opts: ["Hay que cuidar bien el dinero", "Dios siempre perdona si volvemos a Él", "El hermano mayor era el malo", "No hay que irse nunca de casa"], corr: 1, feed: "No importa qué tan lejos te hayas ido o tus errores; Dios es un Padre que sale a abrazarte cuando decidís volver." },
+    { id: "j-2", q: "Si alguien te ofende en el colegio o redes, ¿qué nos pide Jesús?", opts: ["Ignorarlo para siempre", "Vengarnos disimuladamente", "Perdonar 'hasta 70 veces 7'", "Esperar a que pida perdón primero"], corr: 2, feed: "Perdonar 'siempre'. No porque el otro se lo merezca, sino porque el perdón te libera a vos del veneno del rencor." },
+    { id: "j-3", q: "¿Qué significa literalmente la palabra 'Católico'?", opts: ["Seguidor del Papa", "Universal, para todos", "Persona que va a Misa", "Antiguo o tradicional"], corr: 1, feed: "Viene del griego. La Iglesia no es un club exclusivo; es una casa de puertas abiertas para todas las personas del mundo entero." },
+    { id: "j-4", q: "¿Cuál de estos NO es uno de los dones del Espíritu Santo?", opts: ["Sabiduría", "Fortaleza", "Telepatía", "Piedad"], corr: 2, feed: "Los dones (Sabiduría, Inteligencia, Consejo, Fortaleza, Ciencia, Piedad y Temor de Dios) te dan herramientas espirituales para la vida diaria." },
+    { id: "j-5", q: "Según San Pablo, ¿cuál de estas virtudes es la más importante?", opts: ["La Fe", "La Esperanza", "El Amor (La Caridad)", "La Paciencia"], corr: 2, feed: "'Ahora permanecen la fe, la esperanza y el amor, pero el mayor de ellos es el amor'. Al final de la vida, nos juzgarán por cuánto amamos." },
+    { id: "j-6", q: "En las redes sociales, un verdadero joven cristiano debería...", opts: ["Pelear con los que piensan distinto", "Ser luz: no participar en ciberbullying", "Ocultar su fe para encajar", "Solo seguir cuentas religiosas"], corr: 1, feed: "Ser cristiano es ser coherente en todas partes (¡incluso en Instagram/TikTok!). Implica defender a los que sufren burlas y cuidar las palabras." },
+    { id: "j-7", q: "¿Quién fue elegido por Jesús para ser el primer Papa de la Iglesia?", opts: ["San Pablo", "San Juan", "San Mateo", "San Pedro"], corr: 3, feed: "Eligió a Pedro sabiendo que era imperfecto y que lo iba a negar por miedo. Dios perdona y da segundas oportunidades gigantes." },
+    { id: "j-8", q: "El sacramento de la Confirmación sirve principalmente para...", opts: ["Terminar con la catequesis", "Poder casarse en el futuro", "Recibir el Espíritu y ser testigos", "Aprender a rezar mejor"], corr: 2, feed: "No es una 'graduación'. Es recibir el motor interior (el Espíritu Santo) para salir al mundo con valentía a defender el bien." },
+    { id: "j-9", q: "El mandamiento 'Honrarás a tu padre y a tu madre' significa...", opts: ["Darles regalos caros", "Respetarlos y agradecerles la vida", "Darles la razón aunque se equivoquen", "No discutir nunca con ellos"], corr: 1, feed: "Honrar es reconocer su esfuerzo por cuidarte. Se demuestra con respeto, ayudando en casa y teniendo paciencia." },
+    { id: "j-10", q: "¿Qué celebramos exactamente el Domingo de Pascua?", opts: ["El nacimiento de Jesús", "La última cena", "La venida del Espíritu", "La resurrección de Jesús"], corr: 3, feed: "Es la fiesta principal. Celebramos que Jesús venció a la muerte y demostró que el amor le gana siempre a la oscuridad." },
+    { id: "j-11", q: "¿Ciencia y Fe son enemigas?", opts: ["Sí, la Biblia niega la ciencia", "No, ambas buscan la verdad", "La ciencia es mala para el cristiano", "La Iglesia prohíbe estudiar ciencia"], corr: 1, feed: "Ambas son alas para llegar a la verdad. La ciencia explica el 'cómo' funcionan las cosas, y la fe explica el 'por qué' y el sentido de la vida." },
+    { id: "j-12", q: "¿Quién propuso la teoría del Big Bang?", opts: ["Albert Einstein", "Stephen Hawking", "Un sacerdote católico", "Isaac Newton"], corr: 2, feed: "Georges Lemaître, un sacerdote católico y astrofísico belga. Demostrando que amar a Dios y ser un científico brillante van de la mano." },
+    { id: "j-13", q: "¿Es malo tener dudas sobre Dios en la adolescencia?", opts: ["Sí, es un pecado grave", "No, dudar ayuda a buscar y madurar", "Significa que perdiste la fe", "Dios se enoja si dudás"], corr: 1, feed: "Las dudas son normales y necesarias. Te invitan a investigar, preguntar y dejar de tener una 'fe de niño' para tener una convicción de adulto." },
+    { id: "j-14", q: "¿Qué es realmente la Misa?", opts: ["Una clase aburrida de religión", "Un show de música antigua", "El sacrificio y banquete de Jesús", "Una reunión para juntar fondos"], corr: 2, feed: "Es sentarnos a la mesa con Jesús. Actualizamos su sacrificio de amor en la cruz y nos alimentamos de Él para tener fuerzas en la semana." },
+    { id: "j-15", q: "Si un amigo te cuenta que está deprimido, ¿qué hacés primero?", opts: ["Le digo que rece más y se le pasa", "Lo escucho sin juzgar y lo acompaño", "Le cambio de tema para no ponerme triste", "Le digo que es falta de fe"], corr: 1, feed: "La salud mental es vital. Escucharlo con empatía y sugerirle ayuda profesional (psicólogo) es el mayor acto de amor cristiano que podés hacer." },
+    { id: "j-16", q: "Para un cristiano, la castidad en el noviazgo significa...", opts: ["Odiar el propio cuerpo", "Reprimirse por miedo al castigo", "Cuidar el cuerpo y el amor del otro", "No abrazarse ni besarse nunca"], corr: 2, feed: "No es una prohibición amargada. Es aprender a amar a la persona por lo que es, respetando sus tiempos y valorando el cuerpo como templo del Espíritu." },
+    { id: "j-17", q: "¿Qué enseña la Iglesia sobre el cuidado de la naturaleza (Ecología)?", opts: ["Que no importa, total vamos al cielo", "Que es obligación moral cuidarla (Laudato Si')", "Que es solo un tema político", "Que solo importan los humanos"], corr: 1, feed: "El Papa Francisco lo llama 'cuidar la Casa Común'. Si destruimos el planeta, dañamos a los más pobres que viven en él." },
+    { id: "j-18", q: "Si cometés un error grave (pecado), ¿qué pasa con el amor de Dios?", opts: ["Se apaga hasta que te confieses", "Te castiga enviando mala suerte", "Se mantiene intacto, Él te sigue amando", "Te quita a tu ángel de la guarda"], corr: 2, feed: "El amor de Dios es incondicional. El pecado te aleja a vos de la paz, pero Dios nunca deja de amarte y te espera en la Reconciliación." },
+    { id: "j-19", q: "¿Cuál es la diferencia entre 'Adorar' y 'Venerar'?", opts: ["Es exactamente lo mismo", "Se adora a Dios, se venera a los Santos/María", "Venerar es rezar en voz alta", "Adorar es solo cantar"], corr: 1, feed: "Los católicos SOLO adoramos a Dios. A la Virgen y a los Santos los veneramos (respetamos profundamente) como ejemplos a seguir y amigos en el cielo." },
+    { id: "j-20", q: "¿Qué era el 'Maná' en el Antiguo Testamento?", opts: ["Un pan que caía del cielo en el desierto", "El nombre de un rey", "Una ciudad de Egipto", "Un río sagrado"], corr: 0, feed: "Dios lo envió para alimentar a su pueblo. Es un símbolo de que Dios cuida de nuestras necesidades físicas y espirituales." },
+    { id: "j-21", q: "¿Por qué Jesús le lavó los pies a sus apóstoles?", opts: ["Porque estaban muy sucios", "Para enseñarles que el líder debe servir", "Porque era una tradición médica", "Para humillarse a sí mismo inútilmente"], corr: 1, feed: "Rompió los esquemas. Demostró que el verdadero poder no es mandar y pisar a los demás, sino servir y ayudar a los que están abajo." },
+    { id: "j-22", q: "¿Es obligatorio ser aburrido para ser santo?", opts: ["Sí, hay que estar siempre serio", "No, 'un santo triste es un triste santo'", "Solo se puede reír en Navidad", "Los santos no jugaban ni bromeaban"], corr: 1, feed: "San Juan Bosco o Carlo Acutis eran jóvenes súper alegres y divertidos. La verdadera santidad contagia alegría y ganas de vivir." },
+    { id: "j-23", q: "¿Qué significa la palabra 'Evangelio'?", opts: ["Libro antiguo", "Reglas estrictas", "Buena Noticia", "Historia de Israel"], corr: 2, feed: "Viene del griego 'Euangelion' que significa 'Buena Noticia'. ¡El cristianismo es la mejor noticia de amor y salvación de la historia!" },
+    { id: "j-24", q: "Si te sentís solo o ansioso, el mejor salmo para leer es...", opts: ["El Salmo 23 ('El Señor es mi pastor')", "El Salmo de David peleando", "Un salmo de maldición", "El Salmo 150"], corr: 0, feed: "El Salmo 23 ('El Señor es mi pastor, nada me falta') es un abrazo al alma que te recuerda que Dios camina con vos, incluso en valles oscuros." },
+    { id: "j-25", q: "¿Quién fue Carlo Acutis?", opts: ["Un papa antiguo", "Un joven 'influencer' de Dios que amaba la Eucaristía", "Un apóstol que escondió Jesús", "Un mártir romano"], corr: 1, feed: "Un joven de nuestra época, que jugaba a la play, armaba páginas web y amaba profundamente a Jesús. Nos demuestra que se puede ser santo hoy." },
+    { id: "j-26", q: "Si alguien te pregunta '¿Por qué sufren los inocentes?', ¿qué respondés?", opts: ["Porque Dios los castiga", "Dios respeta nuestra libertad, y a veces la usamos para el mal", "Porque tuvieron mala suerte cósmica", "Para divertir al diablo"], corr: 1, feed: "Es el misterio del dolor. Dios no crea el mal, pero nos hizo libres. El sufrimiento muchas veces viene de nuestras malas decisiones humanas o de la naturaleza misma." },
+    { id: "j-27", q: "¿La Iglesia discrimina a alguien por su situación personal?", opts: ["Sí, echa a los pecadores", "No, es un 'hospital de campaña' para heridos", "Solo acepta a los perfectos", "No le importa la gente"], corr: 1, feed: "Como dice el Papa Francisco, la Iglesia debe ser un hospital donde todos (con sus heridas, errores y dudas) puedan entrar a sanar con el amor de Jesús." },
+    { id: "j-28", q: "¿Por qué hay que ir a Misa los domingos si 'puedo rezar en el bosque'?", opts: ["Para cumplir una regla antigua", "Porque la fe cristiana se vive en comunidad y ahí recibimos a Jesús", "Para no aburrirse en casa", "Para que el cura nos vea"], corr: 1, feed: "Podés rezar en el bosque, ¡y está genial! Pero la Misa es el momento de encontrarnos como familia (Iglesia) y alimentarnos de la Eucaristía." },
+    { id: "j-29", q: "¿Qué significa el Miércoles de Ceniza?", opts: ["El inicio de la Navidad", "Un día para ensuciarse la cara", "El comienzo de la Cuaresma (tiempo de cambio)", "El final de la Semana Santa"], corr: 2, feed: "Marca el inicio de 40 días para preparar el corazón. La ceniza nos recuerda que la vida es frágil y que necesitamos limpiar lo malo." },
+    { id: "j-30", q: "¿Jesús usó la violencia para defenderse de los soldados?", opts: ["Sí, peleó con una espada", "No, sanó al soldado herido y se entregó por amor", "Llamó a un ejército para atacar", "Se escondió para siempre"], corr: 1, feed: "Incluso cuando Pedro le cortó la oreja a un soldado, Jesús lo sanó. Demostró que la violencia solo genera más violencia; la cadena se corta con amor." },
+    { id: "j-31", q: "¿Cuál es el 'mandamiento nuevo' de Jesús?", opts: ["No comer carne los viernes", "Ámense los unos a los otros COMO YO los he amado", "Ir al templo tres veces al día", "No tener amigos de otra religión"], corr: 1, feed: "Ese 'como yo los he amado' es la clave. Es un amor que no busca el propio interés, sino que da la vida por los amigos." },
+    { id: "j-32", q: "¿Qué son las 'Obras de Misericordia'?", opts: ["Rezos muy largos en latín", "Acciones concretas para ayudar al que sufre (dar de comer, vestir, consolar)", "Construir iglesias de piedra", "Leer libros de filosofía"], corr: 1, feed: "Son el 'examen final' del cristiano. Dar de comer al hambriento, visitar al enfermo, perdonar... son formas de amar a Jesús en persona." },
+    { id: "j-33", q: "¿María es diosa para los católicos?", opts: ["Sí, es igual a Dios", "No, es la criatura más perfecta y Madre nuestra, pero no Dios", "Es la hermana de Dios", "Es un ángel más"], corr: 1, feed: "María es humana, pero llena de Gracia. La amamos muchísimo porque es la mamá de Jesús y nuestra intercesora estrella." },
+    { id: "j-34", q: "¿Qué hizo Jesús con los niños que se le acercaban?", opts: ["Los echó porque hacían ruido", "Los abrazó y dijo que el Reino es de los que son como ellos", "Les dio una clase de teología aburrida", "Los ignoró"], corr: 1, feed: "Los puso como ejemplo. Para llegar a Dios hay que tener el corazón de un niño: confiado, sin doble intención y capaz de asombrarse." },
+    { id: "j-35", q: "La palabra 'Eucaristía' significa...", opts: ["Pan sagrado", "Acción de Gracias", "Sacrificio de dolor", "Misterio oculto"], corr: 1, feed: "Viene del griego y significa 'Acción de Gracias'. En la Misa le damos gracias a Dios por entregarnos su vida entera." },
+    { id: "j-36", q: "¿Por qué Jesús enseñaba con 'Parábolas'?", opts: ["Porque no sabía hablar claro", "Para confundir a los romanos", "Usaba ejemplos cotidianos para explicar verdades profundas de Dios", "Para hacer dormir a la gente"], corr: 2, feed: "Usaba semillas, redes de pesca y monedas perdidas (cosas que la gente veía a diario) para que todos, sin importar su estudio, pudieran entender el amor de Dios." },
+    { id: "j-37", q: "El demonio o Satanás, en la Biblia, es definido principalmente como...", opts: ["Un monstruo con cuernos rojos", "El 'Padre de la Mentira' y el que divide", "Un dios malo con el mismo poder que Dios", "Un mito inventado hace poco"], corr: 1, feed: "Su principal arma no es el terror de película, sino la mentira sutil: meter división, chismes, envidia y hacerte creer que Dios no te ama." },
+    { id: "j-38", q: "¿Qué es la 'vocación' para un joven?", opts: ["Elegir qué carrera estudiar para hacer plata", "El llamado de Dios a ser feliz sirviendo desde donde estés", "Ser cura o monja obligatoriamente", "Elegir un trabajo aburrido"], corr: 1, feed: "La vocación es el sueño de Dios para tu vida. Puede ser a través del matrimonio, la soltería o la vida religiosa, pero siempre buscando la felicidad." },
+    { id: "j-39", q: "¿Qué fue el milagro de Pentecostés?", opts: ["Se multiplicó el vino", "El Espíritu Santo bajó como fuego y les quitó el miedo a los apóstoles", "El mar se abrió en dos", "Moisés bajó del monte"], corr: 1, feed: "Los apóstoles estaban encerrados por miedo a que los maten. El Espíritu Santo los llenó de una valentía sobrenatural para salir a cambiar el mundo." },
+    { id: "j-40", q: "¿A quién se le apareció la Virgen de Guadalupe?", opts: ["A San Pedro en Roma", "Al indio San Juan Diego en México", "A los pastorcitos de Fátima", "A Carlo Acutis"], corr: 1, feed: "Se le apareció a Juan Diego en el Tepeyac, demostrando que Dios siempre elige a los humildes para transmitir sus mensajes más grandes." },
+    { id: "j-41", q: "¿Es necesario confesarse con un cura siendo él un hombre pecador?", opts: ["No, mejor me confieso directo con el árbol", "Sí, porque Jesús le dio la autoridad para perdonar en Su nombre", "Solo si hiciste algo ilegal", "No, los pecados se borran solos"], corr: 1, feed: "El cura es humano y peca, pero actúa 'in persona Christi'. Jesús nos dejó este sacramento para que tengamos la certeza de escuchar: 'Tus pecados son perdonados'." },
+    { id: "j-42", q: "¿Qué es el 'Libre Albedrío'?", opts: ["Poder volar", "El regalo de Dios de elegir libremente entre el bien y el mal", "Que todo está escrito por el destino", "La obligación de ir a misa"], corr: 1, feed: "Dios te ama tanto que no te obliga a amarlo. Te da la libertad total; por eso, cuando elegís hacer el bien, tiene muchísimo mérito." },
+    { id: "j-43", q: "Si veo a un compañero que sufre bullying y me quedo callado...", opts: ["No pasa nada, no es mi problema", "Soy prudente para que no me peguen", "Cometo un pecado de omisión (no hacer el bien que podía hacer)", "Soy un buen amigo"], corr: 2, feed: "El pecado no es solo hacer cosas malas, también es cruzarse de brazos cuando podíamos defender al que estaba sufriendo (omisión)." },
+    { id: "j-44", q: "¿La Biblia aprueba la magia, brujería o adivinación del futuro?", opts: ["Sí, si es 'magia blanca'", "No, porque demuestra falta de confianza en la providencia de Dios", "A veces, para saber si apruebo", "Sí, los Reyes Magos eran brujos"], corr: 1, feed: "Querer 'controlar' el futuro leyendo cartas o haciendo brujería corta nuestra relación de confianza. Un cristiano confía su futuro en las manos amorosas de Dios." },
+    { id: "j-45", q: "¿Quiénes fueron los mártires?", opts: ["Gente que se deprimía mucho", "Cristianos que prefirieron morir antes que negar su amor por Jesús", "Soldados romanos", "Filósofos que no creían en nada"], corr: 1, feed: "Fueron (y son, porque hay muchos hoy) los testigos más valientes. Dieron su vida física porque sabían que la vida eterna con Jesús valía mucho más." },
+    { id: "j-46", q: "¿Qué es el 'Ayuno' verdadero según el profeta Isaías?", opts: ["Dejar de comer chocolate un día", "Bajar de peso", "Romper cadenas de injusticia, compartir el pan y abrigar al pobre", "No tomar agua"], corr: 2, feed: "El ayuno de comida está bien para entrenar la voluntad, pero Dios dice que el ayuno que Él prefiere es que seas justo, solidario y defiendas al oprimido." },
+    { id: "j-47", q: "¿Los milagros existen hoy en día?", opts: ["No, eso era solo en la época de Jesús", "Sí, Dios sigue actuando a través de los santos, la medicina y hechos inexplicables", "Solo los hacen los magos", "Son ilusiones ópticas"], corr: 1, feed: "¡Claro que existen! Y a veces el mayor milagro no es curar una enfermedad física, sino cambiar un corazón lleno de odio por uno lleno de paz." },
+    { id: "j-48", q: "En la cruz, Jesús dijo: 'Tengo sed'. Según la Madre Teresa, ¿sed de qué tenía?", opts: ["Sed de agua", "Sed de venganza", "Sed de nuestro amor y de almas para salvar", "Sed de fama"], corr: 2, feed: "No era solo sed física. Jesús tiene sed (deseo ardiente) de que le correspondas, de que te dejes amar y salvar por Él." },
+    { id: "j-49", q: "¿Qué enseña la Iglesia sobre el dinero y la riqueza?", opts: ["Que ser rico es pecado mortal", "Que el dinero en sí no es malo, pero el amor al dinero destruye el alma", "Que hay que vivir en la calle", "Que comprarse ropa linda es del diablo"], corr: 1, feed: "El dinero es una herramienta. Si la usás para hacer el bien, es genial. El problema es cuando el dinero se convierte en tu 'Dios' y pisás a otros para tener más." },
+    { id: "j-50", q: "¿Cuál es la última palabra de la Biblia?", opts: ["Fin", "Amén", "Adiós", "Aleluya"], corr: 1, feed: "El libro del Apocalipsis termina con: 'La gracia del Señor Jesús sea con todos. Amén.' Un cierre de confianza pura." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido con Sintetizador Melódico (Sin ruido)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "triangle" },
+    envelope: { attack: 0.05, decay: 0.1, sustain: 0.1, release: 0.5 }
+}).toDestination();
+synth.volume.value = -8;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    synth.triggerAttackRelease("C5", "16n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Acorde ascendente rápido y moderno
+    const now = Tone.now();
+    synth.triggerAttackRelease("E4", "16n", now);
+    synth.triggerAttackRelease("G4", "16n", now + 0.1);
+    synth.triggerAttackRelease("C5", "8n", now + 0.2);
+}
+
+// Inicialización
+function initQuiz() {
+    const params = new URLSearchParams(window.location.search);
+    const cardIdRequested = params.get("card");
+
+    if (cardIdRequested) {
+        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
+        if (foundIndex !== -1) {
+            currentIdx = foundIndex;
+        } else {
+            CARTAS.sort(() => Math.random() - 0.5);
+        }
+    } else {
+        CARTAS.sort(() => Math.random() - 0.5);
+    }
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    const letras = ['A', 'B', 'C', 'D'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="opacity:0.6; font-weight:800; font-size: 1.1rem; width: 25px;">${letras[index]}.</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto);"></i> ¡Muy bien!</strong><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle" style="color:var(--incorrecto);"></i> Ojo con esto:</strong><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 300);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
+    const text = `🔥 ¡Mirá este desafío cristiano para Jóvenes!\n\n"${c.q}"\n\n¿Sabés cuál es la respuesta? Jugá acá: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Jóvenes', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['VALENTÍA', 'VERDAD', 'CRISTIANO', 'AMOR', 'LUZ', 'TESTIGO', 'SANTA ANA', 'ESPERANZA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

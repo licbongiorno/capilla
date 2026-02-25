@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Jóvenes (Fácil) - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Moderna Juvenil: Azules profundos y Cian Neón */
+            --bg1: #0A1128;
+            --bg2: #16213E;
+            --box-bg: rgba(26, 38, 70, 0.85);
+            --accent: #00F2FF; /* Cian brillante */
+            --accent-hover: #00D2FC;
+            --texto: #FFFFFF;
+            --correcto: #00FF87; /* Verde Neón */
+            --incorrecto: #FF3366; /* Rosa/Rojo Neón */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto; /* Permite scroll en celulares */
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: rgba(0, 242, 255, 0.05); /* Cian muy transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(10, 17, 40, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(0, 242, 255, 0.2); border-color: var(--accent); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; /* Evita que se corte arriba en celulares */
+            padding: 100px 20px 40px; /* Espacio para el nav fijo */
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--box-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(5deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.45rem);
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 15px;
+            color: var(--texto);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: rgba(0, 242, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: rgba(0, 255, 135, 0.15);
+            border-color: var(--correcto);
+            color: #fff;
+        }
+        .opt-btn.incorrect {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: var(--incorrecto);
+            opacity: 0.7;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #E0E0E0;
+            display: none;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 450px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: #0A1128; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2); display: flex; }
+        .btn-main:active { transform: scale(0.95); }
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.1); color: var(--accent); border: 1px solid rgba(0,242,255,0.3); font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(0, 242, 255, 0.1); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--accent); color: #0A1128; padding: 12px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:450px; margin-bottom:10px; text-align:center;">
+            <span style="background:rgba(0,242,255,0.2); color:var(--accent); padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; border: 1px solid rgba(0,242,255,0.3);">Nivel Fácil</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-bolt"></i> Otra Pregunta</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado! Listos para desafiar.</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS NIVEL FÁCIL (JÓVENES INICIAL)
+const CARTAS = [
+    { id: "jf-1", q: "¿En qué ciudad nació Jesús?", opts: ["Jerusalén", "Nazaret", "Belén", "Roma"], corr: 2, feed: "Jesús nació en Belén, en un humilde pesebre, porque sus padres tuvieron que viajar allí para un censo." },
+    { id: "jf-2", q: "¿Cuántos eran los apóstoles más cercanos elegidos por Jesús?", opts: ["7", "10", "12", "40"], corr: 2, feed: "Eran 12 apóstoles. Jesús los eligió para que fueran sus amigos más cercanos y luego enviarlos a predicar por todo el mundo." },
+    { id: "jf-3", q: "¿Qué oración nos enseñó directamente Jesús?", opts: ["El Ave María", "El Padre Nuestro", "El Credo", "El Gloria"], corr: 1, feed: "Cuando los discípulos le pidieron que les enseñe a rezar, Jesús les dio el 'Padre Nuestro', la oración más perfecta." },
+    { id: "jf-4", q: "¿Quién es la madre de Jesús?", opts: ["Marta", "María Magdalena", "Isabel", "La Virgen María"], corr: 3, feed: "María aceptó con valentía el plan de Dios cuando el ángel Gabriel la visitó, convirtiéndose en la madre del Salvador." },
+    { id: "jf-5", q: "¿Cuál es el primer sacramento que recibimos los católicos?", opts: ["La Comunión", "La Confirmación", "El Bautismo", "El Matrimonio"], corr: 2, feed: "El Bautismo es la 'puerta de entrada'. Nos limpia, nos hace hijos de Dios y miembros de la Iglesia." },
+    { id: "jf-6", q: "¿Quién traicionó a Jesús entregándolo por 30 monedas de plata?", opts: ["Pedro", "Pilato", "Juan", "Judas Iscariote"], corr: 3, feed: "Judas, uno de los 12 apóstoles, fue quien lo entregó a los soldados dándole un beso en el huerto." },
+    { id: "jf-7", q: "¿Qué celebramos exactamente en la Navidad?", opts: ["La llegada de Papá Noel", "El nacimiento de Jesús", "El fin de año", "La muerte de Jesús"], corr: 1, feed: "Navidad significa 'Natividad' (nacimiento). Celebramos el cumpleaños de Jesús, que se hizo hombre por amor a nosotros." },
+    { id: "jf-8", q: "¿Quién bautizó a Jesús en el río Jordán?", opts: ["El Papa Pedro", "San José", "Juan el Bautista", "El Rey David"], corr: 2, feed: "Juan el Bautista, que era primo de Jesús. Al salir del agua, el Espíritu Santo bajó en forma de paloma." },
+    { id: "jf-9", q: "¿De qué trabajó Jesús la mayor parte de su vida antes de salir a predicar?", opts: ["Pescador", "Carpintero", "Sacerdote", "Soldado"], corr: 1, feed: "Jesús aprendió el oficio de la madera gracias a su padre adoptivo, San José. ¡Trabajó duro como cualquiera de nosotros!" },
+    { id: "jf-10", q: "¿Quién le cortó la oreja a un soldado cuando intentaban arrestar a Jesús?", opts: ["Juan", "Judas", "Mateo", "Pedro"], corr: 3, feed: "Pedro, en un impulso de defenderlo, sacó una espada. Pero Jesús lo detuvo y curó la oreja del soldado, enseñando a no usar la violencia." },
+    { id: "jf-11", q: "Según el Antiguo Testamento, ¿quién abrió el Mar Rojo con la ayuda de Dios?", opts: ["Noé", "Moisés", "Abraham", "David"], corr: 1, feed: "Moisés lideró al pueblo de Israel para salir de la esclavitud en Egipto cruzando el mar por el medio." },
+    { id: "jf-12", q: "¿Con qué derribó el joven David al gigante Goliat?", opts: ["Con una espada de oro", "Con un arco y flecha", "Con una honda y una piedra", "Con magia"], corr: 2, feed: "David era solo un pastorcito, pero confiaba tanto en Dios que no necesitó armaduras pesadas para vencer al gigante." },
+    { id: "jf-13", q: "¿Qué alimento multiplicó Jesús para darle de comer a miles de personas?", opts: ["Panes y peces", "Manzanas y uvas", "Carne y vino", "Trigo y maíz"], corr: 0, feed: "Un chico ofreció sus 5 panes y 2 peces. Jesús los bendijo y alcanzó para que comieran más de 5000 personas." },
+    { id: "jf-14", q: "¿Qué apóstol negó conocer a Jesús tres veces por miedo?", opts: ["Judas", "Juan", "Tomás", "Pedro"], corr: 3, feed: "Pedro tuvo miedo cuando arrestaron a Jesús. Luego lloró arrepentido, y Jesús, al resucitar, lo perdonó y lo hizo el primer Papa." },
+    { id: "jf-15", q: "¿A qué amigo resucitó Jesús después de llevar cuatro días en la tumba?", opts: ["A Zaqueo", "A Lázaro", "A Juan", "A Mateo"], corr: 1, feed: "Lázaro era muy amigo de Jesús. Jesús lloró por su muerte y luego lo llamó para que saliera de la tumba, ¡y salió caminando!" },
+    { id: "jf-16", q: "¿Quién construyó un arca gigante para salvar a su familia y a los animales del diluvio?", opts: ["Moisés", "Abraham", "Noé", "Jonás"], corr: 2, feed: "Noé le hizo caso a Dios a pesar de que la gente se burlaba de él por construir un barco en tierra seca." },
+    { id: "jf-17", q: "¿Cuántos son los Mandamientos de la Ley de Dios?", opts: ["5", "7", "10", "12"], corr: 2, feed: "Son 10 reglas de oro que Dios le dio a Moisés en el monte Sinaí para enseñarnos a vivir en paz y ser felices." },
+    { id: "jf-18", q: "Para nosotros los cristianos, ¿cuál es el día sagrado de descanso y para ir a Misa?", opts: ["El Sábado", "El Domingo", "El Lunes", "El Viernes"], corr: 1, feed: "El domingo, porque es el día exacto en la semana en el que Jesús resucitó de entre los muertos." },
+    { id: "jf-19", q: "¿Qué arcángel se le apareció a María para anunciarle que iba a ser mamá de Jesús?", opts: ["Miguel", "Rafael", "Uriel", "Gabriel"], corr: 3, feed: "El Arcángel Gabriel fue el mensajero de Dios que le llevó a María la noticia más importante de la historia." },
+    { id: "jf-20", q: "¿Qué regalos le llevaron los Reyes Magos al Niño Jesús?", opts: ["Ropa, comida y agua", "Oro, incienso y mirra", "Juguetes y mantas", "Espadas y escudos"], corr: 1, feed: "Estos tres regalos eran muy valiosos en esa época y simbolizaban que Jesús era Rey (Oro), Dios (Incienso) y Hombre (Mirra)." },
+    { id: "jf-21", q: "¿En qué día de la Semana Santa celebramos la Última Cena?", opts: ["Jueves Santo", "Viernes Santo", "Domingo de Ramos", "Sábado de Gloria"], corr: 0, feed: "El Jueves Santo Jesús cenó por última vez con sus apóstoles, les lavó los pies y creó el sacramento de la Comunión." },
+    { id: "jf-22", q: "¿Cómo se llama el tiempo de 40 días de preparación antes de la Pascua?", opts: ["Adviento", "Cuaresma", "Pentecostés", "Epifanía"], corr: 1, feed: "La Cuaresma son 40 días donde intentamos cambiar lo malo que tenemos, pedir perdón y preparar el corazón para la Pascua." },
+    { id: "jf-23", q: "¿Quién es la Tercera Persona de la Santísima Trinidad?", opts: ["El Papa", "La Virgen María", "El Espíritu Santo", "San José"], corr: 2, feed: "Dios es uno solo, pero en tres personas: Padre, Hijo (Jesús) y Espíritu Santo (el motor y la fuerza que nos guía hoy)." },
+    { id: "jf-24", q: "¿Qué apóstol dijo 'Si no veo las marcas de los clavos, no creeré'?", opts: ["Juan", "Tomás", "Mateo", "Santiago"], corr: 1, feed: "A Tomás le costó creer que Jesús había resucitado hasta que pudo tocar sus heridas. Jesús le dijo: 'Felices los que creen sin haber visto'." },
+    { id: "jf-25", q: "¿Quién era el cobrador de impuestos bajito que se subió a un árbol para ver a Jesús?", opts: ["Lázaro", "Pilato", "Zaqueo", "Nicodemo"], corr: 2, feed: "Zaqueo se subió a un árbol porque había mucha gente. Jesús lo vio, fue a comer a su casa y la vida de Zaqueo cambió para siempre." },
+    { id: "jf-26", q: "En la parábola del Buen Samaritano, ¿quién ayudó al hombre herido en el camino?", opts: ["Un sacerdote", "Un político", "Un samaritano (un extranjero mal visto)", "Un policía"], corr: 2, feed: "Jesús usó esta historia para enseñar que nuestro 'prójimo' es cualquier persona que necesite ayuda, sin importar de dónde venga." },
+    { id: "jf-27", q: "En el libro del Génesis, ¿quiénes fueron los primeros humanos creados por Dios?", opts: ["Caín y Abel", "Abraham y Sara", "Adán y Eva", "José y María"], corr: 2, feed: "El relato de Adán y Eva en el Edén nos enseña que Dios creó al hombre y a la mujer por amor, para que cuidaran de la creación." },
+    { id: "jf-28", q: "¿Quién fue la primera persona en ver a Jesús resucitado?", opts: ["San Pedro", "María Magdalena", "San Juan", "Pilato"], corr: 1, feed: "María Magdalena fue al sepulcro llorando y lo encontró vacío. Jesús se le apareció a ella primero para que fuera a avisarles a los apóstoles." },
+    { id: "jf-29", q: "¿Cómo se llama el Papa actual de la Iglesia Católica?", opts: ["Juan Pablo II", "Benedicto XVI", "Francisco", "Pío XII"], corr: 2, feed: "El Papa Francisco, que es argentino (su nombre real es Jorge Bergoglio). Es el líder de la Iglesia y sucesor de San Pedro." },
+    { id: "jf-30", q: "¿En qué dos grandes partes se divide la Biblia?", opts: ["Salmos y Evangelios", "Historia y Profecías", "Antiguo y Nuevo Testamento", "Libro 1 y Libro 2"], corr: 2, feed: "El Antiguo Testamento cuenta todo lo que pasó antes del nacimiento de Jesús. El Nuevo Testamento cuenta la vida de Jesús y los primeros cristianos." },
+    { id: "jf-31", q: "¿En qué lugar murió Jesús crucificado?", opts: ["En el Monte Sinaí", "En el Monte Calvario (Gólgota)", "En el río Jordán", "En el Templo"], corr: 1, feed: "El Calvario o Gólgota ('lugar de la calavera') era una pequeña colina a las afueras de Jerusalén donde los romanos hacían las crucifixiones." },
+    { id: "jf-32", q: "¿Cuál es el primer libro de toda la Biblia?", opts: ["Éxodo", "Mateo", "Génesis", "Apocalipsis"], corr: 2, feed: "El Génesis. Cuenta de forma poética y hermosa cómo Dios creó el universo, la tierra, los animales y a las personas." },
+    { id: "jf-33", q: "¿Cuántos Sacramentos tiene la Iglesia Católica?", opts: ["3", "5", "7", "10"], corr: 2, feed: "Son 7: Bautismo, Comunión, Confirmación, Reconciliación, Unción de los Enfermos, Orden Sagrado y Matrimonio." },
+    { id: "jf-34", q: "¿Qué recibimos los cristianos cuando tomamos la Comunión (Eucaristía)?", opts: ["Un pan bendecido", "El Cuerpo y la Sangre de Jesús", "Un recuerdo de la última cena", "Una galleta especial"], corr: 1, feed: "Aunque parece pan, creemos por fe que Jesús está 100% presente y vivo ahí para darnos fuerza espiritual." },
+    { id: "jf-35", q: "El sacramento de la Reconciliación también es conocido como...", opts: ["El Bautismo", "La Confesión", "La Unción", "El Matrimonio"], corr: 1, feed: "En la Confesión, Dios nos perdona todas las cosas malas que hicimos (pecados) y nos da un abrazo espiritual para empezar de cero." },
+    { id: "jf-36", q: "¿Cómo empezamos y terminamos siempre nuestras oraciones?", opts: ["Aplaudiendo", "Con la Señal de la Cruz", "Cerrando los ojos", "Levantando las manos"], corr: 1, feed: "'En el nombre del Padre, y del Hijo, y del Espíritu Santo'. Es nuestra marca de identidad como cristianos." },
+    { id: "jf-37", q: "¿Quién fue el esposo de la Virgen María y padre adoptivo de Jesús?", opts: ["Zacarías", "Simeón", "San José", "Joaquín"], corr: 2, feed: "San José fue un hombre bueno, humilde y trabajador que protegió a María y crió a Jesús con muchísimo amor." },
+    { id: "jf-38", q: "¿Aproximadamente a qué edad murió y resucitó Jesús?", opts: ["A los 20 años", "A los 33 años", "A los 50 años", "A los 80 años"], corr: 1, feed: "Históricamente se calcula que Jesús predicó unos 3 años y fue crucificado cuando tenía alrededor de 33 años." },
+    { id: "jf-39", q: "¿Qué gobernador romano se 'lavó las manos' para no salvar a Jesús?", opts: ["El Rey Herodes", "Julio César", "Poncio Pilato", "Nerón"], corr: 2, feed: "Poncio Pilato sabía que Jesús era inocente, pero por cobardía y presión de la gente, se lavó las manos y dejó que lo mataran." },
+    { id: "jf-40", q: "¿Qué celebramos el 8 de diciembre (feriado en Argentina)?", opts: ["La Navidad", "El día del Papa", "La Inmaculada Concepción de María", "El día de todos los santos"], corr: 2, feed: "Celebramos que María, desde el mismo momento en que empezó a existir en la panza de su mamá, estuvo libre de todo pecado." },
+    { id: "jf-41", q: "¿Qué significa que un Santo es 'Patrono' de algo (ej: San Cayetano patrono del trabajo)?", opts: ["Que él inventó el trabajo", "Que es el protector e intercesor especial para ese tema", "Que era el jefe", "Que solo escucha esos pedidos"], corr: 1, feed: "Los santos patronos son como nuestros 'amigos especialistas' en el cielo. Les pedimos que nos ayuden con un tema particular." },
+    { id: "jf-42", q: "¿Cuál es el PRIMER mandamiento de todos?", opts: ["No robarás", "No mentirás", "Amar a Dios sobre todas las cosas", "Honrar a padre y madre"], corr: 2, feed: "Es la base de todo. Si amás a Dios por sobre todo, automáticamente vas a tratar bien a las demás personas." },
+    { id: "jf-43", q: "¿Qué Santo es conocido por su enorme amor a los animales y a la naturaleza?", opts: ["San Pedro", "San Francisco de Asís", "San Juan", "Santo Tomás"], corr: 1, feed: "San Francisco le decía 'hermano sol' y 'hermana luna'. Entendió que todos los seres vivos somos creados por el mismo Dios." },
+    { id: "jf-44", q: "¿Quién es nuestro compañero invisible que Dios nos da para protegernos?", opts: ["Un fantasma", "El Ángel de la Guarda", "Un superhéroe", "Un extraterrestre"], corr: 1, feed: "Desde que nacés, Dios te asigna un Ángel Custodio para que te cuide, te acompañe y te guíe hacia el bien." },
+    { id: "jf-45", q: "¿Qué palabra decimos al final de las oraciones que significa 'Así sea' o 'Es verdad'?", opts: ["Aleluya", "Gloria", "Amén", "Shalom"], corr: 2, feed: "Amén es una palabra muy antigua que usamos para darle nuestro 'OK' total a lo que acabamos de rezar." },
+    { id: "jf-46", q: "¿Quién fue tragado por un pez gigante por no querer cumplir la misión de Dios?", opts: ["Moisés", "Jonás", "Noé", "Pedro"], corr: 1, feed: "Jonás intentó escapar de Dios en un barco, pero terminó en la panza del pez hasta que se arrepintió y fue a cumplir su misión." },
+    { id: "jf-47", q: "¿Qué día de la semana recordamos que Jesús murió en la cruz?", opts: ["Domingo de Ramos", "Miércoles de Ceniza", "Viernes Santo", "Lunes"], corr: 2, feed: "El Viernes Santo es un día de silencio y respeto donde acompañamos a Jesús en su sacrificio máximo de amor por nosotros." },
+    { id: "jf-48", q: "Según la historia de Navidad, ¿qué guiaba a los Reyes Magos hacia el pesebre?", opts: ["Un mapa antiguo", "Una estrella muy brillante", "Un ángel que volaba", "Un pajarito"], corr: 1, feed: "La Estrella de Belén. Ellos eran sabios que estudiaban el cielo y se dieron cuenta de que esa luz anunciaba al Rey del mundo." },
+    { id: "jf-49", q: "¿Dónde podemos leer la historia completa de Jesús y sus enseñanzas?", opts: ["En el diccionario", "En el Antiguo Testamento", "En los Evangelios (Nuevo Testamento)", "En una enciclopedia"], corr: 2, feed: "Los 4 Evangelios (escritos por Mateo, Marcos, Lucas y Juan) son el 'corazón' de la Biblia, porque ahí está toda la vida de Jesús." },
+    { id: "jf-50", q: "Si te equivocás, ¿Dios te deja de amar?", opts: ["Sí, hasta que me porte bien", "No, su amor es infinito y siempre espera que vuelvas a Él", "Sí, se enoja para siempre", "Solo me ama si voy a misa"], corr: 1, feed: "El amor de Dios no se puede romper. Podés alejarte, pero Él siempre deja la puerta abierta para perdonarte y abrazarte de nuevo." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido con Sintetizador Melódico (Sin ruido)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "triangle" },
+    envelope: { attack: 0.05, decay: 0.1, sustain: 0.1, release: 0.5 }
+}).toDestination();
+synth.volume.value = -8;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    synth.triggerAttackRelease("C5", "16n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Acorde ascendente rápido y moderno
+    const now = Tone.now();
+    synth.triggerAttackRelease("E4", "16n", now);
+    synth.triggerAttackRelease("G4", "16n", now + 0.1);
+    synth.triggerAttackRelease("C5", "8n", now + 0.2);
+}
+
+// Inicialización
+function initQuiz() {
+    // Mezclar el array al inicio para que el orden sea aleatorio
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    const letras = ['A', 'B', 'C', 'D'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="opacity:0.6; font-weight:800; font-size: 1.1rem; width: 25px;">${letras[index]}.</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto);"></i> ¡Correcto!</strong><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle" style="color:var(--incorrecto);"></i> Casi, pero no.</strong><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 300);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `🎯 ¡Mirá este desafío básico para Jóvenes!\n\n"${c.q}"\n\n¿Sabés cuál es la respuesta? Jugá acá: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Jóvenes (Fácil)', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['VALENTÍA', 'VERDAD', 'CRISTIANO', 'AMOR', 'LUZ', 'TESTIGO', 'SANTA ANA', 'ESPERANZA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

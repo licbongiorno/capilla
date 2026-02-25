@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Niños - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Niños: Cielo, Sol y Nubes */
+            --bg1: #4FC3F7; /* Celeste brillante */
+            --bg2: #0288D1; /* Azul cielo profundo */
+            --box-bg: #FFFFFF; /* Caja blanca para fácil lectura */
+            --accent: #FF9800; /* Naranja alegre */
+            --accent-hover: #F57C00;
+            --texto-oscuro: #1565C0; /* Azul oscuro para leer bien */
+            --texto-claro: #FFFFFF;
+            --correcto: #00E676; /* Verde alegre */
+            --incorrecto: #FF1744; /* Rojo/Rosa brillante */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto-oscuro);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.2); /* Blanco transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--texto-oscuro);
+            font-weight: 800;
+            font-size: .85rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .nav-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 100px 20px 40px; 
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--box-bg);
+            border-radius: 25px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 4px solid #FFF59D; /* Borde amarillo patito */
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(5deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 6vw, 1.7rem);
+            font-weight: 900;
+            color: var(--texto-oscuro);
+            line-height: 1.3;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: #E1F5FE; /* Celstito muy claro */
+            border: 2px solid #B3E5FC;
+            padding: 18px 15px;
+            border-radius: 18px;
+            color: var(--texto-oscuro);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: #FFF9C4; /* Amarillito al pasar el mouse */
+            border-color: #FDD835;
+            transform: translateX(5px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: var(--correcto);
+            border-color: #00C853;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 230, 118, 0.4);
+        }
+        .opt-btn.incorrect {
+            background: var(--incorrecto);
+            border-color: #D50000;
+            color: white;
+            opacity: 0.85;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 20px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: var(--texto-oscuro);
+            display: none;
+            padding: 18px;
+            background: #FFF9C4;
+            border-radius: 15px;
+            border-left: 6px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 450px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: white; box-shadow: 0 6px 15px rgba(255, 152, 0, 0.4); display: flex; border: 2px solid #FFF; }
+        .btn-main:active { transform: scale(0.95); }
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.9); color: var(--accent); border: 2px solid white; font-size: 1.4rem; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); }
+        .btn-sec:hover { background: white; transform: scale(1.05); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: white; color: var(--texto-oscuro); padding: 15px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 14px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 3px solid var(--accent);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:450px; margin-bottom:12px; text-align:center;">
+            <span style="background:#FFEB3B; color:#F57C00; padding:6px 18px; border-radius:20px; font-size:0.9rem; font-weight:900; text-transform:uppercase; letter-spacing:2px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">Nivel Niños</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando juego...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-magic"></i> ¡Otra Pregunta!</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado! Listos para jugar.</div>
+    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS SÚPER FÁCILES Y DIVERTIDAS PARA NIÑOS
+const CARTAS = [
+    { id: "n-1", q: "¿Quién es la mamá de Jesús?", opts: ["La Mujer Maravilla", "La Virgen María", "Marta", "Santa Claus"], corr: 1, feed: "¡Sí! La Virgen María es la mamá de Jesús y nuestra mamá del cielo también." },
+    { id: "n-2", q: "¿Quién es el papá en la tierra que cuidó a Jesús?", opts: ["Batman", "San Pedro", "San José", "El Rey David"], corr: 2, feed: "¡San José! Era un hombre muy bueno y carpintero que le enseñó a Jesús a trabajar la madera." },
+    { id: "n-3", q: "¿Dónde nació el Niño Jesús?", opts: ["En un hospital", "En un palacio gigante", "En un humilde pesebre en Belén", "En una nave espacial"], corr: 2, feed: "Nació en un establo, rodeado de animalitos, porque no había lugar en los hoteles para ellos." },
+    { id: "n-4", q: "¿Qué construyó Noé para salvarse de la gran lluvia (el diluvio)?", opts: ["Un paraguas gigante", "Un Arca (un barco enorme)", "Un submarino", "Una cueva de piedra"], corr: 1, feed: "¡Un Arca! Y subió a su familia y a dos animalitos de cada especie para salvarlos." },
+    { id: "n-5", q: "¿Qué animal gigante se tragó a Jonás?", opts: ["Un dinosaurio", "Un pez muy grande (ballena)", "Un tiburón", "Un dragón"], corr: 1, feed: "¡Un pez gigante! Jonás estuvo en su panza tres días hasta que le pidió perdón a Dios." },
+    { id: "n-6", q: "¿Qué regalos le llevaron los Reyes Magos al Niñito Jesús?", opts: ["PlayStation y chocolates", "Oro, incienso y mirra", "Espadas y escudos", "Ropa de invierno"], corr: 1, feed: "Le regalaron oro (porque es Rey), incienso (porque es Dios) y mirra (porque es hombre)." },
+    { id: "n-7", q: "El domingo vamos a la Capilla para celebrar...", opts: ["Un cumpleaños sorpresa", "La Santa Misa", "Una clase de matemáticas", "Un partido de fútbol"], corr: 1, feed: "¡La Misa! Es la gran fiesta de Jesús donde nos juntamos a rezar y escuchar su palabra." },
+    { id: "n-8", q: "¿Cómo se llama la oración que Jesús nos enseñó?", opts: ["El Padre Nuestro", "El Arroz con leche", "El Ave María", "El Cumpleaños Feliz"], corr: 0, feed: "¡El Padre Nuestro! Jesús nos enseñó a llamar a Dios 'Papá' con esta hermosa oración." },
+    { id: "n-9", q: "¿Cuántos apóstoles (mejores amigos) eligió Jesús?", opts: ["3", "100", "12", "5"], corr: 2, feed: "Jesús eligió a 12 apóstoles para que lo acompañen, aprendan de él y luego viajen por el mundo." },
+    { id: "n-10", q: "¿Qué comida multiplicó Jesús para darle de comer a muchísima gente?", opts: ["Pizzas y hamburguesas", "Panes y pececitos", "Manzanas y peras", "Helado de chocolate"], corr: 1, feed: "¡Panes y peces! Un niño le regaló lo poco que tenía y Jesús hizo un milagro enorme." },
+    { id: "n-11", q: "Cuando hacemos la Señal de la Cruz, decimos: En el nombre del Padre, del Hijo y del...", opts: ["Sol y la Luna", "Espíritu Santo", "Hermano mayor", "Ángel guardián"], corr: 1, feed: "¡Del Espíritu Santo! Y terminamos diciendo 'Amén'." },
+    { id: "n-12", q: "¿Qué animal cuidaba el joven David en el campo?", opts: ["Leones", "Dinosaurios", "Ovejitas", "Cerdos"], corr: 2, feed: "David era un pastorcito muy valiente que cuidaba a sus ovejas de los osos y leones." },
+    { id: "n-13", q: "¿Con qué derribó David al gigante malo Goliat?", opts: ["Con un cañón", "Con magia", "Con cosquillas", "Con una honda y una piedrita"], corr: 3, feed: "¡Con una piedra! David no era fuerte, pero confiaba muchísimo en que Dios lo iba a ayudar." },
+    { id: "n-14", q: "¿Qué pájaro soltó Noé desde el arca para ver si ya había tierra seca?", opts: ["Un loro", "Una paloma", "Un águila", "Un pingüino"], corr: 1, feed: "¡Una paloma! Y la paloma volvió con una ramita en el pico para avisar que la lluvia había terminado." },
+    { id: "n-15", q: "Dios puso algo hermoso en el cielo como promesa de que nos va a cuidar. ¿Qué es?", opts: ["Un arcoíris", "Un barrilete", "Un avión", "Un castillo flotante"], corr: 0, feed: "¡El Arcoíris! Cada vez que lo vemos, recordamos la promesa de Dios de cuidar siempre la tierra." },
+    { id: "n-16", q: "¿Quién es nuestro amigo invisible del cielo que nos cuida todo el día?", opts: ["Un fantasma", "El Ángel de la Guarda", "Un superhéroe", "Un extraterrestre"], corr: 1, feed: "Dios nos regaló un Ángel de la Guarda especial para cada uno, para que nos cuide y nos acompañe." },
+    { id: "n-17", q: "¿En qué río fue bautizado Jesús?", opts: ["En el río Amazonas", "En el río de tu ciudad", "En el río Jordán", "En una pileta"], corr: 2, feed: "¡En el río Jordán! Y cuando salió del agua, el Espíritu Santo bajó como una paloma." },
+    { id: "n-18", q: "¿Quién bautizó a Jesús?", opts: ["El Papa", "Juan el Bautista", "San José", "Un soldado"], corr: 1, feed: "Su primo, Juan el Bautista. Él preparaba a la gente para la llegada de Jesús." },
+    { id: "n-19", q: "Jesús dijo: 'Dejen que los ________ vengan a mí'.", opts: ["Perritos", "Niños", "Reyes", "Soldados"], corr: 1, feed: "¡Los niños! Jesús ama muchísimo a los chicos porque tienen el corazón puro y sincero." },
+    { id: "n-20", q: "¿Quién se subió a un árbol muy alto para poder ver pasar a Jesús?", opts: ["Un mono", "Zaqueo", "Pedro", "Moisés"], corr: 1, feed: "¡Zaqueo! Era muy bajito y la gente no lo dejaba ver. Jesús lo vio en el árbol y fue a comer a su casa." },
+    { id: "n-21", q: "¿Qué animal entró al arca de Noé?", opts: ["Solo los perros", "Dos de cada especie", "Un unicornio", "Solo los pajaritos"], corr: 1, feed: "Entraron dos de cada especie (leones, jirafas, monitos...) para salvarse del diluvio." },
+    { id: "n-22", q: "¿Cómo se llama la mamá de la Virgen María (y abuela de Jesús)?", opts: ["Santa Ana", "Marta", "Isabel", "Ruth"], corr: 0, feed: "¡Santa Ana! Qué lindo nombre, ¿verdad? Es la patrona de los abuelos." },
+    { id: "n-23", q: "Cuando Jesús enseñaba, contaba cuentitos cortos muy lindos. ¿Cómo se llaman?", opts: ["Chistes", "Parábolas", "Adivinanzas", "Noticias"], corr: 1, feed: "¡Parábolas! Usaba historias de ovejas, monedas y semillas para enseñarnos cosas de Dios." },
+    { id: "n-24", q: "¿Qué le pasó al amigo de Jesús llamado Lázaro?", opts: ["Se perdió en el bosque", "Se fue de viaje", "Jesús lo resucitó de entre los muertos", "Se compró un camello"], corr: 2, feed: "¡Jesús lo resucitó! Llevaba 4 días muerto, pero Jesús lo llamó y Lázaro salió caminando." },
+    { id: "n-25", q: "¿Quién abrió el Mar Rojo para que la gente cruzara caminando?", opts: ["Moisés (con el poder de Dios)", "Un pez gigante", "Un barco rompehielos", "San Pedro"], corr: 0, feed: "Moisés levantó su bastón y Dios hizo que el agua se abriera como dos paredes para que pudieran escapar." },
+    { id: "n-26", q: "¿Cuántos mandamientos (reglas de amor) le dio Dios a Moisés?", opts: ["3", "10", "100", "5"], corr: 1, feed: "¡10 Mandamientos! Son como las señales de tránsito de Dios para que vivamos felices y sin chocar." },
+    { id: "n-27", q: "En el Domingo de Ramos, ¿sobre qué animal entró Jesús a la ciudad?", opts: ["Un caballo blanco", "Un burrito", "Un elefante", "Un camello"], corr: 1, feed: "Entró en un burrito muy humilde, y la gente lo saludaba moviendo ramas de olivo y palmas." },
+    { id: "n-28", q: "¿Qué estrella siguieron los Reyes Magos?", opts: ["La estrella de Belén", "Una estrella fugaz", "El sol", "Un satélite"], corr: 0, feed: "La estrella de Belén brillaba muchísimo y les marcó el camino exacto hasta donde estaba el Niñito Jesús." },
+    { id: "n-29", q: "¿Qué celebramos en la fiesta de Pascua?", opts: ["El día del chocolate", "Que Jesús resucitó y está vivo", "Que empieza el invierno", "El cumpleaños de María"], corr: 1, feed: "¡Es la fiesta más feliz! Celebramos que Jesús despertó de la muerte y está vivo con nosotros." },
+    { id: "n-30", q: "Si hacemos algo malo y lastimamos a un amigo, ¿qué tenemos que hacer?", opts: ["Escondernos", "Pedir perdón y darle un abrazo", "Echarle la culpa al perro", "Llorar en un rincón"], corr: 1, feed: "¡Pedir perdón! Dios siempre nos perdona, y nosotros tenemos que hacer lo mismo con nuestros amigos." },
+    { id: "n-31", q: "¿Qué instrumento rezamos pasando unas 'bolitas' con los dedos?", opts: ["La guitarra", "El Rosario", "El collar de perlas", "Un ábaco"], corr: 1, feed: "¡El Santo Rosario! Es como regalarle a la Virgen María una corona de rosas cada vez que lo rezamos." },
+    { id: "n-32", q: "¿Cómo se llama el libro gigante donde están todas las historias de Dios?", opts: ["La Biblia", "El diccionario", "El libro de cuentos", "La enciclopedia"], corr: 0, feed: "¡La Santa Biblia! Es el libro más importante del mundo porque ahí nos habla Dios." },
+    { id: "n-33", q: "Cuando entramos a la Capilla, nos hacemos la señal de la cruz usando...", opts: ["Agua fría", "Agua Bendita", "Perfume", "Jugo"], corr: 1, feed: "Agua Bendita. Nos recuerda el día de nuestro Bautismo, cuando nos hicimos amigos de Jesús." },
+    { id: "n-34", q: "¿A quién se le apareció la Virgen de Guadalupe?", opts: ["A un rey", "A San Juan Diego", "Al Papa", "A un soldado"], corr: 1, feed: "A San Juan Diego, un indiecito muy humilde y bueno. Ella le dejó su imagen pintada en su poncho (tilma)." },
+    { id: "n-35", q: "El primer hombre que creó Dios se llamaba Adán. ¿Y la primera mujer?", opts: ["María", "Marta", "Eva", "Ana"], corr: 2, feed: "¡Eva! Ellos vivían súper felices en un jardín hermoso llamado el Paraíso o Edén." },
+    { id: "n-36", q: "¿Qué creó Dios el primer día según la Biblia?", opts: ["Los autos", "Los dinosaurios", "La Luz", "Las casas"], corr: 2, feed: "Dios dijo: 'Que se haga la luz', ¡y la luz se hizo para separar el día de la noche!" },
+    { id: "n-37", q: "Cuando rezamos a María decimos: 'Dios te salve María, llena eres de...'", opts: ["Flores", "Gracia", "Alegría", "Juguetes"], corr: 1, feed: "¡Llena eres de Gracia! Significa que el corazón de María estaba completamente lleno del amor de Dios." },
+    { id: "n-38", q: "¿De qué color se viste el sacerdote en la Misa de Navidad?", opts: ["Negro", "Verde oscuro", "Blanco o Dorado", "Violeta"], corr: 2, feed: "El blanco y el dorado son los colores de la alegría, de la luz y de las fiestas gigantes como Navidad." },
+    { id: "n-39", q: "¿Dónde murió Jesús por amor a nosotros?", opts: ["En su cama", "En un barco", "En la Cruz", "En un castillo"], corr: 2, feed: "Murió en la cruz, con los brazos abiertos, demostrando que su amor por nosotros es más grande que todo el universo." },
+    { id: "n-40", q: "¿Qué santo era muy amigo de los animalitos y la naturaleza?", opts: ["San Pedro", "San Francisco de Asís", "San Mateo", "San Jorge"], corr: 1, feed: "¡San Francisco! Él llamaba a los pajaritos y a los lobos 'hermanos' porque sabía que Dios hizo todo con amor." },
+    { id: "n-41", q: "¿Qué le pasó a San Pedro cuando quiso caminar sobre el agua hacia Jesús?", opts: ["Empezó a hundirse por tener miedo", "Se fue nadando rápido", "Agarró un pez volador", "Caminó lo más bien todo el rato"], corr: 0, feed: "Caminó un ratito, pero cuando miró el viento se asustó y empezó a hundirse. ¡Pero Jesús le dio la mano y lo salvó!" },
+    { id: "n-42", q: "¿Cuántos días estuvo Jesús en el desierto sin comer, antes de salir a predicar?", opts: ["2 días", "40 días", "1 año", "5 días"], corr: 1, feed: "¡40 días! Allí rezó mucho para tener fuerzas. De ahí sacamos los 40 días de la Cuaresma." },
+    { id: "n-43", q: "¿En qué milagro Jesús hizo que el agua de unas tinajas se transformara en otra bebida?", opts: ["Agua en jugo de manzana", "Agua en leche chocolatada", "Agua en vino para una boda", "Agua en gaseosa"], corr: 2, feed: "Lo hizo en una fiesta de casamiento para que los novios estuvieran felices, ¡y su mamá María se lo pidió!" },
+    { id: "n-44", q: "¿Cómo se llamaba el gigante al que David venció?", opts: ["Goliat", "Shrek", "Hulk", "Hércules"], corr: 0, feed: "Goliat. Era enorme y malo, pero David le ganó porque sabía que Dios era mucho más grande y fuerte." },
+    { id: "n-45", q: "Si tenés dos panes y ves a un amiguito que no tiene merienda, ¿qué hace un cristiano?", opts: ["Se come los dos rápido", "Los esconde en la mochila", "Comparte un pan con su amigo", "Se pone a llorar"], corr: 2, feed: "¡Comparte! Jesús siempre nos enseña a compartir lo que tenemos, porque compartir nos hace muy felices." },
+    { id: "n-46", q: "En la parábola de Jesús, ¿qué animalito se perdió y el pastor fue a buscar?", opts: ["Un gatito", "Una ovejita", "Un perrito", "Un caballito"], corr: 1, feed: "Una oveja. El pastor dejó a las otras 99 y buscó a la perdida. Así hace Dios con nosotros cuando nos equivocamos." },
+    { id: "n-47", q: "Cuando vamos a la Comunión, Jesús nos alimenta con...", opts: ["Una galleta dulce", "Pan de la panadería", "Su Cuerpo (la Eucaristía)", "Un caramelo"], corr: 2, feed: "Aunque parece una hostia redondita, ¡es el Cuerpo de Jesús! Él se esconde ahí para darnos fuerza en el corazón." },
+    { id: "n-48", q: "¿Qué nos da el Espíritu Santo?", opts: ["Fuerza, alegría y valentía", "Sueño y pereza", "Ganas de pelear", "Miedo a la oscuridad"], corr: 0, feed: "El Espíritu Santo es como nuestro motorcito interno. Nos quita el miedo y nos llena de ganas de hacer cosas buenas." },
+    { id: "n-49", q: "La regla de oro que Jesús nos enseñó es: Amar a Dios y amar al...", opts: ["Dinero", "Prójimo (los demás)", "Espejo", "Videojuego"], corr: 1, feed: "¡Amar al prójimo! Eso significa tratar a todos nuestros compañeros, amigos y familia con muchísimo amor y respeto." },
+    { id: "n-50", q: "¿Qué significa la palabra 'Amén' que decimos al final de rezar?", opts: ["Adiós, hasta mañana", "Que así sea / Es verdad", "Me voy a dormir", "Gracias por la comida"], corr: 1, feed: "Significa 'Es verdad' o 'Que así sea'. Es como ponerle una firma o un sello de confianza a lo que acabamos de rezar." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido Mágico para Niños (Campanitas)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.5 }
+}).toDestination();
+synth.volume.value = -8;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Un tintineo suave
+    synth.triggerAttackRelease("G5", "16n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Campanita mágica doble
+    const now = Tone.now();
+    synth.triggerAttackRelease("C5", "16n", now);
+    synth.triggerAttackRelease("E5", "16n", now + 0.1);
+    synth.triggerAttackRelease("G5", "8n", now + 0.2);
+}
+
+// Inicialización
+function initQuiz() {
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    // Emojis coloridos en lugar de letras aburridas
+    const iconitos = ['🌟', '🐾', '🎈', '🎨'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="font-size: 1.3rem; margin-right:10px;">${iconitos[index]}</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-star" style="color:var(--correcto); font-size:1.2rem;"></i> ¡Súper bien!</strong><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-heart" style="color:var(--incorrecto); font-size:1.2rem;"></i> ¡Casi casi! La respuesta es:</strong><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 300);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `🌈 ¡Mirá este jueguito bíblico para los más chicos!\n\n"${c.q}"\n\nJugá con ellos acá: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Niños', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['JESÚS', 'DIOS', 'AMIGOS', 'ALEGRÍA', 'JUEGO', 'CAPILLA SANTA ANA', 'PAZ', 'AMOR'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 25) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

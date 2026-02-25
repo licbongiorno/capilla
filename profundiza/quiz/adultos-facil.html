@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Adultos (Inicial) - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Adultos Clásica: Azul Marino, Crema y Oro */
+            --bg1: #0D1B2A; /* Azul noche profundo */
+            --bg2: #1B263B; /* Azul marino */
+            --box-bg: #F8F9FA; /* Blanco tiza / Crema muy claro */
+            --accent: #D4AF37; /* Oro clásico */
+            --accent-hover: #C5A028;
+            --texto-oscuro: #1A202C; /* Gris muy oscuro para lectura cómoda */
+            --texto-claro: #E0E1DD;
+            --correcto: #2E7D32; /* Verde sobrio */
+            --incorrecto: #C62828; /* Rojo sobrio */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto-oscuro);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: rgba(212, 175, 55, 0.04); /* Oro muy sutil */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(13, 27, 42, 0.9); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .nav-btn {
+            background: transparent;
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--texto-claro);
+            font-weight: 600;
+            font-size: .85rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); color: white; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 100px 20px 40px; 
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 500px; /* Un poco más ancho para lectura adulta */
+            background: var(--box-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-top: 6px solid var(--accent); 
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(3deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 6vw, 1.6rem);
+            font-weight: 700;
+            color: var(--bg1);
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            padding: 18px 20px;
+            border-radius: 12px;
+            color: var(--texto-oscuro);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: #FFFDF5;
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: #E8F5E9;
+            border-color: var(--correcto);
+            color: var(--correcto);
+            font-weight: 600;
+        }
+        .opt-btn.incorrect {
+            background: #FFEBEE;
+            border-color: var(--incorrecto);
+            color: var(--incorrecto);
+            opacity: 0.8;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--texto-oscuro);
+            display: none;
+            padding: 20px;
+            background: #F1F3F5;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 500px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: #FFF; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); display: flex; }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-main:hover { background: var(--accent-hover); }
+        
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.05); color: var(--accent); border: 1px solid rgba(212, 175, 55, 0.5); font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(212, 175, 55, 0.1); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--bg1); color: var(--texto-claro); padding: 15px 25px; border-radius: 50px;
+            font-weight: 500; font-size: 14px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:500px; margin-bottom:15px; text-align:center;">
+            <span style="color:var(--accent); font-size:0.85rem; font-weight:600; text-transform:uppercase; letter-spacing:3px;">Nivel Inicial • Adultos</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando reflexión...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">Siguiente Pregunta <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado correctamente!</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS NIVEL FÁCIL PARA ADULTOS
+const CARTAS = [
+    { id: "af-1", q: "¿Cuál es el misterio central de la fe y de la vida cristiana?", opts: ["La creación del mundo", "El misterio de la Santísima Trinidad", "La vida de los santos", "La fundación de Roma"], corr: 1, feed: "La Santísima Trinidad (un solo Dios en tres Personas: Padre, Hijo y Espíritu Santo) es el misterio fundamental de nuestra fe y la fuente de todos los demás misterios." },
+    { id: "af-2", q: "¿Qué significa la palabra 'Amén', con la que concluimos nuestras oraciones?", opts: ["Adiós", "Así sea / Es verdad", "Gracias", "Por favor"], corr: 1, feed: "Proviene del hebreo y expresa firmeza, fiabilidad y fidelidad. Al decir 'Amén', suscribimos y confirmamos con fe lo que acabamos de rezar." },
+    { id: "af-3", q: "¿Quién es el actual Papa de la Iglesia Católica?", opts: ["Juan Pablo II", "Benedicto XVI", "Francisco", "Pío XII"], corr: 2, feed: "El Papa Francisco (Jorge Mario Bergoglio), originario de Argentina, elegido en marzo de 2013 como el 266º Papa de la Iglesia." },
+    { id: "af-4", q: "¿Cuántos son los Sacramentos de la Iglesia Católica?", opts: ["Tres", "Cinco", "Siete", "Diez"], corr: 2, feed: "Son siete: Bautismo, Confirmación, Eucaristía, Penitencia (Confesión), Unción de los Enfermos, Orden Sacerdotal y Matrimonio." },
+    { id: "af-5", q: "Según la fe católica, ¿qué son los Diez Mandamientos?", opts: ["Sugerencias antiguas", "Reglas impuestas por la sociedad", "La Ley de Dios dada a Moisés para guiarnos hacia el bien", "Leyes exclusivas para los sacerdotes"], corr: 2, feed: "Los Mandamientos son un don de Dios, un camino de vida que nos libera de la esclavitud del pecado y nos enseña a amar a Dios y al prójimo." },
+    { id: "af-6", q: "¿Qué oración nos fue enseñada directamente por Jesucristo en el Evangelio?", opts: ["El Ave María", "El Credo", "El Padre Nuestro", "El Salve"], corr: 2, feed: "El Padre Nuestro es la oración por excelencia de la Iglesia, considerada 'el resumen de todo el Evangelio' según Santo Tomás de Aquino." },
+    { id: "af-7", q: "¿En qué dos grandes partes se divide la Biblia?", opts: ["Génesis y Apocalipsis", "Antiguo y Nuevo Testamento", "Evangelios y Cartas", "Historia y Profecías"], corr: 1, feed: "El Antiguo Testamento (antes de Cristo) y el Nuevo Testamento (la vida de Jesús y los inicios de la Iglesia). Ambos forman una unidad inseparable." },
+    { id: "af-8", q: "¿Cuál es el primer sacramento que recibimos y que borra el pecado original?", opts: ["La Eucaristía", "La Confirmación", "El Bautismo", "La Confesión"], corr: 2, feed: "El Bautismo es el sacramento de iniciación que nos limpia, nos hace hijos adoptivos de Dios y miembros activos de Su Iglesia." },
+    { id: "af-9", q: "¿Qué celebramos los cristianos en la fiesta de Navidad?", opts: ["El comienzo del año", "La Resurrección de Cristo", "El Nacimiento de Nuestro Señor Jesucristo", "La llegada de los Reyes Magos"], corr: 2, feed: "La Navidad celebra el misterio de la Encarnación: el Hijo de Dios se hace hombre por amor a nosotros para traernos la salvación." },
+    { id: "af-10", q: "¿Cuál es la fiesta más importante del calendario cristiano?", opts: ["La Navidad", "La Pascua de Resurrección", "El Día de Todos los Santos", "El Miércoles de Ceniza"], corr: 1, feed: "La Pascua es la fiesta central de nuestra fe. Como dice San Pablo: 'Si Cristo no resucitó, vana es nuestra fe'." },
+    { id: "af-11", q: "La Iglesia nos pide asistir a Misa principalmente...", opts: ["Todos los días del año", "Los domingos y fiestas de guardar", "Solo en Semana Santa", "Cuando sentimos la necesidad"], corr: 1, feed: "El domingo es el 'Día del Señor' porque recordamos su Resurrección. Es nuestra obligación amorosa reunirnos como comunidad para alimentarnos de la Eucaristía." },
+    { id: "af-12", q: "¿Quién fue elegido por Jesús como la 'piedra' sobre la cual edificaría su Iglesia (el primer Papa)?", opts: ["San Pablo", "San Juan", "San Pedro", "Santiago"], corr: 2, feed: "Jesús le dijo: 'Tú eres Pedro, y sobre esta piedra edificaré mi Iglesia'. El Papa es el sucesor legítimo de San Pedro." },
+    { id: "af-13", q: "¿Qué evento marca el inicio de la Cuaresma?", opts: ["El Domingo de Ramos", "El Jueves Santo", "El Miércoles de Ceniza", "La Pascua"], corr: 2, feed: "El Miércoles de Ceniza comenzamos un tiempo de 40 días de preparación espiritual, ayuno y oración de cara a la Semana Santa." },
+    { id: "af-14", q: "¿Cómo se llama la oración donde profesamos y resumimos públicamente nuestra fe católica?", opts: ["El Ángelus", "El Magnificat", "El Credo", "Las Letanías"], corr: 2, feed: "El Credo (Símbolo de los Apóstoles o Niceno-Constantinopolitano) es la síntesis de las verdades fundamentales de nuestra fe." },
+    { id: "af-15", q: "En el sacramento de la Eucaristía, los católicos creemos que el pan y el vino...", opts: ["Son solo un símbolo de Jesús", "Se transforman verdaderamente en el Cuerpo y la Sangre de Cristo", "Son un simple recuerdo histórico", "Tienen poderes mágicos"], corr: 1, feed: "Creemos en la 'Presencia Real'. Tras la consagración, aunque conservan la apariencia de pan y vino, son verdadera y sustancialmente Cristo." },
+    { id: "af-16", q: "¿Quién es la Madre de la Iglesia y Madre nuestra en el orden de la gracia?", opts: ["Santa Teresa", "La Virgen María", "Santa Mónica", "Santa Ana"], corr: 1, feed: "Desde la cruz, Jesús nos entregó a María como madre al decirle a San Juan: 'Ahí tienes a tu madre'." },
+    { id: "af-17", q: "¿A quién se le encomendó el cuidado de la Sagrada Familia como padre terrenal de Jesús?", opts: ["San Joaquín", "San Juan Bautista", "San José", "Zacarías"], corr: 2, feed: "San José, el casto esposo de María, fue elegido por Dios para ser el custodio y protector del Niño Jesús y de la Virgen." },
+    { id: "af-18", q: "¿Qué nombre recibe el libro que contiene las lecturas bíblicas que se proclaman en la Misa?", opts: ["Misal", "Leccionario", "Breviario", "Catecismo"], corr: 1, feed: "El Leccionario es el libro litúrgico que contiene los pasajes de la Biblia organizados para ser leídos durante la Misa a lo largo del año." },
+    { id: "af-19", q: "¿Qué son los Evangelios?", opts: ["Cartas de los Papas", "Reglas morales estrictas", "Los cuatro libros que narran la vida, enseñanzas, muerte y resurrección de Jesús", "Libros de historia antigua"], corr: 2, feed: "Escritos por Mateo, Marcos, Lucas y Juan, los Evangelios son el corazón de las Escrituras porque su centro es Jesucristo." },
+    { id: "af-20", q: "El sacramento de la Reconciliación (Confesión) nos otorga...", opts: ["El perdón de los pecados cometidos y la paz con Dios", "Dinero", "Salud física garantizada", "Un permiso para pecar después"], corr: 0, feed: "Es el sacramento de la misericordia, donde Dios, a través de la absolución del sacerdote, perdona nuestras faltas si hay verdadero arrepentimiento." },
+    { id: "af-21", q: "¿A quiénes recordamos y celebramos el 1 de Noviembre?", opts: ["A los Fieles Difuntos", "A Todos los Santos", "A los Ángeles", "A los Apóstoles"], corr: 1, feed: "Celebramos la Solemnidad de Todos los Santos, recordando a la multitud de hombres y mujeres que ya gozan de la presencia de Dios en el cielo." },
+    { id: "af-22", q: "¿Qué significa el gesto de 'hacer la señal de la cruz'?", opts: ["Un saludo común", "Una tradición sin significado", "Una oración breve que invoca a la Santísima Trinidad y recuerda la cruz de Cristo", "Una forma de pedir silencio"], corr: 2, feed: "Es la señal más básica del cristiano. Al santiguarnos, nos ponemos bajo la protección de Dios Uno y Trino y recordamos el amor de Cristo." },
+    { id: "af-23", q: "¿Qué significa la palabra 'Emmanuel', uno de los nombres bíblicos de Jesús?", opts: ["Dios es grande", "Dios con nosotros", "El Salvador", "Príncipe de Paz"], corr: 1, feed: "'Emmanuel' significa literalmente 'Dios con nosotros'. Nos recuerda que Dios no es distante, sino que se hizo cercano en Jesús." },
+    { id: "af-24", q: "¿A quién reconocemos como la tercera persona de la Santísima Trinidad?", opts: ["A la Virgen María", "Al Espíritu Santo", "Al Papa", "A San Miguel Arcángel"], corr: 1, feed: "El Espíritu Santo es Dios, igual que el Padre y el Hijo. Es el 'Dulce Huésped del alma' que guía y santifica a la Iglesia." },
+    { id: "af-25", q: "¿Cuál es la principal enseñanza de la parábola del Buen Samaritano?", opts: ["Que no debemos viajar de noche", "Que el prójimo es cualquiera que necesite nuestra ayuda, sin importar quién sea", "Que los sacerdotes son malos", "Que debemos dar dinero a todos"], corr: 1, feed: "Jesús nos enseña que el amor no tiene fronteras. Nuestro prójimo es la persona que tenemos al lado y que sufre, sea quien sea." },
+    { id: "af-26", q: "¿En qué sacramento los esposos se comprometen a amarse y respetarse fielmente toda la vida?", opts: ["El Orden Sagrado", "El Matrimonio", "La Confirmación", "El Bautismo"], corr: 1, feed: "En el Matrimonio, el hombre y la mujer forman una alianza para toda la vida, bendecida por Dios para el bien mutuo y la educación de los hijos." },
+    { id: "af-27", q: "¿Quién fue el hombre que guio al pueblo de Israel fuera de la esclavitud en Egipto?", opts: ["Noé", "David", "Moisés", "Abraham"], corr: 2, feed: "Dios llamó a Moisés desde una zarza ardiente para que fuera el libertador de su pueblo y lo llevara hacia la Tierra Prometida." },
+    { id: "af-28", q: "¿A qué llamamos 'Adviento' en la Iglesia Católica?", opts: ["Al tiempo de preparación de 4 semanas antes de la Navidad", "A los días después de la Pascua", "A la cuaresma", "A la fiesta de la Virgen"], corr: 0, feed: "El Adviento es un tiempo de gozosa y paciente espera. Nos preparamos espiritualmente para recordar el nacimiento de Jesús." },
+    { id: "af-29", q: "¿A quiénes está dirigido el sacramento de la Unción de los Enfermos?", opts: ["Solo a los que están a punto de fallecer", "A cualquier católico enfermo de gravedad, antes de una operación de riesgo o en la vejez", "Solo a los sacerdotes", "A los niños pequeños"], corr: 1, feed: "No es solo el 'último rito'. Es un sacramento de sanación, paz y fortaleza espiritual para enfrentar la enfermedad o la fragilidad de la vejez." },
+    { id: "af-30", q: "¿Qué nombre recibe el lugar o estado de purificación después de la muerte, antes de entrar al cielo?", opts: ["El Infierno", "El Limbo", "El Purgatorio", "El Paraíso"], corr: 2, feed: "El Purgatorio es un estado transitorio de purificación para aquellos que mueren en amistad con Dios pero aún necesitan limpiar las 'huellas' de sus pecados." },
+    { id: "af-31", q: "¿Quiénes fueron los apóstoles?", opts: ["Los primeros Papas", "Los doce hombres más cercanos que Jesús eligió para continuar su misión", "Soldados romanos convertidos", "Los autores del Antiguo Testamento"], corr: 1, feed: "Los 12 Apóstoles fueron elegidos por Cristo para ser los cimientos de Su Iglesia y los primeros testigos de Su resurrección." },
+    { id: "af-32", q: "¿Qué acontecimiento recordamos el Domingo de Ramos?", opts: ["La Última Cena", "La entrada triunfal de Jesús en Jerusalén", "El nacimiento de Jesús", "La resurrección"], corr: 1, feed: "Marca el inicio de la Semana Santa. Recordamos cómo la gente aclamaba a Jesús con palmas y ramos de olivo, reconociéndolo como Rey pacífico." },
+    { id: "af-33", q: "Según la doctrina católica, ¿qué sucede con el amor de Dios cuando pecamos?", opts: ["Se acaba", "Disminuye", "Permanece intacto, Él nos sigue amando y nos invita a volver mediante el perdón", "Nos condena inmediatamente"], corr: 2, feed: "Dios nunca deja de amar. El pecado nos aleja a nosotros de Él, pero Su amor y Su misericordia siempre están esperando que decidamos volver." },
+    { id: "af-34", q: "¿Qué es el Santo Rosario?", opts: ["Un simple collar", "Una oración mariana meditativa sobre los misterios de la vida de Jesús y María", "Un amuleto de protección mágica", "Un adorno eclesiástico"], corr: 1, feed: "El Rosario es una oración bíblica y meditativa muy poderosa, donde de la mano de María contemplamos la vida, pasión y gloria de Jesucristo." },
+    { id: "af-35", q: "La Misa se divide principalmente en dos grandes partes. Una es la Liturgia de la Eucaristía, ¿cuál es la otra?", opts: ["La Liturgia del Bautismo", "La Liturgia de la Palabra", "El Ofertorio", "La Comunión"], corr: 1, feed: "La Liturgia de la Palabra, donde escuchamos las lecturas de la Biblia, y la Liturgia de la Eucaristía, donde ocurre la consagración." },
+    { id: "af-36", q: "¿Qué ángel le anunció a María que sería la Madre del Salvador?", opts: ["El Arcángel San Miguel", "El Arcángel San Rafael", "El Arcángel San Gabriel", "El Ángel de la Guarda"], corr: 2, feed: "San Gabriel fue el mensajero enviado por Dios a la ciudad de Nazaret para pedirle a María su consentimiento para la Encarnación." },
+    { id: "af-37", q: "¿Cuál de los siguientes no es un fruto directo de asistir a la Misa dominical?", opts: ["Recibir a Cristo", "Crecer en comunidad", "El enriquecimiento económico", "Escuchar la Palabra de Dios"], corr: 2, feed: "La Misa nos nutre espiritualmente, nos perdona pecados veniales y nos une a la Iglesia, pero no es un medio para buscar bienes materiales." },
+    { id: "af-38", q: "¿Cuál es la respuesta de la asamblea cuando el sacerdote dice 'El Señor esté con vosotros' (o 'con ustedes')?", opts: ["Gracias a Dios", "Y con tu espíritu", "Amén", "Te lo pedimos, Señor"], corr: 1, feed: "Respondemos 'Y con tu espíritu', reconociendo la presencia del Espíritu Santo en el sacerdote por el sacramento del Orden." },
+    { id: "af-39", q: "¿A quién perdonó Jesús mientras estaba crucificado, diciéndole 'Hoy estarás conmigo en el paraíso'?", opts: ["A San Pedro", "Al Buen Ladrón", "A Poncio Pilato", "A Judas"], corr: 1, feed: "Al 'Buen Ladrón' (San Dimas), quien reconoció sus culpas y la inocencia de Jesús en el último momento de su vida." },
+    { id: "af-40", q: "¿Qué mandamiento nos insta a respetar la vida humana desde su concepción hasta la muerte natural?", opts: ["El primer mandamiento", "El quinto mandamiento: 'No matarás'", "El octavo mandamiento", "El décimo mandamiento"], corr: 1, feed: "El Quinto Mandamiento protege el don sagrado de la vida y nos llama a cuidarla, rechazar la violencia y fomentar la paz." },
+    { id: "af-41", q: "¿Qué celebramos los católicos en la festividad de la Inmaculada Concepción?", opts: ["Que Jesús nació de una virgen", "Que María fue concebida libre del pecado original desde el primer instante de su existencia", "Que María ascendió al cielo", "El bautismo de María"], corr: 1, feed: "Es un dogma que declara que Dios, por una gracia especial, preservó a la Virgen María de toda mancha de pecado original desde su concepción." },
+    { id: "af-42", q: "¿Qué significa la palabra 'Católica' aplicada a la Iglesia?", opts: ["Universal, que está abierta a todos los hombres y naciones", "Romana y antigua", "Estricta y normativa", "Reservada solo para los puros"], corr: 0, feed: "Proviene del griego y significa 'Universal'. Cristo fundó la Iglesia para que la salvación llegue a todos los rincones del mundo sin exclusión." },
+    { id: "af-43", q: "¿Qué son las 'Obras de Misericordia'?", opts: ["Donaciones a la parroquia", "Acciones de amor mediante las cuales ayudamos a nuestro prójimo en sus necesidades físicas y espirituales", "Reglas para los monjes", "Oraciones en latín"], corr: 1, feed: "Ejemplos son: dar de comer al hambriento, visitar al enfermo, consolar al triste y perdonar al que nos ofende. Son el corazón del Evangelio vivo." },
+    { id: "af-44", q: "¿En qué milagro Jesús multiplicó comida para alimentar a una gran multitud?", opts: ["Transformó agua en vino", "Multiplicó cinco panes y dos peces", "Hizo llover pan del cielo", "Convirtió piedras en pan"], corr: 1, feed: "Jesús sintió compasión por la multitud hambrienta y, a partir de la pequeña ofrenda de un niño (5 panes y 2 peces), alimentó a miles de personas." },
+    { id: "af-45", q: "Según la tradición católica, ¿quién es considerado el patrono de los trabajadores y de la buena muerte?", opts: ["San Francisco de Asís", "San Antonio", "San José", "San Judas Tadeo"], corr: 2, feed: "San José, padre adoptivo de Jesús y carpintero, es modelo de dignidad en el trabajo. También se le pide una buena muerte, pues la tradición dice que murió acompañado por Jesús y María." },
+    { id: "af-46", q: "¿Qué enseña la Iglesia Católica sobre los Ángeles Custodios (o de la Guarda)?", opts: ["Que son un mito para los niños", "Que cada persona tiene un ángel asignado por Dios para protegerla y guiarla al bien", "Que son espíritus de familiares fallecidos", "Que solo los santos los tienen"], corr: 1, feed: "Es una verdad de fe reconfortante: la Providencia divina nos asigna un ángel desde la infancia hasta la muerte como protector e intercesor." },
+    { id: "af-47", q: "La Cuaresma se caracteriza por tres prácticas espirituales recomendadas por Jesús: el ayuno, la oración y...", opts: ["La limosna (caridad hacia los más necesitados)", "Las procesiones", "El silencio absoluto", "La compra de reliquias"], corr: 0, feed: "Ayuno (para purificar el cuerpo), Oración (para unirnos a Dios) y Limosna/Caridad (para abrir nuestro corazón a las necesidades del prójimo)." },
+    { id: "af-48", q: "¿Cuál es la función del Padrino o Madrina en el Bautismo?", opts: ["Hacer el mejor regalo", "Ser el testigo civil del acto", "Ayudar a los padres en la educación cristiana y ser un modelo de fe para el ahijado", "Darle el nombre al niño"], corr: 2, feed: "Los padrinos asumen una gran responsabilidad espiritual: acompañar al bautizado con el buen ejemplo y la oración durante toda su vida." },
+    { id: "af-49", q: "¿Qué apóstol escribió el libro del Apocalipsis?", opts: ["San Mateo", "San Pedro", "San Juan", "San Lucas"], corr: 2, feed: "El Apóstol San Juan escribió el Apocalipsis (que significa 'Revelación') durante su exilio en la isla de Patmos para dar esperanza a los primeros cristianos perseguidos." },
+    { id: "af-50", q: "¿Cuál es el resumen de toda la Ley moral que enseñó Jesucristo?", opts: ["Cumplir tradiciones antiguas", "Amar a Dios sobre todas las cosas y al prójimo como a uno mismo", "Ayunar todos los viernes", "No hacerle mal a nadie y punto"], corr: 1, feed: "Jesús fue claro: todo el Antiguo Testamento se resume en el amor absoluto a Dios y el amor solidario hacia nuestro prójimo." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido - Adultos (Piano/Campana muy suave y elegante)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.05, decay: 0.5, sustain: 0.2, release: 1.5 }
+}).toDestination();
+synth.volume.value = -10;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Un tono cálido y afirmativo
+    synth.triggerAttackRelease("A4", "8n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Arpegio sereno de transición
+    const now = Tone.now();
+    synth.triggerAttackRelease("D4", "8n", now);
+    synth.triggerAttackRelease("F#4", "8n", now + 0.15);
+    synth.triggerAttackRelease("A4", "4n", now + 0.3);
+}
+
+// Inicialización
+function initQuiz() {
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    const letras = ['A', 'B', 'C', 'D'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="color:var(--accent); font-weight:800; font-size: 1.1rem; width: 30px;">${letras[index]}.</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto); margin-right:5px;"></i> Respuesta Correcta</strong><br><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-info-circle" style="color:var(--accent); margin-right:5px;"></i> Para recordar:</strong><br><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 350);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `✨ Reflexión para Adultos (Capilla Santa Ana)\n\n"${c.q}"\n\nTe invito a responderla aquí: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Adultos (Inicial)', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['FE', 'ESPERANZA', 'CARIDAD', 'COMUNIDAD', 'GRACIA', 'SANTA ANA', 'PAZ', 'MISERICORDIA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 25) + "px";
+        const duration = 20 + Math.random() * 30; // Más lento y sereno para adultos
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

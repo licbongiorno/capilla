@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Experto - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Modo Experto: Violetas oscuros y Rojo Carmesí Neón */
+            --bg1: #0B0410;
+            --bg2: #1A0B2E;
+            --box-bg: rgba(30, 15, 45, 0.85);
+            --accent: #FF0055; /* Rojo Carmesí Brillante */
+            --accent-hover: #FF3377;
+            --texto: #FFFFFF;
+            --correcto: #00E676; /* Verde Neón */
+            --incorrecto: #FF1744; /* Rojo Alerta */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto; /* Permite scroll en celulares */
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            color: rgba(255, 0, 85, 0.05); /* Carmesí muy transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(11, 4, 16, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255, 0, 85, 0.2); border-color: var(--accent); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; /* Evita que se corte arriba en celulares */
+            padding: 100px 20px 40px; /* Espacio para el nav fijo */
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 450px;
+            background: var(--box-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(5deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 5vw, 1.45rem);
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 16px;
+            border-radius: 15px;
+            color: var(--texto);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: rgba(255, 0, 85, 0.15);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: rgba(0, 230, 118, 0.15);
+            border-color: var(--correcto);
+            color: #fff;
+        }
+        .opt-btn.incorrect {
+            background: rgba(255, 23, 68, 0.15);
+            border-color: var(--incorrecto);
+            opacity: 0.7;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #E0E0E0;
+            display: none;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 450px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 18px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Siguiente siempre visible y a la izquierda */
+        .btn-main { flex: 1; background: var(--accent); color: #FFF; box-shadow: 0 5px 15px rgba(255, 0, 85, 0.3); display: flex; }
+        .btn-main:active { transform: scale(0.95); }
+        /* Compartir fijo a la derecha */
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.1); color: var(--accent); border: 1px solid rgba(255,0,85,0.4); font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(255, 0, 85, 0.2); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .5; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--accent); color: #FFF; padding: 12px 25px; border-radius: 50px;
+            font-weight: 800; font-size: 13px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:450px; margin-bottom:10px; text-align:center;">
+            <span style="background:rgba(255,0,85,0.2); color:var(--accent); padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; border: 1px solid rgba(255,0,85,0.3);">Modo Experto</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-bolt"></i> Otra Pregunta</button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado! Listos para desafiar.</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS MODO EXPERTO / APOLOGÉTICA
+const CARTAS = [
+    { id: "jx-1", q: "¿Qué significa el dogma de la Inmaculada Concepción?", opts: ["Que Jesús nació de una virgen", "Que María fue concebida sin pecado original", "Que Jesús no cometió pecados", "Que María ascendió al cielo"], corr: 1, feed: "Mucha gente lo confunde. Significa que Dios preservó a la Virgen María del pecado original desde el instante exacto en que fue engendrada en el vientre de su madre (Santa Ana)." },
+    { id: "jx-2", q: "¿Por qué las Biblias Católicas tienen 73 libros y las Protestantes 66?", opts: ["Los católicos los inventaron después", "Los protestantes quitaron los libros Deuterocanónicos", "Se perdieron en un incendio", "El Papa los escondió"], corr: 1, feed: "En el siglo XVI, Martín Lutero eliminó 7 libros del Antiguo Testamento (como Macabeos y Sabiduría) que la Iglesia cristiana usaba desde la época de los Apóstoles." },
+    { id: "jx-3", q: "¿Qué es la 'Transustanciación'?", opts: ["Un truco de magia en misa", "El cambio físico del pan, que pasa a saber a carne", "El pan y el vino cambian su sustancia al Cuerpo y Sangre de Cristo, aunque se vean igual", "Que Jesús está simbólicamente en el pan"], corr: 2, feed: "En la consagración, la 'sustancia' (lo que realmente es) cambia a Jesús, aunque los 'accidentes' (sabor, olor, apariencia) sigan siendo de pan y vino." },
+    { id: "jx-4", q: "¿Dónde dice la Biblia que 'solo la Biblia' (Sola Scriptura) es la única regla de fe?", opts: ["En el Apocalipsis", "En Mateo 28", "En ningún lado", "En las cartas de Pablo"], corr: 2, feed: "La Biblia nunca enseña la 'Sola Scriptura'. De hecho, San Pablo dice que la 'columna y fundamento de la verdad es la Iglesia' (1 Tim 3:15), y nos manda a guardar la Tradición oral (2 Tes 2:15)." },
+    { id: "jx-5", q: "Según Santo Tomás de Aquino, ¿cómo podemos demostrar la existencia de Dios sin usar la Biblia?", opts: ["Por la telepatía", "Mediante la fe ciega", "A través de las 5 Vías (usando la razón y observando el universo)", "Es imposible saberlo sin fe"], corr: 2, feed: "Santo Tomás usó pura lógica y filosofía (Las 5 vías: motor inmóvil, causa incausada, contingencia, etc.) para demostrar que un Creador eterno debe existir." },
+    { id: "jx-6", q: "¿Qué significa que el Papa sea 'Infalible'?", opts: ["Que nunca peca", "Que no se puede equivocar en nada, ni en matemáticas", "Que nunca se equivoca cuando enseña solemnemente (Ex Cathedra) sobre fe o moral", "Que puede predecir el futuro"], corr: 2, feed: "La infalibilidad no significa que el Papa sea perfecto (es pecador y se confiesa). Es una protección del Espíritu Santo para que no enseñe mentiras oficiales a la Iglesia universal." },
+    { id: "jx-7", q: "Para que un pecado sea 'Mortal' (que rompe la relación con Dios), necesita 3 condiciones:", opts: ["Materia grave, plena conciencia y consentimiento libre", "Que sea público, ilegal y feo", "Robar, mentir y matar", "Hacerlo de día, sin culpa y con ayuda"], corr: 0, feed: "Debés saber que es algo grave, elegir hacerlo de forma libre (sin ser obligado o enfermo), y que el acto en sí sea verdaderamente destructivo." },
+    { id: "jx-8", q: "¿Qué es exactamente el Purgatorio?", opts: ["Un infierno temporal con diablos", "Una segunda oportunidad después de morir si fuiste malo", "Un estado de purificación final antes de entrar al Cielo", "El lugar donde van los que no están bautizados"], corr: 2, feed: "Al purgatorio solo van los salvados. Es como 'limpiarse los pies' antes de entrar a la sala limpia de la casa de Dios, porque nada manchado entra al Cielo." },
+    { id: "jx-9", q: "¿Qué diferencia hay entre la 'Ascensión' de Jesús y la 'Asunción' de María?", opts: ["Son palabras sinónimas", "Jesús subió por su propio poder divino; María fue llevada al cielo por Dios", "María subió sola y Jesús fue llevado", "No hay diferencia bíblica"], corr: 1, feed: "Jesús (siendo Dios) Asciende por sí mismo. María (siendo humana) es Asunta (llevada) por el poder de Dios al final de su vida." },
+    { id: "jx-10", q: "¿Cuál fue el Primer Concilio (reunión para debatir reglas) de la historia de la Iglesia?", opts: ["El Concilio de Trento", "El Concilio de Jerusalén", "El Concilio Vaticano I", "El Concilio de Nicea"], corr: 1, feed: "El Concilio de Jerusalén (año 50 d.C., narrado en Hechos 15). Se reunieron los apóstoles para decidir si los cristianos no judíos debían seguir las leyes de Moisés." },
+    { id: "jx-11", q: "¿Qué es el 'Magisterio' de la Iglesia?", opts: ["El colegio de monjas", "El presupuesto del Vaticano", "La autoridad de enseñar e interpretar la Biblia, dada por Jesús a los apóstoles y al Papa", "Un libro antiguo secreto"], corr: 2, feed: "El Magisterio es como el 'árbitro' guiado por el Espíritu Santo. Evita que cada persona interprete la Biblia a su manera y termine creando miles de sectas diferentes." },
+    { id: "jx-12", q: "¿Qué es un 'Sacramental' (como el agua bendita o un rosario)?", opts: ["Un sacramento menor para niños", "Objetos o bendiciones que nos disponen a recibir la gracia, pero no la dan automáticamente", "Amuletos de buena suerte", "Exigencias para ir al cielo"], corr: 1, feed: "Un Sacramento (como la Eucaristía) da la gracia siempre. Un Sacramental (agua bendita) es una ayuda espiritual que depende de tu fe para que te sirva." },
+    { id: "jx-13", q: "Según San Agustín y la filosofía de la Iglesia, ¿qué es el 'Mal'?", opts: ["Un ser creado por Dios", "Una energía oscura cósmica", "El gemelo malvado de Dios", "La ausencia o corrupción de un bien que debería estar ahí"], corr: 3, feed: "El mal no 'existe' como una cosa material. Así como la oscuridad es la falta de luz y el frío es falta de calor, el mal es la ausencia del bien o del orden que Dios creó." },
+    { id: "jx-14", q: "¿Qué significa 'Unión Hipostática'?", opts: ["Un pacto entre apóstoles", "La unión de dos planetas", "La unión de la naturaleza humana y divina en la única persona de Jesucristo", "El matrimonio por iglesia"], corr: 2, feed: "Es el misterio central: Jesús es 100% Dios y 100% hombre al mismo tiempo, sin mezclas ni divisiones en una sola persona." },
+    { id: "jx-15", q: "¿Qué enseñaba la herejía del 'Arrianismo' (que la Iglesia condenó en el siglo IV)?", opts: ["Que no había que rezar", "Que Jesús era solo una criatura muy buena, pero NO era Dios", "Que María era diosa", "Que los alienígenas existen"], corr: 1, feed: "Arrio causó un desastre enseñando que Jesús había sido 'creado' y no era verdaderamente Dios. El Concilio de Nicea lo condenó y redactó el Credo para aclarar esto." },
+    { id: "jx-16", q: "En el Credo decimos que Jesús es 'Consustancial' al Padre. ¿Qué significa?", opts: ["Que tienen el mismo apellido", "Que Jesús y Dios Padre comparten la misma sustancia divina (son el mismo Dios)", "Que están hechos del mismo polvo estelar", "Que son amigos inseparables"], corr: 1, feed: "Consustancial significa 'de la misma naturaleza'. Lo que hace que el Padre sea Dios, es exactamente lo mismo que hace que el Hijo sea Dios." },
+    { id: "jx-17", q: "Si la santidad de un sacerdote es muy mala, ¿sus misas y confesiones son inválidas?", opts: ["Sí, todo lo que hace queda anulado", "Depende de la gravedad de su pecado", "No, los sacramentos actúan 'Ex Opere Operato' (por obra del mismo Cristo)", "Solo son válidas si el obispo lo sabe"], corr: 2, feed: "'Ex opere operato' significa que Cristo es el que bautiza y perdona, usando al cura como herramienta. ¡La gracia no depende de la perfección del plomero, sino de la pureza del agua (Cristo)!" },
+    { id: "jx-18", q: "¿Qué evento histórico dividió a la Iglesia Católica y a la Ortodoxa?", opts: ["La Reforma Protestante", "El Cisma de Oriente en el año 1054", "El Concilio Vaticano II", "La Inquisición"], corr: 1, feed: "Fue una división muy triste por motivos políticos, culturales y teológicos (como la autoridad del Papa). La Iglesia Ortodoxa mantiene sacramentos válidos, pero separados de Roma." },
+    { id: "jx-19", q: "¿Qué evento causó la creación de las iglesias Protestantes (Evangélicos/Luteranos)?", opts: ["El nacimiento de Jesús", "El Cisma de Oriente", "La Reforma de Martín Lutero en 1517", "La invención de la imprenta"], corr: 2, feed: "Lutero, un monje católico, se rebeló contra abusos en la Iglesia, pero terminó separándose, negando la autoridad del Papa, varios sacramentos y creando la doctrina de 'Sola Fide'." },
+    { id: "jx-20", q: "Para la bioética católica, ¿cuándo comienza el derecho a la vida humana?", opts: ["Cuando el bebé sale de la panza", "Cuando late el corazón", "En el momento exacto de la concepción", "Cuando el bebé siente dolor"], corr: 2, feed: "La genética demuestra que en la fecundación ya hay un ADN humano nuevo y único. La Iglesia defiende esa vida desde su inicio absoluto hasta su muerte natural." },
+    { id: "jx-21", q: "¿La Iglesia Católica aprueba el 'Encarnizamiento Terapéutico' (mantener a alguien vivo artificialmente a toda costa)?", opts: ["Sí, hay que alargar la vida como sea", "No, acepta cuidados paliativos y permitir la muerte natural cuando la medicina ya no cura", "A veces, si tienen plata", "Depende del gobierno"], corr: 1, feed: "La Iglesia está en contra de la Eutanasia (matar), pero también del encarnizamiento (alargar agonías inútilmente). Hay que aceptar la muerte natural dando remedios para el dolor (Paliativos)." },
+    { id: "jx-22", q: "¿Quién fue el autor de la gran mayoría de las cartas (Epístolas) del Nuevo Testamento?", opts: ["San Pedro", "San Juan", "San Pablo", "Santiago"], corr: 2, feed: "San Pablo, que antes perseguía a los cristianos, se convirtió tras ver a Jesús y escribió casi la mitad del Nuevo Testamento, definiendo gran parte de la teología cristiana." },
+    { id: "jx-23", q: "¿A quién consideramos el primer mártir cristiano (Protomártir) según la Biblia?", opts: ["San Pedro", "San Pablo", "San Esteban", "San Lorenzo"], corr: 2, feed: "San Esteban fue apedreado por los judíos tras predicarles con valentía. Mientras moría, al igual que Jesús, pidió a Dios que perdonara a sus asesinos (Hechos 7)." },
+    { id: "jx-24", q: "¿Por qué los sacerdotes católicos de rito latino no se casan?", opts: ["Porque el sexo es malo", "Porque odian a las mujeres", "Es una disciplina (no dogma) para entregarse 100% a la comunidad, a imitación de Cristo", "Porque está prohibido en los Diez Mandamientos"], corr: 2, feed: "El celibato es un regalo y una ley de la Iglesia para que el cura tenga 'corazón indiviso' para su parroquia. ¡Podría cambiar a futuro porque es una regla, no un dogma bajado del cielo!" },
+    { id: "jx-25", q: "¿Por qué la Iglesia Católica no ordena sacerdotisas (mujeres)?", opts: ["Por machismo", "Porque Jesús eligió libremente a 12 hombres, y la Iglesia no tiene autoridad para cambiar ese diseño", "Porque a las mujeres no les interesa", "Porque lo prohíbe San Francisco"], corr: 1, feed: "No es un tema de poder o capacidad (la criatura más importante de la historia es mujer: María). Es fidelidad a cómo Jesús estructuró el sacramento; el sacerdote actúa como 'Esposo' de la Iglesia." },
+    { id: "jx-26", q: "¿Qué significan las siglas I.N.R.I en la cruz de Jesús?", opts: ["Ignominia Nunca Reconocida", "Imperio Nacional Romano Inteligente", "Iesus Nazarenus Rex Iudaeorum (Jesús Nazareno, Rey de los Judíos)", "Inocente Ni Resiste Injusticia"], corr: 2, feed: "Poncio Pilato mandó a escribir eso en latín, griego y hebreo como burla, pero terminó publicando la verdad absoluta sobre quién era el que estaba muriendo ahí." },
+    { id: "jx-27", q: "¿Qué es una Herejía?", opts: ["Una comida exótica", "Un pecado menor", "La negación obstinada, de parte de un bautizado, de una verdad de fe (dogma) que debe creerse", "Insultar a un cura"], corr: 2, feed: "Un hereje no es alguien que duda (eso es normal), sino alguien bautizado que dice públicamente: 'Yo sé que la Iglesia enseña que Jesús es Dios, pero yo lo niego y enseño lo contrario'." },
+    { id: "jx-28", q: "¿Qué es un Cisma?", opts: ["Un terremoto", "Una herejía muy grande", "La ruptura de la unidad de la Iglesia al rechazar someterse al Papa", "Un concilio fallido"], corr: 2, feed: "A diferencia de la herejía (que es rechazar una enseñanza teológica), el cisma es una ruptura organizativa: decir 'Yo soy cristiano, pero desconozco la autoridad del Papa'." },
+    { id: "jx-29", q: "¿Qué defiende la 'Doctrina Social de la Iglesia'?", opts: ["Que el Estado debe controlar todo", "Que la Iglesia debe gobernar los países", "La dignidad del ser humano, el trabajo justo, la familia y la opción por los pobres", "Que el capitalismo salvaje es lo mejor"], corr: 2, feed: "Es la aplicación del Evangelio a la economía y política. Nos enseña a buscar el 'Bien Común', protegiendo a los vulnerables sin caer en ideologías destructivas." },
+    { id: "jx-30", q: "¿Es un dogma que las apariciones de Fátima o Lourdes ocurrieron?", opts: ["Sí, todo católico debe creerlo obligatoriamente", "No, son revelaciones 'privadas'. La Iglesia las aprueba, pero no obligan a la fe", "Sí, están en la Biblia", "Son puros inventos"], corr: 1, feed: "La Revelación pública se cerró con la muerte del último apóstol. Las apariciones marianas son ayudas espirituales, pero no agregan nada nuevo a lo que Jesús ya nos enseñó." },
+    { id: "jx-31", q: "¿Qué enseña la Iglesia sobre la Teoría de la Evolución (Darwin)?", opts: ["La condena absolutamente", "Afirma que descendemos de los monos sin intervención divina", "Es compatible con la fe, siempre que se reconozca que Dios infundió el alma humana y es la Causa Primera", "Prohíbe a los cristianos estudiarla"], corr: 2, feed: "Génesis es teología, no un libro de ciencias. El cuerpo humano pudo haber evolucionado por leyes biológicas, pero el alma espiritual fue un salto creado directamente por Dios." },
+    { id: "jx-32", q: "¿Cómo se defiende la Iglesia ante la acusación histórica de 'La Inquisición'?", opts: ["Negando que existió", "Aclarando que hubo exageraciones políticas, pero reconociendo y pidiendo perdón por los errores cometidos", "Diciendo que fue perfecta", "Culpando a los ateos"], corr: 1, feed: "San Juan Pablo II pidió perdón oficialmente por los métodos violentos de algunos eclesiásticos. Aunque las cifras de muertos están muy exageradas por mitos protestantes, no estuvo bien." },
+    { id: "jx-33", q: "¿Cuál era el objetivo real de las Cruzadas?", opts: ["Robar oro a los musulmanes", "Obligar a los árabes a ser cristianos", "Recuperar la Tierra Santa y defender a los peregrinos cristianos de masacres islámicas", "Conquistar el mundo entero"], corr: 2, feed: "Fueron guerras defensivas (muchas de ellas fallidas y con excesos horribles), convocadas porque los ejércitos islámicos habían conquistado Jerusalén y asesinaban a los cristianos que iban a rezar allí." },
+    { id: "jx-34", q: "¿Por qué los católicos adoramos pedazos de hueso o ropa (Reliquias)?", opts: ["Para hacer magia", "NO las adoramos; las veneramos como recuerdo de personas que fueron templos del Espíritu Santo", "Porque creemos que curan siempre", "Es una tradición de brujería"], corr: 1, feed: "Igual que guardás con amor la foto de tus abuelos o un anillo de ellos, veneramos los restos de los Santos recordando que sus cuerpos fueron instrumentos de Dios." },
+    { id: "jx-35", q: "Según el Catecismo, ¿qué es 'La Comunión de los Santos'?", opts: ["Una reunión en el Vaticano", "El lazo espiritual que une a los que estamos en la tierra, los del purgatorio y los del cielo", "Un premio por ir a misa", "Cuando dos curas celebran misa juntos"], corr: 1, feed: "La Iglesia no es solo la gente de tu parroquia. Es una súper-red que incluye a las almas que ya están en el cielo (Iglesia Triunfante) y a las que se están purificando (Purgante)." },
+    { id: "jx-36", q: "¿Qué se requiere para hacer un 'Ecumenismo' correcto?", opts: ["Decir que todas las religiones son iguales", "Mezclar misas con pastores", "Buscar la unidad cristiana mediante el diálogo, pero sin renunciar a la verdad de la Iglesia Católica", "Pelear con los protestantes"], corr: 2, feed: "Jesús pidió 'que todos sean uno'. El ecumenismo busca puentes con otras denominaciones cristianas para volver a unirnos, pero no a costa de diluir nuestros dogmas o la Eucaristía." },
+    { id: "jx-37", q: "¿Qué dice la Iglesia sobre la homosexualidad?", opts: ["Odia a las personas homosexuales", "Dice que la orientación no es pecado, y exige tratarlos con profundo respeto, pero pide vivir la castidad", "Las expulsa de las parroquias", "Aprueba el matrimonio sacramental entre ellos"], corr: 1, feed: "La Iglesia abraza a todas las personas y condena cualquier discriminación. Enseña que el acto sexual está diseñado por Dios para el matrimonio hombre-mujer, por lo que llama a todos a vivir en castidad." },
+    { id: "jx-38", q: "¿Qué significa el 'Sello Sacramental' (Sigilo) de la Confesión?", opts: ["Un sello de cera en un sobre", "Que el sacerdote debe cobrarte una multa", "Que el sacerdote NO PUEDE revelar nunca lo que escuchó, bajo pena de excomunión inmediata", "Que queda anotado en un libro secreto"], corr: 2, feed: "Es absoluto. El cura no puede romper el secreto de confesión ni siquiera para salvar su propia vida, ni aunque la policía se lo exija, porque quien escucha los pecados es Dios mismo." },
+    { id: "jx-39", q: "¿Cuál es 'el pecado contra el Espíritu Santo' (el único que no se perdona)?", opts: ["Decir una mala palabra fuerte", "Romper un rosario", "Matar a alguien", "El rechazo final y obstinado a recibir el perdón y la misericordia de Dios hasta la muerte"], corr: 3, feed: "Dios puede perdonar TODO (incluso el asesinato o el aborto), pero no puede perdonar a alguien que, con soberbia, cierra su corazón y dice 'no necesito tu perdón' hasta el último segundo de su vida." },
+    { id: "jx-40", q: "En teología moral, ¿qué es el 'Principio del Doble Efecto'?", opts: ["Hacer algo malo para que pase algo bueno", "Una acción buena o neutra que tiene un efecto bueno buscado y otro malo tolerado e inevitable", "Pecar el doble de veces", "Vengarse por dos motivos"], corr: 1, feed: "Ejemplo: Darle a un enfermo terminal mucha morfina para quitarle el dolor agudo (efecto bueno buscado), sabiendo que eso acortará un poco su vida (efecto malo inevitable, no buscado ni querido)." },
+    { id: "jx-41", q: "¿Qué es el 'Crismón' (las letras X y P juntas en los altares)?", opts: ["Un símbolo extraterrestre", "Las siglas de 'Por Cristo'", "El Monograma de Cristo: son las letras griegas Ji (X) y Ro (P), las primeras del nombre Christos", "Xavier y Pedro"], corr: 2, feed: "Fue uno de los primeros símbolos cristianos usados en la antigüedad, incluso antes de que la cruz se hiciera el símbolo universal, para identificar a Jesús en secreto." },
+    { id: "jx-42", q: "¿Qué fue el Concilio Vaticano II (1962-1965)?", opts: ["Un concilio para condenar protestantes", "Un concilio de 'Aggiornamento' (puesta al día) para que la Iglesia conectara mejor con el mundo moderno", "El concilio que inventó el Papa", "La división final de la Iglesia"], corr: 1, feed: "No cambió la doctrina, pero sí cambió el enfoque: impulsó la misa en los idiomas locales, el protagonismo de los laicos, y el diálogo con otras religiones y la ciencia." },
+    { id: "jx-43", q: "¿Por qué decimos que la Iglesia es 'Apostólica'?", opts: ["Porque la inventaron los apóstoles solos", "Porque guarda las enseñanzas de los Apóstoles y sus obispos tienen sucesión ininterrumpida desde ellos", "Porque usamos libros viejos", "Porque rezamos a San Pablo"], corr: 1, feed: "Nuestros obispos actuales fueron ordenados por otro obispo, que fue ordenado por otro, y así hacia atrás en línea directa de imposición de manos hasta llegar a los 12 elegidos por Jesús." },
+    { id: "jx-44", q: "¿Qué era la herejía 'Pelagiana' (y por qué sigue siendo un riesgo hoy)?", opts: ["Creer que la tierra era plana", "Creer que podemos ser buenos y salvarnos solo con nuestro esfuerzo, sin necesitar la Gracia de Dios", "Odiar la naturaleza", "Creer en el karma"], corr: 1, feed: "Pelagio decía que si te esforzás mucho, te ganás el cielo. La Iglesia le recordó que somos débiles y sin la Gracia (el empujón que Dios regala gratis) no podemos salvarnos." },
+    { id: "jx-45", q: "Frente a los que dicen 'Soy espiritual pero no religioso', la Iglesia responde:", opts: ["¡Perfecto, te felicitamos!", "Jesús no fundó una idea abstracta, fundó una comunidad (Iglesia) con jerarquía y sacramentos tangibles", "Tenés que pagar para rezar", "Estás poseído"], corr: 1, feed: "La fe cristiana es histórica y carnal. Dios se hizo cuerpo, sudó y sangró. Por eso nos dejó signos físicos (agua, pan, aceite, una comunidad de personas imperfectas) para salvarnos, no energías abstractas." },
+    { id: "jx-46", q: "¿Dónde encontramos la palabra 'Trinidad' en la Biblia?", opts: ["En el Evangelio de Mateo", "En Apocalipsis 3", "En la carta a los Romanos", "En ningún lado, es un término teológico posterior que define una verdad bíblica"], corr: 3, feed: "La palabra no está, pero la realidad sí (Jesús manda bautizar en nombre del Padre, Hijo y E. Santo). La Iglesia acuñó la palabra para defender esa verdad contra los herejes." },
+    { id: "jx-47", q: "Según la Iglesia Católica, ¿el diablo es un ser real o un símbolo psicológico?", opts: ["Un invento para asustar niños en la Edad Media", "Un ser personal, un ángel caído real y malvado que tienta al hombre", "La parte oscura de nuestro cerebro", "Un Dios oscuro igual a Dios Padre"], corr: 1, feed: "No es una leyenda ni un principio filosófico, es una criatura angélica real (Satanás) que se rebeló contra Dios por soberbia y busca alejar a los humanos del cielo." },
+    { id: "jx-48", q: "¿Qué dice la Iglesia del Matrimonio entre un católico y un bautizado no católico (ej. Ortodoxo/Protestante)?", opts: ["Está totalmente prohibido y no es válido", "Solo se puede por civil", "Es válido y lícito, pero requiere un permiso especial (dispensa) del obispo por ser 'matrimonio mixto'", "El católico queda excomulgado"], corr: 2, feed: "La Iglesia lo permite, pero advierte sobre las dificultades. Solo exige que el católico prometa no perder su fe y hacer todo lo posible para bautizar y educar a los hijos en la fe católica." },
+    { id: "jx-49", q: "¿Puede el Papa cambiar algo que Jesús dijo explícitamente en el Evangelio (Ej: hacer que el divorcio sea lícito)?", opts: ["Sí, porque tiene poder absoluto", "A veces, si los cardenales votan a favor", "No, el Papa es el servidor y custodio de la Tradición de Cristo, no el dueño", "Solo si está de acuerdo con las leyes del país"], corr: 2, feed: "La Iglesia no puede inventar ni cambiar la Revelación de Cristo. Su único trabajo es protegerla intacta, explicarla y aplicarla a los tiempos nuevos, pero sin alterar la esencia." },
+    { id: "jx-50", q: "La gracia santificante la recibimos en el bautismo. ¿Cómo se recupera si se pierde por pecado mortal?", opts: ["Yendo a Misa el domingo", "Rezando 100 Padre Nuestros", "Por el Sacramento de la Reconciliación (Confesión)", "Donando dinero a los pobres"], corr: 2, feed: "El pecado mortal destruye la vida de la gracia en el alma. La Confesión es el 'Bautismo laborioso': el salvavidas de emergencia que Dios nos dejó para recuperar esa vida espiritual perdida." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido - Modo Experto (Grave y misterioso)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.1, decay: 0.2, sustain: 0.1, release: 0.8 }
+}).toDestination();
+synth.volume.value = -5;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Un acorde oscuro/misterioso
+    synth.triggerAttackRelease("A3", "16n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Pasaje melódico tipo "descubrimiento"
+    const now = Tone.now();
+    synth.triggerAttackRelease("E4", "16n", now);
+    synth.triggerAttackRelease("B4", "16n", now + 0.1);
+    synth.triggerAttackRelease("E5", "8n", now + 0.2);
+}
+
+// Inicialización
+function initQuiz() {
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    const letras = ['A', 'B', 'C', 'D'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="opacity:0.6; font-weight:800; font-size: 1.1rem; width: 25px;">${letras[index]}.</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto);"></i> ¡Exacto! Nivel Maestro.</strong><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle" style="color:var(--incorrecto);"></i> Error común. La verdad es:</strong><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 300);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `🔥 ¡Reto Nivel Experto! (Capilla Santa Ana)\n\n"${c.q}"\n\nSi creés que sabés de teología, tratá de responderla acá: `;
+
+    if (navigator.share) {
+        try {
+            await share({ title: 'Desafío Experto', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['APOLOGÉTICA', 'TEOLOGÍA', 'DOGMA', 'HISTORIA', 'MISTERIO', 'VERDAD', 'MAGISTERIO', 'RAZÓN'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<18; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

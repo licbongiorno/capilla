@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafío Adultos (Medio) - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Adultos Medio: Vino/Borgoña y Oro */
+            --bg1: #4A1423; /* Rojo Vino / Borgoña */
+            --bg2: #1A050B; /* Borgoña muy oscuro */
+            --box-bg: #FCFBF9; /* Blanco antiguo */
+            --accent: #D4AF37; /* Oro clásico */
+            --accent-hover: #C5A028;
+            --texto-oscuro: #2B0C14; /* Tono oscuro cálido */
+            --texto-claro: #F5EBEB;
+            --correcto: #2E7D32; /* Verde sobrio */
+            --incorrecto: #B71C1C; /* Rojo profundo */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto-oscuro);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: rgba(212, 175, 55, 0.05); /* Oro muy sutil */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; z-index: 10; background: rgba(74, 20, 35, 0.9); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.4); border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .nav-btn {
+            background: transparent;
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--texto-claro);
+            font-weight: 600;
+            font-size: .85rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); color: white; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 100px 20px 40px; 
+            z-index: 2; 
+            position: relative; 
+            width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%;
+            max-width: 500px;
+            background: var(--box-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            border-top: 6px solid var(--accent); 
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(.4, .2, .2, 1), opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(80px) rotateZ(3deg); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 6vw, 1.6rem);
+            font-weight: 700;
+            color: var(--bg1);
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        /* OPCIONES */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .opt-btn {
+            background: #FFFFFF;
+            border: 1px solid #EAEAEA;
+            padding: 18px 20px;
+            border-radius: 12px;
+            color: var(--texto-oscuro);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: #FFFDF5;
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        .opt-btn:disabled { cursor: default; }
+        
+        /* ESTADOS DE RESPUESTA */
+        .opt-btn.correct {
+            background: #E8F5E9;
+            border-color: var(--correcto);
+            color: var(--correcto);
+            font-weight: 600;
+        }
+        .opt-btn.incorrect {
+            background: #FFEBEE;
+            border-color: var(--incorrecto);
+            color: var(--incorrecto);
+            opacity: 0.8;
+        }
+
+        /* FEEDBACK / EXPLICACIÓN CORTA */
+        .feedback-text {
+            margin-top: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--texto-oscuro);
+            display: none;
+            padding: 20px;
+            background: #F8F1F3;
+            border-radius: 10px;
+            border-left: 4px solid var(--bg1);
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 500px; display: flex; gap: 12px; }
+        .btn-action {
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-main { flex: 1; background: var(--accent); color: #FFF; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); display: flex; }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-main:hover { background: var(--accent-hover); }
+        
+        .btn-sec { flex: 0 0 70px; background: rgba(255,255,255,0.05); color: var(--accent); border: 1px solid rgba(212, 175, 55, 0.5); font-size: 1.3rem; }
+        .btn-sec:hover { background: rgba(212, 175, 55, 0.15); }
+
+        /* FOOTER */
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+        /* TOAST / ALERTA */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--bg1); color: var(--texto-claro); padding: 15px 25px; border-radius: 50px;
+            font-weight: 500; font-size: 14px; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Inicio</a>
+        <a href="quiz-index.html" class="nav-btn"><i class="fas fa-search"></i> Profundiza</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="width:100%; max-width:500px; margin-bottom:15px; text-align:center;">
+            <span style="color:var(--accent); font-size:0.85rem; font-weight:600; text-transform:uppercase; letter-spacing:3px;">Nivel Intermedio • Adultos</span>
+        </div>
+
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando reflexión...</p>
+            
+            <div id="options-container" class="options-grid">
+                </div>
+
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">Siguiente Pregunta <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        </div>
+        
+    </div>
+
+    <div id="toast">¡Enlace copiado correctamente!</div>
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+<script>
+// BASE DE DATOS: 50 PREGUNTAS NIVEL MEDIO PARA ADULTOS
+const CARTAS = [
+    { id: "am-1", q: "¿Cuáles son los tres sacramentos que imprimen un 'carácter' (marca espiritual indeleble) y por ende no se pueden repetir?", opts: ["Bautismo, Eucaristía y Matrimonio", "Bautismo, Confirmación y Orden Sacerdotal", "Bautismo, Confesión y Unción de los Enfermos", "Confirmación, Matrimonio y Orden Sacerdotal"], corr: 1, feed: "Estos tres sacramentos configuran a la persona con Cristo de una manera definitiva y le otorgan una marca espiritual imborrable; por ello, solo se reciben una vez en la vida." },
+    { id: "am-2", q: "¿Cómo se llama el documento oficial que recopila todas las enseñanzas y la doctrina de la Iglesia Católica?", opts: ["El Código de Derecho Canónico", "El Misal Romano", "El Catecismo de la Iglesia Católica", "La Encíclica"], corr: 2, feed: "Promulgado por San Juan Pablo II en 1992, el Catecismo es el texto de referencia seguro y auténtico para la enseñanza de la doctrina católica." },
+    { id: "am-3", q: "¿Cuáles son las tres 'Virtudes Teologales' infundidas por Dios en el alma del bautizado?", opts: ["Prudencia, Justicia y Fortaleza", "Fe, Esperanza y Caridad", "Pobreza, Castidad y Obediencia", "Humildad, Mansedumbre y Templanza"], corr: 1, feed: "Las virtudes teologales (Fe, Esperanza y Caridad) adaptan las facultades del hombre para que pueda participar de la naturaleza divina y relacionarse directamente con Dios." },
+    { id: "am-4", q: "¿Qué nombre reciben los primeros cinco libros del Antiguo Testamento (Génesis, Éxodo, Levítico, Números y Deuteronomio)?", opts: ["Los Profetas", "El Pentateuco (o la Torá)", "Los Libros Sapienciales", "Los Evangelios"], corr: 1, feed: "En la tradición judía se conocen como la 'Torá' (La Ley) y en la tradición cristiana como el 'Pentateuco' (cinco rollos). Son la base de toda la revelación del Antiguo Testamento." },
+    { id: "am-5", q: "En la teología católica, ¿cuál es la diferencia fundamental entre 'Adoración' y 'Veneración'?", opts: ["No hay diferencia, son sinónimos", "La adoración es rezar en silencio, la veneración es cantar", "La adoración es exclusiva para Dios; la veneración es el respeto y honor hacia los santos y la Virgen María", "Se adora a la Virgen y se venera a Dios"], corr: 2, feed: "La Iglesia es sumamente estricta: la Adoración (Latría) pertenece única y exclusivamente a Dios. A María y a los Santos se les otorga Veneración (Dulía e Hiperdulía)." },
+    { id: "am-6", q: "¿Qué son los 'Evangelios Sinópticos'?", opts: ["Los evangelios perdidos y no reconocidos", "Los escritos de San Pablo", "Los evangelios de Mateo, Marcos y Lucas, porque tienen una estructura y visión muy similar de la vida de Jesús", "Los evangelios escritos en griego"], corr: 2, feed: "Se llaman sinópticos (del griego 'visión conjunta') porque pueden leerse en columnas paralelas, compartiendo muchas de las mismas historias y palabras, a diferencia del Evangelio de Juan." },
+    { id: "am-7", q: "¿Qué color litúrgico se utiliza durante el 'Tiempo Ordinario' para simbolizar la esperanza y el crecimiento de la Iglesia?", opts: ["Rojo", "Blanco", "Morado", "Verde"], corr: 3, feed: "El verde es el color de la vida, la naturaleza y la esperanza. Se utiliza en los domingos y ferias del Tiempo Ordinario, que es el período más largo del año litúrgico." },
+    { id: "am-8", q: "La Iglesia se sostiene en la 'Revelación Divina'. ¿Cuáles son los dos canales o fuentes inseparables por los que nos llega esta revelación?", opts: ["La Biblia y las apariciones marianas", "La Sagrada Escritura y la Sagrada Tradición", "El Papa y los sacerdotes", "El Antiguo y el Nuevo Testamento"], corr: 1, feed: "La Escritura (la Palabra escrita) y la Tradición (la transmisión viva de la fe a lo largo de los siglos bajo el Espíritu Santo) forman un solo depósito sagrado de la Palabra de Dios." },
+    { id: "am-9", q: "¿Qué enseña el principio de 'Subsidiariedad' en la Doctrina Social de la Iglesia?", opts: ["Que el Estado debe controlar toda la economía", "Que las autoridades superiores no deben interferir en la vida interna de las comunidades menores, sino apoyarlas", "Que los laicos deben someterse a los sacerdotes en política", "Que la pobreza es deseable"], corr: 1, feed: "Es un pilar de la Doctrina Social: lo que puede hacer una familia o un municipio, no debe absorberlo el Estado nacional. El Estado está para ayudar (subsidium), no para asfixiar." },
+    { id: "am-10", q: "¿A qué se refiere el término 'Transustanciación'?", opts: ["Al viaje de los apóstoles", "Al cambio de la sustancia del pan y del vino en el Cuerpo y la Sangre de Cristo, permaneciendo las apariencias", "Al cambio físico de la iglesia en el siglo IV", "A la resurrección de los muertos"], corr: 1, feed: "La 'sustancia' (lo que algo es en su esencia profunda) cambia completamente a Jesucristo, mientras que los 'accidentes' (color, sabor, peso, forma del pan) permanecen inalterados." },
+    { id: "am-11", q: "¿Cuántos son los dogmas (verdades de fe absolutas) definidos solemnemente por la Iglesia sobre la Virgen María?", opts: ["Dos", "Cuatro", "Siete", "Doce"], corr: 1, feed: "Son cuatro: Maternidad Divina (Madre de Dios), Virginidad Perpetua, Inmaculada Concepción (sin pecado original) y Asunción en cuerpo y alma al cielo." },
+    { id: "am-12", q: "¿Cuál es el fin doble e inseparable del matrimonio católico?", opts: ["La riqueza económica y el bienestar social", "El bien de los cónyuges (unidad/amor) y la procreación y educación de la prole", "La convivencia pacífica y evitar la soledad", "Cumplir una tradición cultural"], corr: 1, feed: "El matrimonio tiene un significado 'unitivo' (crecer en el amor mutuo) y un significado 'procreativo' (estar abiertos al don de la vida). Ambos fines no pueden separarse." },
+    { id: "am-13", q: "En la jerarquía del sacramento del Orden, ¿cuáles son sus tres grados?", opts: ["Papa, Cardenal y Obispo", "Diaconado, Presbiterado (sacerdotes) y Episcopado (obispos)", "Monje, Fraile y Sacerdote", "Laico, Consagrado y Clérigo"], corr: 1, feed: "El Orden Sagrado se confiere en tres grados: el episcopado (plenitud del orden), el presbiterado (colaboradores del obispo) y el diaconado (ordenados para el servicio)." },
+    { id: "am-14", q: "¿Qué es una 'Encíclica'?", opts: ["Una norma para construir iglesias", "Una carta solemne que el Papa dirige a los obispos y fieles sobre temas de doctrina, moral o temas sociales", "Un libro de la Biblia", "Una reunión de cardenales"], corr: 1, feed: "Las encíclicas son documentos magistrales de gran importancia mediante los cuales el Papa ejerce su ministerio de enseñanza ordinaria. Ejemplos: 'Laudato Si' o 'Fratelli Tutti'." },
+    { id: "am-15", q: "Según la fe católica, ¿es necesaria la fe unida a las obras para la salvación?", opts: ["No, solo la fe es necesaria", "Sí, la fe sin obras está muerta, pues la verdadera fe se manifiesta en el amor y la caridad", "No, solo las buenas obras salvan, no importa lo que creas", "Solo es necesario estar bautizado"], corr: 1, feed: "Como enseña la Carta de Santiago (2, 26): 'La fe sin obras está muerta'. No 'compramos' la salvación con obras, pero las obras son la respuesta necesaria a la Gracia de Dios." },
+    { id: "am-16", q: "¿Qué es el 'Ecumenismo'?", opts: ["El estudio de la economía de la Iglesia", "El esfuerzo por restablecer la unidad entre todos los cristianos (católicos, ortodoxos, protestantes)", "La unión de todas las religiones del mundo en una sola", "La condena de las otras religiones"], corr: 1, feed: "El ecumenismo busca cumplir el deseo de Jesús en la Última Cena: 'Que todos sean uno', a través del diálogo, la oración conjunta y la búsqueda de la verdad." },
+    { id: "am-17", q: "En teología moral, ¿cuáles son los tres elementos que determinan si un acto humano es moralmente bueno o malo?", opts: ["La intención, el resultado y la opinión pública", "El objeto (lo que se hace), la intención (el porqué) y las circunstancias", "La legalidad, el costo y el beneficio", "La cultura, la época y la educación"], corr: 1, feed: "Para que un acto sea moralmente bueno, su objeto, su intención y sus circunstancias deben ser buenos. Un buen fin (intención) no justifica un medio malo (objeto)." },
+    { id: "am-18", q: "¿Qué es el 'Lignum Crucis'?", opts: ["Un libro de rezos antiguos", "Una reliquia que se cree es un fragmento de la verdadera Cruz en la que murió Jesucristo", "El nombre de la cruz que usa el Papa", "Un árbol plantado en el Vaticano"], corr: 1, feed: "El 'Lignum Crucis' (Madera de la Cruz) es la reliquia más venerada del cristianismo. Fue descubierta por Santa Elena, madre del emperador Constantino, en el siglo IV." },
+    { id: "am-19", q: "¿Quiénes son los 'Laicos' en la Iglesia Católica?", opts: ["Los sacerdotes que no tienen parroquia", "Todos los fieles bautizados que no han recibido el sacramento del Orden ni pertenecen a un estado religioso", "Los monjes de clausura", "Los que no creen en Dios"], corr: 1, feed: "Los laicos son la inmensa mayoría de la Iglesia. Su vocación específica es buscar el Reino de Dios iluminando y ordenando los asuntos temporales (política, familia, trabajo) según el Evangelio." },
+    { id: "am-20", q: "¿Qué título otorga la Iglesia a ciertos santos reconocidos por su eminente sabiduría y la importancia de sus enseñanzas para la teología?", opts: ["Patriarca", "Mártir Honorífico", "Doctor de la Iglesia", "Prefecto"], corr: 2, feed: "El título de 'Doctor de la Iglesia' se otorga a santos cuyos escritos y enseñanzas han sido fundamentales para comprender la fe, como San Agustín o Santa Teresa de Jesús." },
+    { id: "am-21", q: "Según la enseñanza sobre los 'Novísimos' (las últimas cosas), ¿qué es el 'Juicio Particular'?", opts: ["El fin del mundo", "El juicio que el alma experimenta inmediatamente después de la muerte, definiendo su destino eterno", "Un tribunal eclesiástico", "El Juicio Final de todas las naciones"], corr: 1, feed: "Inmediatamente al morir, el alma se presenta ante Dios y recibe su retribución eterna (cielo, purgatorio o infierno) basándose en sus obras y su fe." },
+    { id: "am-22", q: "¿Qué es la 'Liturgy of the Hours' (Liturgia de las Horas) o el Oficio Divino?", opts: ["El horario de las misas del domingo", "La oración pública y oficial de la Iglesia que santifica las diferentes horas del día con salmos y lecturas", "El tiempo de trabajo de los sacerdotes", "Un rezo exclusivo para monjas"], corr: 1, feed: "Es la oración oficial de la Iglesia (junto con la Misa). Consiste principalmente en salmos, himnos y lecturas bíblicas, rezadas en distintos momentos del día (Laudes, Vísperas, etc.)." },
+    { id: "am-23", q: "¿A qué se llama el 'Pecado Original'?", opts: ["Al primer pecado que comete un niño", "A la privación de la santidad y justicia originales con la que todos nacemos, fruto de la caída de nuestros primeros padres", "Al peor pecado de todos", "Al pecado de no estar bautizado"], corr: 1, feed: "No es un pecado 'cometido' por nosotros, sino un estado 'contraído': nacemos sin la gracia divina plena, con una naturaleza humana herida e inclinada al mal (concupiscencia)." },
+    { id: "am-24", q: "¿Cuál es el significado profundo de la 'Castidad' según la Iglesia Católica?", opts: ["Evitar el matrimonio a toda costa", "La simple abstinencia sexual por represión", "La integración exitosa de la sexualidad en la persona, vivida según su estado de vida (soltero, casado, consagrado)", "Un voto exclusivo para curas"], corr: 2, feed: "La castidad no es negación, es la afirmación del amor verdadero. Implica dominar los propios impulsos para poder amar de forma libre y respetuosa, según el estado de cada uno." },
+    { id: "am-25", q: "La Iglesia reconoce tres grados de reverencia. La 'Hiperdulía' está reservada exclusivamente para...", opts: ["Dios", "El Papa", "La Virgen María", "Los Ángeles"], corr: 2, feed: "La Latría (Adoración) es solo para Dios. La Dulía (Veneración) es para los Santos. La Hiperdulía (Veneración especial y altísima) es únicamente para la Santísima Virgen María." },
+    { id: "am-26", q: "¿Qué significa el acrónimo o símbolo 'IHS' que a menudo se ve en los altares o vestiduras?", opts: ["Iglesia Humilde y Santa", "In Hoc Signo (Con este signo)", "Son las primeras tres letras del nombre de Jesús en griego (Iesous)", "Iesus Hominum Salvator (Jesús Salvador de los Hombres) - Interpretación latina"], corr: 3, feed: "Tanto la C como la D son correctas históricamente. Originalmente es el monograma del nombre de Jesús en griego (ΙΗΣ), que luego en latín se popularizó como Iesus Hominum Salvator." },
+    { id: "am-27", q: "El Papa Pío IX en 1864 publicó el 'Syllabus', ¿cuál era su propósito?", opts: ["Aprobar el comunismo", "Cambiar la liturgia", "Condenar los principales errores y filosofías modernas contrarias a la fe y la razón (racionalismo, panteísmo, etc.)", "Establecer nuevas fechas festivas"], corr: 2, feed: "El Syllabus fue un catálogo de 80 proposiciones que la Iglesia condenó, advirtiendo sobre ideologías modernas que intentaban destruir la visión cristiana del mundo y del hombre." },
+    { id: "am-28", q: "¿Cuál de los siguientes no es considerado uno de los 'Pecados Capitales'?", opts: ["La Lujuria", "La Soberbia", "La Ignorancia", "La Avaricia"], corr: 2, feed: "Los 7 pecados capitales (Soberbia, Avaricia, Lujuria, Ira, Gula, Envidia y Pereza) se llaman 'capitales' porque son cabeza o raíz de donde nacen muchos otros pecados." },
+    { id: "am-29", q: "¿Qué significa el concepto de 'Comunión de los Santos' en el Credo?", opts: ["La comunión que reciben los canonizados", "El vínculo espiritual entre los fieles de la tierra, las almas del purgatorio y los santos del cielo", "Una reunión anual en Roma", "El momento de darse la paz en misa"], corr: 1, feed: "La Iglesia es una sola familia en Cristo. Las oraciones de los que estamos en la tierra ayudan a las almas del purgatorio, y los santos del cielo interceden por nosotros." },
+    { id: "am-30", q: "¿Quién convocó el revolucionario Concilio Vaticano II en 1962?", opts: ["San Pío X", "San Juan XXIII", "San Pablo VI", "San Juan Pablo II"], corr: 1, feed: "El Papa San Juan XXIII lo convocó sorpresivamente para un 'aggiornamento' (actualización) de la Iglesia, y tras su muerte, fue clausurado por San Pablo VI en 1965." },
+    { id: "am-31", q: "¿Qué es el 'Sacramento del Orden'?", opts: ["Una regla para organizar parroquias", "El sacramento por el cual la misión confiada por Cristo a sus apóstoles sigue siendo ejercida en la Iglesia", "El voto de obediencia de los monjes", "El orden en que se leen las lecturas"], corr: 1, feed: "Mediante la imposición de las manos, el Orden Sagrado confiere un don del Espíritu Santo que permite ejercer un 'poder sagrado' (sacra potestas) en nombre y con la autoridad de Cristo." },
+    { id: "am-32", q: "¿Qué diferencia práctica hay entre un fraile/monje y un sacerdote diocesano (secular)?", opts: ["No hay diferencia", "El sacerdote diocesano hace votos de pobreza absoluta, el monje no", "El religioso (fraile/monje) pertenece a una orden con una regla específica e hizo votos de pobreza, castidad y obediencia; el diocesano está incardinado a un obispo local", "El monje puede casarse"], corr: 2, feed: "Un sacerdote diocesano pertenece a una diócesis y promete obediencia al Obispo y castidad (celibato), pero no hace voto de pobreza. El religioso (como un franciscano o jesuita) sí hace los tres votos." },
+    { id: "am-33", q: "¿En qué consiste la 'Asunción de María'?", opts: ["En que María resucitó por su propio poder", "En que al final de su vida terrena, la Madre de Dios fue llevada en cuerpo y alma a la gloria del cielo", "En que asumió el liderazgo de la Iglesia", "En un mito sin importancia teológica"], corr: 1, feed: "Es un dogma definido por Pío XII en 1950. Al ser preservada de todo pecado, María no debía sufrir la corrupción del sepulcro, y fue glorificada por Dios en cuerpo y alma." },
+    { id: "am-34", q: "¿Qué es la 'Escatología'?", opts: ["El estudio de la historia antigua", "La rama de la teología que estudia las realidades últimas: muerte, juicio, cielo, infierno y el fin del mundo", "El estudio de los ángeles", "La doctrina sobre el matrimonio"], corr: 1, feed: "Viene del griego 'éschatos' (último). Estudia el destino definitivo de la humanidad y del universo bajo el triunfo final de Cristo." },
+    { id: "am-35", q: "En el contexto de la Confesión, ¿qué es el 'Propósito de Enmienda'?", opts: ["Pagar una limosna", "El firme propósito de no volver a pecar en el futuro y evitar las ocasiones de pecado", "Explicar por qué pecamos", "Pedirle al sacerdote que rece por nosotros"], corr: 1, feed: "Para que la confesión sea válida, el arrepentimiento debe estar acompañado de la decisión honesta y voluntaria de luchar para no repetir el pecado." },
+    { id: "am-36", q: "¿Por qué decimos que la Iglesia es 'Apostólica'?", opts: ["Porque la inventaron los apóstoles", "Porque está fundada sobre los Apóstoles, guarda y transmite sus enseñanzas, y sigue siendo enseñada por sus sucesores (los Obispos)", "Porque lee los Hechos de los Apóstoles", "Porque todos sus miembros son santos"], corr: 1, feed: "La apostolicidad garantiza que la fe que profesamos hoy es la misma fe que Cristo entregó a los Doce, transmitida a través de la sucesión ininterrumpida de los obispos." },
+    { id: "am-37", q: "¿Cuál es el libro de la Biblia que contiene 150 cánticos/oraciones que son el corazón de la liturgia de la Iglesia?", opts: ["Proverbios", "Eclesiastés", "Los Salmos", "Cantares"], corr: 2, feed: "Los Salmos abarcan todas las emociones humanas (alegría, tristeza, ira, arrepentimiento) y son la oración que el mismo Jesús utilizó a lo largo de su vida." },
+    { id: "am-38", q: "¿Qué enseña la Iglesia sobre el 'Cielo'?", opts: ["Que es un lugar físico sobre las nubes", "Que es un estado temporal de descanso", "Que es el estado de felicidad suprema y definitiva al ver a Dios cara a cara (Visión Beatífica)", "Que es reencarnar en una mejor vida"], corr: 2, feed: "El cielo no es un 'lugar' con coordenadas físicas, sino la comunión de vida y amor plena, perfecta e inquebrantable con la Santísima Trinidad y todos los bienaventurados." },
+    { id: "am-39", q: "¿Qué documento del Papa León XIII en 1891 dio inicio formal a la Doctrina Social de la Iglesia moderna, defendiendo los derechos de los obreros?", opts: ["Rerum Novarum", "Pacem in Terris", "Centesimus Annus", "Lumen Gentium"], corr: 0, feed: "La encíclica 'Rerum Novarum' (De las cosas nuevas) fue revolucionaria. Defendió el salario justo, los sindicatos, y rechazó tanto el capitalismo salvaje como el socialismo marxista." },
+    { id: "am-40", q: "La gracia de Dios es un don gratuito. ¿Qué diferencia hay entre la Gracia Santificante y las Gracias Actuales?", opts: ["Son exactamente lo mismo", "La Santificante es un estado permanente que nos hace hijos de Dios; las Actuales son ayudas temporales e impulsos para obrar el bien", "La Santificante es para curas, las Actuales para laicos", "Una se da en vida y otra al morir"], corr: 1, feed: "La gracia santificante habita en el alma (se recibe en el Bautismo). Las gracias actuales son esos 'empujoncitos' o iluminaciones repentinas que Dios nos da para superar una tentación específica." },
+    { id: "am-41", q: "¿Quién fue el gran teólogo dominico del siglo XIII, autor de la 'Suma Teológica', que sintetizó la fe cristiana con la filosofía aristotélica?", opts: ["San Agustín de Hipona", "Santo Tomás de Aquino", "San Francisco de Asís", "San Ignacio de Loyola"], corr: 1, feed: "Santo Tomás de Aquino, el 'Doctor Angélico'. Su obra es el pilar de la teología sistemática de la Iglesia Católica, demostrando que la Fe y la Razón son amigas." },
+    { id: "am-42", q: "¿A qué llamamos el misterio de la 'Encarnación'?", opts: ["A la resurrección de los muertos en el último día", "Al momento en que el Hijo de Dios asumió la naturaleza humana y se hizo carne en el vientre de María", "A la creación del alma humana", "A la ascensión de Jesús"], corr: 1, feed: "Como dice el Evangelio de Juan: 'El Verbo se hizo carne y habitó entre nosotros'. Es el misterio por el cual Dios se hace hombre verdadero sin dejar de ser Dios verdadero." },
+    { id: "am-43", q: "¿Qué significa el término 'Justificación' en la teología paulina y católica?", opts: ["Tener buenas excusas", "El paso del estado de pecado al estado de gracia, reconciliándonos con Dios mediante los méritos de Cristo", "Aplicar la justicia terrenal", "Condenar a los pecadores"], corr: 1, feed: "La justificación es la obra más excelente del amor de Dios. No solo nos perdona, sino que nos transforma y santifica interiormente a través de la gracia del Espíritu Santo." },
+    { id: "am-44", q: "¿Qué diferencia hay entre la 'Muerte de cruz' y cualquier otra forma de ejecución en la época romana?", opts: ["Era más rápida", "Estaba reservada para ciudadanos romanos", "Era el castigo más degradante, humillante y doloroso, reservado a esclavos y rebeldes", "Era un honor militar"], corr: 2, feed: "Cristo no solo eligió morir, sino que asumió la muerte más deshonrosa de su tiempo. San Pablo dice que Jesús 'se humilló a sí mismo, obedeciendo hasta la muerte, y muerte de cruz'." },
+    { id: "am-45", q: "Las Cuatro Marcas de la Iglesia, proclamadas en el Credo, declaran que la Iglesia es:", opts: ["Buena, Fuerte, Antigua y Romana", "Una, Santa, Católica y Apostólica", "Universal, Misericordiosa, Pobre y Activa", "Bíblica, Sacramental, Jerárquica y Laical"], corr: 1, feed: "Estas cuatro notas (Una, Santa, Católica y Apostólica) son los rasgos esenciales de la Iglesia y su misión, que recibe de Cristo por medio del Espíritu Santo." },
+    { id: "am-46", q: "¿Cuál es la postura de la Iglesia respecto al libre albedrío del ser humano?", opts: ["El destino ya está escrito y no hay libertad", "El ser humano fue dotado de libertad para buscar a su Creador y adherirse a Él libremente, siendo responsable de sus actos", "Solo los santos tienen libertad", "La libertad es una ilusión"], corr: 1, feed: "La libertad es el signo más grande de la imagen divina en nosotros. Dios respeta tanto nuestra libertad que incluso permite que podamos elegir rechazarlo (el pecado)." },
+    { id: "am-47", q: "¿En qué consiste el 'Sacramento de la Confirmación'?", opts: ["En ratificar la fe ante un juez", "En completar la gracia del bautismo, otorgando una efusión especial del Espíritu Santo que nos une más firmemente a la Iglesia", "En graduarse de la catequesis infantil", "En convertirse en sacerdote"], corr: 1, feed: "La Confirmación nos da una fuerza especial del Espíritu Santo para difundir y defender la fe mediante la palabra y las obras, como verdaderos soldados de Cristo." },
+    { id: "am-48", q: "¿Qué sentido tiene la veneración a las imágenes y reliquias en la Iglesia Católica?", opts: ["Es una forma de idolatría moderna", "Se cree que las estatuas tienen poder en sí mismas", "El honor tributado a la imagen se dirige a la persona representada (Cristo, María o los Santos)", "Es una simple decoración"], corr: 2, feed: "El Segundo Concilio de Nicea (año 787) justificó el uso de imágenes fundamentado en la Encarnación: puesto que Dios se hizo visible en Cristo, podemos representarlo materialmente." },
+    { id: "am-49", q: "¿Por qué decimos que la familia es la 'Iglesia Doméstica'?", opts: ["Porque debe tener un altar en el living", "Porque allí se ejerce el sacerdocio bautismal del padre, la madre y los hijos en la oración, la caridad y la educación en la fe", "Porque no hace falta ir a la parroquia", "Porque se celebran misas en casa"], corr: 1, feed: "El hogar es la primera escuela de vida cristiana. En el seno de la familia los padres son para sus hijos los primeros anunciadores de la fe mediante el ejemplo." },
+    { id: "am-50", q: "¿Cuál es el 'gran mandamiento' que resume la vida y el corazón de un seguidor de Jesús?", opts: ["Cumplir tradiciones litúrgicas rigurosamente", "Amar a Dios con todo el corazón, alma y mente, y al prójimo como a sí mismo", "No meterse en problemas", "Dar el 10% del salario a la Iglesia"], corr: 1, feed: "Jesús fue enfático: 'De estos dos mandamientos penden toda la Ley y los Profetas'. Toda doctrina, liturgia o regla eclesial que no esté al servicio del amor, pierde su sentido." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+
+// Configuración de Sonido - Adultos Medio (Piano clásico, ligeramente más grave)
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.1, decay: 0.4, sustain: 0.2, release: 1.8 }
+}).toDestination();
+synth.volume.value = -10;
+
+function playSelect() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Un tono cálido y reflexivo
+    synth.triggerAttackRelease("A3", "8n");
+}
+
+function playNext() {
+    if (!audioInit) { Tone.start(); audioInit = true; }
+    // Arpegio sereno y profundo
+    const now = Tone.now();
+    synth.triggerAttackRelease("E4", "8n", now);
+    synth.triggerAttackRelease("G#4", "8n", now + 0.15);
+    synth.triggerAttackRelease("B4", "4n", now + 0.3);
+}
+
+// Inicialización
+function initQuiz() {
+    CARTAS.sort(() => Math.random() - 0.5);
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    const optsContainer = document.getElementById("options-container");
+    const feedbackEl = document.getElementById("feedback");
+
+    document.getElementById("q-text").innerText = c.q;
+    
+    // Resetear UI
+    optsContainer.innerHTML = "";
+    feedbackEl.style.display = "none";
+
+    const letras = ['A', 'B', 'C', 'D'];
+    
+    c.opts.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="color:var(--accent); font-weight:800; font-size: 1.1rem; width: 30px;">${letras[index]}.</span> <span style="flex:1;">${opt}</span>`;
+        
+        btn.onclick = () => selectAnswer(index, btn, c);
+        optsContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(selectedIndex, btnElement, qObj) {
+    playSelect(); 
+    
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach(b => b.disabled = true); 
+
+    const isCorrect = (selectedIndex === qObj.corr);
+    const feedbackEl = document.getElementById("feedback");
+
+    if(isCorrect) {
+        btnElement.classList.add('correct');
+        feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle" style="color:var(--correcto); margin-right:5px;"></i> Exacto. Reflexión Teológica:</strong><br><br>${qObj.feed}`;
+    } else {
+        btnElement.classList.add('incorrect');
+        buttons[qObj.corr].classList.add('correct'); 
+        feedbackEl.innerHTML = `<strong><i class="fas fa-book-reader" style="color:var(--bg1); margin-right:5px;"></i> Error frecuente. La doctrina enseña:</strong><br><br>${qObj.feed}`;
+    }
+
+    feedbackEl.style.display = "block";
+}
+
+function nextQuestion() {
+    playNext();
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+        
+    setTimeout(() => {
+        let next;
+        do {
+            next = Math.floor(Math.random() * CARTAS.length);
+        } while (next === currentIdx);
+                
+        currentIdx = next;
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 350);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const text = `🍷 Reflexión Teológica - Capilla Santa Ana\n\n"${c.q}"\n\nPara profundizar en tu fe, respondé aquí: `;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Desafío Adultos (Medio)', text: text, url: url });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + url).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['TRADICIÓN', 'MAGISTERIO', 'LITURGIA', 'SANTA ANA', 'SACRAMENTO', 'DOCTRINA', 'SABIDURÍA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 25) + "px";
+        const duration = 20 + Math.random() * 30;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>
