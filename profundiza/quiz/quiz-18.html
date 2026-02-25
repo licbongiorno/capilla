@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Alta Teología | +18 Adultos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Etapa 6: Púrpura Teológico, Índigo y Misterio */
+            --bg-grad: linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%); 
+            --caja-bg: #FFFFFF;
+            --primario: #4A235A; /* Púrpura muy oscuro */
+            --acento: #8E44AD; /* Amatista / Índigo brillante */
+            --texto: #2C3E50; /* Azul muy oscuro para contraste */
+            --correcto: #2E7D32; 
+            --incorrecto: #C62828; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: rgba(74, 35, 90, 0.05); /* Púrpura transparente */
+            user-select: none;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-3deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(3deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .nav-btn {
+            background: transparent; padding: 8px 16px; border-radius: 6px;
+            text-decoration: none; color: var(--primario);
+            font-weight: 700; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;
+            border: 2px solid var(--primario); transition: 0.3s;
+        }
+        .nav-btn:hover { background: var(--primario); color: #FFF; }
+        
+        .etiqueta-edad {
+            background: var(--acento); color: white; font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem; font-weight: 800; padding: 6px 15px; border-radius: 6px;
+            letter-spacing: 1px; box-shadow: 0 3px 10px rgba(142, 68, 173, 0.3);
+        }
+
+        /* CONTENEDOR */
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: flex-start; 
+            padding: 110px 20px 40px; z-index: 2; position: relative; width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%; max-width: 650px; background: var(--caja-bg);
+            border-radius: 15px; padding: 45px 35px;
+            box-shadow: 0 15px 40px rgba(74, 35, 90, 0.15);
+            border-top: 6px solid var(--acento); margin-bottom: 25px;
+            transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(50px); opacity: 0; }
+
+        .question {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 700; text-align: center; margin-bottom: 35px;
+            line-height: 1.45; color: var(--primario);
+        }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 14px; }
+        .opt-btn {
+            background: #FAFAFA; border: 1px solid #D5D8DC;
+            padding: 18px 22px; border-radius: 10px; color: var(--texto);
+            font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 1.05rem; 
+            cursor: pointer; transition: 0.2s; text-align: left;
+            display: flex; align-items: center; gap: 15px;
+            line-height: 1.4;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--acento); background: #F4ECF7; transform: translateX(4px); }
+        .opt-btn.correct { background: #E8F5E9; border-color: var(--correcto); color: var(--correcto); font-weight: 700; }
+        .opt-btn.incorrect { background: #FFEBEE; border-color: var(--incorrecto); color: var(--incorrecto); }
+
+        /* FEEDBACK */
+        .feedback-box {
+            margin-top: 30px; padding: 25px; border-radius: 10px;
+            background: #FDFEFE; border: 1px solid #EBDEF0; border-left: 5px solid var(--primario);
+            display: none; animation: fadeIn 0.4s ease;
+        }
+        .feedback-text { font-size: 1rem; line-height: 1.6; margin-bottom: 15px; color: #34495E; font-weight: 500; }
+        .feedback-cite { 
+            background: #F4ECF7; padding: 12px 15px; border-radius: 8px;
+            font-style: italic; font-weight: 700; color: var(--primario); 
+            font-size: 0.9rem; display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 650px; display: flex; gap: 15px; }
+        .btn-action {
+            border: none; padding: 18px; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-main { 
+            flex: 1; background: var(--primario); color: white; font-size: 1.05rem; 
+            box-shadow: 0 6px 15px rgba(74, 35, 90, 0.3); display: none; 
+        }
+        .btn-main:hover { background: #311432; transform: translateY(-2px); }
+        .btn-sec { 
+            flex: 0 0 75px; background: transparent; color: var(--primario); 
+            border: 2px solid var(--primario); font-size: 1.3rem; 
+        }
+        .btn-sec:hover { background: #EBDEF0; }
+
+        .mazo-footer { text-align: center; padding: 25px; font-size: 12px; font-weight: 600; color: #8E44AD; margin-top: auto; letter-spacing: 1px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="desafios.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Volver</a>
+        <span class="etiqueta-edad">+18 ADULTOS</span>
+        <a href="../index.html" class="nav-btn"><i class="fas fa-home"></i> Capilla</a>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando doctrina...</p>
+            <div id="options-container" class="options-grid"></div>
+            <div id="feedback" class="feedback-box">
+                <div class="feedback-text" id="fb-main"></div>
+                <div class="feedback-cite">
+                    <i class="fas fa-book" style="color:var(--primario); margin-top: 3px;"></i>
+                    <span id="fb-cite"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">Siguiente Pregunta <i class="fas fa-arrow-right"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir"><i class="fas fa-share-alt"></i></button>
+        </div>
+    </div>
+
+    <footer class="mazo-footer">Capilla Santa Ana · Formación Permanente</footer>
+
+<script>
+// BASE DE DATOS: +18 Adultos (Alta Teología, Magisterio, Historia de la Iglesia) - 50 PREGUNTAS
+const CARTAS = [
+    { id: "t1", q: "¿Qué define el dogma cristológico central proclamado en el Concilio de Calcedonia (451 d.C.) sobre la persona de Jesucristo?", opts: ["Que Jesús es una persona humana con espíritu divino", "Que en la única Persona Divina del Verbo subsisten dos naturalezas (divina y humana) sin confusión, cambio, división ni separación", "Que Jesús tiene dos personas y dos naturalezas", "Que la naturaleza humana de Jesús fue absorbida por la divina"], corr: 1, fb: "La 'Unión Hipostática' definida en Calcedonia es el pilar de nuestra fe: Jesucristo no es un híbrido. Es 100% Dios y 100% hombre. Sus naturalezas no se mezclan (no forman una tercera cosa) ni se separan.", cite: "Concilio de Calcedonia (DS 301): 'Se ha de reconocer a uno solo y el mismo Cristo... en dos naturalezas, sin confusión, sin mutación, sin división, sin separación'." },
+    { id: "t2", q: "Según la Teología Sacramental, ¿qué significa la expresión 'ex opere operato' (por la obra realizada)?", opts: ["Que el sacramento requiere que el fiel pague por la obra", "Que la validez y eficacia del sacramento dependen de la santidad del ministro que lo celebra", "Que el sacramento confiere la gracia por el hecho mismo de realizarse válidamente, independientemente de la santidad del ministro", "Que el sacramento solo funciona si la persona siente una emoción fuerte"], corr: 2, fb: "Esta doctrina asegura nuestra paz espiritual. Si un sacerdote estuviera en pecado mortal oculto, la Misa que celebra o la absolución que da siguen siendo totalmente válidas, porque es Cristo quien actúa a través del sacramento, no el mérito del hombre.", cite: "Concilio de Trento (DS 1608): 'Si alguno dijere que los sacramentos de la Nueva Ley no confieren la gracia ex opere operato... sea anatema'." },
+    { id: "t3", q: "En el documento 'Lumen Gentium' del Vaticano II, ¿cómo se describe fundamentalmente la naturaleza de la Iglesia Católica?", opts: ["Como una ONG enfocada en la asistencia social", "Como una democracia donde las verdades se deciden por mayoría", "Como un 'Sacramento', es decir, signo e instrumento de la unión íntima con Dios y de la unidad de todo el género humano", "Como el Reino de Dios ya plenamente realizado en la tierra"], corr: 2, fb: "La Iglesia no es solo una institución humana; es un misterio de comunión. Así como la Eucaristía contiene a Cristo, la Iglesia es el instrumento visible a través del cual Cristo distribuye la gracia invisible al mundo.", cite: "Lumen Gentium 1: 'La Iglesia es en Cristo como un sacramento, o sea signo e instrumento de la unión íntima con Dios y de la unidad de todo el género humano'." },
+    { id: "t4", q: "¿Qué condenó exactamente la encíclica 'Humanae Vitae' (1968) del Papa Pablo VI?", opts: ["El uso del método Billings y el conocimiento de la fertilidad", "El uso de cualquier método artificial de anticoncepción que separe el significado unitivo y procreativo del acto conyugal", "Que las familias tengan menos de 5 hijos", "El matrimonio de personas mayores"], corr: 1, fb: "Pablo VI fue profético. Advirtió que separar el amor (unitivo) de la vida (procreativo) mediante la anticoncepción artificial llevaría a la cosificación del cuerpo, a la infidelidad y a que los Estados impusieran políticas de control natal.", cite: "Pablo VI (Humanae Vitae 14): 'Queda además excluida toda acción que, o en previsión del acto conyugal, o en su realización... se proponga, como fin o como medio, hacer imposible la procreación'." },
+    { id: "t5", q: "En la Eucaristía, ¿qué término teológico y filosófico define el cambio de toda la sustancia del pan en el Cuerpo de Cristo, permaneciendo las especies (accidentes)?", opts: ["Consustanciación", "Impanación", "Transustanciación", "Metamorfosis física"], corr: 2, fb: "La Consustanciación (Lutero) decía que el pan sigue siendo pan *junto* con el cuerpo. La Iglesia Católica enseña la 'Transustanciación': la sustancia del pan deja de existir, pasando a ser única y exclusivamente Cristo, aunque los accidentes (sabor, color) permanezcan intactos.", cite: "Catecismo 1376: 'Mediante la consagración se opera el cambio de toda la sustancia del pan en la sustancia del Cuerpo de Cristo... la Iglesia ha llamado a este cambio transustanciación'." },
+    { id: "t6", q: "El Papa Pío IX proclamó en 1854 el dogma de la 'Inmaculada Concepción'. ¿Cuál es el núcleo de este dogma mariano?", opts: ["Que María concibió a Jesús por obra del Espíritu Santo sin intervención de varón", "Que María fue preservada de toda mancha de pecado original desde el primer instante de su propia concepción, por los méritos anticipados de Cristo", "Que María nunca cometió errores de juicio en su vida", "Que Santa Ana concibió a María de forma virginal"], corr: 1, fb: "Suele confundirse con el nacimiento virginal de Jesús. La Inmaculada Concepción se refiere al inicio de la vida de *María*. Para ser el sagrario puro del Dios encarnado, el Padre la redimió 'por adelantado' aplicándole los méritos de la Cruz desde su concepción.", cite: "Pío IX (Ineffabilis Deus): 'Declaramos... que la bienaventurada Virgen María fue preservada inmune de toda mancha de la culpa original en el primer instante de su concepción'." },
+    { id: "t7", q: "La controversia del 'Filioque' fue una de las causas del Cisma de Oriente (1054). ¿Qué afirma la teología católica al añadir 'Filioque' al Credo?", opts: ["Que el Hijo es inferior al Padre", "Que el Espíritu Santo fue creado por el Hijo", "Que el Espíritu Santo procede del Padre 'y del Hijo' (Filioque) como de un solo principio de amor", "Que María es co-redentora junto al Hijo"], corr: 2, fb: "Mientras los ortodoxos afirman que el Espíritu procede *solo* del Padre, la Iglesia Católica enseña (basada en que Jesús sopló el Espíritu sobre los apóstoles) que el Espíritu Santo es el Amor eterno que brota del Padre y del Hijo simultáneamente.", cite: "Catecismo 246: 'El Espíritu Santo procede del Padre y del Hijo, no como de dos principios, sino como de un solo principio, y por una sola espiración'." },
+    { id: "t8", q: "Según la Teología Moral Católica (ej. Veritatis Splendor), ¿qué es un acto 'intrínsecamente malo'?", opts: ["Un acto que es malo solo dependiendo de la época histórica", "Un acto que, independientemente de la intención de la persona o de las circunstancias, siempre es gravemente contrario a la ley moral y a la dignidad humana (ej. el aborto directo)", "Un acto que tiene consecuencias legales", "Un pecado cometido con enojo"], corr: 1, fb: "El relativismo dice que todo depende del 'por qué' lo hacés. Juan Pablo II reafirmó que existen actos que por su propio objeto moral (como la tortura o el aborto) jamás pueden justificarse, aunque la intención sea buscar un bien mayor.", cite: "Juan Pablo II (Veritatis Splendor 80): 'Existen actos que, por sí y en sí mismos, independientemente de las circunstancias y de las intenciones, son siempre gravemente ilícitos por razón de su objeto'." },
+    { id: "t9", q: "¿Qué enseñó el Concilio de Trento sobre la relación entre la Escritura y la Tradición?", opts: ["Que la Biblia es la única fuente de revelación (Sola Scriptura)", "Que la revelación divina se contiene y transmite a través de la Sagrada Escritura y de las Tradiciones no escritas (la Tradición Apostólica), recibiendo ambas con igual reverencia", "Que la Tradición es superior y puede contradecir a la Biblia", "Que los escritos de los Papas se añaden a la Biblia"], corr: 1, fb: "La Iglesia no cree en la 'Sola Scriptura'. Cristo no dejó un libro escrito, fundó una Iglesia viva. Fue la Tradición de esa Iglesia la que, siglos después, definió qué libros formaban el Nuevo Testamento. Ambas fuentes manan de la misma fuente divina.", cite: "Concilio de Trento (DS 1501): 'Recibe y venera con idéntico sentimiento de piedad y reverencia todos los libros del Antiguo y del Nuevo Testamento... y las tradiciones mismas'." },
+    { id: "t10", q: "¿Cuál es el fin primario de la 'Doctrina Social de la Iglesia' (DSI) inaugurada formalmente con Rerum Novarum?", opts: ["Imponer una teocracia gubernamental", "Ofrecer una 'tercera vía' económica matemática entre el capitalismo y el socialismo", "Orientar la conducta humana en la sociedad iluminando las realidades temporales (economía, trabajo, política) con la luz del Evangelio y la defensa de la dignidad de la persona", "Regular los impuestos de las parroquias"], corr: 2, fb: "La DSI no es un sistema político ni económico técnico. Es teología moral aplicada a la sociedad. Defiende principios innegociables: dignidad de la persona, bien común, solidaridad, subsidiaridad y el destino universal de los bienes.", cite: "Juan Pablo II (Sollicitudo Rei Socialis 41): 'La doctrina social de la Iglesia no es una tercera vía entre el capitalismo liberal y el colectivismo marxista... constituye una categoría propia: pertenece a la teología moral'." },
+    { id: "t11", q: "¿Qué definió el dogma de la Asunción de María, proclamado por Pío XII en 1950?", opts: ["Que María resucitó al tercer día como Jesús", "Que María no experimentó la muerte física", "Que, terminado el curso de su vida terrena, fue llevada en cuerpo y alma a la gloria celestial", "Que María subió al cielo por su propio poder divino"], corr: 2, fb: "A diferencia de la Ascensión de Jesús (que subió por su propio poder), María fue 'asumida' o llevada por Dios. Al no tener pecado original, su cuerpo sin mancha no sufrió la corrupción del sepulcro, siendo primicia de nuestra propia futura resurrección.", cite: "Pío XII (Munificentissimus Deus): 'Proclamamos, declaramos y definimos ser dogma... que la Inmaculada Madre de Dios... cumplido el curso de su vida terrena, fue asunta en cuerpo y alma a la gloria celestial'." },
+    { id: "t12", q: "¿Qué enseña la Iglesia Católica sobre los libros Deuterocanónicos (ej. Tobías, Macabeos, Sabiduría)?", opts: ["Que son libros históricos sin valor espiritual", "Que son libros apócrifos y heréticos", "Que forman parte del canon inspirado del Antiguo Testamento, aunque hayan sido rechazados por los reformadores protestantes", "Que solo deben leerse en privado"], corr: 2, fb: "Los protestantes los quitaron en el siglo XVI argumentando que no estaban en el canon hebreo moderno. Sin embargo, la Iglesia primitiva (y el mismo Jesucristo) utilizaba la traducción griega de los Setenta, que sí incluía estos 7 libros, los cuales enseñan doctrinas clave como la oración por los difuntos.", cite: "Concilio de Trento: Estableció definitivamente el canon de 73 libros de la Biblia (46 del AT y 27 del NT), anatematizando a quien no los reciba íntegros." },
+    { id: "t13", q: "En la teología moral, ¿qué es el 'Pecado de Omisión'?", opts: ["Olvidar confesar un pecado por mala memoria", "El dejar de hacer un bien que era obligatorio o moralmente exigido en una circunstancia particular, por negligencia o pereza", "No rezar el Rosario un día", "Omitir la firma en un documento legal"], corr: 1, fb: "A veces pensamos que somos buenos solo porque 'no robamos ni matamos'. Pero la moral católica exige caridad activa. Ignorar a alguien que necesita ayuda urgente frente a nosotros es un pecado grave de omisión.", cite: "Santiago 4, 17: 'Y al que sabe hacer lo bueno, y no lo hace, le es pecado'." },
+    { id: "t14", q: "¿Qué implica el término teológico 'Visión Beatífica' en la escatología cristiana?", opts: ["Un estado de trance provocado por la oración", "La contemplación inmediata, directa e intuitiva de la esencia de Dios que experimentan las almas en el cielo, que es la fuente de la felicidad eterna", "Apariciones de la Virgen María a los santos", "La capacidad de ver el futuro"], corr: 1, fb: "El cielo no es estar sentado en una nube tocando el arpa. Es la 'Visión Beatífica': el alma humana, elevada por la 'luz de la gloria', por fin ve a Dios tal cual es, saciando infinitamente su intelecto y su voluntad para siempre.", cite: "Catecismo 1028: 'A causa de su trascendencia, Dios no puede ser visto tal cual es a no ser que Él mismo abra su misterio... Esta contemplación de Dios en su gloria celestial es llamada por la Iglesia la visión beatífica'." },
+    { id: "t15", q: "¿Qué enseñó San Agustín contra el donatismo respecto a la validez de los sacramentos?", opts: ["Que los curas pecadores no pueden bautizar válidamente", "Que los sacramentos celebrados por herejes son válidos, pero no por pecadores", "Que el ministro es solo el instrumento, y es Cristo quien bautiza y perdona, garantizando la validez del sacramento incluso si el ministro está en pecado mortal", "Que la validez depende de la fe del que lo recibe"], corr: 2, fb: "Los donatistas exigían obispos puros y volvían a bautizar. Agustín defendió maravillosamente que si la validez dependiera de la santidad del cura, viviríamos en constante angustia. 'Pedro bautiza, es Cristo quien bautiza. Judas bautiza, es Cristo quien bautiza'.", cite: "San Agustín (In Iohannis Evangelium): 'Aunque los ministros sean buenos o malos, es Cristo quien bautiza'." },
+    { id: "t16", q: "El 'Pelagianismo' fue una herejía severa de la antigüedad. ¿En qué consistía su error sobre la Gracia y el Libre Albedrío?", opts: ["Negaba la existencia del libre albedrío, cayendo en el fatalismo", "Afirmaba que la naturaleza humana no fue dañada por el pecado original y que el hombre puede, por su pura fuerza de voluntad y esfuerzo, cumplir la ley de Dios y salvarse sin necesidad de la gracia sobrenatural", "Creía que la gracia destruye la naturaleza", "Decía que solo los monjes se salvaban"], corr: 1, fb: "El pelagianismo reduce a Cristo a un 'buen ejemplo' moral, negando que sea un Redentor estrictamente necesario. La Iglesia definió, con San Agustín, que sin la gracia preventiva y cooperante de Dios, es imposible alcanzar la salvación.", cite: "Concilio de Orange (529 d.C.): 'Si alguno afirma que por la fuerza de la naturaleza se puede pensar o elegir algún bien para la salvación... sin la iluminación e inspiración del Espíritu Santo, es engañado'." },
+    { id: "t17", q: "Según la Constitución 'Sacrosanctum Concilium' (Vaticano II), ¿cuál debe ser la actitud y participación de los fieles en la Liturgia Eucarística?", opts: ["Una asistencia pasiva y silenciosa como meros espectadores", "Una participación plena, consciente y activa, que es exigida por la naturaleza misma de la liturgia y a la cual el pueblo tiene derecho y obligación por el Bautismo", "Participar únicamente si se forma parte del coro", "Hablar constantemente durante la plegaria eucarística"], corr: 1, fb: "El Concilio no pidió que todos los laicos suban al altar a hacer cosas, sino que el corazón, la mente, los cantos y las respuestas estén totalmente involucrados en el Misterio que se celebra. No vamos a 'oír' Misa, vamos a 'celebrar' la Misa junto al sacerdote.", cite: "Sacrosanctum Concilium 14: 'La madre Iglesia desea ardientemente que se lleve a todos los fieles a aquella participación plena, consciente y activa en las celebraciones litúrgicas'." },
+    { id: "t18", q: "El documento 'Dei Verbum' habla de la 'Inerrancia' bíblica. ¿Qué significa exactamente esto en la doctrina católica actual?", opts: ["Que la Biblia es un manual de historia universal y geografía sin un solo error de fechas", "Que la Biblia contiene errores teológicos pero es un buen libro de moral", "Que los libros de la Escritura enseñan firmemente, con fidelidad y sin error, la Verdad que Dios quiso consignar para nuestra Salvación", "Que los copistas originales no cometieron errores gramaticales"], corr: 2, fb: "La inerrancia no significa exactitud periodística o científica moderna. Dios usó autores humanos con su cultura y género literario para transmitir sin error la 'verdad salvífica': lo que necesitamos saber para llegar al cielo.", cite: "Dei Verbum 11: 'Como todo lo que afirman los hagiógrafos... debe tenerse como afirmado por el Espíritu Santo, hay que confesar que los libros de la Escritura enseñan firmemente, con fidelidad y sin error, la verdad... salvífica'." },
+    { id: "t19", q: "¿Qué significa el principio moral de la 'Cooperación material al mal', y cuándo podría ser lícita?", opts: ["Es ayudar con intención directa al pecado de otro, y siempre es lícita si nos pagan", "Es facilitar una acción mala ajena sin compartir la intención mala. Puede ser lícita solo si la cooperación es remota y existe una causa proporcionada y grave para hacerlo", "Es participar físicamente de un robo, y nunca es lícita", "Es ignorar el mal ajeno"], corr: 1, fb: "Ejemplo: un cajero de farmacia (cooperador material remoto) que cobra por anticonceptivos no comparte la intención del cliente y lo hace bajo la necesidad grave de mantener su trabajo. Distinto es el médico que ejecuta un aborto (cooperación formal/material directa), lo cual es siempre pecado grave.", cite: "Juan Pablo II (Evangelium Vitae 74): 'Nunca es lícito cooperar formalmente en el mal... Esta cooperación no puede justificarse invocando el respeto a la libertad de los demás'." },
+    { id: "t20", q: "¿Qué es el 'Magisterio Extraordinario' de la Iglesia?", opts: ["Las catequesis semanales del Papa en el Vaticano", "La enseñanza cotidiana de los obispos en sus diócesis", "Las definiciones dogmáticas solemnes pronunciadas por el Papa (Ex Cathedra) o por un Concilio Ecuménico en comunión con él", "Los documentos escritos por teólogos laicos"], corr: 2, fb: "El Magisterio Extraordinario se invoca muy raramente en la historia, generalmente para zanjar una herejía o confirmar una verdad fundamental de fe o costumbres que obliga a todos los fieles a creerla. (Ej: La Inmaculada Concepción, la Asunción, o las definiciones de Nicea y Trento).", cite: "Catecismo 891: 'El Romano Pontífice... o el cuerpo de los obispos junto con el Papa (Concilio) gozan de esta infalibilidad cuando proclaman por un acto definitivo la doctrina en cuestiones de fe y moral'." },
+    { id: "t21", q: "Frente al problema de las indulgencias y el purgatorio, ¿qué enseñó la Iglesia en el Concilio de Trento para corregir los abusos y clarificar la doctrina?", opts: ["Abolió el Purgatorio y las indulgencias", "Reafirmó la existencia del Purgatorio y el poder de la Iglesia para conceder indulgencias (aplicando los méritos de Cristo y los santos), pero prohibió estrictamente su venta o comercio por dinero", "Estableció que las indulgencias perdonan pecados mortales sin confesión", "Permitió la venta de indulgencias solo para construir iglesias"], corr: 1, fb: "El abuso del clero de la época (vender el perdón temporal) fue la chispa que encendió la reforma de Lutero. Trento cortó de raíz el abuso económico (simonía), pero reafirmó teológicamente que la Iglesia, como dispensadora de la gracia, puede remitir la pena temporal debida por los pecados ya perdonados.", cite: "Concilio de Trento (Decreto sobre las indulgencias, DS 1935): 'La Iglesia enseña y manda que el uso de las indulgencias... debe conservarse... no obstante, en la concesión de ellas, manda que se destierre por completo todo lucro reprobado'." },
+    { id: "t22", q: "¿Cuál es el concepto teológico detrás de la 'Mariología' que nombra a la Virgen como 'Nueva Eva'?", opts: ["Que María fue la primera mujer habitante de un nuevo planeta", "Que así como el 'sí' a la desobediencia de Eva trajo la muerte, el 'Hágase' libre y obediente de María desató el nudo del pecado y trajo al autor de la Vida", "Que María reencarnó del alma de Eva", "Que María tuvo que pasar por el Edén"], corr: 1, fb: "Este título es uno de los más antiguos de la Iglesia (usado por San Justino y San Ireneo en el siglo II). Resalta que la salvación exigía la cooperación libre de la humanidad: Dios no nos salvó 'a la fuerza', sino que esperó el consentimiento valiente de una mujer libre.", cite: "San Ireneo (Adversus Haereses): 'El nudo de la desobediencia de Eva fue desatado por la obediencia de María. Lo que ató la virgen Eva por su incredulidad, lo desató la virgen María por su fe'." },
+    { id: "t23", q: "El 'Misterio de la Iniquidad' (Mysterium Iniquitatis) se refiere a la realidad incomprensible del mal. ¿Qué define la Iglesia sobre la naturaleza del demonio (Satanás)?", opts: ["Es un dios malo, igual en poder al Dios bueno (Dualismo)", "Es el lado oscuro de la mente humana, no una entidad real", "Es una criatura personal espiritual, un ángel bueno creado por Dios que, por su propia soberbia y decisión libre y radical, se pervirtió y se opone a la obra salvífica", "Es la personificación literaria de la mala suerte"], corr: 2, fb: "Satanás no es infinito. Es solo una criatura (muy poderosa intelectualmente, pero finita). Su rebelión fue irreversible por el carácter absoluto de su elección espiritual. Sin embargo, toda su acción destructiva está estrictamente permitida y limitada por la Providencia Divina.", cite: "Catecismo 391: 'La Iglesia enseña que primero fue un ángel bueno, creado por Dios... El diablo y los otros demonios fueron creados por Dios con una naturaleza buena, pero ellos se hicieron a sí mismos malos'." },
+    { id: "t24", q: "Según la Teología Moral, la objeción basada en el 'Mal Menor' tiene restricciones. ¿Cuándo NO se puede aplicar el principio del mal menor?", opts: ["Cuando se trata de asuntos económicos", "Para elegir cometer directamente un pecado intrínsecamente malo con el fin de evitar un daño mayor (Ej: mentir bajo juramento para salvar a un amigo)", "Cuando se trata de decidir entre dos opciones de tratamientos médicos lícitos", "Cuando afecta la reputación política"], corr: 1, fb: "El principio del 'mal menor' aplica cuando estamos *forzados* a tolerar un mal que no podemos evitar (ej. amputar un brazo para que no avance la gangrena). Pero jamás es lícito *cometer* un pecado mortal (ej. asesinar a un inocente) para evitar que mueran cinco. El fin nunca justifica los medios ilícitos.", cite: "Veritatis Splendor 79: 'No es lícito, ni aun por causas gravísimas, hacer el mal para conseguir el bien... es decir, hacer objeto de un acto positivo de voluntad lo que es intrínsecamente malo'." },
+    { id: "t25", q: "En Eclesiología, ¿qué significa el adagio de San Cipriano 'Extra Ecclesiam nulla salus' (Fuera de la Iglesia no hay salvación) a la luz del Catecismo moderno?", opts: ["Que cualquier persona no bautizada en agua va al infierno seguro", "Que toda salvación viene de Cristo-Cabeza por medio de la Iglesia que es su Cuerpo. Quienes ignoran a Cristo sin culpa y buscan a Dios con sinceridad también se salvan a través de esta misma Iglesia, aunque misteriosamente", "Que solo los clérigos católicos alcanzan el cielo", "Que la Iglesia Católica anula todas las verdades de otras religiones"], corr: 1, fb: "La fórmula no es un garrote para condenar, sino la afirmación de que el 'monopolio' de la salvación lo tiene Cristo, y la Iglesia es su instrumento. Si alguien se salva en la India profunda sin conocer la Biblia, se salva por la gracia de Cristo que fluye (sin que él lo sepa) a través de la Iglesia Católica.", cite: "Catecismo 846: 'Formulada de modo positivo, significa que toda salvación viene de Cristo-Cabeza por medio de la Iglesia que es su Cuerpo'." },
+    { id: "t26", q: "Respecto al ecumenismo, ¿qué es la 'Communicatio in sacris' (Comunión en las cosas sagradas) y cuál es la norma de la Iglesia para la recepción de la Eucaristía por no católicos?", opts: ["Está totalmente permitida para cualquier persona bautizada de cualquier secta", "Está prohibida absolutamente en todo caso de peligro de muerte", "Solo es lícita en peligro de muerte u otra necesidad grave para cristianos no católicos (ej. ortodoxos) que compartan la misma fe en el Sacramento y estén bien dispuestos", "Es obligatoria en los matrimonios mixtos"], corr: 2, fb: "La Eucaristía no es un medio para 'lograr' la unidad, sino el signo de la unidad *ya alcanzada* en la fe, la doctrina y la sujeción al Papa. Dar la comunión a un protestante que no cree en la transustanciación es un falso ecumenismo que banaliza el Sacramento.", cite: "Código de Derecho Canónico 844: 'Si hay peligro de muerte o... otra necesidad grave, los ministros católicos pueden administrar lícitamente estos mismos sacramentos... a los demás cristianos que no están en comunión plena... si profesan la fe católica respecto a estos sacramentos'." },
+    { id: "t27", q: "El 'Misterio de la Trinidad' se define usando conceptos de naturaleza y persona. ¿Cuál es la formulación exacta?", opts: ["Tres naturalezas y una sola persona", "Una sola naturaleza divina y tres personas divinas reales y distintas", "Tres naturalezas y tres personas", "Una naturaleza humana y dos divinas"], corr: 1, fb: "La 'Naturaleza' responde a la pregunta *¿Qué es?* (Es Dios). La 'Persona' responde a *¿Quién es?* (Padre, Hijo, Espíritu Santo). El Padre posee toda la naturaleza divina, el Hijo la posee entera, y el Espíritu la posee entera. No se reparten a Dios en tercios.", cite: "Catecismo 253: 'La Trinidad es una. No confesamos tres dioses sino un solo Dios en tres personas: la trinidad consustancial'." },
+    { id: "t28", q: "La Encíclica 'Fides et Ratio' de Juan Pablo II aborda la relación entre fe y razón. ¿Cuál es su tesis principal sobre el relativismo contemporáneo?", opts: ["Que la razón humana está corrompida y no puede conocer ninguna verdad metafísica, dependiendo solo de la fe", "Que la razón, si se corta de la fe, cae en el nihilismo; y la fe, sin la razón, cae en el fideísmo supersticioso. Ambas se necesitan para llegar a la Verdad plena", "Que la filosofía debe someterse siempre a la ciencia empírica", "Que la fe debe anularse cuando la ciencia avanza"], corr: 1, fb: "Juan Pablo II diagnosticó que la filosofía moderna se había rendido, declarando que es imposible conocer la Verdad. Reclamó la grandeza de la razón humana, afirmando que el hombre es capaz de conocer realidades objetivas (como el bien y el ser) iluminado por la fe.", cite: "Fides et Ratio 48: 'Privada de lo que la Revelación ofrece, la razón ha tomado caminos secundarios que tienen el peligro de hacerle perder de vista su meta final'." },
+    { id: "t29", q: "¿Qué enseñó el Papa Benedicto XVI en su encíclica 'Deus Caritas Est' sobre el concepto de 'Eros' y 'Agape'?", opts: ["Que el Eros (amor pasional/deseo) es demoníaco y debe ser reprimido, mientras que solo el Agape (amor de donación) es cristiano", "Que el Agape no tiene lugar en el matrimonio", "Que Eros y Agape no se contraponen, sino que el amor de deseo (Eros) necesita ser purificado y elevado por el amor de entrega (Agape) para no volverse egoísta, formando una única realidad del amor", "Que el Eros es superior a la caridad evangélica"], corr: 2, fb: "El cristianismo no odia la pasión ni el cuerpo. Benedicto XVI explicó que si el Eros se abandona a sí mismo (solo buscar el propio placer), termina cosificando al otro. Al unirse con el Agape (buscar el bien del otro hasta dar la vida), el amor humano alcanza su grandeza divina.", cite: "Deus Caritas Est 7: 'Eros y agapé... nunca se dejan separar completamente. Cuanto más encuentran ambos la justa unidad en la única realidad del amor, tanto mejor se realiza la verdadera esencia del amor en general'." },
+    { id: "t30", q: "La doctrina del 'Pecado Original' generó el bautismo de niños. ¿Por qué la Iglesia exige bautizar a los bebés si ellos no han cometido pecados personales?", opts: ["Para cobrar el arancel parroquial más temprano", "Para asustar a los padres con la muerte prematura", "Porque nacen con la naturaleza humana caída y privados de la gracia santificante (pecado original). El bautismo les infunde la vida de Dios puramente como un don gratuito, sin mérito previo", "Para cumplir una costumbre cultural sin fundamento teológico"], corr: 2, fb: "El pecado original no es una 'culpa' personal del bebé que merezca un castigo, sino un 'estado' de privación de la luz de Dios. La Iglesia bautiza a los niños basándose en la fe de sus padres, así como los padres los alimentan antes de que el bebé entienda de nutrición.", cite: "Catecismo 1250: 'Puesto que nacen con una naturaleza humana caída y manchada por el pecado original, los niños necesitan también el nuevo nacimiento en el Bautismo para ser librados del poder de las tinieblas'." },
+    { id: "t31", q: "¿Cuál es el fundamento teológico de la 'Indisolubilidad del Matrimonio' ratificado en el Código de Derecho Canónico?", opts: ["Una ley civil de la antigua Roma adoptada por la Iglesia", "El hecho de que el matrimonio sacramental rato y consumado entre bautizados representa el misterio de la alianza inquebrantable entre Cristo y la Iglesia; ningún poder humano puede disolverlo", "El deseo de castigar a quienes se equivocan de pareja", "Para proteger el patrimonio económico de las familias"], corr: 1, fb: "El matrimonio no es un simple contrato que se cancela si las partes están de acuerdo. Es una alianza donde Cristo mismo se compromete a amar al cónyuge a través del otro. 'Lo que Dios ha unido, no lo separe el hombre' es una realidad ontológica, no solo una norma disciplinar.", cite: "Código de Derecho Canónico 1141: 'El matrimonio rato y consumado no puede ser disuelto por ningún poder humano, ni por ninguna causa fuera de la muerte'." },
+    { id: "t32", q: "¿Qué afirma el 'Dogma de la virginidad perpetua de María' (Semper Virgo), sostenido unánimemente desde la Iglesia primitiva?", opts: ["Que María fue virgen solo antes del parto", "Que María se mantuvo Virgen antes, durante y después del parto milagroso de Jesucristo, consagrando toda su existencia a Dios", "Que María tuvo hijos con José, pero permaneció pura de corazón", "Que la virginidad es un símbolo literario sobre su falta de pecados"], corr: 1, fb: "Los 'hermanos de Jesús' mencionados en la Biblia son parientes cercanos (primos), una expresión idiomática común en las lenguas semíticas. El Concilio de Letrán (649) reafirmó que la maternidad divina de María no menoscabó, sino que consagró su integridad virginal para siempre.", cite: "Lumen Gentium 57: 'El nacimiento de nuestro Señor... lejos de disminuir, consagró su integridad virginal'." },
+    { id: "t33", q: "La Teología de la Liberación generó controversias en los años 70 y 80. ¿Qué aspecto de esta teología fue condenado por la Congregación para la Doctrina de la Fe (Joseph Ratzinger)?", opts: ["La preocupación genuina por los pobres y marginados", "El uso de la caridad como herramienta pastoral", "El uso del análisis marxista, la lucha de clases y la reducción de la salvación de Cristo a una liberación meramente política, social y terrenal", "La creación de comunidades eclesiales de base"], corr: 2, fb: "La Iglesia abrazó la opción preferencial por los pobres, pero Ratzinger advirtió que usar el marxismo envena la fe: transforma a los hermanos en 'clases enemigas' y olvida que la peor esclavitud del hombre es el pecado radical, no solo la opresión económica.", cite: "Instrucción Libertatis Nuntius (1984): 'Es imposible asumir el análisis marxista de la sociedad sin aceptar su base ideológica... lo que lleva a la ruina de la fe cristiana y de una auténtica liberación'." },
+    { id: "t34", q: "¿Qué sentido teológico profundo tiene el sacrificio del Antiguo Testamento (el Cordero Pascual) y cómo se realiza en el Nuevo Testamento?", opts: ["Era un ritual judío anticuado sin conexión con Jesús", "El Cordero salvó a los israelitas en Egipto de la muerte temporal; Cristo es el Cordero de Dios inmolado en la cruz que quita el pecado del mundo y da la vida eterna", "El sacrificio significaba matar animales para aplacar la ira de un Dios vengativo", "Cristo prohibió el consumo de cordero en la Pascua"], corr: 1, fb: "Toda la antigua alianza era 'tipología' (preparación e imagen) de Cristo. Así como los hebreos debían comer el cordero pascual para completar el sacrificio de la liberación, nosotros comulgamos la carne del Nuevo Cordero en la Misa para consumar nuestra salvación.", cite: "1 Corintios 5, 7: 'Límpiense de la vieja levadura... porque Cristo, nuestra Pascua, ha sido sacrificado'." },
+    { id: "t35", q: "En la Escatología, se distingue entre 'Juicio Particular' y 'Juicio Final'. ¿Qué caracteriza al Juicio Particular?", opts: ["Ocurre al final de los tiempos frente a toda la humanidad reunida", "Es la retribución inmediata que recibe cada alma justo en el instante de la muerte, según sus obras y su fe, determinando su destino: cielo, purgatorio o infierno", "Es un tribunal terrenal dirigido por el Papa", "Es un período de 40 días de reflexión después de la muerte donde el alma puede arrepentirse"], corr: 1, fb: "No hay 'reencarnación' ni un largo sueño hasta el fin del mundo. Al cerrar los ojos en este mundo, el alma inmediatamente comparece ante la luz de Cristo, donde su propia vida y estado de gracia deciden su eternidad irrevocable.", cite: "Catecismo 1022: 'Cada hombre, después de morir, recibe en su alma inmortal su retribución eterna en un juicio particular que refiere su vida a Cristo'." },
+    { id: "t36", q: "San Juan de la Cruz, Doctor de la Iglesia, habla de la 'Noche Oscura del Alma'. ¿A qué experiencia mística o espiritual se refiere?", opts: ["A la depresión psicológica clínica", "A una crisis de fe donde el creyente se vuelve ateo", "A un proceso de purificación pasiva y dolorosa donde Dios retira los consuelos espirituales (sentir a Dios) para purificar el amor del alma, haciéndolo desinteresado y adulto", "A un castigo de Dios por cometer pecados mortales"], corr: 2, fb: "A veces rezás y sentís paz; otras veces sentís una sequedad tremenda y parece que Dios no existe. Los místicos enseñan que Dios permite esa oscuridad para curarnos de la 'gula espiritual' (buscar los consuelos de Dios, en lugar del Dios de los consuelos).", cite: "San Juan de la Cruz (Noche Oscura del Alma): 'Para que el alma llegue a unirse a Dios en amor, le es necesario primero pasar por las oscuridades y sequedades de esta noche'." },
+    { id: "t37", q: "¿Qué papel juega el 'Sentido Común de los Fieles' (Sensus Fidelium) en el desarrollo del dogma católico?", opts: ["Ninguno, el dogma lo inventan solo los teólogos en el Vaticano", "Si la mayoría de los católicos deciden mediante una encuesta que el aborto es lícito, la doctrina de la Iglesia debe cambiar y adaptarse", "Es la apreciación sobrenatural de la fe por parte del Pueblo de Dios, que bajo la guía del Magisterio, no puede equivocarse al creer las verdades reveladas", "Es un movimiento laico para derrocar a los obispos"], corr: 2, fb: "El 'Sensus Fidelium' no es democracia estadística. Si hoy muchos bautizados no creen en la Eucaristía, la doctrina no cambia. El 'Sensus' es el instinto espiritual del rebaño que, fiel a la Tradición y unido a sus pastores, reconoce y preserva la voz de Cristo a lo largo de los siglos.", cite: "Lumen Gentium 12: 'La totalidad de los fieles, que tienen la unción del Santo... no puede equivocarse al creer, y manifiesta esta prerrogativa... mediante el sentido sobrenatural de la fe'." },
+    { id: "t38", q: "En la ética sobre la sexualidad, la 'Inseminación Artificial Heteróloga' (usar esperma o un óvulo de un donante externo al matrimonio) es rechazada por la Iglesia. ¿Cuál es la razón principal?", opts: ["Porque la tecnología es vista como contraria a la naturaleza humana", "Porque lesiona el derecho del niño a nacer de un padre y una madre conocidos, unidos por el matrimonio, introduciendo una fisura en la unidad de los esposos", "Porque los hospitales son muy caros", "Para fomentar exclusivamente la adopción en todos los casos"], corr: 1, fb: "La Iglesia valora profundamente el deseo de ser padres, pero no existe el 'derecho a tener un hijo' (el hijo es un don, no un producto de laboratorio). Introducir el material genético de un tercero rompe la fidelidad y exclusividad de la carne prometida en el matrimonio.", cite: "Congregación para la Doctrina de la Fe (Donum Vitae): 'La fecundación artificial heteróloga es contraria a la unidad del matrimonio, a la dignidad de los esposos, a la vocación propia de los padres y al derecho del hijo'." },
+    { id: "t39", q: "¿Qué establece la teología católica sobre las 'Apariciones Marianas Privadas' (Ej: Fátima, Lourdes)?", opts: ["Son dogmas de fe que todo católico está obligado a creer para salvarse", "Son revelaciones públicas que añaden información nueva que faltaba en la Biblia", "Pertenecen a la revelación privada; no añaden nada al depósito de la fe, sino que ayudan a vivirla más plenamente en una época histórica. El fiel no está obligado bajo pena de pecado a creer en ellas", "Son prohibidas y censuradas siempre por el Vaticano"], corr: 2, fb: "La Revelación pública se cerró con la muerte del último apóstol. Fátima o Lourdes no traen un 'nuevo evangelio'. Son recordatorios proféticos del Cielo para urgirnos a la conversión y la oración. Aunque la Iglesia las apruebe como dignas de fe, no son de fe obligatoria (dogmática).", cite: "Catecismo 67: 'A lo largo de los siglos ha habido revelaciones llamadas privadas... no pertenecen, sin embargo, al depósito de la fe... Su función no es mejorar o completar la Revelación definitiva de Cristo, sino ayudar a vivirla más plenamente'." },
+    { id: "t40", q: "El 'Misterio de la Predestinación' ha causado divisiones (ej. Calvinismo). ¿Qué enseña la Iglesia Católica sobre la predestinación?", opts: ["Que Dios crea a ciertas personas con el destino inevitable y decretado de ir al infierno (Doble predestinación)", "Que Dios no tiene un plan para nadie y todo es azar", "Que Dios predestina a todos los hombres a la salvación y ofrece gracia suficiente a todos, pero respeta el libre albedrío si alguien elige resistir esa gracia y condenarse", "Que las obras humanas obligan a Dios a salvarnos"], corr: 2, fb: "A diferencia de Calvino (que creía que Dios elegía quién iba al infierno antes de nacer), la Iglesia enseña que la voluntad de Dios es que *todos* se salven. Dios sabe de antemano quién se condenará, pero ese conocimiento no *causa* la condena; la causa es la libre obstinación humana en el pecado.", cite: "Catecismo 1037: 'Dios no predestina a nadie a ir al infierno; para que eso suceda es necesaria una aversión voluntaria a Dios (un pecado mortal), y persistir en él hasta el final'." },
+    { id: "t41", q: "¿Cuál es el error central de la herejía 'Nestoriana', condenada en el Concilio de Éfeso?", opts: ["Negaba la humanidad de Jesús", "Decía que María era una diosa eterna", "Dividía a Jesús en dos personas distintas (una humana y una divina), unidas solo moralmente, afirmando que María era madre solo de la persona humana (Cristotokos)", "Creía que el cuerpo de Jesús era una ilusión óptica"], corr: 2, fb: "Nestorio decía que dentro de Jesús había como dos 'sujetos'. Si eso fuera cierto, en la cruz solo murió un hombre, y el sufrimiento humano no tendría valor divino para redimirnos. Éfeso reafirmó que es *una sola Persona divina* la que nace, sufre y muere en la carne.", cite: "Concilio de Éfeso: 'Si alguno divide en dos a las personas en el único Cristo, después de la unión... sea anatema'." },
+    { id: "t42", q: "En la liturgia, la 'Anámnesis' forma parte fundamental de la Plegaria Eucarística. ¿Qué acción realiza la Iglesia en la anámnesis?", opts: ["El canto alegre de entrada", "La recolección de las ofrendas económicas", "El 'memorial', donde la Iglesia recuerda la Pasión, Resurrección y Ascensión de Cristo, haciendo presente y ofreciendo al Padre la Víctima inmaculada", "La despedida y bendición final"], corr: 2, fb: "La palabra griega anámnesis no significa solo 'recordar psicológicamente' el pasado, sino 'hacer presente' de manera real y objetiva el evento salvífico. 'Haced esto en *conmemoración* (anámnesis) mía'.", cite: "Catecismo 1354: 'La anámnesis: la Iglesia hace el memorial de la pasión, de la resurrección y del retorno glorioso de Cristo Jesús; presenta al Padre la ofrenda de su Hijo que nos reconcilia con él'." },
+    { id: "t43", q: "¿Qué implica la 'Apostolicidad' de la Iglesia en términos de Sucesión Apostólica?", opts: ["Que la Iglesia debe vestirse como en el siglo I", "Que la gracia del Espíritu Santo se transmite ininterrumpidamente mediante la imposición de manos desde los doce Apóstoles hasta los obispos válidamente ordenados de hoy", "Que cualquier creyente que lea la Biblia tiene autoridad apostólica", "Que el Papa debe llamarse Pedro"], corr: 1, fb: "Esta es la mayor diferencia con las comunidades eclesiales nacidas en la Reforma. La Sucesión Apostólica garantiza que la Eucaristía y la absolución que recibís hoy provienen, por un 'linaje ininterrumpido' de ordenaciones, del mismo Jesús en la Última Cena.", cite: "Lumen Gentium 20: 'La sucesión de los obispos, que por institución divina han sucedido a los Apóstoles como pastores de la Iglesia... el que los escucha a ellos, escucha a Cristo'." },
+    { id: "t44", q: "Frente al cientificismo, ¿cómo define Santo Tomás de Aquino la 'Ley Natural'?", opts: ["Las leyes de la física y la gravedad", "Los instintos animales biológicos de supervivencia", "La participación de la ley eterna de Dios en la criatura racional, que permite al hombre descubrir mediante la razón qué es el bien a realizar y qué es el mal a evitar", "Un conjunto de leyes escritas en el Vaticano"], corr: 2, fb: "No hace falta ser católico ni haber leído la Biblia para saber que matar a un inocente o traicionar a un amigo está mal. La Ley Natural es ese diseño inteligente y ético impreso en el corazón humano que nuestra razón natural puede descifrar.", cite: "Santo Tomás de Aquino (Suma Teológica I-II): 'La participación de la ley eterna en la criatura racional se llama ley natural'." },
+    { id: "t45", q: "¿Qué defiende el documento 'Evangelium Vitae' (Juan Pablo II) respecto al inicio de la vida humana?", opts: ["Que la vida comienza cuando el feto siente dolor", "Que la vida humana es sagrada desde el momento de la concepción (fecundación), donde se crea un nuevo individuo con su propio código genético distinto al de sus padres", "Que el estatus de 'persona' se adquiere tras el nacimiento", "Que los embriones de pocos días son simples células sin valor"], corr: 1, fb: "La ciencia genética respalda que en la fecundación aparece un ADN nuevo e irrepetible, distinto al del óvulo o espermatozoide. La Iglesia afirma que, ante la presencia de una vida biológica humana, se exige el respeto incondicional debido a una persona humana dotada de alma inmortal.", cite: "Evangelium Vitae 60: 'Desde el momento en que el óvulo es fecundado, se inaugura una nueva vida que no es la del padre ni la de la madre, sino la de un nuevo ser humano que se desarrolla por sí mismo'." },
+    { id: "t46", q: "En la teología mística, ¿cuál es la diferencia entre meditación y contemplación (oración infusa)?", opts: ["La meditación es cristiana y la contemplación budista", "La meditación es un esfuerzo activo de la mente usando la imaginación y el razonamiento (ej. imaginar el Evangelio); la contemplación es un don pasivo y silencioso donde Dios actúa directamente en el alma", "Son exactamente lo mismo", "La contemplación requiere leer libros en voz alta"], corr: 1, fb: "Santa Teresa de Ávila explicaba que meditar es como 'sacar agua del pozo a mano' con esfuerzo. La contemplación mística es cuando Dios abre la lluvia del cielo y el alma simplemente descansa pasivamente recibiendo el amor de Dios en silencio.", cite: "Catecismo 2708: 'La meditación moviliza el pensamiento, la imaginación, la emoción... La oración contemplativa es silencio... es una mirada de fe fijada en Jesús'." },
+    { id: "t47", q: "El 'Gnosticismo' es una de las herejías más antiguas y recurrentes. ¿Cuál es su núcleo doctrinal, que la Iglesia rechaza tajantemente?", opts: ["La exaltación extrema de la bondad del cuerpo y del matrimonio", "La idea de que la salvación se logra a través de un conocimiento secreto (gnosis) reservado a unos pocos, y que la materia/cuerpo es esencialmente mala y prisión del espíritu bueno", "La creencia en la predestinación islámica", "La afirmación de que Jesús fue un político revolucionario"], corr: 1, fb: "El gnosticismo odia la materia. Por eso les escandalizaba que Dios se hubiera hecho carne, nacido de mujer y muerto en una cruz. Para el cristianismo, la materia no es mala: Dios creó el cuerpo físico, lo redimió y lo resucitará en el último día.", cite: "San Ireneo (Adversus Haereses): Condena la separación gnóstica entre un 'Dios creador malo' (Demiurgo) y un 'Dios espiritual bueno', defendiendo la bondad de la creación material." },
+    { id: "t48", q: "El 8º mandamiento exige la verdad. Según la teología moral, el 'Secreto Profesional' o la confidencialidad, ¿puede violarse en algún caso?", opts: ["Nunca, bajo ninguna circunstancia humana o eclesiástica", "Sí, a cambio de dinero en los medios de comunicación", "El secreto profesional debe guardarse, pero puede y debe violarse si el ocultarlo causara un daño moral y físico grave a quien confía el secreto, al tercero inocente o a la sociedad (Ej: abuso de menores inminente)", "Sí, para burlarse de las personas"], corr: 2, fb: "Atención: Esto NO aplica al Secreto de Confesión Sacramental, que es ABSOLUTO e inviolable. Pero en el ámbito humano profesional (psicólogo, abogado), la verdad y la protección de los inocentes autorizan romper la confidencialidad para evitar una desgracia grave.", cite: "Catecismo 2491: 'El secreto profesional... debe ser guardado, a no ser que su custodia traiga consigo para el que lo confía, para el que lo recibe, o para un tercero, daños muy graves, evitables sólo mediante la divulgación de la verdad'." },
+    { id: "t49", q: "¿Qué implica el término 'Escatología' en los estudios teológicos?", opts: ["El estudio de la arqueología bíblica", "El tratado sobre los sacramentos de iniciación", "El tratado teológico sobre las realidades últimas: la muerte, el juicio, el purgatorio, el cielo, el infierno y el destino final del mundo", "El estudio de los herejes antiguos"], corr: 2, fb: "Proviene de 'Eschaton' (lo último). La escatología católica no se enfoca en meter miedo con el fin del mundo, sino en la gloriosa consumación de la historia: la victoria final de Cristo sobre el mal, la resurrección de la carne y los cielos nuevos.", cite: "Gaudium et Spes 39: 'Ignoramos el tiempo en que tocará a su fin la tierra y la humanidad... pero sabemos que Dios prepara una nueva morada y una nueva tierra donde habita la justicia'." },
+    { id: "t50", q: "La Eclesiología post-conciliar habla de la Iglesia como 'Pueblo de Dios'. ¿Qué relación tiene el 'Sacerdocio Común de los Fieles' con el 'Sacerdocio Ministerial' (obispos y presbíteros)?", opts: ["Ambos son exactamente lo mismo, por lo que cualquier laico puede consagrar la Eucaristía", "El sacerdocio ministerial es superior en dignidad humana", "Ambos participan del único sacerdocio de Cristo, pero difieren esencialmente y no solo de grado. El ministerial ordena y dirige al pueblo; el sacerdocio común ejerce su misión santificando el mundo secular", "El sacerdocio común anula al ministerial"], corr: 2, fb: "Por el bautismo, TODOS somos sacerdotes (ofrecemos sacrificios espirituales, rezamos, santificamos el hogar). Pero el sacerdocio ministerial tiene una potestad sagrada conferida por la Ordenación para formar y gobernar al pueblo, y hacer presente a Cristo-Eucaristía. Se complementan al servicio de Dios.", cite: "Lumen Gentium 10: 'El sacerdocio común de los fieles y el sacerdocio ministerial o jerárquico, aunque difieran esencialmente y no sólo en grado, se ordenan, sin embargo, el uno al otro, pues ambos participan a su manera del único sacerdocio de Cristo'." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+let synth;
+
+function initAudio() {
+    if (typeof Tone !== 'undefined' && !audioInit) {
+        Tone.start();
+        // Sonido grave y solemne (órgano sutil o pad) para Alta Teología
+        synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "fmsine", modulationType: "square" }, 
+            envelope: { attack: 0.2, decay: 0.5, sustain: 0.2, release: 2 }
+        }).toDestination();
+        synth.volume.value = -12;
+        audioInit = true;
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudio();
+        if (!synth) return;
+        
+        if (type === 'correct') {
+            const now = Tone.now();
+            synth.triggerAttackRelease("F4", "8n", now);
+            synth.triggerAttackRelease("A4", "8n", now + 0.2);
+            synth.triggerAttackRelease("C5", "2n", now + 0.4); // Acorde majestuoso
+        } else {
+            synth.triggerAttackRelease("Db4", "8n");
+            synth.triggerAttackRelease("Bb3", "8n", Tone.now() + 0.3);
+        }
+    } catch (e) { console.log("Audio silenciado o no soportado"); }
+}
+
+function initQuiz() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const qId = urlParams.get('id');
+        if (qId) {
+            const found = CARTAS.findIndex(c => c.id === qId);
+            currentIdx = found !== -1 ? found : Math.floor(Math.random() * CARTAS.length);
+        } else {
+            currentIdx = Math.floor(Math.random() * CARTAS.length);
+        }
+    } catch(e) { currentIdx = 0; }
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    const container = document.getElementById("options-container");
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    
+    container.innerHTML = "";
+    fbBox.style.display = "none";
+    btnNext.style.display = "none"; 
+    
+    c.opts.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<span style="opacity:0.5; font-weight:800; padding-right:8px; color:var(--primario);">[${idx+1}]</span> <span>${opt}</span>`;
+        btn.onclick = () => checkAns(idx, btn);
+        container.appendChild(btn);
+    });
+}
+
+function checkAns(idx, btn) {
+    const c = CARTAS[currentIdx];
+    const buttons = document.querySelectorAll(".opt-btn");
+    buttons.forEach(b => b.disabled = true);
+    
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    fbBox.style.display = "block";
+    btnNext.style.display = "flex"; 
+    
+    if(idx === c.corr) {
+        btn.classList.add("correct");
+        btn.innerHTML = `<i class="fas fa-check" style="color:#2E7D32;"></i> <span>${c.opts[idx]}</span>`;
+        document.getElementById("fb-main").innerHTML = `<strong>Resolución Correcta:</strong><br>${c.fb}`;
+        playSound('correct');
+    } else {
+        btn.classList.add("incorrect");
+        btn.innerHTML = `<i class="fas fa-times" style="color:#C62828;"></i> <span>${c.opts[idx]}</span>`;
+        
+        const correctBtn = buttons[c.corr];
+        correctBtn.classList.add("correct");
+        correctBtn.innerHTML = `<i class="fas fa-check" style="color:#2E7D32;"></i> <span>${c.opts[c.corr]}</span>`;
+        
+        document.getElementById("fb-main").innerHTML = `<strong>Corrección Teológica:</strong><br>${c.fb}`;
+        playSound('incorrect');
+    }
+    
+    document.getElementById("fb-cite").innerText = c.cite;
+}
+
+function nextQuestion() {
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+    setTimeout(() => {
+        let next;
+        do { next = Math.floor(Math.random() * CARTAS.length); } while (next === currentIdx);
+        currentIdx = next;
+        
+        try {
+            if (window.location.protocol !== 'file:') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } catch(e) {}
+        
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 400);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    let baseUrl = "Enlace";
+    try { baseUrl = window.location.protocol === 'file:' ? 'Archivo_Local' : window.location.origin + window.location.pathname; } catch(e) {}
+    
+    const urlConId = baseUrl !== 'Archivo_Local' ? `${baseUrl}?id=${c.id}` : window.location.href;
+    const text = `⚜️ Alta Teología - Capilla Santa Ana\n\n"${c.q}"\n\n¿Conocés la doctrina correcta? Ponete a prueba acá: `;
+
+    if (navigator.share && baseUrl !== 'Archivo_Local') {
+        try { await navigator.share({ title: 'Desafío Alta Teología', text: text, url: urlConId }); } 
+        catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + (baseUrl !== 'Archivo_Local' ? urlConId : '')).then(() => {
+            alert('¡Enlace copiado! Invitá a debatir a otros sobre doctrina y Magisterio.');
+        });
+    }
+}
+
+function initBG() {
+    const words = ['DOGMA', 'MAGISTERIO', 'SINDÉRESIS', 'ENCÍCLICA', 'ECLESIOLOGÍA', 'SANTA ANA', 'VERITATIS SPLENDOR', 'CRISTOLOGÍA', 'TRADICIÓN'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<12; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (18 + Math.random() * 35) + "px";
+        const duration = 25 + Math.random() * 30; // Movimiento extremadamente lento y solemne
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>
