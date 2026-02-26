@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Reflexión Interactiva | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* PALETA DE COLORES ORIGINAL DE LA CAPILLA */
+        :root {
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
+        }
+
+        body.dark-mode {
+            --primario: #E0C097; --acento: #D4A373; --fondo: #121212;
+            --blanco: #1E1E1E; --texto: #E0E0E0; --sombra: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            transition: background 0.3s;
+        }
+
+        /* NAVBAR IGUAL AL INDEX */
+        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); }
+        body.dark-mode nav { background: rgba(18,18,18,0.95); }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; }
+
+        header.hero-mini { 
+            padding: 140px 5% 60px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('1.webp'); 
+            background-size: cover; 
+            background-position: center;
+            color: white;
+        }
+
+        .section-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 10px; color: white; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
+
+        /* GRILLA DE CARTAS TIPO "VIDA EN COMUNIDAD" */
+        .grid-mazos { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            padding: 60px 8%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .mazo-card { 
+            background: var(--blanco); 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            border: 1px solid var(--gold-light); 
+            box-shadow: var(--sombra); 
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mazo-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: var(--sombra-fuerte);
+            border-color: var(--acento);
+        }
+
+        .mazo-card i { font-size: 3.5rem; margin-bottom: 20px; color: var(--acento); }
+        .mazo-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario); margin-bottom: 10px; }
+        .mazo-card p { font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 20px; }
+        
+        .btn-abrir {
+            padding: 10px 25px;
+            border-radius: 50px;
+            background: var(--acento);
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* FOOTER Y FLOTANTES */
+        footer { background: #111; color: #888; padding: 60px 5% 30px; text-align: center; margin-top: 60px; }
+        .social-links a { color: #888; font-size: 1.8rem; margin: 0 15px; transition: 0.3s; }
+        .social-links a:hover { color: white; }
+
+        .float-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; }
+        .f-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 1.4rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+
+        /* COLORES ICONOS ESPECIFICOS */
+        .ic-peques { color: #FFD600 !important; }
+        .ic-creciendo { color: #8BC34A !important; }
+        .ic-jovenes { color: #00F2FF !important; }
+        .ic-matrimonio { color: #FF4D4D !important; }
+        .ic-abrazo { color: #80CBC4 !important; }
+        .ic-confirmacion { color: #E67E22 !important; }
+        .ic-sabiduria { color: #9575CD !important; }
+        .ic-servidores { color: #A0522D !important; }
+        .ic-trascendencia { color: var(--acento) !important; } /* Oro */
+        .ic-ecologia { color: #2E7D32 !important; } /* Verde Bosque */
+
+        @media (max-width: 768px) {
+            .grid-mazos { padding: 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Capilla Santa Ana</a>
+        <button class="icon-btn" style="background:none; border:none; cursor:pointer; color:var(--primario); font-size:1.3rem;" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header class="hero-mini">
+        <div class="section-header">
+            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; color:var(--acento); font-weight: 800; margin-bottom:10px;">Tu momento de paz</p>
+            <h1>Elegí tu camino de reflexión</h1>
+            <div class="divider"></div>
+            <p style="max-width:700px; margin: 0 auto; opacity:0.9;">Hacé clic en el mazo que mejor acompañe tu momento actual y recibí una carta pensada para tu corazón.</p>
+        </div>
+    </header>
+
+    <main class="grid-mazos">
+        
+        <a href="nenes4-6.html" class="mazo-card">
+            <i class="fas fa-sun ic-peques"></i>
+            <h3>Amiguitos</h3>
+            <p>Preguntas sencillas para niños de 4 a 6 años.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="creciendo.html" class="mazo-card">
+            <i class="fas fa-seedling ic-creciendo"></i>
+            <h3>Creciendo</h3>
+            <p>Reflexiones para chicos de 6 a 8 años.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="catequesis.html" class="mazo-card">
+            <i class="fas fa-book-open"></i>
+            <h3>Catequesis</h3>
+            <p>Mazos para quienes se preparan para los sacramentos.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="comunion.html" class="mazo-card">
+            <i class="fas fa-bread-slice"></i>
+            <h3>Comunión</h3>
+            <p>Especial para el encuentro con Jesús Pan de Vida.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="confirmacion.html" class="mazo-card">
+            <i class="fas fa-dove ic-confirmacion"></i>
+            <h3>Confirmación</h3>
+            <p>Fortaleciendo el sello del Espíritu Santo.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="jovenes.html" class="mazo-card">
+            <i class="fas fa-bolt ic-jovenes"></i>
+            <h3>Jóvenes</h3>
+            <p>Realidad, ansiedad y fe en el mundo actual.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="matrimonio.html" class="mazo-card">
+            <i class="fas fa-heart ic-matrimonio"></i>
+            <h3>Matrimonio</h3>
+            <p>Vínculo sagrado y vida en pareja bajo Cristo.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="sabiduria.html" class="mazo-card">
+            <i class="fas fa-scroll ic-sabiduria"></i>
+            <h3>Sabiduría</h3>
+            <p>Reflexiones para abuelos y adultos mayores.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="abrazo.html" class="mazo-card">
+            <i class="fas fa-hand-holding-heart ic-abrazo"></i>
+            <h3>Abrazo de Dios</h3>
+            <p>Acompañamiento en el duelo y momentos difíciles.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="trascendencia.html" class="mazo-card">
+            <i class="fas fa-star ic-trascendencia"></i>
+            <h3>Trascendencia</h3>
+            <p>Reflexiones sobre la vida eterna y el cielo.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="ecologia.html" class="mazo-card">
+            <i class="fas fa-leaf ic-ecologia"></i>
+            <h3>Hermana Tierra</h3>
+            <p>Cuidado de la creación y amor por la naturaleza.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+        <a href="servidores.html" class="mazo-card">
+            <i class="fas fa-hammer ic-servidores"></i>
+            <h3>Servidores</h3>
+            <p>Para quienes entregan su vida al servicio de la Capilla.</p>
+            <span class="btn-abrir">Abrir Mazo</span>
+        </a>
+
+    </main>
+
+    <footer>
+        <h3 style="color: white; margin-bottom: 10px; font-family: 'Playfair Display', serif;">Capilla Santa Ana</h3>
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 20px;">© 2026 Arquitectura Digital por Nicolás Bongiorno</p>
+    </footer>
+
+    <div class="float-container">
+        <a href="index.html" class="f-btn" style="background: var(--primario);" title="Volver al Inicio">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Cargar tema guardado
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.icon-btn i').classList.replace('fa-moon', 'fa-sun');
+        }
+    </script>
+</body>
+</html>

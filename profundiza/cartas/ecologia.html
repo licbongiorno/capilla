@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Hermana Tierra | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B;   /* Oro */
+            --bosque: #1B5E20;   /* Verde Bosque */
+            --bosque-light: #2E7D32;
+            --fondo: #F5F5F0;    /* Crema */
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D;
+            --sombra: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --primario: #E0C097; --acento: #D4A373; --fondo: #121212;
+            --blanco: #1E1E1E; --texto: #E0E0E0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            height: 100vh; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+        }
+
+        /* FONDO DINÁMICO CON TINTE VERDE */
+        .main-background {
+            position: fixed; inset: 0;
+            background: linear-gradient(rgba(245, 245, 240, 0.85), rgba(27, 94, 32, 0.1)), url('2.webp');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+        body.dark-mode .main-background {
+            background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(27, 94, 32, 0.2)), url('2.webp');
+            background-size: cover;
+        }
+
+        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .floating-word {
+            position: absolute; font-weight: 800; color: rgba(46, 125, 50, 0.1);
+            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+        }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+
+        /* NAVEGACIÓN ORIGINAL */
+        nav { 
+            height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+            display: flex; justify-content: space-between; align-items: center; padding: 0 5%; 
+            border-bottom: 1px solid rgba(193, 154, 107, 0.2); z-index: 100;
+        }
+        body.dark-mode nav { background: rgba(30, 30, 30, 0.95); }
+        .logo { font-size: 1rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; }
+
+        /* CONTENEDOR DE CARTA */
+        .container { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            padding: 20px; position: relative; z-index: 2;
+        }
+
+        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
+        .card { 
+            position: relative; width: 100%; height: 100%; border-radius: 25px; 
+            box-shadow: 0 20px 50px rgba(27, 94, 32, 0.15); transform-style: preserve-3d; 
+            transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; 
+        }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .face { 
+            position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            padding: 40px; border: 2px solid var(--bosque-light); 
+        }
+
+        /* FRENTE: BLANCO Y ORO CON DETALLE VERDE */
+        .front { background: var(--blanco); color: var(--primario); border-top: 10px solid var(--bosque); }
+        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; }
+        .verse-box { background: rgba(46, 125, 50, 0.05); padding: 20px; border-radius: 15px; width: 100%; border-left: 4px solid var(--acento); }
+        .verse-text { font-size: 0.9rem; font-style: italic; color: var(--texto); margin-bottom: 8px; line-height: 1.6; }
+        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--bosque-light); text-transform: uppercase; display: block; text-align: right; }
+
+        /* DORSO: VERDE BOSQUE Y ORO */
+        .back { background: radial-gradient(circle at 50% 0%, #2E7D32 0%, #1B5E20 100%); color: var(--blanco); transform: rotateY(180deg); }
+        .back i { font-size: 4.5rem; margin-bottom: 20px; color: var(--acento); filter: drop-shadow(0 0 15px rgba(193,154,107,0.4)); }
+        .back h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; letter-spacing: 1px; }
+
+        /* BOTONES */
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .btn { 
+            padding: 16px 32px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; 
+            text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; transition: 0.3s;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .btn-main { background: var(--bosque); color: white; box-shadow: 0 8px 20px rgba(27, 94, 32, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); background: var(--bosque-light); }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 1px solid var(--acento); }
+
+        .toast { 
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); 
+            background: var(--bosque); color: white; padding: 12px 30px; border-radius: 50px; 
+            font-weight: 700; transition: 0.5s; z-index: 1000; 
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        footer { padding: 25px; text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--primario); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="main-background"></div>
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="index.html" class="logo">Capilla Santa Ana</a>
+        <button class="icon-btn" style="background:none; border:none; cursor:pointer; color:var(--primario); font-size:1.3rem;" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div class="card-scene">
+            <div class="card is-flipped" id="card">
+                <div class="face front">
+                    <p class="question" id="q-text">...</p>
+                    <div class="verse-box">
+                        <p class="verse-text" id="v-text"></p>
+                        <span class="verse-ref" id="v-ref"></span>
+                    </div>
+                </div>
+                <div class="face back">
+                    <i class="fas fa-leaf"></i>
+                    <h2>Hermana Tierra</h2>
+                    <p style="text-transform:uppercase; letter-spacing:4px; font-size:11px; margin-top:15px; font-weight:800; opacity:0.9;">Cuidado de la Creación</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-main" onclick="nextCard()"><i class="fas fa-seedling"></i> Otra Reflexión</button>
+            <button class="btn btn-sec" onclick="share()"><i class="fab fa-whatsapp"></i> Compartir</button>
+        </div>
+    </div>
+
+    <footer>© 2026 Capilla Santa Ana - "Alabado seas, mi Señor"</footer>
+    <div id="toast" class="toast">¡Reflexión compartida!</div>
+
+    <script>
+        const CARTAS = [
+            { id: "ec-1", q: "¿Ves en los animales y en las plantas un regalo personal de Dios para tu alegría, o solo cosas que podés usar?", v: "¡Cuán numerosas son tus obras, oh Señor! La tierra está llena de tus criaturas.", c: "Salmo 104:24" },
+            { id: "ec-2", q: "¿Cómo podés cuidar hoy 'la casa común' con una acción pequeña, como ahorrar agua o no tirar basura?", v: "El Señor Dios tomó al hombre y lo puso en el jardín para que lo cultivara y lo cuidara.", c: "Génesis 2:15" },
+            { id: "ec-3", q: "San Francisco llamaba 'hermano' al sol y 'hermana' a la luna. ¿Sentís que la naturaleza es parte de tu familia espiritual?", v: "Alaben al Señor desde la tierra, los grandes animales marinos y todos los abismos.", c: "Salmo 148:7" },
+            { id: "ec-4", q: "¿Reconozco la presencia de Dios en el canto de un pájaro o en el silencio de las sierras de Córdoba?", v: "Pregunta a las bestias, y ellas te enseñarán; a las aves del cielo, y ellas te lo dirán.", c: "Job 12:7" },
+            { id: "ec-5", q: "¿Cómo podés evitar el 'descarte' de cosas que todavía sirven, para imitar la generosidad de la creación?", v: "Nada de lo que Él hizo es superfluo.", c: "Laudato Si' n. 77" },
+            { id: "ec-6", q: "¿Rezás alguna vez agradeciendo por tu mascota o por los animales que te rodean?", v: "Que todo lo que respira alabe al Señor.", c: "Salmo 150:6" },
+            { id: "ec-7", q: "¿Sos consciente de que el maltrato a la naturaleza también hiere el corazón del Creador?", v: "Por la avaricia del hombre, la tierra gime con dolores de parto.", c: "Romanos 8:22" },
+            { id: "ec-8", q: "¿Qué significa para vos que Dios se haya hecho hombre y haya caminado sobre esta misma tierra?", v: "Y el Verbo se hizo carne y habitó entre nosotros.", c: "Juan 1:14" },
+            { id: "ec-9", q: "¿Cómo podés educar a los más chicos de la familia en el respeto por cada ser vivo?", v: "Dejen que los niños vengan a mí... y aprendan de la creación.", c: "Mateo 19:14" },
+            { id: "ec-10", q: "Tener un jardín o una planta es cuidar la vida. ¿Estás regando tu fe al mismo tiempo que tus plantas?", v: "Yo planté, Apolos regó, pero el crecimiento lo ha dado Dios.", c: "1 Corintios 3:6" },
+            { id: "ec-11", q: "¿Ves en la ecología un camino para ser más santo y más sencillo?", v: "La espiritualidad cristiana propone un crecimiento con sobriedad y una capacidad de gozar con poco.", c: "Laudato Si' n. 222" },
+            { id: "ec-12", q: "¿Qué te enseña el ciclo de las estaciones sobre la paciencia y los tiempos de Dios en tu vida?", v: "Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.", c: "Eclesiastés 3:1" },
+            { id: "ec-13", q: "¿Podés agradecer hoy por el aire puro y el sol que ilumina Villa Parque Santa Ana?", v: "Él hace salir su sol sobre malos y buenos, y llover sobre justos e injustos.", c: "Mateo 5:45" },
+            { id: "ec-14", q: "¿Cómo podés combatir el consumismo que nos hace olvidar lo que es verdaderamente importante?", v: "La vida del hombre no consiste en la abundancia de los bienes que posee.", c: "Lucas 12:15" },
+            { id: "ec-15", q: "¿Reconozco que el acceso al agua potable es un derecho humano sagrado?", v: "Porque tuve sed, y me disteis de beber.", c: "Mateo 25:35" },
+            { id: "ec-16", q: "¿Sentís que la belleza del paisaje te ayuda a elevar el alma en oración?", v: "Señor, dueño nuestro, ¡qué glorioso es tu nombre en toda la tierra!", c: "Salmo 8:1" },
+            { id: "ec-17", q: "¿Cómo podés ser un 'custodio' de la creación en tu propio barrio?", v: "Sed administradores fieles de la multiforme gracia de Dios.", c: "1 Pedro 4:10" },
+            { id: "ec-18", q: "¿Ves en los alimentos que llegan a tu mesa el esfuerzo de la tierra y el trabajo de tus hermanos?", v: "El fruto de la tierra será para ustedes alimento.", c: "Génesis 1:29" },
+            { id: "ec-19", q: "¿Sos capaz de contemplar una hormiga o una abeja y asombrarte por la sabiduría de su diseño?", v: "Ve a la hormiga, mira sus caminos, y sé sabio.", c: "Proverbios 6:6" },
+            { id: "ec-20", q: "La naturaleza es el primer libro que Dios escribió. ¿Lo estás leyendo con amor?", v: "Porque por la grandeza y hermosura de las criaturas se llega a conocer a su Autor.", c: "Sabiduría 13:5" },
+            { id: "ec-21", q: "¿Cómo podés reducir tu huella de carbono como un acto de caridad hacia las futuras generaciones?", v: "Nadie busca su propio bien, sino el del otro.", c: "1 Corintios 10:24" },
+            { id: "ec-22", q: "¿Qué animal de la Biblia te inspira más: la paloma de la paz, el león de Judá o el cordero de Dios?", v: "Señor, tú salvas a los hombres y a los animales.", c: "Salmo 36:6" },
+            { id: "ec-23", q: "¿Sos consciente de que la paz interior está ligada al cuidado de la paz con el entorno?", v: "La paz os dejo, mi paz os doy.", c: "Juan 14:27" },
+            { id: "ec-24", q: "¿Pedís perdón a Dios por las veces que has desperdiciado recursos o contaminado sin necesidad?", v: "Crea en mí, oh Dios, un corazón limpio.", c: "Salmo 51:10" },
+            { id: "ec-25", q: "¿Cómo podés vivir un domingo más conectado con la naturaleza y menos con las pantallas?", v: "Este es el día que hizo el Señor; nos gozaremos y alegraremos en él.", c: "Salmo 118:24" },
+            { id: "ec-26", q: "¿Ves en las flores del campo un ejemplo de cómo Dios cuida de vos?", v: "Observen cómo crecen los lirios del campo; no trabajan ni hilan.", c: "Mateo 6:28" },
+            { id: "ec-27", q: "¿Qué significa para vos ser 'co-creador' con Dios al cuidar la vida?", v: "Dios los bendijo y les dijo: sed fecundos y multiplicaos, llenad la tierra.", c: "Génesis 1:28" },
+            { id: "ec-28", q: "¿Sos capaz de guardar silencio para escuchar el viento, que es imagen del Espíritu Santo?", v: "El viento sopla de donde quiere, y oyes su sonido.", c: "Juan 3:8" },
+            { id: "ec-29", q: "¿Cómo podés usar menos plástico como una pequeña ofrenda de amor a la Tierra?", v: "El que es fiel en lo muy poco, también en lo más es fiel.", c: "Lucas 16:10" },
+            { id: "ec-30", q: "¿Rezás por los científicos y gobernantes para que tomen decisiones que protejan el planeta?", v: "Oren por todos los que están en eminencia, para que vivamos quietamente.", c: "1 Timoteo 2:2" },
+            { id: "ec-31", q: "¿Te maravilla saber que cada gota de agua y cada grano de arena fueron pensados por Dios?", v: "Él cuenta el número de las estrellas; a todas ellas llama por sus nombres.", c: "Salmo 147:4" },
+            { id: "ec-32", q: "¿Cómo podés compartir la abundancia de la tierra con los que hoy pasan hambre?", v: "El que tiene dos túnicas, dé al que no tiene; y el que tiene qué comer, haga lo mismo.", c: "Lucas 3:11" },
+            { id: "ec-33", q: "¿Sentís que el maltrato animal endurece el corazón humano para con sus propios hermanos?", v: "El justo cuida de la vida de su bestia.", c: "Proverbios 12:10" },
+            { id: "ec-34", q: "¿Qué le dirías a San Francisco de Asís sobre el estado actual de nuestra casa común?", v: "Alabado seas, mi Señor, por la hermana nuestra madre tierra.", c: "Cántico de las Criaturas" },
+            { id: "ec-35", q: "¿Sos capaz de ver la mano del Alfarero en las montañas y en los ríos?", v: "En su mano están las profundidades de la tierra, y las alturas de los montes son suyas.", c: "Salmo 95:4" },
+            { id: "ec-36", q: "¿Cómo podés ser un 'influencer' del cuidado ambiental desde tu fe católica?", v: "Vosotros sois la sal de la tierra.", c: "Mateo 5:13" },
+            { id: "ec-37", q: "¿Te produce dolor ver la extinción de especies que nunca volverán a alabar a Dios?", v: "Toda la creación espera con ansias la manifestación de los hijos de Dios.", c: "Romanos 8:19" },
+            { id: "ec-38", q: "¿Cómo podés vivir la 'sobriedad feliz' de la que habla el Papa Francisco?", v: "Gran ganancia es la piedad acompañada de contentamiento.", c: "1 Timoteo 6:6" },
+            { id: "ec-39", q: "¿Sentís que la naturaleza te ayuda a perdonar y a sanar heridas del alma?", v: "Él me hace descansar en verdes pastos; me conduce a aguas tranquilas.", c: "Salmo 23:2" },
+            { id: "ec-40", q: "¿Qué significa para vos que Dios haya puesto el arcoíris como señal de paz con la Tierra?", v: "Pongo mi arco en las nubes, el cual será por señal del pacto entre mí y la tierra.", c: "Génesis 9:13" },
+            { id: "ec-41", q: "¿Sos consciente de que la contaminación de la tierra es también una contaminación del espíritu?", v: "La tierra se marchitó... porque sus habitantes la contaminaron.", c: "Isaías 24:4-5" },
+            { id: "ec-42", q: "¿Cómo podés usar tus talentos para crear soluciones que no dañen la creación?", v: "Haced todo para la gloria de Dios.", c: "1 Corintios 10:31" },
+            { id: "ec-43", q: "¿Has agradecido hoy por el regalo de la sombra de un árbol en un día de calor?", v: "El Señor es tu sombra a tu mano derecha.", c: "Salmo 121:5" },
+            { id: "ec-44", q: "¿Qué lección de humildad te dan los animales que viven sin acumular nada para el mañana?", v: "Miren las aves del cielo; no siembran, ni siegan, ni recogen en graneros.", c: "Mateo 6:26" },
+            { id: "ec-45", q: "¿Cómo podés ser más agradecido con la 'pacha mama' desde una perspectiva cristiana de gratitud al Creador?", v: "Del Señor es la tierra y su plenitud; el mundo, y los que en él habitan.", c: "Salmo 24:1" },
+            { id: "ec-46", q: "¿Sentís que el contacto con la tierra te hace ser una persona más sencilla y real?", v: "Acuérdate que eres polvo, y al polvo volverás.", c: "Génesis 3:19" },
+            { id: "ec-47", q: "¿Cómo podés transformar tu casa en un oasis de vida para los insectos y pájaros locales?", v: "Aun el gorrión halla casa, y la golondrina nido para sí.", c: "Salmo 84:3" },
+            { id: "ec-48", q: "¿Qué promesa de Dios ves en el brote verde de una planta después del invierno?", v: "He aquí que yo hago cosa nueva; pronto saldrá a luz.", c: "Isaías 43:19" },
+            { id: "ec-49", q: "¿Le pedís a Santa Ana que bendiga las siembras y cosechas de nuestra zona?", v: "La tierra dará su fruto, y nos bendecirá Dios.", c: "Salmo 67:6" },
+            { id: "ec-50", q: "Si hoy el Señor te preguntara: '¿Qué hiciste con el jardín que te di?', ¿qué le responderías?", v: "El que es fiel en lo poco, también en lo más es fiel.", c: "Lucas 16:10" }
+        ];
+
+        let currentIdx = -1;
+        let isFlipped = true;
+        let audioInit = false;
+
+        const card = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const vText = document.getElementById('v-text');
+        const vRef = document.getElementById('v-ref');
+
+        const noise = new Tone.Noise("white").start();
+        const filter = new Tone.Filter(100, "lowpass").toDestination();
+        noise.connect(filter);
+        noise.volume.value = -60;
+
+        function playSound() {
+            if (!audioInit) { Tone.start(); audioInit = true; }
+            filter.frequency.setValueAtTime(100, Tone.now());
+            filter.frequency.exponentialRampToValueAtTime(3000, Tone.now() + 0.3);
+            noise.volume.setValueAtTime(-15, Tone.now());
+            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+        }
+
+        function render(idx) {
+            currentIdx = idx;
+            const item = CARTAS[idx];
+            qText.textContent = item.q;
+            vText.textContent = `"${item.v}"`;
+            vRef.textContent = item.c;
+            window.location.hash = item.id;
+        }
+
+        function nextCard() {
+            if (!isFlipped) {
+                flip();
+                setTimeout(() => { random(); flip(); }, 600);
+            } else {
+                random();
+                flip();
+            }
+        }
+
+        function random() {
+            let i;
+            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
+            render(i);
+        }
+
+        function flip() {
+            playSound();
+            card.classList.toggle('is-flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function share() {
+            const url = window.location.href;
+            const msg = `🌿 Reflexión Hermana Tierra - Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
+            if (navigator.share) {
+                navigator.share({ title: 'Hermana Tierra', text: msg, url: url });
+            } else {
+                navigator.clipboard.writeText(msg + url).then(() => {
+                    const toast = document.getElementById('toast');
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+                });
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        function initBG() {
+            const bg = document.getElementById('bg');
+            const words = ['CREACIÓN', 'TIERRA', 'VIDA', 'PAZ', 'NATURALEZA', 'SANTA ANA'];
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = words[Math.floor(Math.random() * words.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (16 + Math.random() * 30) + 'px';
+                const d = 15 + Math.random() * 25;
+                s.style.animation = `floatUp ${d}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * d}s`;
+                bg.appendChild(s);
+            }
+        }
+
+        card.addEventListener('click', flip);
+        window.onload = () => {
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.icon-btn i').classList.replace('fa-moon', 'fa-sun');
+            }
+            initBG();
+            const h = window.location.hash.substring(1);
+            const found = CARTAS.findIndex(c => c.id === h);
+            if (found !== -1) render(found); else random();
+        };
+    </script>
+</body>
+</html>

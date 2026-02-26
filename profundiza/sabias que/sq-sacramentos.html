@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Los Sacramentos | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Los Sacramentos</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-droplet"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Gracia de Dios</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-dove recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Los 7 Canales de Gracia</footer>
+
+<script>
+const DATOS = [
+    { id: "sac1", fact: "La palabra 'Sacramento' viene del latín y significa 'Juramento' o 'Misterio'.", hook: "En el ejército romano, el 'sacramentum' era el juramento de fidelidad. Los cristianos lo usamos para describir los signos visibles que nos unen a Dios.", cite: "Catecismo 1131: Los sacramentos son signos eficaces de la gracia.", recom: "🛡️ Fidelidad: Cada sacramento es un pacto de amor entre vos y Dios." },
+    { id: "sac2", fact: "El Bautismo borra el pecado original y te hace hijo de Dios.", hook: "No es un simple baño de bienvenida; es un renacimiento espiritual que te da una 'marca' en el alma que dura para siempre.", cite: "Juan 3, 5: 'El que no naciere de agua y del Espíritu, no puede entrar en el reino de Dios'.", recom: "🚿 Limpieza: Recordá siempre que sos hijo de un Rey. ¡Viví como tal!" },
+    { id: "sac3", fact: "En una emergencia, cualquier persona puede bautizar.", hook: "Si alguien está en peligro de muerte y no hay un cura, vos podés bautizarlo echando agua y diciendo: 'Yo te bautizo en el nombre del Padre, del Hijo y del Espíritu Santo'.", cite: "Derecho Canónico: En caso de necesidad, cualquier fiel puede administrar el bautismo.", recom: "🆘 Emergencia: La salvación de un alma es lo más importante. ¡Estate listo!" },
+    { id: "sac4", fact: "La Confirmación te convierte en un 'soldado' de Cristo.", hook: "Completa la gracia del bautismo y te da la fuerza del Espíritu Santo para defender tu fe sin miedo y ser testigo de Jesús en el mundo.", cite: "Hechos 8, 14-17: Los apóstoles imponían las manos para que recibieran el Espíritu.", recom: "🔥 Valentía: Pedile al Espíritu que te quite la vergüenza de decir que sos cristiano." },
+    { id: "sac5", fact: "La Eucaristía es el sacramento más grande porque es Jesús mismo.", hook: "En los otros sacramentos recibimos la gracia de Dios, pero en la Comunión recibimos al Dueño de la gracia en persona.", cite: "Juan 6, 54: 'El que come mi carne y bebe mi sangre, tiene vida eterna'.", recom: "🍞 Centro: Que la Misa sea el sol alrededor del cual gira toda tu semana." },
+    { id: "sac6", fact: "La Confesión es el único lugar donde tus pecados desaparecen de verdad.", hook: "Dios no solo 'hace de cuenta' que no pecaste; los borra totalmente de tu alma. El cura actúa como un médico que cura tus heridas espirituales.", cite: "Juan 20, 23: 'A quienes perdonéis los pecados, les quedan perdonados'.", recom: "🧼 Alivio: No cargues con la culpa; confesate y salí de la iglesia caminando sobre nubes." },
+    { id: "sac7", fact: "La Unción de los Enfermos no es solo para los que están muriendo.", hook: "Antiguamente se llamaba Extremaunción, pero hoy se da a cualquier persona con una enfermedad grave o antes de una cirugía para darle fuerza al alma y al cuerpo.", cite: "Santiago 5, 14: '¿Está alguno enfermo entre vosotros? Llame a los presbíteros de la iglesia'.", recom: "🏥 Fortaleza: Si un familiar está sufriendo, llamá al cura de Santa Ana para que lo unja." },
+    { id: "sac8", fact: "El Orden Sagrado hace que un hombre actúe 'In Persona Christi'.", hook: "Cuando un cura consagra el pan o perdona pecados, no lo hace por su poder, sino porque presta su voz y sus manos a Jesús mismo.", cite: "Hebreos 5, 1: 'Todo sumo sacerdote... es constituido a favor de los hombres'.", recom: "🐑 Vocación: Rezá mucho por los curas; tienen una responsabilidad gigante sobre sus hombros." },
+    { id: "sac9", fact: "En el Matrimonio, los que hacen el sacramento son los novios.", hook: "El cura es solo un testigo oficial. El sacramento nace del 'Sí' que se dan el uno al otro frente a Dios. ¡Ellos son los ministros!", cite: "Génesis 2, 24: 'Por tanto, dejará el hombre a su padre y a su madre, y se unirá a su mujer'.", recom: "💍 Unión: Si estás casado, recordá que Dios es el tercer socio de tu relación. ¡No lo dejes afuera!" },
+    { id: "sac10", fact: "Los sacramentos se dividen en tres grupos.", hook: "Iniciación (Bautismo, Confirmación, Eucaristía), Curación (Confesión, Unción) y Servicio (Orden y Matrimonio). Cubren todas las etapas de la vida.", cite: "Catecismo: La estructura de la vida sacramental del cristiano.", recom: "🪜 Escalera: Los sacramentos son los escalones que te llevan directo al cielo." },
+    { id: "sac11", fact: "El Santo Crisma es un aceite perfumado que simboliza al Espíritu.", hook: "Se usa en el Bautismo, la Confirmación y el Orden Sagrado. El olor rico representa el 'buen olor de Cristo' que debemos esparcir.", cite: "Salmo 45, 7: 'Dios te ha ungido con óleo de alegría'.", recom: "🌬️ Aroma: Tu conducta debe oler tan bien como el Crisma para que los demás quieran conocer a Dios." },
+    { id: "sac12", fact: "El Bautismo imprime un 'carácter' imborrable.", hook: "Es como un tatuaje espiritual invisible. Por eso solo te podés bautizar una vez en la vida; una vez que sos hijo de Dios, lo sos para siempre.", cite: "Efesios 4, 30: 'Fuisteis sellados para el día de la redención'.", recom: "🛡️ Identidad: Nadie te puede quitar el orgullo de ser bautizado. ¡Llevalo con la frente alta!" },
+    { id: "sac13", fact: "La Confirmación requiere un padrino o madrina de fe.", hook: "Su tarea no es regalarte cosas, sino ser tu guía y apoyo para que seas un cristiano firme toda la vida. ¡Elegilo bien!", cite: "Derecho Canónico: El padrino debe velar por la vida cristiana del confirmado.", recom: "🤝 Apoyo: Si sos padrino, llamá a tu ahijado y rezá un ratito con él hoy." },
+    { id: "sac14", fact: "Para comulgar bien, hay que estar en gracia de Dios.", hook: "Significa no tener pecados graves en la conciencia. Si los tenés, primero hay que pasar por el sacramento de la Confesión.", cite: "1 Corintios 11, 28: 'Pruébese cada uno a sí mismo, y coma así del pan'.", recom: "🧼 Preparación: No entres al banquete con el alma sucia; limpiate primero con el perdón." },
+    { id: "sac15", fact: "La Confesión tiene cinco pasos para ser perfecta.", hook: "Examen de conciencia, dolor de los pecados, propósito de enmienda, decir los pecados al cura y cumplir la penitencia.", cite: "Teología Moral: El camino seguro para un perdón completo.", recom: "📝 Examen: Antes de ir a confesarte a la capilla, tomate 5 minutos en silencio para revisar tu corazón." },
+    { id: "sac16", fact: "El secreto de confesión es absoluto e inquebrantable.", hook: "Un cura nunca, bajo ninguna circunstancia (ni siquiera si lo amenazan de muerte), puede contar lo que escuchó en confesión. Tu secreto está bajo llave de Dios.", cite: "Derecho Canónico 983: 'El sigilo sacramental es inviolable'.", recom: "🔒 Seguridad: Hablá con total libertad; el cura es una tumba de amor y misericordia." },
+    { id: "sac17", fact: "La Unción de los Enfermos puede perdonar pecados si la persona no puede hablar.", hook: "Si el enfermo está inconsciente, la unción limpia su alma de pecados y lo prepara para encontrarse con Dios en paz.", cite: "Santiago 5, 15: 'Y si hubiere cometido pecados, le serán perdonados'.", recom: "💧 Paz: No esperes al último suspiro; la unción es para dar consuelo y salud en la lucha." },
+    { id: "sac18", fact: "Solo los hombres pueden recibir el sacramento del Orden Sagrado.", hook: "Jesús eligió a 12 varones como apóstoles. La Iglesia sigue ese modelo, pero reconoce que la dignidad de la mujer es igual de grande ante Dios.", cite: "Ordinatio Sacerdotalis: La tradición ininterrumpida de la Iglesia sobre el sacerdocio.", recom: "⛪ Respeto: Valorá la misión de los hombres consagrados que dejan todo por servirte." },
+    { id: "sac19", fact: "El matrimonio cristiano es para toda la vida.", hook: "Lo que Dios unió, no lo separa el hombre. Es un signo del amor de Jesús por su Iglesia: fiel, total y eterno.", cite: "Mateo 19, 6: 'Lo que Dios unió, no lo separe el hombre'.", recom: "⚓ Fidelidad: En las tormentas de pareja, buscá a Dios; Él es el ancla que mantiene el barco unido." },
+    { id: "sac20", fact: "Los sacramentos necesitan 'materia' y 'forma'.", hook: "La materia es lo que se toca (agua, pan, aceite) y la forma son las palabras sagradas. ¡Dios usa las cosas de la creación para darnos su vida!", cite: "Teología Escolástica: El signo sensible de la gracia invisible.", recom: "🌍 Creación: Dios está en lo sencillo; valorá el agua, el pan y el aceite como regalos divinos." },
+    { id: "sac21", fact: "El Bautismo se puede dar por inmersión o por infusión.", hook: "Inmersión es cuando te sumergen entero (como hacía Juan el Bautista) e infusión es cuando te echan agua en la cabeza. Los dos valen igual.", cite: "Tradición Apostólica: El agua es el signo de vida y purificación.", recom: "🌊 Vida: Cada vez que veas agua, recordá el día en que tu alma empezó a vivir de verdad." },
+    { id: "sac22", fact: "El Santo Crisma se consagra una vez al año por el Obispo.", hook: "Se hace en la 'Misa Crismal' durante la Semana Santa. De ahí se reparte a todas las parroquias, incluida la nuestra en Santa Ana.", cite: "Liturgia de Semana Santa: La unidad de la Iglesia alrededor del Obispo.", recom: "🕊️ Unidad: Sentite unido a toda la diócesis; usamos el mismo aceite que bendijo el Obispo." },
+    { id: "sac23", fact: "La Primera Comunión se llama así porque es la primera de muchas.", hook: "No debería ser un evento único que termina en una fiesta. ¡Es el inicio de una amistad para comer juntos todos los domingos!", cite: "Instrucción Eucarística: El alimento para el camino de la vida.", recom: "🗓️ Constancia: No dejes a Jesús plantado; Él te espera cada domingo con la mesa puesta." },
+    { id: "sac24", fact: "En la Confesión, no hace falta que sientas vergüenza.", hook: "El cura ya escuchó de todo. Él no está ahí para juzgarte, sino para alegrarse de que volviste a casa, como el padre del hijo pródigo.", cite: "Lucas 15: La alegría de Dios por un solo pecador que se arrepiente.", recom: "😊 Alegría: Salí del confesionario con una sonrisa; ¡Dios acaba de borrar tu pasado!" },
+    { id: "sac25", fact: "El Matrimonio tiene como fin la ayuda mutua y los hijos.", hook: "Los esposos se ayudan a ser mejores personas y a llegar al cielo, estando abiertos al regalo de la vida que Dios les mande.", cite: "Gaudium et Spes: El matrimonio y la familia como base de la sociedad.", recom: "👨‍👩‍👧‍👦 Apertura: Los hijos son la mayor riqueza de un hogar; recibilos con el corazón abierto." },
+    { id: "sac26", fact: "Los diáconos son ministros del Orden Sagrado pero pueden casarse.", hook: "Son hombres que sirven en el altar y en la caridad. Algunos son 'diáconos permanentes' y tienen su familia y su trabajo civil.", cite: "Hechos 6: La institución de los siete diáconos para el servicio de las mesas.", recom: "🤝 Servicio: Valorá el trabajo de los diáconos; son el puente entre el altar y la calle." },
+    { id: "sac27", fact: "La Unción puede recibirse varias veces en la vida.", hook: "Si te recuperás de una enfermedad y tiempo después volvés a caer enfermo o la situación empeora, podés volver a pedirla sin problemas.", cite: "Catecismo 1515: No es un sacramento 'de una sola vez'.", recom: "🩹 Reincidencia: Si la salud flaquea de nuevo, Dios vuelve a darte su fuerza. ¡Pedila!" },
+    { id: "sac28", fact: "El Bautismo de deseo salva a los que no llegaron al agua.", hook: "Si alguien quiere ser cristiano de corazón pero muere antes de poder bautizarse, Dios toma ese deseo como un bautismo real.", cite: "Teología de la Salvación: La voluntad de recibir el sacramento suple el signo externo.", recom: "❤️ Intención: Dios mira tu corazón por encima de todo. ¡Buscá siempre hacer su voluntad!" },
+    { id: "sac29", fact: "La Confirmación te da los 7 dones del Espíritu Santo.", hook: "Sabiduría, Inteligencia, Consejo, Fortaleza, Ciencia, Piedad y Temor de Dios. ¡Es un kit de herramientas para la vida!", cite: "Isaías 11, 2: La profecía sobre los dones del Espíritu.", recom: "🛠️ Herramientas: Usá los dones que recibiste; no dejes que se oxiden en el fondo de tu alma." },
+    { id: "sac30", fact: "La Eucaristía se debe recibir en ayunas de una hora.", hook: "Es una pequeña muestra de respeto y preparación física: dejamos un espacio vacío en nuestro cuerpo para que Jesús lo llene primero.", cite: "Derecho Canónico: El ayuno eucarístico como signo de reverencia.", recom: "⏳ Espera: Ese ratito de ayuno te ayuda a tener más hambre de Dios. ¡Aprovechalo!" },
+    { id: "sac31", fact: "El Bautismo te imprime una marca llamada 'Sello Dominical'.", hook: "Significa que le pertenecés al Señor (Dominus) para siempre. Es como una firma de propiedad de Dios en tu espíritu.", cite: "Catecismo 1272: El bautizado está incorporado a Cristo de forma definitiva.", recom: "👑 Propiedad: No sos esclavo de nada ni de nadie; sos propiedad exclusiva de Dios." },
+    { id: "sac32", fact: "La Confesión por teléfono o internet no es válida.", hook: "El sacramento requiere la presencia física. Dios se hizo hombre de carne y hueso, y por eso sus sacramentos también son de persona a persona.", cite: "Nota de la Penitenciaría Apostólica: La confesión requiere el encuentro personal cara a cara.", recom: "🚶‍♂️ Encuentro: Hacé el esfuerzo de ir a la capilla; el abrazo de Dios se siente mejor en persona." },
+    { id: "sac33", fact: "El Orden Sagrado tiene tres grados.", hook: "Diáconos (servidores), Presbíteros (curas) y Obispos (sucesores de los apóstoles). Cada uno tiene una misión especial en la Iglesia.", cite: "Teología del Orden: La plenitud del sacerdocio reside en el obispo.", recom: "⛪ Jerarquía: Dios puso pastores para que no andemos como ovejas perdidas. ¡Escuchalos!" },
+    { id: "sac34", fact: "En el Matrimonio, el anillo simboliza que el amor no tiene fin.", hook: "Como el anillo es un círculo perfecto, representa que el compromiso no se termina nunca, igual que el amor de Dios por nosotros.", cite: "Ritual del Matrimonio: 'Recibe este anillo como signo de mi amor y fidelidad'.", recom: "💍 Círculo: Que tu fidelidad sea redonda y sólida, sin fisuras por donde entre la duda." },
+    { id: "sac35", fact: "La Confirmación la da normalmente el Obispo.", hook: "Él es el sucesor de los apóstoles. Al poner sus manos sobre tu cabeza, está repitiendo lo que hicieron los apóstoles en Pentecostés.", cite: "Hechos 19, 6: 'Y habiéndoles impuesto Pablo las manos, vino sobre ellos el Espíritu'.", recom: "👐 Imposición: Sentí el peso de las manos del obispo; es la fuerza de 2000 años de fe." },
+    { id: "sac36", fact: "Recibir la Eucaristía perdona los pecados veniales.", hook: "Comulgar con amor es como un incendio que quema las pequeñas faltas de caridad del día a día, fortaleciendo tu amistad con Dios.", cite: "Catecismo 1394: La Eucaristía fortalece la caridad y borra los pecados veniales.", recom: "🔥 Purificación: Comulgá con ganas; dejá que el fuego de Jesús limpie las 'tierritas' de tu alma." },
+    { id: "sac37", fact: "El Bautismo de sangre es para los que mueren por su fe.", hook: "Si alguien muere mártir sin estar bautizado, su propia sangre derramada por Jesús vale como un bautismo completo.", cite: "Tradición de los Mártires: El testimonio supremo de fe suple el agua.", recom: "🩸 Entrega: El amor más grande es dar la vida. ¡Que tu fe valga más que tu comodidad!" },
+    { id: "sac38", fact: "El Papa Francisco se confiesa cada 15 días.", hook: "Aunque sea el Papa, él dice que también es pecador y necesita la misericordia de Dios. ¡Si el Papa se confiesa, cuánto más nosotros!", cite: "Entrevista al Papa Francisco: 'Yo también soy un pecador que necesita el perdón'.", recom: "🧼 Humildad: No te sientas 'demasiado bueno' para no confesarte. Todos necesitamos limpieza." },
+    { id: "sac39", fact: "El sacramento de la Unción puede dar salud física.", hook: "Si es la voluntad de Dios y ayuda a la salvación de la persona, la unción puede traer una mejoría o curación del cuerpo.", cite: "Catecismo 1512: Tiene como fin la gracia de fortaleza y, si conviene, la salud corporal.", recom: "🤲 Fe: Rezá con fe durante la unción; para Dios nada es imposible, incluso la curación." },
+    { id: "sac40", fact: "Los anillos de boda se bendicen para que sean un recordatorio constante.", hook: "Cada vez que mires tu anillo, deberías recordar la promesa que hiciste y que Dios está ahí para ayudarte a cumplirla.", cite: "Ritual de Bendición: El anillo como signo visible de una alianza espiritual.", recom: "💍 Memoria: Si estás pasando un bache en tu matrimonio, mirá tu anillo y recordá el 'Sí' del primer día." },
+    { id: "sac41", fact: "Un cura nunca deja de ser cura, incluso si se retira.", hook: "Al igual que el Bautismo, el Orden Sagrado imprime un carácter eterno. Es sacerdote 'para siempre según el rito de Melquisedec'.", cite: "Salmo 110, 4: 'Tú eres sacerdote para siempre'.", recom: "🙏 Respeto eterno: Saludá siempre con cariño a los curas ancianos; su alma sigue brillando con el sacerdocio." },
+    { id: "sac42", fact: "La Confirmación es el 'Pentecostés personal' de cada cristiano.", hook: "Es el momento en que dejás de vivir la fe de tus padres para empezar a vivir tu propia fe con la fuerza del Espíritu.", cite: "Catecismo 1285: El sacramento de la madurez cristiana.", recom: "🚀 Madurez: No seas un 'eterno niño' en la fe; tomá el timón de tu vida espiritual con el Espíritu Santo." },
+    { id: "sac43", fact: "Se puede comulgar dos veces el mismo día.", hook: "Siempre que la segunda vez sea dentro de una Misa completa. Es para casos especiales donde participás de dos celebraciones.", cite: "Derecho Canónico 917: Se puede recibir la Eucaristía otra vez el mismo día.", recom: "🍞 Abundancia: Dios nunca se cansa de dar; si participás de otra Misa, recibilo de nuevo con amor." },
+    { id: "sac44", fact: "La Confesión general es cuando repasás toda tu vida.", hook: "Se suele hacer en momentos de grandes cambios (antes de casarse o ser cura) para limpiar el pasado a fondo y empezar de cero.", cite: "Teología Espiritual: Una práctica recomendada para grandes conversiones.", recom: "🧹 Limpieza a fondo: Una vez cada tanto, hacé una limpieza general de tu alma; ¡se siente increíble!" },
+    { id: "sac45", fact: "El matrimonio civil no es sacramento para los católicos.", hook: "Para nosotros, el contrato civil es importante para la ley, pero el verdadero vínculo sagrado ocurre frente al altar de Dios.", cite: "Derecho Canónico 1055: El matrimonio entre bautizados fue elevado por Cristo a sacramento.", recom: "⛪ Altar: Si estás casado solo por civil, hablá con el cura de Santa Ana para 'sanar' tu unión ante Dios." },
+    { id: "sac46", fact: "La Iglesia recomienda bautizar a los bebés lo antes posible.", hook: "No hay que esperar a que 'elijan'. Los padres les dan lo mejor (comida, educación); la fe y la vida de Dios son el mejor regalo inicial.", cite: "Catecismo 1250: La gratuidad del bautismo se manifiesta especialmente en los niños.", recom: "👶 Regalo: No prives a tu hijo de la gracia de Dios; bautizalo pronto para que el Espíritu lo cuide." },
+    { id: "sac47", fact: "El Obispo es el único que tiene la 'plenitud' del Orden.", hook: "Él puede dar todos los sacramentos, incluido el de ordenar a otros curas o diáconos.", cite: "Constitución Lumen Gentium: El obispo es el administrador de la gracia del supremo sacerdocio.", recom: "🇻🇦 Unión: Rezá por nuestro Obispo de Córdoba; él es el sucesor de los apóstoles en nuestra tierra." },
+    { id: "sac48", fact: "La Unción de los Enfermos borra los pecados que no pudiste confesar.", hook: "Si el enfermo está en coma o no puede hablar, la unción actúa como una confesión, dándole el perdón total de Dios.", cite: "Teología Sacramental: El efecto purificador de la unción en el umbral de la eternidad.", recom: "🕊️ Preparación: No tengas miedo de la unción; es el abrazo más tierno de Dios para el que sufre." },
+    { id: "sac49", fact: "El agua bendita es un 'sacramental', no un sacramento.", hook: "Los sacramentos los inventó Jesús; los sacramentales (como el agua bendita o las medallas) los puso la Iglesia para ayudarnos.", cite: "Catecismo 1667: Los sacramentales son signos sagrados que preparan a recibir la gracia.", recom: "🛡️ Auxilio: Usá el agua bendita al salir de casa; es un escudo contra las malas ondas." },
+    { id: "sac50", fact: "En la Eucaristía, Jesús se queda aunque la Misa termine.", hook: "Él sigue presente en las hostias que se guardan en el Sagrario. Por eso la capilla es un lugar de oración silenciosa y real.", cite: "Catecismo 1379: La reserva de la Eucaristía para la adoración y los enfermos.", recom: "🤫 Silencio: Cuando entres a la capilla, hacé silencio; el Dueño del universo está ahí guardadito esperándote." },
+    { id: "sac51", fact: "El Bautismo nos une a todos los cristianos del mundo.", hook: "Cualquier persona bautizada es, de verdad, tu hermano en Cristo, sin importar su país o su idioma. ¡Somos la familia más grande!", cite: "Gálatas 3, 27: 'Pues todos los que habéis sido bautizados en Cristo, de Cristo estáis revestidos'.", recom: "🤝 Fraternidad: Tratá a los demás como hermanos; tienen el mismo ADN espiritual que vos." },
+    { id: "sac52", fact: "La Confirmación te da el don de 'Fortaleza' para la lucha diaria.", hook: "No es para ser superhéroe, sino para aguantar las dificultades del día a día con la paz de Dios en el corazón.", cite: "Catecismo 1303: Da una fuerza especial del Espíritu Santo para difundir la fe.", recom: "💪 Resistencia: Cuando la vida se ponga difícil, recordá que sos un confirmado; ¡tenés fuerza de sobra!" },
+    { id: "sac53", fact: "Si comulgás y se te cae la hostia, hay que levantarla con respeto.", hook: "No te asustes; simplemente levantala y comulgala, o dásela al cura. Es Jesús y hay que tratarlo con cuidado.", cite: "Instrucción del Misal: Se debe tratar con suma reverencia cualquier fragmento de la Eucaristía.", recom: "💎 Cuidado: Tratamos a la hostia con delicadeza porque sabemos Quién está ahí." },
+    { id: "sac54", fact: "La Confesión cura las heridas que el pecado dejó en tu alma.", hook: "El pecado es como un clavo; aunque lo saques (perdón), queda el agujero (herida). La penitencia ayuda a que ese agujero se cierre.", cite: "Catecismo 1448: La confesión comprende el dolor, la confesión y la satisfacción.", recom: "🩹 Sanación: Cumplí la penitencia con alegría; es la 'cremita' que ayuda a cerrar la herida del alma." },
+    { id: "sac55", fact: "El Matrimonio es un sacramento de 'vivos'.", hook: "Significa que para recibirlo hay que estar en gracia de Dios. Por eso los novios siempre deben confesarse antes de la boda.", cite: "Teología Sacramental: La preparación espiritual es clave para que la gracia actúe plenamente.", recom: "🧼 Limpieza previa: Antes del 'Sí, quiero', pasá por el confesionario; empezá tu nueva vida con el alma impecable." },
+    { id: "sac56", fact: "El celibato de los curas es un regalo de tiempo total para Dios.", hook: "Al no tener una familia propia, el cura puede ser 'padre' de toda la comunidad, estando disponible a cualquier hora para nosotros.", cite: "Sacerdotalis Caelibatus: El celibato como signo del Reino de los Cielos.", recom: "🙏 Agradecimiento: Valorá que el cura de Santa Ana dejó su propia familia para ser parte de la tuya." },
+    { id: "sac57", fact: "La Unción de los Enfermos quita el miedo a la muerte.", hook: "Da una paz sobrenatural que ayuda a la persona a confiar totalmente en los brazos de Dios, sea cual sea el resultado de la enfermedad.", cite: "Catecismo 1520: El don del Espíritu Santo de consuelo y paz ante el sufrimiento.", recom: "🕊️ Consuelo: Si tenés miedo al dolor o a la muerte, rezá; los sacramentos son la mejor medicina contra el temor." },
+    { id: "sac58", fact: "El Bautismo es necesario para recibir todos los demás sacramentos.", hook: "Es la 'puerta'. Sin estar bautizado, no podés confesarte, ni casarte por iglesia, ni comulgar. ¡Es la llave maestra!", cite: "Derecho Canónico 842: El bautismo es el fundamento de toda la vida cristiana.", recom: "🔑 Llave: Agradecele hoy a tus padres por haberte abierto la puerta de la vida de Dios." },
+    { id: "sac59", fact: "La Eucaristía es el 'Antídoto' contra el pecado.", hook: "San Ignacio de Antioquía la llamaba 'Medicina de inmortalidad'. Nos ayuda a no caer en las tentaciones de la semana.", cite: "Catecismo 1395: La Eucaristía nos preserva de futuros pecados mortales.", recom: "🧪 Medicina: Si sentís que estás flojo y caés siempre en lo mismo, comulgá más seguido." },
+    { id: "sac60", fact: "En la Confesión, el cura te representa a vos y a Dios.", hook: "Le pedís perdón a Dios, pero también a la Iglesia (la comunidad) que lastimaste con tu pecado. El cura recibe tu pedido en nombre de todos.", cite: "Catecismo 1440: El pecado es una ofensa a Dios y una ruptura de la comunión con la Iglesia.", recom: "🤝 Reconciliación: Confesarse es volver a hacer las paces con Dios y con todos tus hermanos." },
+    { id: "sac61", fact: "La Confirmación te da el 'don de Lenguas' para hablar de Dios.", hook: "No es hablar idiomas raros, sino saber decir la palabra justa en el momento justo para ayudar a alguien que sufre.", cite: "Efesios 4, 29: 'Sino la que sea buena para la necesaria edificación'.", recom: "🗣️ Consejo: Pedile al Espíritu que te use como su megáfono para dar ánimos a los demás." },
+    { id: "sac62", fact: "El Orden Sagrado imprime un carácter eterno en el alma.", hook: "Incluso en el cielo, los que fueron curas se reconocerán como tales. Es una marca de servicio que no se borra ni con la muerte.", cite: "Catecismo 1582: El carácter del orden es permanente para toda la eternidad.", recom: "🎯 Eternidad: Todo lo que hacés por Dios en esta vida, deja una marca que vas a disfrutar para siempre." },
+    { id: "sac63", fact: "El Matrimonio es un sacramento 'social'.", hook: "No es solo para los novios; es para construir la Iglesia y la sociedad. Cada familia nueva es una 'iglesia doméstica' que ilumina el barrio.", cite: "Familiaris Consortio: La familia es el fundamento de la vida cristiana.", recom: "🏡 Luz: Hacé que tu casa sea un lugar donde se note que Dios vive ahí. ¡Iluminá Santa Ana!" },
+    { id: "sac64", fact: "La Unción se puede dar a niños que tengan uso de razón.", hook: "Si un niño de unos 7 años está enfermo, puede recibirla para sentir el consuelo de Jesús que tanto amaba a los más pequeños.", cite: "Derecho Canónico 1004: Se puede administrar a los fieles que han alcanzado el uso de razón.", recom: "🧒 Ternura: No le ocultes la fe a los niños enfermos; dales la fuerza de la Unción." },
+    { id: "sac65", fact: "Para bautizarse de adulto hay que hacer el RICA.", hook: "Significa Rito de Iniciación Cristiana para Adultos. Es un camino de aprendizaje para entender el regalo gigante que vas a recibir.", cite: "Ritual de Iniciación Cristiana: El proceso de conversión de los adultos.", recom: "📚 Formación: Si conocés a alguien grande que no se bautizó, terminalo a la capilla; ¡nunca es tarde!" },
+    { id: "sac66", fact: "La Eucaristía debe tratarse con 'Sumo Respeto'.", hook: "Por eso no se puede comer ni mascar chicle en la capilla. Todo nuestro cuerpo debe mostrar que sabemos que Dios está ahí.", cite: "Instrucción Redemptionis Sacramentum: Sobre las normas para tratar la Eucaristía con dignidad.", recom: "🤫 Postura: Sentate bien, no cruces las piernas y estate atento; estás frente al Rey de Reyes." },
+    { id: "sac67", fact: "La Confesión te devuelve la 'Vestidura Blanca' del bautismo.", hook: "Cuando pecamos, manchamos el traje blanco que nos dieron de bebés. La confesión es como el mejor lavadero: te lo deja impecable de nuevo.", cite: "Lucas 15, 22: 'Sacad el mejor vestido, y vestidle'.", recom: "⚪ Blancura: Mantené tu alma limpia; es el traje que tenés que usar para entrar al cielo." },
+    { id: "sac68", fact: "El Orden Sagrado se recibe por la imposición de manos.", hook: "Es el gesto más antiguo. El Obispo pone sus manos en silencio y el Espíritu Santo 'baja' para transformar a ese hombre en sacerdote.", cite: "1 Timoteo 4, 14: 'No descuides el don que hay en ti... con la imposición de las manos'.", recom: "👐 Gracia: Rezá por las vocaciones; necesitamos manos que sigan bajando la bendición de Dios." },
+    { id: "sac69", fact: "En el Matrimonio, Dios da una 'Gracia de Estado'.", hook: "Es una ayuda especial para aguantar los problemas, educar a los hijos y mantenerse fieles. ¡No estás solo en tu matrimonio!", cite: "Catecismo 1642: Cristo es la fuente de la gracia matrimonial.", recom: "💪 Auxilio: Cuando sientas que no das más con tu pareja, pedile a Dios que 'active' la gracia del casamiento." },
+    { id: "sac70", fact: "La Confirmación te da el don de 'Piedad'.", hook: "Es sentir que Dios es realmente tu Papá y que todos los hombres son tus hermanos. Te hace tener un corazón tierno y rezador.", cite: "Catecismo 1303: El Espíritu Santo nos hace clamar 'Abba, Padre'.", recom: "❤️ Piedad: Tratate bien y tratá bien a los demás; todos somos hijos del mismo Padre." },
+    { id: "sac71", fact: "La Eucaristía es el 'Viático' para el último viaje.", hook: "Cuando alguien está por morir, la comunión se llama Viático (preparación para el camino). Es el alimento que te acompaña al cielo.", cite: "Catecismo 1524: La Eucaristía como paso de la muerte a la vida.", recom: "☀️ Final: Que el último sabor que sientas en esta tierra sea el de Jesús en la comunión." },
+    { id: "sac72", fact: "Los sacramentos son los 7 tesoros que Jesús te dejó.", hook: "No son trámites ni papeles; son encuentros reales con Dios que te cambian la vida para siempre. ¡Aprovechalos todos!", cite: "Catecismo de la Iglesia Católica: El compendio de nuestra vida espiritual.", recom: "🎯 Meta: Tu objetivo es simple: viví una vida llena de sacramentos y vas a ser inmensamente feliz." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Sacramento ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-sacramentos.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `💦 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí los misterios de los Sacramentos aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Dato Sacramental | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Palabras con Alma | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Palabras con Alma</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-book-open"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">El Significado Oculto</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-lightbulb recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Diccionario de la Fe</footer>
+
+<script>
+const DATOS = [
+    { id: "pal1", fact: "La palabra 'Amén' significa 'Así es' o 'En verdad'.", hook: "Viene del hebreo y se usa para confirmar algo con firmeza. Es como decir: 'Pongo mi vida sobre esta verdad'.", cite: "Diccionario Bíblico: Una de las pocas palabras que se mantienen igual en todos los idiomas del mundo.", recom: "🧱 Firmeza: Decilo con fuerza; estás firmando un contrato de fe con Dios." },
+    { id: "pal2", fact: "'Aleluya' es un grito de alegría que significa 'Alaben a Yahvé'.", hook: "Yahvé (o Yah) es el nombre de Dios en el Antiguo Testamento. Es la palabra más festiva de la Biblia.", cite: "Salmos: Aparece constantemente como invitación a la alabanza comunitaria.", recom: "🎉 Jubilo: No lo digas bajito; ¡es un grito de victoria!" },
+    { id: "pal3", fact: "'Eucaristía' viene del griego y significa 'Acción de Gracias'.", hook: "Antes de ser el nombre de la Misa, era la palabra común para agradecer un regalo. ¡Y vaya si la Eucaristía es un regalo!", cite: "Catecismo 1360: 'La Eucaristía es un sacrificio de acción de gracias al Padre'.", recom: "🎁 Gratitud: No vayas a Misa solo a pedir; andá principalmente a decir 'Gracias'." },
+    { id: "pal4", fact: "'Evangelio' significa literalmente 'Buena Noticia'.", hook: "En la antigüedad, se usaba cuando un mensajero traía la noticia de que se había ganado una guerra. ¡Jesús ganó la guerra contra la muerte!", cite: "Marcos 1, 1: 'Principio del evangelio de Jesucristo...'.", recom: "📣 Noticia: Compartí tu fe como quien cuenta un chisme buenísimo." },
+    { id: "pal5", fact: "La palabra 'Biblia' significa simplemente 'Los Libros'.", hook: "Viene de la ciudad de Biblos, famosa por fabricar papiro. No es un solo libro, es una biblioteca entera de 73 libros.", cite: "Etimología: Del griego 'Biblion' (Librito).", recom: "📚 Biblioteca: No leas la Biblia de corrido; elegí un 'libro' por vez para saborearlo." },
+    { id: "pal6", fact: "'Iglesia' significa 'Asamblea' o 'Los que son llamados'.", hook: "No se refiere a las paredes de ladrillo, sino a la gente que Dios convoca para estar junta.", cite: "Efesios 1, 22: La Iglesia como el Cuerpo de Cristo en la tierra.", recom: "🏘️ Comunidad: Sos parte de un equipo gigante; nunca camines tu fe solo." },
+    { id: "pal7", fact: "La palabra 'Católico' significa 'Universal'.", hook: "Se usó por primera vez en el año 107 para decir que la Iglesia es para todos los hombres de todos los tiempos y lugares.", cite: "San Ignacio de Antioquía: El primero en llamar 'Católica' a la Iglesia.", recom: "🌎 Apertura: No juzgues a nadie; en nuestra Iglesia caben todos, sin excepción." },
+    { id: "pal8", fact: "'Obispo' significa 'Vigilante' o 'El que mira desde arriba'.", hook: "No para controlar, sino como un pastor que se sube a una loma para cuidar que ninguna oveja se pierda.", cite: "1 Timoteo 3, 1: 'Si alguno anhela obispado, buena obra desea'.", recom: "👀 Cuidado: Rezá por el Obispo de Córdoba; su tarea de cuidar a todos es inmensa." },
+    { id: "pal9", fact: "'Presbítero' (Cura) significa literalmente 'Anciano'.", hook: "No por la edad física, sino por la sabiduría y la madurez espiritual que se espera de quien guía a la comunidad.", cite: "Hechos 14, 23: Los apóstoles constituían presbíteros en cada iglesia.", recom: "👴 Sabiduría: Respetá al cura no por el hombre que es, sino por la sabiduría de Dios que representa." },
+    { id: "pal10", fact: "'Diácono' significa 'Servidor' o 'Camarero'.", hook: "Es el grado del orden dedicado especialmente a servir a los pobres y ayudar en el altar.", cite: "Hechos 6: El origen de los siete diáconos para el servicio de las mesas.", recom: "🧼 Servicio: Todos deberíamos tener 'alma de diácono' y buscar a quién ayudar hoy." },
+    { id: "pal11", fact: "'Misa' viene de la palabra latina 'Missio', que significa 'Envío'.", hook: "Se llama así por la frase final: 'Ite, missa est', que significa 'Vayan, han sido enviados'.", cite: "Liturgia: La Misa no termina, se expande a tu vida diaria.", recom: "🚀 Misión: No dejes a Jesús en la capilla; llevalo con vos al trabajo y a la casa." },
+    { id: "pal12", fact: "'Sacramento' significa 'Juramento' o 'Misterio'.", hook: "Era el juramento de lealtad que hacían los soldados romanos. Para nosotros, es el juramento de Dios de que siempre nos dará su gracia.", cite: "Catecismo 1131: Signos eficaces de la gracia instituidos por Cristo.", recom: "🛡️ Lealtad: Cumplí tus promesas a Dios como un soldado fiel." },
+    { id: "pal13", fact: "'Ángel' significa simplemente 'Mensajero'.", hook: "No define lo que 'son' (espíritus), sino lo que 'hacen' (traer recados de Dios a los hombres).", cite: "Hebreos 1, 14: Espíritus servidores enviados para ayuda de los que han de heredar la salvación.", recom: "✉️ Recado: Prestá atención; Dios puede mandarte un mensaje hoy a través de alguien." },
+    { id: "pal14", fact: "'Mesías' es una palabra hebrea que significa 'Ungido'.", hook: "En la antigüedad, a los reyes se les ponía aceite (unción) en la cabeza. Jesús es el Rey definitivo esperado por siglos.", cite: "Juan 1, 41: 'Hemos hallado al Mesías (que traducido es, el Cristo)'.", recom: "👑 Rey: Dejá que Jesús sea el que mande en tus decisiones importantes." },
+    { id: "pal15", fact: "'Cristo' es la traducción al griego de la palabra 'Mesías'.", hook: "Significa lo mismo: 'El Ungido'. No es el apellido de Jesús, es su título real.", cite: "Hechos 2, 36: 'Dios le ha hecho Señor y Cristo, a este Jesús a quien vosotros crucificasteis'.", recom: "🎯 Identidad: Cuando decís 'Jesucristo', estás diciendo 'Jesús es el Rey'." },
+    { id: "pal16", fact: "El nombre 'Jesús' significa 'Yahvé salva'.", hook: "Es un nombre con misión: Dios mismo vino en persona para rescatarnos de la tristeza y la muerte.", cite: "Mateo 1, 21: 'Y llamarás su nombre JESÚS, porque él salvará a su pueblo de sus pecados'.", recom: "🆘 Rescate: Cuando estés en problemas, repetí su nombre; hay poder en él." },
+    { id: "pal17", fact: "'Abba' es una palabra aramea que significa 'Papá' o 'Papi'.", hook: "Es la palabra cariñosa que usaban los niños. Jesús nos dio permiso de llamar así al Dueño del Universo.", cite: "Romanos 8, 15: 'Por el cual clamamos: ¡Abba, Padre!'.", recom: "👨‍👦 Ternura: No le hables a Dios con palabras difíciles; hablale como a tu papá." },
+    { id: "pal18", fact: "'Rosario' significa 'Corona de Rosas'.", hook: "Cada Ave María que rezamos es como si le regaláramos una rosa espiritual a la Virgen para hacerle una corona.", cite: "Tradición Dominicana: Una devoción que recorre la vida de Jesús de la mano de María.", recom: "🌹 Regalo: Hoy regalale un 'ramo' de 10 Ave Marías a nuestra Madre." },
+    { id: "pal19", fact: "'Parroquia' significa 'Vivir cerca' o 'Junto a la casa'.", hook: "Define a la comunidad de cristianos que viven cerca unos de otros para ayudarse y rezar juntos.", cite: "Etimología: Del griego 'Para-oikos'.", recom: "🏠 Vecinos: Tu parroquia es tu familia extendida; conocé a los que se sientan cerca tuyo." },
+    { id: "pal20", fact: "'Liturgia' significa literalmente 'Obra del pueblo'.", hook: "Es el servicio público que hacemos para Dios. No es algo que el cura hace solo, ¡lo hacemos todos juntos!", cite: "Catecismo 1069: La participación del Pueblo de Dios en la obra de Cristo.", recom: "⚒️ Trabajo: Participá en Misa respondiendo y cantando; es tu 'obra'." },
+    { id: "pal21", fact: "La palabra 'Santo' significa 'Apartado' o 'Diferente'.", hook: "No significa ser perfecto, sino estar 'apartado' del mal para dedicarse a Dios. ¡Todos estamos llamados a serlo!", cite: "1 Pedro 1, 16: 'Sed santos, porque yo soy santo'.", recom: "✨ Diferencia: Hoy intentá hacer algo que demuestre que sos 'diferente' al mundo." },
+    { id: "pal22", fact: "'Pecado' significa originalmente 'Errar el blanco'.", hook: "Es como un arquero que tira una flecha y no le pega al centro. Pecar es equivocarse de camino para ser feliz.", cite: "Teología Moral: Una falta contra la razón, la verdad y la conciencia recta.", recom: "🎯 Puntería: Si erraste el blanco, no te castigues; pedí perdón y volvé a apuntar bien." },
+    { id: "pal23", fact: "'Amor' en la Biblia se dice 'Ágape'.", hook: "No es el amor de mariposas en la panza, sino el amor de decisión: buscar el bien del otro aunque nos cueste sacrificio.", cite: "1 Juan 4, 8: 'Dios es amor (Ágape)'.", recom: "💖 Decisión: Amá hoy a alguien que no te caiga bien; eso es amor de verdad." },
+    { id: "pal24", fact: "'Misericordia' significa 'Poner el corazón en la miseria'.", hook: "Es la capacidad de Dios de sentir nuestro dolor y nuestras faltas como si fueran suyas para ayudarnos.", cite: "Etimología: 'Miseris-cor'.", recom: "❤️ Compasión: Poné tu corazón en el problema de algún amigo hoy." },
+    { id: "pal25", fact: "'Vigilia' significa 'Estar despierto' o 'Hacer guardia'.", hook: "Se usa para las oraciones que hacemos de noche esperando una gran fiesta, como la Pascua o Navidad.", cite: "Tradición Cristiana: La actitud de espera del que sabe que el Señor viene.", recom: "🕯️ Alerta: No te duermas en tu vida espiritual; estate atento a las señales de Dios." },
+    { id: "pal26", fact: "'Adviento' significa 'Venida' o 'Llegada'.", hook: "Es el tiempo de preparación para el cumpleaños de Jesús. ¡Estamos esperando al invitado más importante!", cite: "Ciclo Litúrgico: Las cuatro semanas antes de Navidad.", recom: "⏳ Preparación: Limpiá la 'casa' de tu corazón antes de que llegue el Niño Jesús." },
+    { id: "pal27", fact: "'Cuaresma' viene de la palabra 'Cuarenta'.", hook: "Recuerda los 40 días de Jesús en el desierto. Es un tiempo de entrenamiento espiritual para la Pascua.", cite: "Mateo 4, 2: 'Y después de haber ayunado cuarenta días...'.", recom: "🏃‍♂️ Entrenamiento: Aprovechá la Cuaresma para sacar los 'músculos' de tu fe." },
+    { id: "pal28", fact: "'Pascua' significa 'Paso' o 'Salto'.", hook: "Recuerda el 'paso' de la esclavitud a la libertad en Egipto, y para nosotros el 'paso' de la muerte a la vida de Jesús.", cite: "Éxodo 12: La institución de la Pascua judía que Jesús completó.", recom: "🌊 Salto: Animate a dar el paso y dejar atrás esa costumbre que te hace daño." },
+    { id: "pal29", fact: "'Epifanía' significa 'Manifestación' o 'Darse a conocer'.", hook: "Es cuando Jesús se mostró a los Reyes Magos, representando que venía para todos los pueblos del mundo.", cite: "Mateo 2: El relato de los sabios de Oriente.", recom: "💡 Manifestar: Hacé que Jesús se 'manifieste' hoy a través de tu buen trato." },
+    { id: "pal30", fact: "'Pentecostés' significa 'Cincuenta días'.", hook: "Es la fiesta que celebramos 50 días después de Pascua, cuando nació la Iglesia con la fuerza del Espíritu Santo.", cite: "Hechos 2: La venida del Espíritu sobre los apóstoles y María.", recom: "🔥 Viento: Dejá que el Espíritu Santo sople fuerte en tus planes hoy." },
+    { id: "pal31", fact: "'Testamento' significa 'Alianza' o 'Contrato'.", hook: "La Biblia tiene dos: el Antiguo (la promesa) y el Nuevo (el cumplimiento en Jesús).", cite: "Hebreos 9, 15: Cristo es mediador de un nuevo testamento/alianza.", recom: "📜 Alianza: Dios firmó un contrato de amor con vos; ¡Él nunca rompe su parte!" },
+    { id: "pal32", fact: "'Profeta' significa 'El que habla en nombre de otro'.", hook: "No es alguien que adivina el futuro, sino alguien que dice lo que Dios piensa sobre el presente.", cite: "Jeremías 1, 9: 'He puesto mis palabras en tu boca'.", recom: "📢 Verdad: No tengas miedo de decir lo que es justo, aunque a otros no les guste." },
+    { id: "pal33", fact: "'Apocalipsis' significa 'Quitar el velo' o 'Revelación'.", hook: "No significa fin del mundo con terror, sino ver la realidad tal como es: Dios ganando la batalla final.", cite: "Apocalipsis 1, 1: 'La revelación de Jesucristo'.", recom: "🛡️ Esperanza: Cuando veas noticias malas, recordá que al final Dios siempre gana." },
+    { id: "pal34", fact: "'Génesis' significa 'Origen' o 'Principio'.", hook: "Es el primer libro de la Biblia y cuenta cómo empezó todo el sueño de Dios con la humanidad.", cite: "Génesis 1, 1: 'En el principio creó Dios los cielos y la tierra'.", recom: "🌱 Inicios: Todo gran cambio empieza con un pequeño primer paso. ¡Dalo hoy!" },
+    { id: "pal35", fact: "'Éxodo' significa 'Salida' o 'Partida'.", hook: "Cuenta la historia de cómo un pueblo entero salió de la esclavitud hacia la libertad. ¡Es el gran viaje de la Biblia!", cite: "Libro del Éxodo: El viaje por el desierto hacia la Tierra Prometida.", recom: "🚶‍♂️ Salida: Es hora de que salgas de esa situación que te tiene esclavizado." },
+    { id: "pal36", fact: "'Salmo' significa 'Canto acompañado de un instrumento'.", hook: "Son 150 poemas que sirven para rezar en cualquier situación: alegría, tristeza, miedo o agradecimiento.", cite: "Libro de los Salmos: El cancionero oficial de la Biblia.", recom: "🎵 Canción: Si no sabés qué decirle a Dios, abrí un Salmo; ahí están las palabras." },
+    { id: "pal37", fact: "'Evangelista' significa 'Portador de buenas noticias'.", hook: "Se refiere especialmente a los cuatro que escribieron la vida de Jesús: Mateo, Marcos, Lucas y Juan.", cite: "Tradición Apostólica: Los cuatro pilares del testimonio escrito.", recom: "✍️ Testigo: Escribí tu propia 'buena noticia' hoy haciendo algo lindo por alguien." },
+    { id: "pal38", fact: "'Apóstol' significa 'Enviado con una misión'.", hook: "Jesús eligió a 12 para que fueran sus embajadores oficiales en el mundo.", cite: "Mateo 10, 2: 'Los nombres de los doce apóstoles son estos...'.", recom: "🏃‍♂️ Envío: Sentite un enviado de Dios en tu trabajo; portate como su embajador." },
+    { id: "pal39", fact: "'Discípulo' significa 'Alumno' o 'Aprendiz'.", hook: "Ser cristiano no es saberlo todo, es estar siempre aprendiendo a los pies del Maestro Jesús.", cite: "Lucas 14, 27: 'El que no lleva su cruz y viene en pos de mí, no puede ser mi discípulo'.", recom: "📝 Aprender: Tomate 5 minutos hoy para leer algo que te enseñe sobre tu fe." },
+    { id: "pal40", fact: "'Parábola' significa 'Poner una cosa al lado de otra'.", hook: "Es una comparación. Jesús usaba cuentos de la vida diaria para explicar verdades del cielo.", cite: "Marcos 4, 34: 'Y sin parábolas no les hablaba'.", recom: "🔍 Comparación: Mirá a tu alrededor; Dios te está enseñando algo a través de lo que ves." },
+    { id: "pal41", fact: "'Milagro' significa 'Cosa admirable' o 'Maravilla'.", hook: "Son signos que Dios hace para despertarnos la fe y demostrarnos que Él tiene el poder sobre la naturaleza.", cite: "Juan 2, 11: 'Este principio de señales hizo Jesús... y manifestó su gloria'.", recom: "✨ Asombro: No pierdas la capacidad de sorprenderte por las cosas lindas de la vida." },
+    { id: "pal42", fact: "'Gracia' significa 'Regalo gratuito'.", hook: "Es la vida de Dios que entra en nosotros sin que hayamos hecho nada para merecerla. ¡Es un favor de amigos!", cite: "Efesios 2, 8: 'Porque por gracia sois salvos por medio de la fe'.", recom: "🎁 Favor: Hoy hacé un favor a alguien que no se lo merezca; eso es actuar con gracia." },
+    { id: "pal43", fact: "'Gloria' significa 'Peso' o 'Importancia'.", hook: "Dar gloria a Dios es reconocer que Él es lo más importante ('lo que más pesa') en nuestra vida.", cite: "Salmo 115, 1: 'No a nosotros, oh Jehová... sino a tu nombre da gloria'.", recom: "⚖️ Peso: ¿Qué es lo que más pesa en tus decisiones? Tratá de que sea el amor." },
+    { id: "pal44", fact: "'Hosanna' significa originalmente '¡Sálvanos ahora!'.", hook: "Empezó como un pedido de auxilio y terminó siendo un grito de alegría para recibir al Rey.", cite: "Mateo 21, 9: '¡Hosanna al Hijo de David!'.", recom: "🆘 Pedido: No tengas miedo de gritarle a Dios que necesitás su ayuda urgente." },
+    { id: "pal45", fact: "'Altar' significa 'Lugar alto'.", hook: "Representa la montaña donde se encuentra el cielo con la tierra. Es la mesa del banquete de Jesús.", cite: "Liturgia: El centro de la celebración eucarística.", recom: "⛪ Respeto: Cuando pases frente al altar de la capilla, hacé una inclinación; Dios está ahí." },
+    { id: "pal46", fact: "'Sagrario' viene de 'Sagrado' y significa 'Lugar de reserva'.", hook: "Es el cofrecito de oro donde se guardan las hostias consagradas. Es la 'habitación' de Jesús en la capilla.", cite: "Derecho Canónico: El lugar más digno para la reserva de la Eucaristía.", recom: "🤫 Visita: Pasá un minuto por el sagrario hoy; Jesús te está esperando para charlar." },
+    { id: "pal47", fact: "'Cáliz' significa simplemente 'Copa'.", hook: "Pero no es cualquier copa; es la que contiene la Sangre de Jesús que nos limpia por dentro.", cite: "Lucas 22, 20: 'Esta copa es el nuevo pacto en mi sangre'.", recom: "🍷 Copa: Cuando veas el cáliz en Misa, recordá que Jesús dio hasta su última gota por vos." },
+    { id: "pal48", fact: "'Hostia' significa 'Víctima' o 'Sacrificio'.", hook: "Nos recuerda que Jesús se ofreció a sí mismo para que nosotros tuviéramos vida. ¡Es el Pan de los valientes!", cite: "Teología Eucarística: El pan ácimo que se convierte en el Cuerpo de Cristo.", recom: "🍞 Alimento: Comulgá con conciencia; estás recibiendo la fuerza de Dios." },
+    { id: "pal49", fact: "'Amón' (o Ambón) significa 'Lugar elevado'.", hook: "Es el atril desde donde se lee la Biblia. Se hace desde arriba para que la Palabra de Dios llegue a todos.", cite: "Ordenación del Misal: El lugar propio de la proclamación de la Palabra.", recom: "📢 Escucha: Cuando alguien lee en el ambón, hacé silencio; Dios está hablando." },
+    { id: "pal50", fact: "'Casulla' significa 'Casita'.", hook: "Es la ropa de colores que usa el cura. Se llama así porque lo cubre todo, simbolizando que la caridad de Cristo debe cubrirlo todo.", cite: "Vestiduras Litúrgicas: El color indica el tiempo o la fiesta que se celebra.", recom: "🏠 Abrigo: Que tu amor sea como una 'casita' que proteja a los que están tristes." },
+    { id: "pal51", fact: "'Estola' significa 'Vestido' o 'Banda de honor'.", hook: "Es la tira de tela que el cura lleva al cuello. Simboliza la autoridad que Dios le dio para servir.", cite: "Signos del Orden: Representa el yugo de Cristo que el sacerdote acepta.", recom: "👔 Autoridad: Respetá a los que Dios puso para guiarte; su tarea es pesada." },
+    { id: "pal52", fact: "'Incienso' significa 'Lo que se quema'.", hook: "Su humo sube al techo representando nuestras oraciones que suben hasta el trono de Dios.", cite: "Salmo 141, 2: 'Suba mi oración delante de ti como el incienso'.", recom: "🌬️ Aroma: Que tu vida huela rico para los demás por tus buenas acciones." },
+    { id: "pal53", fact: "'Bautismo' significa 'Sumergir' o 'Zambullirse'.", hook: "Es zambullirse en el amor de Dios para salir limpios y con una vida nueva.", cite: "Mateo 28, 19: 'Bautizándolos en el nombre del Padre, y del Hijo, y del Espíritu Santo'.", recom: "💧 Zambullida: Animate a meterte a fondo en las cosas de la capilla; no te quedes en la orilla." },
+    { id: "pal54", fact: "'Confirmación' significa 'Hacer firme' o 'Reforzar'.", hook: "Es cuando el Espíritu Santo le pone un 'refuerzo' a tu fe para que seas un cristiano adulto y valiente.", cite: "Hechos 8, 17: 'Entonces les imponían las manos, y recibían el Espíritu Santo'.", recom: "💪 Firmeza: No seas un cristiano 'flojo'; reforzá tu oración cada día." },
+    { id: "pal55", fact: "'Comunión' significa 'Común-unión'.", hook: "Es estar unidos en lo mismo. Al comulgar, nos unimos a Jesús y a todos los que están en la iglesia.", cite: "1 Corintios 10, 16: '¿No es la comunión del cuerpo de Cristo?'.", recom: "🤝 Unión: No podés estar unido a Dios si estás peleado con tu vecino. ¡Perdoná!" },
+    { id: "pal56", fact: "'Confesión' significa 'Reconocer' o 'Declarar'.", hook: "Es declarar que nos equivocamos pero, sobre todo, declarar que Dios es infinitamente bueno y nos perdona.", cite: "1 Juan 1, 9: 'Si confesamos nuestros pecados, él es fiel y justo para perdonar'.", recom: "🧼 Sinceridad: No le ocultes nada a Dios; Él ya lo sabe y solo espera que se lo cuentes." },
+    { id: "pal57", fact: "'Penitencia' significa 'Cambio de mente' o 'Arrepentimiento'.", hook: "No es un castigo, es un ejercicio para ayudar a que nuestra cabeza empiece a pensar como la de Jesús.", cite: "Etimología: Del latín 'Paenitentia'.", recom: "🧠 Cambio: Si te diste cuenta de que algo está mal, cambiá el chip hoy mismo." },
+    { id: "pal58", fact: "'Unción' significa 'Untar con aceite'.", hook: "El aceite suaviza, cura y da fuerza. Dios nos 'unta' para sanar las heridas del alma y del cuerpo.", cite: "Santiago 5, 14: 'Ungiéndole con aceite en el nombre del Señor'.", recom: "🩹 Sanación: Pedile a Dios que 'suavice' esas partes duras de tu carácter." },
+    { id: "pal59", fact: "'Matrimonio' significa 'Oficio de madre'.", hook: "Recuerda que el hogar es el lugar donde nace y se cuida la vida. ¡Es la base de toda la sociedad!", cite: "Derecho Canónico: Consorcio de toda la vida entre varón y mujer.", recom: "💍 Hogar: Cuidá tu matrimonio como el tesoro más grande; Dios vive ahí." },
+    { id: "pal60", fact: "'Cuaresma' viene de 'Cuarenta'.", hook: "Recuerda los 40 años del pueblo en el desierto y los 40 días de Jesús antes de su misión.", cite: "Liturgia: Tiempo de desierto, oración y ayuno.", recom: "⏳ Tiempo: Dedicá tiempo a lo importante; lo urgente puede esperar." },
+    { id: "pal61", fact: "'Viático' significa 'Provisiones para el camino'.", hook: "Es la última comunión que recibe una persona antes de morir, para que Jesús la acompañe en el viaje al cielo.", cite: "Catecismo 1524: La Eucaristía como paso de la muerte a la vida.", recom: "🥪 Provisión: Que tu fe sea el alimento que te dé fuerzas para llegar al final." },
+    { id: "pal62", fact: "'Serafín' significa 'El que arde'.", hook: "Son los ángeles que están más cerca de Dios y arden de puro amor. ¡Ojalá nuestro corazón fuera así!", cite: "Isaías 6, 2: 'Por encima de él había serafines...'.", recom: "🔥 Fuego: Poné pasión en lo que hacés; no hagas las cosas de Dios a medias." },
+    { id: "pal63", fact: "'Querubín' significa 'Plenitud de conocimiento'.", hook: "Son ángeles que ven la belleza de Dios de cerca. Se los representa como niños para mostrar su sencillez.", cite: "Ezequiel 10: La visión de la gloria de Dios y los querubines.", recom: "👦 Sencillez: Para entender a Dios no hace falta ser un genio, hace falta ser sencillo." },
+    { id: "pal64", fact: "'Arcángel' significa 'Mensajero principal'.", hook: "Son los jefes de los ángeles que tienen misiones importantísimas, como Miguel, Gabriel y Rafael.", cite: "Tradición Bíblica: Los tres arcángeles mencionados por nombre en la Biblia.", recom: "🛡️ Jefe: Pedile a San Miguel que sea el guardaespaldas de tu familia hoy." },
+    { id: "pal65", fact: "'Mártir' significa literalmente 'Testigo'.", hook: "No es alguien que 'muere', sino alguien que prefiere morir antes que dejar de decir la verdad sobre Jesús.", cite: "Hechos 1, 8: 'Y me seréis testigos (mártires) hasta lo último de la tierra'.", recom: "💎 Testimonio: Que tus acciones hablen de Dios sin que tengas que abrir la boca." },
+    { id: "pal66", fact: "'Basílica' significa 'Casa del Rey'.", hook: "Es un título de honor que se le da a iglesias muy importantes por su historia o por los milagros que ahí ocurren.", cite: "Derecho Canónico: Título concedido por el Papa a iglesias insignes.", recom: "👑 Majestad: Cuando entres a una iglesia grande, recordá que sos hijo del Rey que vive ahí." },
+    { id: "pal67", fact: "'Catedral' viene de 'Cátedra' (Silla).", hook: "Es la iglesia donde está la silla oficial del Obispo, desde donde él enseña a todo el pueblo.", cite: "Etimología: El lugar de la enseñanza apostólica.", recom: "🪑 Asiento: Escuchá con respeto la enseñanza de la Iglesia; es una guía segura." },
+    { id: "pal68", fact: "'Capilla' viene de 'Capa'.", hook: "Se cuenta que San Martín de Tours dividió su capa para un pobre, y el lugar donde se guardó ese trozo de capa se llamó 'capilla'.", cite: "Historia de San Martín: El origen de los lugares pequeños de oración.", recom: "🧥 Compartir: Una capilla es un lugar para compartir la fe, como Martín compartió su capa." },
+    { id: "pal69", fact: "'Hermenéutica' significa 'El arte de interpretar'.", hook: "Es la ciencia que nos ayuda a entender qué quiso decir Dios realmente en la Biblia, sin inventar cosas raras.", cite: "Teología: El estudio correcto de las Escrituras.", recom: "🔍 Verdad: No saques frases de la Biblia de contexto; buscá siempre el sentido real." },
+    { id: "pal70", fact: "'Dogma' significa 'Pensamiento' o 'Decisión firme'.", hook: "Son verdades de fe tan claras que no se pueden discutir, porque son el cimiento de todo lo demás.", cite: "Catecismo: Verdades propuestas por el Magisterio de la Iglesia.", recom: "⚓ Ancla: Tus dogmas son el ancla que impide que tu barco se pierda en las tormentas de ideas." },
+    { id: "pal71", fact: "'Canonización' significa 'Poner en la lista'.", hook: "El 'Canon' es la lista oficial. Canonizar a alguien es decir que estamos seguros de que ese amigo de Dios ya está en el cielo.", cite: "Proceso de Santidad: El reconocimiento oficial de las virtudes heroicas.", recom: "📋 Lista: Tu meta es estar en la 'lista' del cielo algún día. ¡Empezá hoy!" },
+    { id: "pal72", fact: "'Reliquia' significa 'Lo que queda'.", hook: "Son trozos de ropa o restos de los santos que guardamos con respeto porque fueron templos vivos de Dios.", cite: "Catecismo 1674: La veneración de las reliquias como parte de la piedad popular.", recom: "🦴 Respeto: Valorá la historia de los que caminaron antes que vos; su huella todavía ayuda." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Palabra ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-palabras.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `📖 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí el significado oculto de las palabras de nuestra fe entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Etimología de Fe | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

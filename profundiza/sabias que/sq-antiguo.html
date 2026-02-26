@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nuevo Testamento | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Nuevo Testamento</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-bible"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Verdad Revelada</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-book-open recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Formación Bíblica</footer>
+
+<script>
+const DATOS = [
+    { id: "nue1", fact: "El Nuevo Testamento se escribió casi totalmente en griego.", hook: "Era la lengua universal de esa época, permitiendo que el mensaje de Jesús se difundiera rápidamente por todo el Imperio.", cite: "Introducción Bíblica: Sus 27 libros completan la historia de salvación.", recom: "📖 Universalidad: La Biblia une a todos los idiomas bajo una sola fe." },
+    { id: "nue2", fact: "La palabra 'Evangelio' significa literalmente 'Buena Noticia'.", hook: "No son biografías aburridas; son anuncios urgentes de que Dios ha venido a salvarnos.", cite: "Marcos 1, 1: 'Principio del evangelio de Jesucristo, Hijo de Dios'.", recom: "📣 Alegría: Un cristiano no puede estar triste con esta noticia en su bolsillo." },
+    { id: "nue3", fact: "Los cuatro Evangelistas tienen símbolos basados en visiones proféticas.", hook: "Mateo (Hombre), Marcos (León), Lucas (Toro) y Juan (Águila).", cite: "Tradición Apostólica: Los símbolos vienen de Ezequiel y el Apocalipsis.", recom: "🦁 Identidad: Cada evangelio muestra una cara distinta de Jesús." },
+    { id: "nue4", fact: "El 'Sí' de María cambió el curso de la historia humana para siempre.", hook: "Al aceptar los planes de Dios sin entenderlos del todo, permitió que el Creador se hiciera hombre.", cite: "Lucas 1, 38: 'Hágase conmigo conforme a tu palabra'.", recom: "✨ Disponibilidad: Animate a decir 'Sí' como nuestra Madre ante lo inesperado." },
+    { id: "nue5", fact: "Jesús nació en un pesebre porque era un comedero de animales.", hook: "El Rey de reyes eligió el lugar más humilde para estar cerca de los que no tienen nada.", cite: "Lucas 2, 7: 'Y lo acostó en un pesebre, porque no había lugar en el mesón'.", recom: "🏚️ Humildad: No busques el lujo para encontrar a Dios; Él está en lo sencillo." },
+    { id: "nue6", fact: "Los 12 Apóstoles eran hombres comunes con muchos defectos.", hook: "Pescadores y cobradores de impuestos. Dios no elige a los perfectos, elige a los dispuestos.", cite: "Mateo 10: La lista de hombres que fundaron la Iglesia.", recom: "🛶 Llamado: Si Jesús usó a pescadores rudos, también puede usarte a vos." },
+    { id: "nue7", fact: "El Sermón del Monte es la 'Constitución' del Reino de Dios.", hook: "Contiene las Bienaventuranzas, que son el mapa para encontrar la felicidad verdadera.", cite: "Mateo 5-7: El discurso más profundo que Jesús dio en su vida.", recom: "🏔️ Felicidad: ¿Querés ser feliz? Seguí las instrucciones de Jesús en la montaña." },
+    { id: "nue8", fact: "La Resurrección es el milagro más grande del Nuevo Testamento.", hook: "Si Jesús no hubiera resucitado, nuestra fe no tendría sentido.", cite: "1 Corintios 15, 14: 'Si Cristo no resucitó, vana es nuestra predicación'.", recom: "☀️ Esperanza: La muerte no es el final; es el principio de lo que brilla." },
+    { id: "nue9", fact: "San Juan fue el único apóstol que no murió como mártir.", hook: "Fue el 'discípulo amado' y cuidó a la Virgen María hasta que ella fue al cielo.", cite: "Evangelio de Juan: El último de los cuatro en escribirse.", recom: "🦅 Amor: Juan nos enseña que el que más ama es el que más cerca llega a Dios." },
+    { id: "nue10", fact: "Las Parábolas de Jesús son cuentos con un 'gancho' espiritual.", hook: "Usaba ejemplos del campo para que la gente sencilla entendiera cosas altísimas sobre el perdón.", cite: "Lucas 15: Parábolas de la oveja perdida, la moneda y el hijo pródigo.", recom: "🔍 Atención: Dios te habla a través de las cosas que hacés todos los días." },
+    { id: "nue11", fact: "El Apocalipsis no es un libro de terror, es de esperanza.", hook: "Significa 'Revelación' y cuenta que, al final de todo, Dios siempre gana.", cite: "Apocalipsis 21, 4: 'Enjugará Dios toda lágrima... y ya no habrá muerte'.", recom: "🛡️ Victoria: No temas al futuro; el dueño del tiempo nos asegura un final feliz." },
+    { id: "nue12", fact: "San Pablo escribió casi la mitad de los libros del Nuevo Testamento.", hook: "Antes odiaba a los cristianos, hasta que Jesús lo convirtió en su mayor misionero.", cite: "Hechos 9: La conversión de Saulo en el camino a Damasco.", recom: "🏇 Cambio: Nadie es tan malo que Dios no pueda convertirlo en un héroe." },
+    { id: "nue13", fact: "Jesús realizó su primer milagro en una fiesta de bodas.", hook: "En Caná, convirtió el agua en vino por pedido de su madre, salvando la alegría de la fiesta.", cite: "Juan 2: Las bodas de Caná.", recom: "🍷 Alegría: Jesús quiere estar presente en tus fiestas y momentos felices." },
+    { id: "nue14", fact: "Zaqueo tuvo que subirse a un árbol para ver a Jesús.", hook: "Era petiso y cobrador de impuestos, pero su esfuerzo hizo que Jesús fuera a cenar a su casa.", cite: "Lucas 19: La historia de Zaqueo.", recom: "🌳 Esfuerzo: A veces hay que 'subir' por encima de los prejuicios para ver a Dios." },
+    { id: "nue15", fact: "Jesús lavó los pies de sus apóstoles antes de morir.", hook: "En esa época era el trabajo del esclavo más bajo. Jesús enseñó que el líder es el que sirve.", cite: "Juan 13: El mandato del amor y el servicio.", recom: "🧼 Servicio: El verdadero poder cristiano se mide por cuánto ayudás a los demás." },
+    { id: "nue16", fact: "La Última Cena es el origen de la Eucaristía.", hook: "Jesús no solo comió pan; dijo 'Esto es mi Cuerpo'. Lo hizo para quedarse con nosotros siempre.", cite: "Mateo 26, 26: La institución de la Santa Misa.", recom: "🍞 Compañía: No estás solo; Jesús se escondió en el pan para estar en tu interior." },
+    { id: "nue17", fact: "Pedro negó a Jesús tres veces pero fue perdonado.", hook: "A pesar de su miedo, Jesús lo confirmó como jefe de la Iglesia preguntándole tres veces si lo amaba.", cite: "Juan 21: La restauración de Pedro en el lago.", recom: "❤️ Perdón: Tus errores no definen tu futuro si tenés el valor de pedir perdón." },
+    { id: "nue18", fact: "Pentecostés es considerado el 'cumpleaños' de la Iglesia.", hook: "El Espíritu Santo bajó como lenguas de fuego y los apóstoles perdieron el miedo a predicar.", cite: "Hechos 2: La venida del Espíritu Santo.", recom: "🔥 Fuego: Pedile al Espíritu que queme tus miedos y te dé valentía hoy." },
+    { id: "nue19", fact: "San Esteban fue el primer mártir de la Iglesia.", hook: "Murió perdonando a los que lo apedreaban, igual que hizo Jesús en la cruz.", cite: "Hechos 7: El martirio de Esteban.", recom: "💎 Firmeza: La verdad es más fuerte que la violencia; perdonar es la victoria definitiva." },
+    { id: "nue20", fact: "La mayoría de los apóstoles murieron como mártires.", hook: "Dieron su vida para demostrar que lo que habían visto (a Jesús vivo) era una verdad absoluta.", cite: "Historia de la Iglesia: El testimonio de sangre fundó la fe.", recom: "🩸 Valor: Sé testigo de tu fe con tus acciones, aunque te cueste esfuerzo." },
+    { id: "nue21", fact: "La palabra 'Iglesia' significa 'Asamblea' o 'Convocados'.", hook: "No se refiere a un edificio de piedra, sino a la gente que Dios llama para estar junta.", cite: "Efesios 1, 22-23: La Iglesia como Cuerpo de Cristo.", recom: "🏘️ Comunidad: No vivas tu fe solo; recordá que sos parte de una familia gigante." },
+    { id: "nue22", fact: "Jesús curó a un ciego usando barro hecho con su propia saliva.", hook: "Demostró que Dios usa elementos de la creación para sanarnos.", cite: "Juan 9: El ciego de nacimiento.", recom: "💧 Lavado: Dejá que Jesús limpie tu mirada para ver lo bueno en los demás." },
+    { id: "nue23", fact: "La parábola del Buen Samaritano rompió todos los prejuicios.", hook: "Jesús enseñó que el 'prójimo' no es el que piensa igual, sino el que sufre y necesita ayuda.", cite: "Lucas 10: ¿Quién es mi prójimo?", recom: "🤕 Empatía: No preguntes quién es el otro, simplemente ayudá al que lo necesita." },
+    { id: "nue24", fact: "Lázaro estuvo muerto cuatro días antes de que Jesús lo resucitara.", hook: "Para Dios no hay casos 'demasiado tarde'; Él tiene poder sobre la vida y la muerte.", cite: "Juan 11: La resurrección de Lázaro.", recom: "⚰️ Esperanza: Nada está perdido para siempre si Jesús está presente." },
+    { id: "nue25", fact: "Jesús caminó sobre el agua en medio de una tormenta.", hook: "Pedro intentó hacerlo y se hundió cuando quitó la vista de Jesús por mirar las olas.", cite: "Mateo 14: Jesús camina sobre el mar.", recom: "🌊 Enfoque: Si mirás tus problemas te hundís; si mirás a Jesús, caminás sobre ellos." },
+    { id: "nue26", fact: "La transfiguración mostró la gloria divina de Jesús en una montaña.", hook: "Sus vestidos se volvieron blancos como la luz ante Pedro, Santiago y Juan.", cite: "Mateo 17: Jesús brilla como el sol.", recom: "☀️ Luz: Hay momentos de oración que te dan fuerza para enfrentar la oscuridad del valle." },
+    { id: "nue27", fact: "Jesús alimentó a 5.000 personas con 5 panes y 2 peces.", hook: "El milagro empezó cuando un niño entregó lo poco que tenía. Dios multiplica la generosidad.", cite: "Juan 6: La multiplicación de los panes.", recom: "🧺 Entrega: No digas que tenés poco; dalo a Dios y verás cuánto alcanza." },
+    { id: "nue28", fact: "El Padre Nuestro es la oración que Jesús mismo nos enseñó.", hook: "Nos dio permiso de llamar a Dios 'Papá' (Abba), algo revolucionario para esa época.", cite: "Mateo 6, 9-13: La oración dominical.", recom: "👨‍👦 Confianza: Hablá con Dios con la sencillez de un hijo que confía en su padre." },
+    { id: "nue29", fact: "Jesús fue tentado en el desierto durante 40 días.", hook: "Venció al demonio usando las palabras de la Biblia, enseñándonos cómo defendernos del mal.", cite: "Lucas 4: Las tentaciones de Jesús.", recom: "🏜️ Resistencia: En los momentos de tentación, recordá una frase de la Biblia que te dé fuerza." },
+    { id: "nue30", fact: "Juan el Bautista era primo de Jesús y vivía en el desierto.", hook: "Se alimentaba de langostas y miel silvestre, preparando el camino para el Mesías.", cite: "Mateo 3: El bautismo de arrepentimiento.", recom: "🐝 Austeridad: No necesitás muchas cosas materiales para tener una vida espiritual rica." },
+    { id: "nue31", fact: "El bautismo de Jesús en el Jordán mostró a la Santísima Trinidad.", hook: "Se oyó la voz del Padre y el Espíritu bajó como paloma sobre el Hijo.", cite: "Marcos 1, 10-11: La teofanía del Bautismo.", recom: "🕊️ Identidad: En tu bautismo, Dios también dijo sobre vos: 'Este es mi hijo amado'." },
+    { id: "nue32", fact: "Jesús perdonó a una mujer a la que querían apedrear.", hook: "Dijo: 'El que esté libre de pecado, que tire la primera piedra'. Todos se fueron avergonzados.", cite: "Juan 8: La mujer adúltera.", recom: "🪨 Juicio: Antes de criticar a alguien, mirá tus propios errores con humildad." },
+    { id: "nue33", fact: "La entrada triunfal en Jerusalén fue sobre un burrito prestado.", hook: "El Rey del universo no entró en un caballo de guerra, sino en el animal más humilde y pacífico.", cite: "Mateo 21: Domingo de Ramos.", recom: "🌿 Paz: El verdadero triunfo de Dios no es la fuerza, es la mansedumbre." },
+    { id: "nue34", fact: "Judas traicionó a Jesús por 30 monedas de plata.", hook: "Era el precio legal de un esclavo. El amor al dinero lo cegó y perdió lo más valioso.", cite: "Mateo 26, 15: La traición de Judas.", recom: "💰 Valores: No cambies tu amistad con Dios por ninguna ventaja material pasajera." },
+    { id: "nue35", fact: "Jesús sudó gotas de sangre por la angustia en el Huerto.", hook: "Aceptó la voluntad del Padre a pesar del miedo humano al sufrimiento.", cite: "Lucas 22, 44: La agonía en Getsemaní.", recom: "🌙 Angustia: Cuando estés muy triste, recordá que Jesús ya pasó por eso y te entiende." },
+    { id: "nue36", fact: "Barrabás fue liberado en lugar de Jesús.", hook: "Un criminal fue salvado por la muerte del inocente. Es un resumen de lo que Jesús hizo por nosotros.", cite: "Marcos 15, 15: Jesús ante Pilato.", recom: "🔓 Libertad: Jesús tomó tu lugar en la condena para que vos pudieras ser libre." },
+    { id: "nue37", fact: "Jesús cargó su propia cruz hasta el monte Calvario.", hook: "Lo hizo por amor, para demostrarnos que Él camina con nosotros en nuestros sufrimientos.", cite: "Juan 19, 17: El camino al Gólgota.", recom: "✝️ Carga: Tu cruz no es un castigo, es el camino para llegar a la gloria con Él." },
+    { id: "nue38", fact: "La frase 'Tengo sed' en la cruz no era solo por agua.", hook: "Jesús tiene sed de que lo amemos y de que las almas vuelvan a Dios.", cite: "Juan 19, 28: Las siete palabras de Cristo.", recom: "🥤 Consuelo: Dale de beber a Jesús hoy haciendo una obra de misericordia por alguien." },
+    { id: "nue39", fact: "Un soldado romano reconoció a Jesús como Dios al verlo morir.", hook: "Al ver cómo perdonaba y cómo tembló la tierra, dijo: 'Verdaderamente este hombre era el Hijo de Dios'.", cite: "Mateo 27, 54: El testimonio del centurión.", recom: "🛡️ Fe: Incluso los que parecen más alejados pueden reconocer la luz de Dios." },
+    { id: "nue40", fact: "El velo del Templo se rasgó de arriba abajo al morir Jesús.", hook: "Significa que la separación entre Dios y los hombres terminó. ¡El camino al cielo quedó abierto!", cite: "Marcos 15, 38: El fin de la antigua alianza.", recom: "🚪 Acceso: Ya no necesitás intermediarios lejanos; podés hablar con Dios cara a cara." },
+    { id: "nue41", fact: "Jesús fue enterrado en una tumba nueva que no era suya.", hook: "José de Arimatea, un hombre rico y seguidor secreto, prestó su propio sepulcro.", cite: "Mateo 27, 57-60: La sepultura de Jesús.", recom: "🪦 Generosidad: Ofrecele a Dios lo que tenés, aunque te parezca que es para un 'final'." },
+    { id: "nue42", fact: "María Magdalena fue la primera persona en ver a Jesús resucitado.", hook: "Jesús se le apareció y le dijo que fuera a avisar a los apóstoles. Es la 'Apóstol de los apóstoles'.", cite: "Juan 20, 17: El encuentro en el jardín.", recom: "🌸 Testimonio: No importa quién seas; si buscás a Jesús con amor, Él se te va a dejar ver." },
+    { id: "nue43", fact: "Tomás no creyó en la resurrección hasta que tocó las heridas.", hook: "Jesús no lo retó, le mostró sus manos y le dijo: 'No seas incrédulo, sino creyente'.", cite: "Juan 20, 27: La duda de Tomás.", recom: "👉 Duda: Está bien tener preguntas; lleváselas a Jesús y Él te va a dar la respuesta." },
+    { id: "nue44", fact: "Jesús desayunó con sus apóstoles después de resucitar.", hook: "En la orilla del lago, les preparó pescado a la brasa para demostrar que tenía un cuerpo real.", cite: "Juan 21: La tercera aparición a los discípulos.", recom: "🐟 Detalles: Jesús se preocupa hasta de las cosas más sencillas, como tu desayuno o tu trabajo." },
+    { id: "nue45", fact: "Jesús subió al cielo 40 días después de resucitar.", hook: "Prometió que se iba a preparar un lugar para nosotros y que volvería al final de los tiempos.", cite: "Hechos 1, 9: La Ascensión del Señor.", recom: "☁️ Meta: No te olvides de que tu verdadera casa no está acá, está en el cielo." },
+    { id: "nue46", fact: "En Pentecostés, personas de muchos países entendían el mismo mensaje.", hook: "El Espíritu Santo quitó la confusión de Babel y unió a todos en el amor de Dios.", cite: "Hechos 2, 4-11: El milagro de las lenguas.", recom: "🌍 Unión: El amor de Dios es el único lenguaje que todos podemos entender." },
+    { id: "nue47", fact: "Los primeros cristianos compartían todo lo que tenían.", hook: "Nadie pasaba necesidad porque los que tenían más ayudaban a los que tenían menos de corazón.", cite: "Hechos 4, 32: La vida de la primera comunidad.", recom: "🤝 Solidaridad: Compartí lo que tenés; la fe se nota en el bolsillo y en las manos abiertas." },
+    { id: "nue48", fact: "San Pedro curó a un paralítico en la puerta del Templo.", hook: "Dijo: 'No tengo oro ni plata, pero lo que tengo te doy: en nombre de Jesús, levántate y camina'.", cite: "Hechos 3, 6: El primer milagro de los apóstoles.", recom: "💰 Valor Real: Lo más valioso que podés darle a alguien es la fe y la esperanza." },
+    { id: "nue49", fact: "San Pablo fue encarcelado pero las cadenas se rompieron rezando.", hook: "Él y Silas cantaban himnos en la celda cuando un terremoto abrió las puertas.", cite: "Hechos 16, 25-26: La liberación en Filipos.", recom: "🎶 Alabanza: Cantar y rezar en los momentos difíciles rompe las cadenas de tu tristeza." },
+    { id: "nue50", fact: "Pablo sobrevivió a un naufragio y a la picadura de una víbora.", hook: "Dios lo protegió porque tenía la misión de llegar hasta Roma para predicar al César.", cite: "Hechos 27-28: El viaje de Pablo a Roma.", recom: "🐍 Protección: Si tenés una misión de Dios, nada en el mundo te puede detener hasta cumplirla." },
+    { id: "nue51", fact: "La carta a los Romanos explica que la fe nos salva, no las leyes.", hook: "Es el libro más profundo de Pablo sobre cómo Dios nos hace justos por puro amor gratuito.", cite: "Romanos 5, 1: Justificados pues por la fe, tenemos paz con Dios.", recom: "🕊️ Paz: Dejá de tratar de 'comprar' el cielo con esfuerzos; aceptá el regalo de Dios." },
+    { id: "nue52", fact: "El 'Himno al Amor' está en la primera carta a los Corintios.", hook: "Explica que podés hacer milagros, pero si no tenés amor, no servís para nada.", cite: "1 Corintios 13: El amor es paciente, es servicial...", recom: "💖 Prioridad: Al final de la vida, solo nos van a examinar en el amor. ¡Empezá a practicar!" },
+    { id: "nue53", fact: "San Pablo dice que somos 'Templos del Espíritu Santo'.", hook: "Por eso debemos cuidar nuestro cuerpo y nuestra mente, porque Dios vive adentro nuestro.", cite: "1 Corintios 6, 19: ¿O ignoráis que vuestro cuerpo es templo del Espíritu?", recom: "🏠 Respeto: Tratá a tu cuerpo y al de los demás con el respeto que se le tiene a una iglesia." },
+    { id: "nue54", fact: "La carta a los Gálatas defiende la libertad cristiana.", hook: "Pablo les dice que no vuelvan a ser esclavos de reglas antiguas, porque Cristo nos hizo libres.", cite: "Gálatas 5, 1: Estad pues firmes en la libertad con que Cristo nos hizo libres.", recom: "🔓 Libertad: Ser cristiano no es seguir reglas, es vivir libre para amar." },
+    { id: "nue55", fact: "Efesios nos invita a ponernos la 'Armadura de Dios'.", hook: "El casco de la salvación, el escudo de la fe y la espada de la palabra para luchar contra el mal.", cite: "Efesios 6, 11: Vestíos de toda la armadura de Dios.", recom: "🛡️ Defensa: No salgas a la calle sin 'vestirte' de oración para proteger tu alma." },
+    { id: "nue56", fact: "La carta a los Filipenses es llamada la 'Carta de la Alegría'.", hook: "Pablo la escribió desde la cárcel, pero repite todo el tiempo: '¡Alegraos siempre en el Señor!'.", cite: "Filipenses 4, 4: Regocijaos en el Señor siempre.", recom: "😄 Actitud: La alegría no depende de dónde estés, sino de con quién esté tu corazón." },
+    { id: "nue57", fact: "Colosenses dice que Cristo es el centro de toda la creación.", hook: "Todo fue hecho por Él y para Él. Si lo tenés a Él, lo tenés todo.", cite: "Colosenses 1, 16: Todo fue creado por medio de él y para él.", recom: "🎯 Centro: Asegurate de que Jesús sea el centro de tus planes, no un invitado de última hora." },
+    { id: "nue58", fact: "Las cartas a los Tesalonicenses hablan sobre el fin del mundo.", hook: "Pablo aclara que Jesús volverá, pero que mientras tanto debemos trabajar y vivir honestamente.", cite: "1 Tesalonicenses 4: La esperanza del retorno de Cristo.", recom: "⏰ Vigilancia: Viví cada día como si fuera el último, pero trabajá como si fueras a vivir mil años." },
+    { id: "nue59", fact: "Timoteo y Tito eran los jóvenes 'obispos' ayudantes de Pablo.", hook: "Pablo les escribió consejos para guiar a la Iglesia y les dijo: 'Que nadie te menosprecie por ser joven'.", cite: "1 Timoteo 4, 12: Ninguno tenga en poco tu juventud.", recom: "🌱 Juventud: Dios cuenta con los jóvenes para renovar el mundo hoy mismo." },
+    { id: "nue60", fact: "Filemón es una carta sobre el perdón a un esclavo fugitivo.", hook: "Pablo le pide al dueño que reciba al esclavo Onésimo ya no como siervo, sino como a un hermano querido.", cite: "Carta a Filemón: Un ejemplo de fraternidad cristiana.", recom: "🤝 Fraternidad: En Cristo ya no hay clases sociales; todos somos hermanos de sangre (la de Jesús)." },
+    { id: "nue61", fact: "La carta a los Hebreos presenta a Jesús como el Sumo Sacerdote.", hook: "Explica que ya no hacen falta sacrificios de animales, porque el sacrificio de Jesús vale para siempre.", cite: "Hebreos 4, 14: Tenemos un gran sumo sacerdote que traspasó los cielos.", recom: "⛪ Confianza: Acercate a Jesús con total confianza; Él sabe lo que sentís porque fue hombre." },
+    { id: "nue62", fact: "Santiago dice que 'la fe sin obras está muerta'.", hook: "No alcanza con decir que creés; tenés que demostrarlo ayudando a los pobres y controlando tu lengua.", cite: "Santiago 2, 17: Así también la fe, si no tiene obras, es muerta en sí misma.", recom: "⚒️ Acción: Hoy hacé una obra concreta que demuestre que tenés fe." },
+    { id: "nue63", fact: "San Pedro nos pide estar siempre listos para dar razón de nuestra fe.", hook: "Debemos saber explicar por qué creemos, pero siempre con respeto y sencillez.", cite: "1 Pedro 3, 15: Estad siempre preparados para presentar defensa ante todo el que os demande razón.", recom: "📚 Formación: Estudiá un poco cada día para poder contarle a otros lo lindo que es ser cristiano." },
+    { id: "nue64", fact: "San Juan dice en sus cartas que 'Dios es Amor'.", hook: "Es la definición más corta y perfecta de Dios en toda la Biblia.", cite: "1 Juan 4, 8: El que no ama, no ha conocido a Dios; porque Dios es amor.", recom: "❤️ Definición: Si querés conocer a Dios, amá. Es la única forma de 'verlo' en esta vida." },
+    { id: "nue65", fact: "La carta de Judas advierte sobre los falsos maestros.", hook: "Nos pide mantenernos firmes en la fe que recibimos de los apóstoles sin inventar cosas raras.", cite: "Carta de Judas: Una advertencia para cuidar la sana doctrina.", recom: "⚓ Firmeza: No te dejes llevar por cualquier moda espiritual; quedate agarrado a la Iglesia." },
+    { id: "nue66", fact: "El Apocalipsis fue escrito en la isla de Patmos.", hook: "Juan estaba desterrado allí cuando tuvo las visiones del cielo y del futuro de la humanidad.", cite: "Apocalipsis 1, 9: Yo Juan, vuestro hermano... estaba en la isla llamada Patmos.", recom: "🏝️ Soledad: A veces Dios espera a que estés solo y en silencio para mostrarte cosas grandes." },
+    { id: "nue67", fact: "El número 7 se repite constantemente en el Apocalipsis.", hook: "Representa la perfección y la totalidad: 7 iglesias, 7 sellos, 7 trompetas y 7 copas.", cite: "Apocalipsis: El simbolismo de los números sagrados.", recom: "🔢 Perfección: Dios tiene un plan perfecto y completo; nada queda librado al azar." },
+    { id: "nue68", fact: "La visión de la 'Mujer vestida de sol' representa a María y a la Iglesia.", hook: "Tiene la luna bajo sus pies y una corona de 12 estrellas, venciendo al dragón del mal.", cite: "Apocalipsis 12: La mujer y el dragón.", recom: "👑 Protección: María es la reina que nos protege en las batallas espirituales más difíciles." },
+    { id: "nue69", fact: "El Apocalipsis termina con una invitación: '¡Ven, Señor Jesús!'.", hook: "Se llama 'Maranatha' y es el grito de deseo de que Dios vuelva para arreglar el mundo.", cite: "Apocalipsis 22, 20: Ciertamente vengo en breve. Amén; sí, ven, Señor Jesús.", recom: "⏳ Deseo: ¿Tenés ganas de que Jesús vuelva? Rezá hoy 'Maranatha' con todo el corazón." },
+    { id: "nue70", fact: "El Nuevo Testamento termina con una bendición para todos.", hook: "La última frase de la Biblia es un deseo de gracia para todos los que la leen.", cite: "Apocalipsis 22, 21: La gracia de nuestro Señor Jesucristo sea con todos vosotros. Amén.", recom: "✨ Gracia: Sentite bendecido; la palabra de Dios termina con un abrazo para vos." },
+    { id: "nue71", fact: "La Biblia es el libro más vendido y traducido de la historia.", hook: "El Nuevo Testamento ha llegado a casi todos los rincones del planeta, cambiando millones de vidas.", cite: "Hecho histórico: La Biblia sigue siendo el 'best-seller' número uno del mundo.", recom: "📖 Valor: Tenés en tus manos el tesoro más grande de la humanidad. ¡No lo dejes juntando tierra!" },
+    { id: "nue72", fact: "San Jerónimo dijo que 'desconocer las Escrituras es desconocer a Cristo'.", hook: "Si queremos ser amigos de Jesús, tenemos que leer su vida y sus palabras en el Nuevo Testamento.", cite: "Frase célebre del traductor de la Vulgata.", recom: "🎯 Meta: Ponete el objetivo de leer un poquito del Nuevo Testamento todos los días. ¡Te va a cambiar la vida!" }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Misterio ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-nuevo.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `📜 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí el misterio completo aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Nuevo Testamento | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados al portapapeles! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

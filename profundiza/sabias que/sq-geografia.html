@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Geografía de la Fe | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Geografía de la Fe</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-map-marked-alt"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">Mapa de Bendición</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-compass recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Los Caminos de Dios</footer>
+
+<script>
+const DATOS = [
+    { id: "geo1", fact: "Belén significa 'Casa del Pan' en hebreo.", hook: "Es el lugar donde nació Jesús, el 'Pan de Vida'. ¡El nombre del pueblo ya anunciaba quién iba a nacer ahí!", cite: "Miqueas 5, 2: La profecía del nacimiento en Belén de Judá.", recom: "🍞 Provisión: Dios siempre cumple sus promesas en el lugar y momento exacto." },
+    { id: "geo2", fact: "Jerusalén es considerada la ciudad más sagrada del mundo por tres religiones.", hook: "Para nosotros es sagrada porque allí Jesús murió y resucitó, marcando el centro de la historia de la salvación.", cite: "Salmo 122, 6: 'Pedid por la paz de Jerusalén'.", recom: "🕊️ Paz: Rezá por la paz en Tierra Santa; es la tierra que pisó Dios hecho hombre." },
+    { id: "geo3", fact: "El Mar Muerto es el punto más bajo de la Tierra, y está cerca de donde Jesús fue bautizado.", hook: "El río Jordán desemboca allí. Es un lugar donde la vida florece (Jordán) y desemboca en la sal (Mar Muerto).", cite: "Geografía Bíblica: 430 metros bajo el nivel del mar.", recom: "💧 Humildad: A veces hay que bajar hasta lo más profundo para encontrar la gracia de Dios." },
+    { id: "geo4", fact: "Nazaret era un pueblo tan chico que ni siquiera figuraba en los mapas antiguos.", hook: "Por eso decían: '¿De Nazaret puede salir algo bueno?'. Dios eligió la periferia para vivir su vida oculta.", cite: "Juan 1, 46: El prejuicio contra el origen humilde de Jesús.", recom: "🏚️ Humildad: No importa si vivís en un lugar chico; Dios puede hacer cosas grandes desde ahí." },
+    { id: "geo5", fact: "El Vaticano es el estado independiente más pequeño del mundo.", hook: "Tiene apenas 44 hectáreas (unas pocas manzanas). Está rodeado por Roma pero es un país soberano para que el Papa sea libre.", cite: "Tratados de Letrán (1929): El nacimiento del Estado de la Ciudad del Vaticano.", recom: "🇻🇦 Unidad: Sentite parte de una familia que tiene su centro en ese pequeño pedacito de tierra." },
+    { id: "geo6", fact: "Córdoba es conocida como 'La Docta' gracias a los Jesuitas.", hook: "Ellos fundaron la primera universidad del país y crearon un sistema de estancias que hoy es Patrimonio de la Humanidad.", cite: "Historia de Córdoba: La Manzana Jesuítica es el corazón cultural de nuestra provincia.", recom: "📚 Cultura: Valorá la historia de Córdoba; la fe fue la que trajo el estudio y el progreso." },
+    { id: "geo7", fact: "La Estancia de Alta Gracia está a pocos kilómetros de nuestra Capilla.", hook: "Era parte del motor económico jesuita. El Tajamar se construyó para moler trigo y dar de comer a miles.", cite: "Patrimonio UNESCO: Un ejemplo de organización y fe aplicada al trabajo.", recom: "🚜 Trabajo: Que tu trabajo diario también sea una forma de honrar a Dios." },
+    { id: "geo8", fact: "El Camino de las Altas Cumbres fue trazado por el Cura Brochero.", hook: "Nuestro santo cordobés no solo salvaba almas, sino que abría caminos con sus propias manos para que los pueblos no estuvieran aislados.", cite: "Canonización de Brochero: 'Un pastor que olía a oveja' y a montaña.", recom: "⛰️ Esfuerzo: Sé como Brochero; ayudá a abrir caminos para que otros lleguen a Dios." },
+    { id: "geo9", fact: "Luján es el centro geográfico de la fe argentina.", hook: "La Virgen decidió quedarse allí en 1630. Millones de personas caminan cada año hacia esa basílica desde todos los rincones del país.", cite: "Historia de la Virgen de Luján: 'Soy de la Virgen nomás'.", recom: "🇦🇷 Patria: Poné a nuestra Argentina bajo el manto de nuestra Madre de Luján." },
+    { id: "geo10", fact: "El río Jordán es donde Jesús fue bautizado por Juan.", hook: "Es un río que simboliza el paso de la muerte a la vida. Hoy, miles de peregrinos renuevan sus promesas en sus orillas.", cite: "Mateo 3, 13: El bautismo de Jesús en el Jordán.", recom: "🌊 Renovación: Recordá tu bautismo; es el agua que te dio la vida verdadera." },
+    { id: "geo11", fact: "El Monte de los Olivos tiene árboles que podrían haber visto a Jesús.", hook: "Los olivos son árboles milenarios. Algunos en el huerto de Getsemaní tienen raíces que datan de hace 2000 años.", cite: "Lucas 22, 39: La agonía de Jesús en el Huerto de los Olivos.", recom: "🌳 Raíces: Pedile a Dios que tu fe sea tan fuerte y duradera como un olivo milenario." },
+    { id: "geo12", fact: "El Cenáculo es el lugar de la Última Cena y de Pentecostés.", hook: "Es una habitación alta en Jerusalén. Allí nació la Eucaristía y también la Iglesia con la venida del Espíritu Santo.", cite: "Hechos 1, 13: La reunión de los apóstoles en el piso superior.", recom: "🍞 Intimidad: Buscá tu propio 'cenáculo' (un lugar tranquilo) para charlar a solas con Dios." },
+    { id: "geo13", fact: "Cafarnaún era la base de operaciones de Jesús.", hook: "Era un pueblo de pescadores a orillas del Mar de Galilea. Allí estaba la casa de la suegra de Pedro, donde Jesús vivía.", cite: "Marcos 2, 1: Cafarnaún, la 'ciudad de Jesús'.", recom: "🛶 Hogar: Invitá a Jesús a vivir en tu casa, como lo hizo en la de Pedro." },
+    { id: "geo14", fact: "El Camino de Santiago recorre toda Europa hasta España.", hook: "Es una de las peregrinaciones más antiguas. Los caminantes siguen la 'Vía Láctea' terrestre hasta la tumba del apóstol Santiago.", cite: "Tradición Jacobea: Una ruta de fe que construyó la identidad de Europa.", recom: "🐚 Camino: La vida es un camino; lo importante no es llegar rápido, sino caminar con Dios." },
+    { id: "geo15", fact: "La Basílica de Guadalupe en México es el santuario más visitado del mundo.", hook: "Recibe a más de 20 millones de personas al año. Allí se guarda el ayate de Juan Diego con la imagen de la Virgen.", cite: "Apariciones de 1531: El mensaje de María para todos los pueblos de América.", recom: "🌹 Amparo: No tengas miedo; María es tu madre y te cuida bajo su sombra." },
+    { id: "geo16", fact: "El Santuario de Fátima en Portugal era un campo de pastoreo.", hook: "La Virgen eligió un lugar desierto (Cova da Iria) para hablarle al mundo a través de tres niños pastores.", cite: "Apariciones de 1917: Un llamado a la oración por la paz mundial.", recom: "📿 Rosario: Rezá el rosario en familia; la Virgen dice que es el arma para la paz." },
+    { id: "geo17", fact: "La Gruta de Lourdes en Francia era el basurero del pueblo.", hook: "Bernadette recogía leña allí cuando vio a la Virgen. Dios saca la mayor pureza de los lugares que el mundo desprecia.", cite: "Apariciones de 1858: 'Yo soy la Inmaculada Concepción'.", recom: "🧼 Limpieza: Dios puede limpiar lo más sucio de tu corazón y hacerlo un manantial." },
+    { id: "geo18", fact: "El Cerro de los Siete Colores en Jujuy tiene una iglesia histórica.", hook: "En Purmamarca se encuentra la iglesia de Santa Rosa de Lima, hecha de adobe y cardón, integrada totalmente al paisaje.", cite: "Arquitectura Andina: La fe que se adapta y respeta la creación.", recom: "🌈 Belleza: Agradecé a Dios por la naturaleza de nuestro norte argentino." },
+    { id: "geo19", fact: "La Manzana Jesuítica de Córdoba tiene la iglesia más antigua del país.", hook: "La Compañía de Jesús se empezó a construir en 1640. Su techo parece un barco dado vuelta hecho de madera de cedro.", cite: "Patrimonio de la Humanidad: El legado de los hijos de San Ignacio en nuestra tierra.", recom: "🏛️ Historia: Visitá la Manzana Jesuítica; es el origen de nuestra fe cordobesa." },
+    { id: "geo20", fact: "Nuestra provincia de Córdoba tiene un 'Camino del Peregrino'.", hook: "Son 28 kilómetros que recorren los hitos de la vida de Brochero entre Giulio Cesare y Villa Cura Brochero.", cite: "Turismo Religioso: Un camino de oración entre las sierras más altas.", recom: "🚶‍♂️ Peregrinación: Hacé el camino de Brochero al menos una vez; te cambia el alma." },
+    { id: "geo21", fact: "El Santo Sepulcro en Jerusalén contiene el lugar del Calvario y la Tumba.", hook: "Es una iglesia gigante que envuelve los dos puntos clave: donde Jesús murió y donde resucitó al tercer día.", cite: "El sitio más sagrado: La prueba física de la Resurrección.", recom: "☀️ Victoria: La tumba está vacía; ¡Jesús está vivo y camina con vos hoy!" },
+    { id: "geo22", fact: "La Iglesia de la Natividad en Belén tiene una puerta muy chiquita.", hook: "Se llama 'Puerta de la Humildad'. Hay que agacharse para entrar, recordándonos que para ver a Dios hay que ser humildes.", cite: "Arquitectura Sacra: Obliga a todo rey o poderoso a entrar con la cabeza baja.", recom: "🙇‍♂️ Humildad: No intentes ser el más grande; ante Dios, lo más lindo es ser chiquito." },
+    { id: "sac23", fact: "La casa de la Virgen María está, según la tradición, en Loreto (Italia).", hook: "Se dice que las paredes de la casa de Nazaret fueron llevadas piedra por piedra para protegerlas de las invasiones.", cite: "Santuario de la Santa Casa: El lugar donde ocurrió la Anunciación.", recom: "🏠 Hogar Santo: Pedile a la Virgen que bendiga tu casa y la haga un lugar de paz." },
+    { id: "geo24", fact: "El Monte Sinaí es donde Moisés recibió los Mandamientos.", hook: "Está en Egipto, en medio del desierto. Es una montaña de granito rojo que impone respeto y silencio.", cite: "Éxodo 20: El encuentro de Dios con su pueblo en la montaña.", recom: "🏔️ Ley de Amor: Los mandamientos no son órdenes, son consejos de un Padre para que seas feliz." },
+    { id: "geo25", fact: "Roma tiene más de 900 iglesias.", hook: "Es la ciudad con más templos cristianos del mundo. Prácticamente en cada esquina hay un sagrario con Jesús esperándote.", cite: "La Ciudad Eterna: El centro de la cristiandad occidental.", recom: "⛪ Presencia: Recordá que en nuestra capilla de Santa Ana, Jesús está tan presente como en Roma." },
+    { id: "geo26", fact: "San Nicolás de los Arroyos es un punto de fe masivo en Argentina.", hook: "Desde las apariciones de 1983, miles de personas viajan a orillas del Paraná para pedirle a la Virgen del Rosario.", cite: "Apariciones en Argentina: Un llamado a la conversión y a la paz.", recom: "🇦🇷 Fe local: Visitá a la Virgen en San Nicolás; ella escucha los pedidos de sus hijos argentinos." },
+    { id: "geo27", fact: "La Catedral de Sal en Colombia está a 180 metros bajo tierra.", hook: "Fue construida por mineros dentro de una mina de sal. Demuestra que se puede rezar en cualquier rincón, por profundo que sea.", cite: "Arquitectura Única: Un templo tallado totalmente en sal gema.", recom: "⛏️ Profundidad: Aunque estés en el 'pozo' más profundo, Dios te escucha igual." },
+    { id: "geo28", fact: "El Camino Real pasaba muy cerca de nuestra zona en Córdoba.", hook: "Por ese camino viajaban los misioneros, los ejércitos de la libertad y las noticias. ¡Nuestra tierra tiene historia de pasos sagrados!", cite: "Historia Regional: El eje de comunicación del Virreinato.", recom: "🛣️ Rumbo: Asegurate de que el camino de tu vida tenga un rumbo claro hacia el bien." },
+    { id: "geo29", fact: "San Juan de Letrán es la verdadera Catedral del Papa, no San Pedro.", hook: "Se la llama 'Madre y Cabeza de todas las iglesias'. Es el lugar oficial donde el Papa se sienta como Obispo de Roma.", cite: "Archibasílica Papal: La iglesia más antigua y con mayor rango del mundo.", recom: "🏠 Casa Madre: Todas las parroquias y capillas (como la nuestra) están unidas a esa iglesia central." },
+    { id: "geo30", fact: "El santuario de San Pantaleón en Buenos Aires convoca a miles de enfermos.", hook: "Cada 27 de mes, Mataderos se llena de gente que pide salud. La fe es la mejor compañía para el que sufre corporalmente.", cite: "Devociones Populares: San Pantaleón, el médico mártir.", recom: "🏥 Salud: Rezá por los enfermos de nuestra zona; tu oración les da fuerza." },
+    { id: "geo31", fact: "El Monte Carmelo en Israel dio nombre a la Virgen del Carmen.", hook: "Allí el profeta Elías vio una nubecita que traía lluvia después de la sequía, símbolo de la Virgen que nos trae la Gracia.", cite: "Tradición Carmelita: El origen del escapulario y de la vida contemplativa.", recom: "🟫 Protección: Usá el escapulario del Carmen; es un signo de que María te cubre con su manto." },
+    { id: "geo32", fact: "La Iglesia del Domine Quo Vadis marca el lugar donde Pedro vio a Jesús.", hook: "Pedro huía de Roma por miedo y se cruzó con Jesús. Le preguntó: '¿A dónde vas, Señor?'. Jesús le respondió: 'A Roma, a ser crucificado de nuevo'.", cite: "Tradición Apostólica: El lugar donde Pedro recuperó la valentía.", recom: "🏃‍♂️ Valentía: No huyas de tus responsabilidades; enfrentalas con la fuerza de Dios." },
+    { id: "geo33", fact: "La ciudad de Itatí en Corrientes tiene una basílica gigante.", hook: "Allí se venera a la Virgen de Itatí, cuyo nombre significa 'Punta de Piedra'. Es la protectora del litoral argentino.", cite: "Devoción Litoraleña: Una de las imágenes más antiguas de nuestra tierra.", recom: "🌊 Frescura: Pedile a la Virgen de Itatí que refresque tu alma con su paz." },
+    { id: "geo34", fact: "El monasterio de Montserrat en España está colgado de una montaña.", hook: "Allí se venera a 'La Moreneta'. San Ignacio de Loyola dejó su espada allí para empezar su vida de santo.", cite: "Espiritualidad Ignaciana: El lugar del cambio de vida de San Ignacio.", recom: "⚔️ Cambio: Animate a dejar tus 'armas' (orgullo, bronca) a los pies de la Virgen." },
+    { id: "geo35", fact: "En el Mar de Galilea, Jesús caminó sobre las aguas.", hook: "Es un lago de agua dulce rodeado de montañas. Sus tormentas son famosas por ser repentinas y violentas, igual que las de la vida.", cite: "Mateo 14, 22-33: Jesús calma la tempestad y camina sobre el lago.", recom: "🛶 Calma: No importa qué tan grande sea la ola; si Jesús está en el bote, no te vas a hundir." },
+    { id: "geo36", fact: "La ciudad de Salta tiene el santuario del Señor y la Virgen del Milagro.", hook: "En 1692, los terremotos pararon cuando el pueblo sacó las imágenes en procesión. Desde entonces, todo el norte camina hacia ellos.", cite: "Pacto de Fidelidad: 'Tú eres nuestro y nosotros somos tuyos'.", recom: "🤝 Fidelidad: Cumplí tus promesas a Dios; Él nunca te va a fallar." },
+    { id: "geo37", fact: "El Monte Tabor es el lugar de la Transfiguración.", hook: "Es una montaña redonda en medio de una llanura. Allí Jesús mostró su gloria a Pedro, Santiago y Juan.", cite: "Mateo 17, 1-8: 'Señor, ¡qué bien se está aquí!'.", recom: "✨ Luz: Buscá momentos de oración donde puedas sentir la luz de Dios en tu cara." },
+    { id: "geo38", fact: "La Capilla de San Cayetano en Liniers es el centro del pedido de pan y trabajo.", hook: "Cada 7 de agosto, las colas de gente recorren kilómetros. Es la fe que confía en la providencia de Dios para el sustento diario.", cite: "Patrono del Pan y del Trabajo: Un santo que amaba la pobreza evangélica.", recom: "🍞 Providencia: No te desesperes; Dios sabe qué cosas necesitás para vivir." },
+    { id: "geo39", fact: "El río Tiber en Roma vio morir a miles de cristianos.", hook: "En sus orillas y en los circos cercanos, los primeros mártires dieron su vida por no negar a Jesús. ¡Roma está cimentada sobre su sangre!", cite: "Historia de los Mártires: El triunfo de la fe sobre el Imperio Romano.", recom: "🩸 Testimonio: Sé valiente para defender tu fe en tu barrio, como los primeros cristianos." },
+    { id: "geo40", fact: "La Antártida Argentina tiene la capilla más austral del mundo.", hook: "Se llama Capilla de Nuestra Señora de las Nieves. Incluso en el hielo más frío del planeta, el calor de la Eucaristía está presente.", cite: "Presencia en los Confines: La fe llega hasta el último rincón de la tierra.", recom: "❄️ Calor: Que el amor de Dios sea el abrigo que te caliente en los momentos más fríos de tu vida." },
+    { id: "geo41", fact: "Caná de Galilea es donde Jesús hizo su primer milagro.", hook: "Transformó el agua en vino en una fiesta de casamiento porque se lo pidió su madre. ¡Jesús bendice la alegría de la familia!", cite: "Juan 2, 1-11: Las bodas de Caná.", recom: "🍷 Alegría: Invitá a Jesús y a María a tus fiestas y a tu hogar; ellos traen la verdadera alegría." },
+    { id: "geo42", fact: "La ciudad de florencia es la cuna del arte sacro renacentista.", hook: "Allí, artistas como Fra Angelico pintaban de rodillas para mostrar la belleza de Dios. ¡El arte es un camino directo al cielo!", cite: "Belleza y Fe: El esplendor de la verdad expresado en colores.", recom: "🎨 Belleza: Buscá la belleza en las cosas simples; ahí también está Dios." },
+    { id: "geo43", fact: "El santuario de San Gil en Santiago del Estero es una fiesta de fe popular.", hook: "Bombos, caballos y miles de promesantes muestran la fe profunda y sencilla de nuestro interior argentino.", cite: "Religiosidad Popular: La cultura del pueblo que reza con todo el cuerpo.", recom: "🎶 Ritmo: Rezá con alegría, con música y con ganas; a Dios le gusta que sus hijos festejen." },
+    { id: "geo44", fact: "El Monte Calvario hoy está dentro de una iglesia en Jerusalén.", hook: "Se puede tocar la roca original donde estuvo clavada la cruz. Es un lugar de silencio y respeto profundo.", cite: "Gólgota: 'Lugar de la Calavera'.", recom: "✝️ Sacrificio: Tomate un minuto hoy para agradecerle a Jesús que dio la vida por vos en ese pedazo de roca." },
+    { id: "geo45", fact: "La ciudad de Asís en Italia sigue igual que en tiempos de San Francisco.", hook: "Sus calles de piedra invitan a la pobreza y a la paz. Es un lugar donde se siente que la naturaleza es hermana nuestra.", cite: "Paz y Bien: El lema de los franciscanos que nació en estas colinas.", recom: "🐦 Fraternidad: Tratá hoy a todos como hermanos, incluso a los animales y a las plantas." },
+    { id: "geo46", fact: "El santuario del Gauchito Gil muestra el cruce entre fe y cultura.", hook: "Aunque no es un santo oficial, miles de personas le piden que interceda ante Dios, mostrando la necesidad de protección en los caminos.", cite: "Fenómeno Social: La fe del caminante y del trabajador rural.", recom: "🛣️ Respeto: Mirá con amor la fe de los demás; Dios tiene caminos que a veces no entendemos." },
+    { id: "geo47", fact: "El Camino del Cuadrado en Córdoba nos une con el valle de Punilla.", hook: "Por esas sierras caminaron los primeros misioneros llevando la fe a cada rincón de nuestra Córdoba.", cite: "Geografía Serrana: Un paisaje que invita a la contemplación de la obra de Dios.", recom: "⛰️ Mirar: Cuando viajes por las sierras, apagá la radio y mirá el paisaje; Dios te está hablando." },
+    { id: "geo48", fact: "La Basílica de San Marcos en Venecia se construyó con tesoros de Oriente.", hook: "Sus mosaicos de oro cuentan toda la Biblia. Venecia era el puente entre el mundo de Jesús y el mundo de Europa.", cite: "Arte y Comercio: La fe que une culturas lejanas.", recom: "🤝 Puente: Sé un puente entre las personas de tu familia que no se hablan." },
+    { id: "geo49", fact: "El Monte Nebo es donde Moisés vio la Tierra Prometida antes de morir.", hook: "Desde allí se ve todo el valle del Jordán y Jerusalén. Es el lugar de la esperanza cumplida, aunque sea de lejos.", cite: "Deuteronomio 34: La visión final de Moisés.", recom: "🔭 Esperanza: Aunque hoy no veas la solución, confiá en que Dios te está llevando a buen puerto." },
+    { id: "geo50", fact: "La provincia de San Juan tiene el santuario de la Difunta Correa.", hook: "Una historia de amor maternal extremo que el pueblo convirtió en lugar de oración por los viajeros y las familias.", cite: "Tradición Cuyana: El agua que no se agota como símbolo del amor de madre.", recom: "🍼 Entrega: Valorá el sacrificio de tus padres; ellos dan la vida por vos cada día." },
+    { id: "geo51", fact: "La Vía Dolorosa en Jerusalén tiene 14 estaciones.", hook: "Es el camino que hizo Jesús con la cruz. Hoy los peregrinos lo recorren rezando el Vía Crucis entre el ruido del mercado.", cite: "Camino de la Cruz: El seguimiento de Cristo en la vida real y ruidosa.", recom: "🚶‍♂️ Realidad: Seguí a Jesús en medio de tus tareas diarias; Él está en la calle, no solo en el templo." },
+    { id: "geo52", fact: "La ciudad de San Miguel de Tucumán tiene la Casa Histórica y mucha fe.", hook: "Allí se juró la independencia bajo la protección de la Virgen de la Merced, 'Generala' de nuestro ejército.", cite: "Libertad y Fe: La Virgen que acompañó el nacimiento de la patria.", recom: "🇦🇷 Libertad: Pedile a Dios que nuestra Argentina sea siempre libre y soberana." },
+    { id: "geo53", fact: "El Lago de Tiberíades es el lugar donde Jesús desayunó con los apóstoles después de resucitar.", hook: "En la orilla hizo un fueguito y les preparó pescado. Es el lugar de la ternura de Dios con sus amigos.", cite: "Juan 21: 'Muchachos, ¿tienen algo de comer?'.", recom: "🐟 Ternura: Jesús se preocupa por tus cosas cotidianas, incluso por lo que vas a comer hoy." },
+    { id: "geo54", fact: "El Santuario de San Expedito en Bermejo (San Juan) atrae multitudes.", hook: "En medio del desierto sanjuanino, miles de personas buscan soluciones urgentes. La fe florece en lo seco.", cite: "Santo de las Causas Urgentes: Un soldado que no dejó para mañana su conversión.", recom: "⏰ Hoy: No dejes para mañana el bien que podés hacer hoy. ¡Expedito!" },
+    { id: "geo55", fact: "La Catedral de Córdoba tiene una acústica perfecta.", hook: "Fue construida para que la voz del Obispo llegara a todos sin esfuerzo. Es una joya de la arquitectura colonial argentina.", cite: "Plaza San Martín: El centro espiritual y civil de nuestra capital.", recom: "📢 Escucha: Afiná el oído para escuchar lo que Dios te quiere decir a través de los demás." },
+    { id: "geo56", fact: "El Monte de las Bienaventuranzas es una colina verde frente al lago.", hook: "Allí Jesús dijo: 'Felices los pobres, los que sufren...'. Es el lugar donde se dictó la 'constitución' del amor.", cite: "Mateo 5, 1-12: El Sermón de la Montaña.", recom: "😊 Felicidad: Buscá la felicidad en las cosas que Jesús recomienda, no en las que el mundo vende." },
+    { id: "geo57", fact: "La ciudad de San Carlos de Bariloche tiene una catedral de piedra frente al lago.", hook: "Se llama Nuestra Señora del Nahuel Huapi. Su arquitectura parece parte de las montañas que la rodean.", cite: "Fe en la Patagonia: La belleza de Dios reflejada en los lagos y pinos.", recom: "🏔️ Admiración: Cuando veas algo lindo en la naturaleza, decí: '¡Qué grande sos, Dios!'." },
+    { id: "geo58", fact: "El Pozo de Jacob en Samaria sigue dando agua hoy.", hook: "Es el lugar donde Jesús habló con la mujer samaritana y le ofreció 'agua viva' para que no tuviera sed nunca más.", cite: "Juan 4: El encuentro junto al pozo.", recom: "💧 Sed: Nada en este mundo te va a llenar del todo, solo el amor de Dios sacia la sed del alma." },
+    { id: "geo59", fact: "La Estancia de Caroya fue la primera posta de los Jesuitas.", hook: "Allí se fabricó el primer vino blanco de la zona para la Misa. ¡Nuestra industria vitivinícola cordobesa empezó con la fe!", cite: "Historia Productiva de Córdoba: Los jesuitas y el desarrollo regional.", recom: "🍷 Tradición: Valorá el trabajo de los que estuvieron antes; nosotros cosechamos lo que ellos plantaron." },
+    { id: "geo60", fact: "El santuario de la Virgen del Valle en Catamarca está en un valle precioso.", hook: "La 'Morenita del Valle' es la protectora de los paracaidistas y de todo el noroeste argentino. Su imagen fue encontrada en una cueva.", cite: "Devoción Catamarqueña: Una madre que cuida a sus hijos entre las montañas.", recom: "⛰️ Protección: Sentite seguro; si vivís en un valle o en una sierra, María te está mirando desde arriba." },
+    { id: "geo61", fact: "La ciudad de Petra en Jordania tiene iglesias talladas en la roca.", hook: "Los primeros cristianos convirtieron los templos paganos en iglesias hermosas, demostrando que Dios lo transforma todo.", cite: "Arqueología Cristiana: La fe que graba su nombre en la piedra.", recom: "🪨 Transformación: Dejá que Dios transforme esas partes duras de tu carácter en algo lindo." },
+    { id: "geo62", fact: "El santuario de San Roque en Córdoba es una fiesta de fe y mascotas.", hook: "Cada año, la gente lleva a sus perros a bendecir, recordando que toda la creación es amada por Dios.", cite: "San Roque: Patrono de los perros y de los enfermos.", recom: "🐶 Mascotas: Cuidá a tus animales; ellos son un regalo de Dios para hacernos compañía." },
+    { id: "geo63", fact: "El río Nilo en Egipto fue el refugio de Jesús bebé.", hook: "La Sagrada Familia tuvo que huir de Belén para salvar a Jesús. ¡Jesús fue un migrante y refugiado en otro país!", cite: "Mateo 2, 13-15: La huida a Egipto.", recom: "🌍 Acogida: Tratate bien con los que vienen de afuera; nunca sabés cuándo estás ayudando a Jesús." },
+    { id: "geo64", fact: "La ciudad de San Rafael en Mendoza es un oasis de fe y viñedos.", hook: "Lleva el nombre del arcángel de la salud y del viaje. Es una tierra bendecida por el agua de los glaciares.", cite: "Geografía de Mendoza: El milagro del riego en el desierto.", recom: "💧 Esfuerzo: Para que algo florezca hay que regarlo; hacé lo mismo con tu oración diaria." },
+    { id: "geo65", fact: "El Monte Carmelo tiene una cueva donde vivió el profeta Elías.", hook: "Es un lugar de silencio absoluto que invita a escuchar la 'voz suave' de Dios que no está en el ruido sino en la brisa.", cite: "1 Reyes 19, 12: El silbo apacible y delicado.", recom: "🤫 Silencio: Buscá un momento de silencio hoy; Dios te está queriendo susurrar algo al oído." },
+    { id: "geo66", fact: "La ciudad de Corrientes es la 'Ciudad de las Siete Corrientes' y de la Cruz.", hook: "Allí ocurrió el milagro de la Cruz de los Milagros, que no se quemaba a pesar del fuego de los ataques.", cite: "Historia Correntina: La fe que resiste todas las pruebas.", recom: "🔥 Resistencia: Aunque te ataquen por tu fe, mantenete firme; Dios es tu escudo." },
+    { id: "geo67", fact: "El Camino de las Estancias Jesuíticas une a toda Córdoba.", hook: "Caroya, Jesús María, Santa Catalina, Alta Gracia y La Candelaria. ¡Nuestra provincia es un museo de fe a cielo abierto!", cite: "Patrimonio de la Humanidad: Un legado cultural y espiritual único en América.", recom: "🗺️ Recorrido: Salí a conocer tu provincia; hay huellas de Dios en cada rincón cordobés." },
+    { id: "geo68", fact: "La ciudad de Emaús estaba a unos 11 kilómetros de Jerusalén.", hook: "Es el camino donde dos discípulos tristes se cruzaron con Jesús resucitado y no lo reconocieron hasta que partió el pan.", cite: "Lucas 24, 13-35: El encuentro en el camino de Emaús.", recom: "🚶‍♂️ Compañía: Jesús camina al lado tuyo aunque no lo veas; hablale como a un compañero de viaje." },
+    { id: "geo69", fact: "El santuario de la Virgen de Itatí tiene una de las cúpulas más grandes de América.", hook: "Se ve desde muy lejos en el río Paraná, sirviendo de guía a los navegantes. ¡María es nuestra brújula!", cite: "Santuario de Corrientes: Un faro de fe en el norte argentino.", recom: "🧭 Guía: Si estás perdido y no sabés qué hacer, mirá a María; ella te marca el norte." },
+    { id: "geo70", fact: "La ciudad de Cafarnaún hoy es un museo arqueológico.", hook: "Se puede visitar la sinagoga donde Jesús predicó y la casa de Pedro. ¡Son lugares reales, no cuentos!", cite: "Evidencias Históricas: La arqueología confirma los relatos del Evangelio.", recom: "🧱 Realidad: Tu fe no se basa en fantasías, sino en hechos que pasaron en lugares que todavía podés tocar." },
+    { id: "geo71", fact: "El desierto de Judea es donde Jesús fue tentado.", hook: "Es un lugar de rocas blancas y calor extremo. Allí Jesús demostró que el hombre no vive solo de pan, sino de la palabra de Dios.", cite: "Mateo 4, 1-11: Las tentaciones en el desierto.", recom: "🌵 Fortaleza: Cuando tengas una tentación, recordá que Jesús también la tuvo y la venció. ¡Vos podés!" },
+    { id: "geo72", fact: "Nuestra Capilla Santa Ana es un punto bendecido en el mapa de Córdoba.", hook: "No hace falta viajar a Jerusalén para estar con Dios. Aquí mismo, en nuestra zona, Él nos espera con el mismo amor.", cite: "Presencia Local: Dios habita en medio de su pueblo, en cada capilla y en cada corazón.", recom: "🏠 Tu lugar: Queré mucho a tu capilla; es el pedacito de cielo que Dios puso en tu barrio." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Lugar ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-geografia.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🗺️ ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí los caminos de la fe en Córdoba y el mundo entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Geografía de la Fe | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

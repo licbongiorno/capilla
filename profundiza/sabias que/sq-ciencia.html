@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ciencia y Fe | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Ciencia y Fe</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-microscope"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Razón y la Fe</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-lightbulb recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Verdad Integral</footer>
+
+<script>
+const DATOS = [
+    { id: "cie1", fact: "El padre del Big Bang fue un sacerdote católico.", hook: "Georges Lemaître fue el primero en proponer matemáticamente que el universo nació de un 'átomo primitivo' y se expande. Einstein al principio dudó, pero terminó dándole la razón.", cite: "Historia de la Ciencia: Lemaître demostró que la creación bíblica y la física pueden dialogar.", recom: "🔭 Origen: Dios es el autor de las leyes de la física que permitieron el Big Bang." },
+    { id: "cie2", fact: "El padre de la Genética moderna era un monje agustino.", hook: "Gregor Mendel descubrió cómo se heredan los rasgos físicos (como el color de los ojos) haciendo experimentos con plantas de arvejas en su jardín del monasterio.", cite: "Leyes de Mendel: La base de toda la biología y medicina genética actual.", recom: "🌱 Herencia: Dios puso un código inteligente en cada célula de tu cuerpo." },
+    { id: "cie3", fact: "La Iglesia fundó las primeras Universidades del mundo.", hook: "Lugares como Oxford, París y Bolonia nacieron bajo el ala de la Iglesia para buscar la verdad a través de la razón y el estudio científico.", cite: "Historia de la Educación: La universidad es uno de los mayores regalos de la cristiandad.", recom: "📚 Estudio: Tu cerebro es un regalo de Dios; usarlo para estudiar es una forma de honrarlo." },
+    { id: "cie4", fact: "Louis Pasteur, creador de las vacunas, era un católico devoto.", hook: "El hombre que nos enseñó a pasteurizar la leche y a vencer la rabia decía: 'Un poco de ciencia aleja de Dios, pero mucha ciencia devuelve a Él'.", cite: "Biografía de Pasteur: 'Cuanto más estudio la naturaleza, más me asombra la obra del Creador'.", recom: "💉 Salud: La ciencia es el instrumento de Dios para que los hombres sanen a otros." },
+    { id: "cie5", fact: "El Vaticano tiene uno de los observatorios más antiguos del mundo.", hook: "Se llama 'Specola Vaticana'. Los jesuitas estudian allí galaxias, meteoritos y el origen del tiempo para gloria de Dios.", cite: "Ciencia Papal: La Iglesia tiene astrónomos de primer nivel trabajando para ella.", recom: "🌌 Inmensidad: Mirar el cielo es leer la firma de Dios escrita con estrellas." },
+    { id: "cie6", fact: "Blaise Pascal, genio de las matemáticas, era un místico cristiano.", hook: "Inventó la primera calculadora y estudió la presión física, pero decía que 'el corazón tiene razones que la razón no conoce'.", cite: "Pensamientos de Pascal: Defendió que la fe es la apuesta más racional que un hombre puede hacer.", recom: "🧮 Lógica: Ser inteligente no es dudar de Dios, es reconocer su inteligencia superior." },
+    { id: "cie7", fact: "35 cráteres de la Luna llevan nombres de científicos jesuitas.", hook: "Debido a sus grandes aportes a la astronomía en el siglo XVII, la comunidad científica internacional decidió homenajear a estos sacerdotes.", cite: "Nomenclatura Lunar: Refleja el liderazgo jesuita en la ciencia del telescopio.", recom: "🌙 Huellas: Incluso en la Luna hay rastros del trabajo de hombres de fe." },
+    { id: "cie8", fact: "Copérnico, el que dijo que la Tierra gira alrededor del Sol, era clérigo.", hook: "Nicolás Copérnico era un oficial de la iglesia que dedicaba su tiempo libre a la astronomía, cambiando nuestra visión del universo para siempre.", cite: "Revolución Copernicana: Un giro en la historia impulsado por un hombre de Iglesia.", recom: "☀️ Centro: Así como la Tierra gira alrededor del Sol, tu vida debe girar alrededor de Dios." },
+    { id: "cie9", fact: "La Sismología se conoce históricamente como 'la ciencia jesuita'.", hook: "Durante siglos, los jesuitas instalaron la red de sismógrafos más grande del mundo para entender los terremotos y proteger a la gente.", cite: "Historia de la Geofísica: Los sacerdotes fueron pioneros en estudiar el interior de la Tierra.", recom: "🌍 Estabilidad: Dios nos da la inteligencia para entender la Tierra y prevenir desastres." },
+    { id: "cie10", fact: "Francis Collins, director del Proyecto Genoma Humano, es creyente.", hook: "El hombre que lideró el desciframiento del ADN humano dice que el genoma es 'el lenguaje de Dios' y que la ciencia es un acto de adoración.", cite: "El Lenguaje de Dios (Libro): Collins explica cómo pasó del ateísmo a la fe gracias a la ciencia.", recom: "🧬 Código: El ADN es la prueba de que no somos un accidente, somos un diseño." },
+    { id: "cie11", fact: "El calendario que usamos hoy fue creado por orden de un Papa.", hook: "El Calendario Gregoriano (por el Papa Gregorio XIII) es el más exacto del mundo y se logró gracias a astrónomos católicos.", cite: "Reforma del Calendario (1582): Ajustó el tiempo para que las estaciones no se desfasaran.", recom: "📅 Tiempo: Dios es el dueño de los siglos. El calendario nos ayuda a organizar su regalo." },
+    { id: "cie12", fact: "San Alberto Magno es el patrono de los científicos.", hook: "En el siglo XIII, este obispo escribió tratados sobre botánica, zoología y química, enseñando que la naturaleza debe estudiarse por experimentación.", cite: "Doctor de la Iglesia: Maestro de Santo Tomás de Aquino y pionero del método empírico.", recom: "🔬 Curiosidad: No tengas miedo de preguntar 'por qué'; Dios puso la respuesta en la naturaleza." },
+    { id: "cie13", fact: "La genética moderna confirma que todos venimos de una sola mujer.", hook: "La ciencia la llama 'Eva mitocondrial'. Aunque no es exactamente la Eva de la Biblia, confirma que la humanidad tiene un origen común único.", cite: "Genética de Poblaciones: Estudio del ADN mitocondrial que rastrea nuestra ascendencia.", recom: "👵 Familia: Todos somos parientes; la ciencia confirma que la fraternidad es biológica." },
+    { id: "cie14", fact: "El inventor del sismógrafo de péndulo fue un sacerdote.", hook: "El P. Cecchi inventó el primer instrumento capaz de registrar la duración e intensidad de un terremoto de forma precisa.", cite: "Historia de la Tecnología: La necesidad de proteger la vida impulsó la inventiva del clero.", recom: "🔔 Alerta: El talento puesto al servicio de los demás es la mejor forma de usar la ciencia." },
+    { id: "cie15", fact: "Muchos ganadores del Premio Nobel son personas de fe profunda.", hook: "Científicos como Max Planck (padre de la física cuántica) o Guglielmo Marconi (inventor de la radio) eran católicos practicantes.", cite: "Estadísticas Nobel: La gran mayoría de los laureados en ciencia han sido teístas o cristianos.", recom: "🏆 Excelencia: Llegar a lo más alto de la ciencia no requiere abandonar la oración." },
+    { id: "cie16", fact: "La Iglesia nunca dijo que la Tierra fuera plana.", hook: "Ese es un mito moderno. En las universidades católicas de la Edad Media se enseñaba que la Tierra era una esfera, siguiendo a Aristóteles y Santo Tomás.", cite: "Historia Medieval: Los mapas y estudios de la época ya mostraban un mundo esférico.", recom: "🗺️ Verdad: No creas todo lo que dicen de la Iglesia; buscá la fuente real de la historia." },
+    { id: "cie17", fact: "Un sacerdote jesuita fue el primero en observar las bandas de Júpiter.", hook: "El P. Giovanni Battista Zupi usó un telescopio para descubrir detalles en otros planetas que nadie había visto antes.", cite: "Astronomía del siglo XVII: Aportes fundamentales a la comprensión del sistema solar.", recom: "🔭 Detalle: Dios puso bellezas ocultas en el espacio para que los hombres las descubran." },
+    { id: "cie18", fact: "El concepto de 'Genética de Poblaciones' fue iniciado por un cura.", hook: "Estudiando cómo se distribuyen los genes en grupos humanos, la ciencia ayuda hoy a entender las migraciones y la salud global.", cite: "Biología Evolutiva: Una rama donde los pensadores cristianos han aportado rigor y ética.", recom: "👥 Comunidad: Dios nos hizo distintos pero con un mismo diseño de amor." },
+    { id: "cie19", fact: "La anestesia moderna tiene raíces en la caridad cristiana.", hook: "Los hospitales monásticos fueron los primeros en investigar formas de aliviar el dolor físico extremo durante las operaciones.", cite: "Historia de la Medicina: El deseo de imitar la compasión de Jesús impulsó el estudio del dolor.", recom: "❤️ Compasión: La ciencia debe servir para quitar el sufrimiento, no para causarlo." },
+    { id: "cie20", fact: "El P. Francesco Grimaldi descubrió la 'difracción de la luz'.", hook: "Este jesuita demostró que la luz no viaja solo en línea recta, sentando las bases de la óptica moderna y la física ondulatoria.", cite: "Física Óptica: Sus experimentos fueron citados por el mismísimo Isaac Newton.", recom: "🌈 Luz: Dios es luz, y nos permite entender cómo funciona su resplandor físico." },
+    { id: "cie21", fact: "La bioquímica demuestra que la vida no puede nacer de la nada.", hook: "Cuanto más estudiamos la célula, más vemos una complejidad que requiere un Diseñador inteligente. Es estadísticamente imposible el azar total.", cite: "Biología Molecular: La complejidad irreducible de las proteínas apunta a una mente superior.", recom: "🧬 Vida: No sos un accidente químico; sos una obra maestra de ingeniería divina." },
+    { id: "cie22", fact: "El inventor de la escala de temperatura que usamos en Misa era creyente.", hook: "Anders Celsius y otros pioneros de la medición del mundo físico veían en el orden de la temperatura un reflejo del orden divino.", cite: "Termodinámica: El estudio del calor y el frío revela leyes constantes creadas por Dios.", recom: "🌡️ Equilibrio: Así como el mundo tiene leyes térmicas, tu alma necesita el calor del amor de Dios." },
+    { id: "cie23", fact: "La Iglesia Católica es la institución que más hospitales gestiona en el mundo.", hook: "Desde hace siglos, une la mejor tecnología médica con el amor al prójimo, siguiendo el ejemplo del buen samaritano.", cite: "Estadísticas del Vaticano: Miles de hospitales y centros de salud en los cinco continentes.", recom: "🏥 Cuidado: La fe se traduce en manos que curan y máquinas que salvan vidas." },
+    { id: "cie24", fact: "El P. Boscovich es considerado el padre de la teoría atómica moderna.", hook: "En el siglo XVIII, este jesuita croata propuso un modelo del átomo que se adelantó 200 años a la física cuántica.", cite: "Teoría de la Materia: Un puente entre la física clásica y la moderna construido por un cura.", recom: "⚛️ Invisible: Dios hizo un mundo inmenso partiendo de partículas que no podemos ver." },
+    { id: "cie25", fact: "La ciencia forense confirma los detalles de la Pasión de Jesús.", hook: "Análisis médicos sobre la Sábana Santa muestran detalles anatómicos de la crucifixión que eran desconocidos cuando se descubrió la tela.", cite: "Sindonología: La ciencia que estudia el Lienzo de Turín como un objeto arqueológico.", recom: "🩸 Realidad: La fe no se basa en mitos, sino en hechos que dejan huellas físicas." },
+    { id: "cie26", fact: "El P. Jean-Baptiste Carnoy fundó la Citología moderna.", hook: "Fue un sacerdote belga que descubrió cómo funcionan los núcleos de las células, abriendo la puerta a la medicina celular.", cite: "Biología Celular: El estudio de la vida en su nivel más básico fue impulsado por la fe.", recom: "🧫 Células: Cada pequeña parte de tu cuerpo está trabajando ahora mismo según el plan de Dios." },
+    { id: "cie27", fact: "La Arqueología bíblica confirma que los lugares de la Biblia son reales.", hook: "Excavaciones en Israel han encontrado el estanque de Siloé y la casa de San Pedro, demostrando que los relatos de los Evangelios son geográficamente exactos.", cite: "Arqueología Cristiana: Una ciencia que pone pies en la tierra a las historias de fe.", recom: "🧱 Solidez: Podés confiar en lo que leés en la Biblia; pasó en lugares reales que todavía existen." },
+    { id: "cie28", fact: "El P. Angelo Secchi fue el primero en clasificar las estrellas por su luz.", hook: "Es el padre de la Astrofísica moderna. Demostró que las estrellas están hechas de los mismos elementos que la Tierra.", cite: "Espectroscopía Estelar: Un cura italiano que nos enseñó de qué está hecho el universo.", recom: "🌟 Brillo: Dios hizo las estrellas para iluminar el cielo y a los científicos para entenderlas." },
+    { id: "cie29", fact: "La 'Proporción Áurea' es llamada 'La proporción divina' por los científicos.", hook: "Es una constante matemática que aparece en caracoles, galaxias y el cuerpo humano. Es como la marca del arquitecto en su obra.", cite: "Matemáticas en la Naturaleza: Un orden numérico que atraviesa toda la creación.", recom: "📏 Diseño: El mundo tiene una belleza matemática porque fue pensado por una Mente Perfecta." },
+    { id: "cie30", fact: "El inventor del motor de combustión interna fue un sacerdote católico.", hook: "Eugenio Barsanti, junto a Felice Matteucci, patentó el primer motor de este tipo antes que las grandes marcas de autos.", cite: "Historia del Transporte: El ingenio de un cura ayudó a que hoy nos movamos en vehículos.", recom: "🚗 Energía: Dios nos da la inteligencia para transformar la materia en movimiento." },
+    { id: "cie31", fact: "La Iglesia protegió los textos científicos de los griegos y romanos.", hook: "Durante la caída del Imperio Romano, los monjes copiaron a mano los libros de medicina y astronomía para que no se perdieran para siempre.", cite: "Scriptoriums Monásticos: Los monasterios fueron los discos rígidos de la humanidad por siglos.", recom: "✍️ Memoria: Valora el pasado; sin esos monjes, hoy no sabríamos nada de la ciencia antigua." },
+    { id: "cie32", fact: "El P. Kircher fue el primero en usar el microscopio para estudiar enfermedades.", hook: "Sugirió que la peste era causada por 'pequeños seres vivos' invisibles al ojo humano, adelantándose a la microbiología.", cite: "Padre de la Infectología: Un jesuita alemán que buscó la causa física de los males.", recom: "🔬 Invisibilidad: No ver algo no significa que no exista. Vale para los microbios y para Dios." },
+    { id: "cie33", fact: "La teoría de la deriva continental fue apoyada por pensadores cristianos.", hook: "La idea de que los continentes se mueven refleja un planeta vivo y dinámico, no una roca muerta, algo que coincide con la visión bíblica de una creación en movimiento.", cite: "Geología Moderna: El estudio de la tectónica de placas revela la 'danza' de la creación.", recom: "🚢 Dinamismo: Dios no hizo un mundo estático; nos invita a cambiar y movernos con Él." },
+    { id: "cie34", fact: "Un sacerdote descubrió que la luz tiene velocidad constante.", hook: "El P. James Bradley y otros clérigos astrónomos trabajaron para medir lo que parecía instantáneo, revelando una de las leyes básicas del universo.", cite: "Física de la Luz: El orden del cosmos se mide por la velocidad de su resplandor.", recom: "⚡ Velocidad: La luz de Dios llega a tu corazón más rápido de lo que la ciencia puede medir." },
+    { id: "cie35", fact: "La Genética de Mendel fue ignorada por años hasta que la ciencia 'maduró'.", hook: "A veces la verdad (como la fe) tarda en ser aceptada porque el mundo no está listo para ver el orden de Dios.", cite: "Historia de la Biología: Mendel murió sin saber que sería el científico más importante de su rama.", recom: "⏳ Paciencia: Seguí buscando la verdad aunque hoy nadie te crea; el tiempo te dará la razón." },
+    { id: "cie36", fact: "El P. Nicolás Steno es el padre de la Geología moderna.", hook: "Fue un obispo que descubrió cómo se forman las capas de la tierra (estratigrafía) y entendió qué eran realmente los fósiles.", cite: "Principios de Geología: La historia de la Tierra escrita en las rocas por el Creador.", recom: "⛰️ Rocas: Las piedras cuentan la historia de la paciencia de Dios para crear nuestro hogar." },
+    { id: "cie37", fact: "La NASA nombró una misión en honor a un concepto de un clérigo.", hook: "El estudio de los cielos y la exploración espacial siempre llevan nombres que evocan la grandeza de la creación.", cite: "Exploración Espacial: Un campo donde la fe en algo más grande impulsa al hombre a viajar lejos.", recom: "🚀 Fronteras: Dios nos dio pies para caminar la Tierra y mentes para soñar con las estrellas." },
+    { id: "cie38", fact: "El P. Marin Mersenne es llamado el 'secretario científico de Europa'.", hook: "En el siglo XVII, este monje coordinó la comunicación entre Galileo, Pascal y Descartes para que la ciencia avanzara unida.", cite: "Redes Científicas: La Iglesia facilitó el nacimiento de la comunidad científica internacional.", recom: "🤝 Redes: La verdad se encuentra más rápido cuando trabajamos juntos en comunidad." },
+    { id: "cie39", fact: "La Botánica moderna fue organizada por mentes cristianas.", hook: "Clasificar las flores y plantas no es solo jardinería, es entender la inmensa farmacia que Dios nos dejó en la tierra.", cite: "Ciencias Naturales: El estudio de la flora revela la providencia de Dios para nuestra salud.", recom: "🌸 Cuidado: Protegé la naturaleza; es el laboratorio que Dios te regaló para vivir." },
+    { id: "cie40", fact: "El sismógrafo más preciso de Sudamérica está en una universidad católica.", hook: "En Córdoba y el resto del país, las instituciones de fe siguen liderando el estudio de la Tierra para cuidar a la población.", cite: "Sismología en Argentina: Una tradición que une la seguridad civil con la investigación científica.", recom: "📢 Servicio: La ciencia que no sirve para proteger al prójimo no tiene alma." },
+    { id: "cie41", fact: "La física cuántica revela que el universo es más 'espiritual' de lo que parece.", hook: "A nivel subatómico, las cosas no son solo materia sólida, son energía y posibilidades, algo que los teólogos vienen diciendo hace siglos.", cite: "Mecánica Cuántica: Una rama que desafía el materialismo ciego.", recom: "⚛️ Misterio: No todo lo real se puede tocar con las manos. ¡Tené fe!" },
+    { id: "cie42", fact: "El P. Christopher Scheiner descubrió las manchas solares.", hook: "Este jesuita alemán fue uno de los primeros en usar filtros para mirar el Sol y entender que nuestra estrella no es inmutable.", cite: "Física Solar: Un aporte clave para entender el clima espacial.", recom: "☀️ Claridad: Incluso el Sol tiene manchas, pero sigue iluminando el mundo cada día." },
+    { id: "cie43", fact: "La Iglesia fundó el primer hospital psiquiátrico del mundo occidental.", hook: "Fue en Valencia (España) en 1409. Se basó en la idea de que los enfermos mentales son hijos de Dios que necesitan cuidado médico y amor, no cadenas.", cite: "Historia de la Psiquiatría: La caridad cristiana fue la primera en tratar la mente con dignidad.", recom: "🧠 Salud Mental: Dios quiere que tu mente esté en paz; la ciencia médica es su ayuda para lograrlo." },
+    { id: "cie44", fact: "La matemática binaria (el 0 y el 1) tiene una base teológica.", hook: "Leibniz, uno de sus creadores, veía en el 1 a Dios y en el 0 a la nada, representando la creación de todo a partir de Dios.", cite: "Historia de la Computación: La base de tu celular nació de una reflexión sobre la creación.", recom: "💻 Tecnología: Detrás de cada código de computadora hay un orden lógico que Dios inventó primero." },
+    { id: "cie45", fact: "Un sacerdote jesuita inventó el primer proyector de imágenes.", hook: "Athanasius Kircher creó la 'linterna mágica' en el siglo XVII, la abuela de nuestro cine y proyectores actuales.", cite: "Historia de la Óptica: El deseo de educar con imágenes impulsó la tecnología visual.", recom: "🎞️ Imagen: Usá la tecnología para proyectar cosas buenas y verdaderas en el mundo." },
+    { id: "cie46", fact: "La teoría de los gérmenes fue confirmada por científicos católicos.", hook: "Demostrar que las enfermedades no son castigos mágicos sino procesos biológicos ayudó a la Iglesia a curar mejor a los pobres.", cite: "Microbiología Médica: La fe busca la causa real de las cosas para actuar con eficacia.", recom: "🧼 Realismo: Dios actúa a través de la naturaleza; conocerla es conocer cómo Él trabaja." },
+    { id: "cie47", fact: "El P. William of Ockham creó la regla de oro de la ciencia moderna.", hook: "Se llama 'La navaja de Ockham': ante dos explicaciones, la más sencilla suele ser la verdadera. Dios no complica las cosas.", cite: "Filosofía de la Ciencia: Un monje franciscano que dio rigor al pensamiento lógico.", recom: "✂️ Sencillez: No compliques tu vida; la solución de Dios suele ser más simple de lo que creés." },
+    { id: "cie48", fact: "Un clérigo jesuita fue el primero en mapear las corrientes oceánicas.", hook: "Entender cómo se mueve el mar permitió viajes más seguros y salvó miles de vidas de navegantes y misioneros.", cite: "Oceanografía Física: Los sacerdotes fueron los primeros exploradores científicos de los mares.", recom: "🌊 Dirección: Dejá que Dios sea la corriente que guíe el barco de tu vida a buen puerto." },
+    { id: "cie49", fact: "La genética de Mendel fue redescubierta por científicos que buscaban el orden.", hook: "Después de años de olvido, la ciencia confirmó que el monje tenía razón. La verdad de Dios nunca caduca.", cite: "Historia de la Genética: Mendel es hoy un gigante de la ciencia mundial.", recom: "💎 Firmeza: No te desanimes si hoy el mundo te ignora; si estás en la verdad, brillarás tarde o temprano." },
+    { id: "cie50", fact: "El P. Giambattista Riccioli fue el primero en medir la gravedad con precisión.", hook: "Usó péndulos y la caída de objetos desde torres para calcular la aceleración de la Tierra, ayudando a Newton años después.", cite: "Física Experimental: Un jesuita que puso números al peso del mundo.", recom: "⚖️ Gravedad: Dios mantiene todo en su lugar con leyes invisibles y perfectas." },
+    { id: "cie51", fact: "El inventor del termómetro clínico fue un médico católico.", hook: "Buscaba una forma de medir la fiebre con precisión para salvar a los niños enfermos en los hospitales de caridad.", cite: "Historia de la Medicina: La tecnología nació de la necesidad de cuidar la vida vulnerable.", recom: "🌡️ Atención: Dios nos da herramientas para detectar cuándo un hermano necesita ayuda." },
+    { id: "cie52", fact: "La NASA tiene un sacerdote jesuita trabajando en su equipo de meteoritos.", hook: "El Hno. Guy Consalmagno es director del Observatorio Vaticano y uno de los mayores expertos mundiales en rocas espaciales.", cite: "Astronomía Moderna: La fe está presente en los laboratorios más avanzados de hoy.", recom: "☄️ Rocas: Hasta en una piedra que cae del cielo podemos encontrar la sabiduría de Dios." },
+    { id: "cie53", fact: "La Iglesia fundó las escuelas para ciegos y sordos.", hook: "Buscó formas científicas de comunicación (como el lenguaje de señas y el Braille) para que nadie quedara fuera de la palabra de Dios.", cite: "Educación Especial: La caridad impulsó la ciencia de la comunicación inclusiva.", recom: "👂 Inclusión: Dios habla todos los idiomas, incluso el de las manos y el del tacto." },
+    { id: "cie54", fact: "Un sacerdote polaco descubrió la rotación de las galaxias.", hook: "El estudio de cómo giran los universos lejanos nos muestra que el orden de Dios llega hasta los rincones más oscuros del espacio.", cite: "Cosmología: La fe nos da la curiosidad para mirar más allá de nuestra propia casa.", recom: "🌌 Giro: Todo el universo está bailando al ritmo que Dios le marcó." },
+    { id: "cie55", fact: "La química moderna le debe mucho a los boticarios de los conventos.", hook: "Buscando medicinas en las plantas, los monjes descubrieron compuestos químicos que hoy son la base de nuestras farmacias.", cite: "Historia de la Química: Los laboratorios monásticos fueron pioneros en la destilación y purificación.", recom: "⚗️ Purificación: Dios quiere purificar tu vida como un químico limpia una sustancia preciosa." },
+    { id: "cie56", fact: "La arqueología en Argentina tiene grandes pioneros jesuitas.", hook: "Ellos estudiaron las culturas antiguas de Córdoba y el norte para entender nuestra historia y respetar nuestras raíces.", cite: "Arqueología Nacional: El estudio de los antepasados nos ayuda a valorar nuestra identidad.", recom: "🏺 Raíces: Dios estuvo presente en nuestra tierra mucho antes de que nosotros llegáramos." },
+    { id: "cie57", fact: "El sismógrafo de la Universidad Católica de Córdoba es referencia nacional.", hook: "Sigue la tradición de los sismólogos jesuitas, cuidando a los cordobeses a través del monitoreo constante de la Tierra.", cite: "Ciencia en Córdoba: Nuestra provincia es líder en geofísica gracias a la base de fe.", recom: "📢 Vigilancia: La ciencia es el centinela que Dios nos dio para cuidar a la comunidad." },
+    { id: "cie58", fact: "Un jesuita inventó la 'linterna mágica', el antepasado del cine.", hook: "Querían usar imágenes para enseñar el Evangelio de forma entretenida. ¡La tecnología visual nació para evangelizar!", cite: "Historia de la Comunicación: La Iglesia siempre usó la mejor tecnología para dar su mensaje.", recom: "📽️ Visión: Usá tus ojos y tus pantallas para ver cosas que eleven tu espíritu." },
+    { id: "cie59", fact: "La 'Navaja de Ockham' ayuda a los médicos a diagnosticar hoy.", hook: "Sigue siendo el principio científico número uno: buscá siempre la causa más probable y simple.", cite: "Pensamiento Científico: Un monje del siglo XIV sigue guiando a los doctores de hoy.", recom: "💡 Claridad: En la sencillez está la huella de Dios; lo complicado suele ser humano." },
+    { id: "cie60", fact: "El P. Jean Picard fue el primero en medir el tamaño de la Tierra con precisión.", hook: "Sus medidas fueron las que usó Isaac Newton para confirmar su ley de la gravedad universal.", cite: "Geodesia: El estudio de la forma de la Tierra fue liderado por un cura francés.", recom: "🌍 Medida: Dios hizo el mundo con medida, número y peso. Nada es al azar." },
+    { id: "cie61", fact: "La medicina moderna confirma los beneficios de la oración.", hook: "Estudios científicos demuestran que las personas que rezan tienen niveles más bajos de estrés y se recuperan más rápido de las cirugías.", cite: "Neurociencia de la Fe: El cerebro humano está 'cableado' para conectarse con lo trascendente.", recom: "🙏 Salud total: Rezar no solo salva tu alma, también ayuda a tu cuerpo a estar mejor." },
+    { id: "cie62", fact: "El P. Lazaro Spallanzani demostró que la vida no nace de materia muerta.", hook: "Fue un cura italiano que refutó la generación espontánea, abriendo el camino para Pasteur y la biología moderna.", cite: "Fisiología Experimental: La vida es un regalo de Dios que solo se transmite de seres vivos.", recom: "🐣 Vida: Valorá cada latido de tu corazón; es un milagro que la ciencia no puede crear sola." },
+    { id: "cie63", fact: "Un sacerdote jesuita descubrió cómo los pulmones oxigenan la sangre.", hook: "Buscando entender la maravilla del cuerpo humano, los clérigos médicos aportaron datos clave a la anatomía.", cite: "Historia de la Fisiología: El cuerpo humano es la máquina más perfecta diseñada por Dios.", recom: "🌬️ Aliento: Cada vez que respirás, estás usando el sistema que Dios diseñó para mantenerte vivo." },
+    { id: "cie64", fact: "La Iglesia fundó el primer hospital de niños de la historia.", hook: "Fue en París, basándose en la idea de que los más pequeños necesitan una atención científica especializada.", cite: "Pediatría: La ciencia médica para niños nació de la ternura cristiana.", recom: "🧒 Cuidado: Los niños son el tesoro de Dios; la ciencia debe ser su mayor escudo." },
+    { id: "cie65", fact: "El P. Pierre Gassendi fue el primero en medir la velocidad del sonido.", hook: "Este sacerdote francés usó cañones y cronómetros primitivos para entender cómo viaja el ruido por el aire.", cite: "Acústica Física: La ciencia del sonido fue impulsada por la curiosidad de un hombre de fe.", recom: "🔊 Escucha: Dios nos dio oídos para escuchar la música de la creación y la voz de los hermanos." },
+    { id: "cie66", fact: "La genética de Mendel fue redescubierta por tres científicos a la vez.", hook: "Demuestra que la verdad es objetiva: Dios la pone ahí para que el que busque con rigor, la encuentre.", cite: "Leyes de la Herencia: Un orden biológico que no cambia con las modas.", recom: "🧬 Constancia: La verdad de Dios es la misma ayer, hoy y siempre." },
+    { id: "cie67", fact: "Un jesuita fue el primero en observar la nebulosa de Andrómeda.", hook: "Nos mostró que el universo es mucho más grande de lo que imaginábamos, con galaxias enteras fuera de la nuestra.", cite: "Astronomía Profunda: La inmensidad del espacio nos hace humildes ante Dios.", recom: "🌌 Humildad: Somos un granito de arena en un universo inmenso, pero Dios conoce tu nombre." },
+    { id: "cie68", fact: "El P. Ignazio Danti construyó el primer mapa gigante del mundo en el Vaticano.", hook: "Usó la mejor cartografía de la época para que el Papa pudiera entender la geografía de todos los pueblos del mundo.", cite: "Galería de los Mapas: Una joya del arte y la ciencia geográfica en el Vaticano.", recom: "🗺️ Guía: Dejá que Dios sea el mapa que te guíe en los territorios desconocidos de tu vida." },
+    { id: "cie69", fact: "La ética científica nació de los debates de los teólogos católicos.", hook: "Ellos pusieron los límites: la ciencia debe servir al hombre y no usarlo como un objeto. Sin ética, la ciencia es peligrosa.", cite: "Bioética: La protección del ser humano frente a los abusos del poder tecnológico.", recom: "🛑 Límites: No todo lo que la ciencia 'puede' hacer es bueno. Buscá siempre el bien moral." },
+    { id: "cie70", fact: "El P. Teilhard de Chardin unió la paleontología con la fe.", hook: "Este jesuita estudió los fósiles humanos para demostrar que la evolución es un camino de Dios hacia una mayor conciencia.", cite: "Antropología Cristiana: El hombre como la cima de la creación en evolución.", recom: "🦴 Evolución: Somos el resultado de un largo camino de amor que Dios fue guiando paso a paso." },
+    { id: "cie71", fact: "La Pontificia Academia de las Ciencias tiene miembros ateos y creyentes.", hook: "Al Papa le interesa la verdad científica sin importar quién la encuentre. Es un foro de diálogo único en el mundo.", cite: "Diálogo Ciencia y Religión: La Iglesia es el lugar donde todos los buscadores de la verdad son bienvenidos.", recom: "🤝 Apertura: No tengas miedo de hablar con quien piensa distinto; la verdad no tiene dueño." },
+    { id: "cie72", fact: "San Juan Pablo II dijo que 'la ciencia purifica a la religión del error'." , hook: "Y agregó que 'la religión purifica a la ciencia de la idolatría y los falsos absolutos'. Ambas se necesitan mutuamente.", cite: "Carta al Director del Observatorio Vaticano (1988): El manual de convivencia entre fe y razón.", recom: "🎯 Unión: Usá tu mente para estudiar y tu corazón para rezar. Así serás un hombre completo." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Dato Científico ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-ciencia.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🔬 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí cómo la ciencia y la fe van de la mano entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Ciencia y Fe | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

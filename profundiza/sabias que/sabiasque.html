@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sabías que... | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* PALETA DE COLORES Y MODO OSCURO */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --primario: #D7CCC8; 
+            --acento: #D4AF37; 
+            --fondo: #1A1A1A; 
+            --blanco: #2D2D2D;
+            --texto: #F5F5F0; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* NAVEGACIÓN SUPERIOR */
+        nav { 
+            position: sticky; top: 0; width: 100%; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: var(--fondo);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: background 0.3s;
+        }
+
+        .nav-btn {
+            background: var(--blanco); padding: 8px 16px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 700;
+            font-size: 0.9rem; display: flex; gap: 8px; align-items: center;
+            box-shadow: var(--sombra); transition: 0.3s;
+        }
+
+        .icon-btn { cursor: pointer; border: none; font-size: 1.2rem; color: var(--acento); }
+
+        /* CABECERA */
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
+        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 500px; margin: 0 auto; line-height: 1.5; }
+
+        /* GRILLA DE CATEGORÍAS */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; padding: 20px; max-width: 1000px; margin: 0 auto 50px; width: 100%;
+        }
+
+        .cat-card {
+            background: var(--blanco); border-radius: 16px; padding: 20px;
+            text-decoration: none; color: var(--texto);
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 5px solid var(--acento);
+        }
+
+        .cat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
+        .cat-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: rgba(193, 154, 107, 0.15); color: var(--acento);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; flex-shrink: 0; transition: background 0.3s;
+        }
+        
+        /* Aseguramos que los SVG personalizados se vean del mismo tamaño que los íconos */
+        .cat-icon svg { width: 1.1em; height: 1.1em; }
+
+        body.dark-mode .cat-icon { background: rgba(212, 175, 55, 0.1); }
+
+        .cat-info { flex: 1; }
+        .cat-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--primario); margin-bottom: 5px; }
+        .cat-desc { font-size: 0.85rem; opacity: 0.7; line-height: 1.4; }
+        .cat-arrow { color: var(--acento); font-size: 1.1rem; opacity: 0.5; transition: 0.3s; }
+        .cat-card:hover .cat-arrow { opacity: 1; transform: translateX(5px); }
+
+        /* FOOTER Y WHATSAPP */
+        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
+        .f-title { font-weight: 700; font-size: 1rem; }
+        .f-sub { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
+
+        .float-container { position: fixed; bottom: 25px; right: 25px; z-index: 100; }
+        .f-btn {
+            width: 55px; height: 55px; border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; font-size: 1.8rem;
+            color: white; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s;
+        }
+        .f-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i> Inicio
+        </a>
+        <button class="nav-btn icon-btn" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header>
+        <h1>¿Sabías que...?</h1>
+        <p class="subtitle">Elegí una categoría y descubrí los misterios, las historias y las curiosidades más hermosas de nuestra fe católica.</p>
+    </header>
+
+    <div class="grid-container">
+        
+        <a href="sq-antiguo.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-scroll"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Antiguo Testamento</div>
+                <div class="cat-desc">Historias antes de Jesús: Adán, el Arca, Moisés y los grandes profetas.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-nuevo.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-book-bible"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Nuevo Testamento</div>
+                <div class="cat-desc">La vida oculta de Jesús, sus apóstoles y los secretos de los Evangelios.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-misa.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-church"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Misterios de la Misa</div>
+                <div class="cat-desc">El significado oculto de los colores, los gestos y cada parte del altar.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-papas.html" class="cat-card">
+            <div class="cat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="18" r="3" />
+                    <path d="M8 16L19 5" />
+                    <path d="M17 7L19 9" />
+                    <path d="M14 10L16 12" />
+                    <circle cx="18" cy="18" r="3" />
+                    <path d="M16 16L5 5" />
+                    <path d="M7 7L5 9" />
+                    <path d="M10 10L8 12" />
+                </svg>
+            </div>
+            <div class="cat-info">
+                <div class="cat-title">Sucesores de Pedro</div>
+                <div class="cat-desc">Secretos del Vaticano, cónclaves y los Papas que cambiaron la historia.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-ciencia.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-microscope"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Ciencia y Fe</div>
+                <div class="cat-desc">El Big Bang, los curas científicos y cómo la razón se abraza con Dios.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-santos.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-star"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">La Virgen y los Santos</div>
+                <div class="cat-desc">Historias de valentía, la patrona Santa Ana y nuestros héroes de la fe.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-sacramentos.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-droplet"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Los Sacramentos</div>
+                <div class="cat-desc">Los 7 canales invisibles de la Gracia que Jesús nos dejó de regalo.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-palabras.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-comment-dots"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Palabras con Alma</div>
+                <div class="cat-desc">¿Qué significa Amén, Aleluya, Iglesia o Biblia? El diccionario de la fe.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-arte.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-paint-brush"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Arte y Arquitectura</div>
+                <div class="cat-desc">El lenguaje oculto en las catedrales, los vitrales y las grandes pinturas.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-geografia.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-map-marked-alt"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Geografía de la Fe</div>
+                <div class="cat-desc">Los lugares que pisó Jesús, la tierra de la Biblia y los santuarios del mundo.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-milagros.html" class="cat-card">
+            <div class="cat-icon">
+                <svg viewBox="0 0 512 512" fill="currentColor">
+                    <path d="M327.5 85.2c-4.5-17.4-28.6-17.4-33.1 0l-12.7 49.3c-1.3 5.1-5.3 9.1-10.4 10.4l-49.3 12.7c-17.4 4.5-17.4 28.6 0 33.1l49.3 12.7c5.1 1.3 9.1 5.3 10.4 10.4l12.7 49.3c4.5 17.4 28.6 17.4 33.1 0l12.7-49.3c1.3-5.1 5.3-9.1 10.4-10.4l49.3-12.7c17.4-4.5 17.4-28.6 0-33.1l-49.3-12.7c-5.1-1.3-9.1-5.3-10.4-10.4l-12.7-49.3zM143.5 301.2c-3.4-13.1-21.6-13.1-25.1 0l-8.4 32.8c-.9 3.4-3.6 6.1-7 7l-32.8 8.4c-13.1 3.4-13.1 21.6 0 25.1l32.8 8.4c3.4 .9 6.1 3.6 7 7l8.4 32.8c3.4 13.1 21.6 13.1 25.1 0l8.4-32.8c.9-3.4 3.6-6.1 7-7l32.8-8.4c13.1-3.4 13.1-21.6 0-25.1l-32.8-8.4c-3.4-.9-6.1-3.6-7-7l-8.4-32.8z"/>
+                </svg>
+            </div>
+            <div class="cat-info">
+                <div class="cat-title">Milagros y Signos</div>
+                <div class="cat-desc">Sucesos eucarísticos, curaciones y fenómenos que desafían la lógica.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+        <a href="sq-tradiciones.html" class="cat-card">
+            <div class="cat-icon"><i class="fas fa-hands-praying"></i></div>
+            <div class="cat-info">
+                <div class="cat-title">Nuestras Tradiciones</div>
+                <div class="cat-desc">El origen histórico del pesebre, el rosario, las procesiones y nuestra cultura.</div>
+            </div>
+            <i class="fas fa-chevron-right cat-arrow"></i>
+        </a>
+
+    </div>
+
+    <footer>
+        <div class="f-title">Capilla Santa Ana</div>
+        <div class="f-sub">Formación y Catequesis Permanente</div>
+    </footer>
+
+    <div class="float-container">
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        // Función para cambiar el Modo Oscuro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Cargar tema guardado al abrir la página
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            
+            // Chequea si el usuario ya tenía el modo oscuro activado
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+    </script>
+</body>
+</html>

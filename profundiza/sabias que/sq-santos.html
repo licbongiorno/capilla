@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>La Virgen y los Santos | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">La Virgen y los Santos</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-star"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">Luz de Santidad</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-hands-praying recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Ejemplo de Vida</footer>
+
+<script>
+const DATOS = [
+    { id: "san1", fact: "Santa Ana es la abuela de Jesús y patrona de nuestra Capilla.", hook: "Su nombre significa 'Gracia'. Después de años de rezar, Dios le concedió ser la madre de la Virgen María.", cite: "Tradición Cristiana: Santa Ana y San Joaquín son el ejemplo de la familia santa.", recom: "🏠 Familia: Pedile a Santa Ana por tus abuelos y por la unión de tu hogar." },
+    { id: "san2", fact: "La Virgen de Luján es la patrona de todos los argentinos.", hook: "En 1630, la carreta que llevaba su imagen se detuvo a orillas del río Luján y no quiso moverse más. ¡Eligió quedarse con nosotros!", cite: "Historia de Luján: El milagro de la carreta que fundó un santuario.", recom: "🇦🇷 Patria: Poné a nuestra Argentina bajo el manto de la Virgencita de Luján." },
+    { id: "san3", fact: "San José es el patrono de la Iglesia Universal.", hook: "Fue el hombre de confianza de Dios. Sin decir una sola palabra en la Biblia, su silencio y trabajo protegieron al Salvador.", cite: "Patris Corde: El corazón de padre con que José amó a Jesús.", recom: "🛠️ Trabajo: Si te falta trabajo o tenés problemas, encargáselos a San José." },
+    { id: "san4", fact: "San Francisco de Asís hablaba con los animales y la naturaleza.", hook: "Llamaba 'hermano' al sol y 'hermana' a la luna. Renunció a toda su riqueza para vivir la alegría de ser pobre con Dios.", cite: "Cántico de las Criaturas: 'Loado seas, mi Señor, por todas tus criaturas'.", recom: "🐦 Naturaleza: Cuidar el mundo es una forma de alabar al Creador." },
+    { id: "san5", fact: "Santa Teresita de Lisieux inventó el 'Caminito' de santidad.", hook: "Decía que no hacía falta hacer cosas gigantes; solo hay que hacer las cosas más chiquitas con un amor inmenso.", cite: "Historia de un Alma: 'En el corazón de la Iglesia, yo seré el amor'.", recom: "🌹 Detalles: Hoy hacé un favor pequeño con una sonrisa gigante." },
+    { id: "san6", fact: "El Padre Pío tenía las llagas de Jesús en sus manos.", hook: "Durante 50 años llevó los estigmas de la cruz. Tenía el don de leer el alma de las personas cuando se confesaban.", cite: "Vida del Padre Pío: 'Reza, ten fe y no te preocupes'.", recom: "🙏 Confianza: Cuando sientas miedo, recordá su frase: Dios es misericordioso." },
+    { id: "san7", fact: "San Judas Tadeo es el patrono de las causas imposibles.", hook: "Era primo de Jesús. Se lo representa con una llama de fuego en la cabeza por el Espíritu Santo en Pentecostés.", cite: "Tradición Popular: Uno de los santos más queridos por su ayuda en momentos críticos.", recom: "🔥 Esperanza: Si tenés un problema que parece no tener salida, llamá a San Judas." },
+    { id: "san8", fact: "San Cayetano es el santo del pan y del trabajo.", hook: "Fundó los Clérigos Regulares para servir a los enfermos y pobres, confiando siempre en la providencia de Dios.", cite: "Devoción Argentina: Cada 7 de agosto, miles agradecen el pan en su mesa.", recom: "🍞 Compartir: Si tenés trabajo, agradecé; si te sobra pan, compartilo." },
+    { id: "san9", fact: "San Benito es el protector contra el mal.", hook: "Su famosa medalla tiene una oración de exorcismo. Su lema era 'Ora et Labora' (Reza y Trabaja).", cite: "Regla de San Benito: El fundamento de la vida monástica en Occidente.", recom: "🛡️ Protección: Llevá su medalla para recordar que Dios te cuida de todo mal." },
+    { id: "san10", fact: "La Virgen de Guadalupe dejó su imagen en el manto de un indio.", hook: "Juan Diego llevaba flores en su tilma y, al abrirlos, apareció la imagen de la Virgen que hoy ven millones en México.", cite: "Nican Mopohua: '¿No estoy yo aquí, que soy tu madre?'.", recom: "🇲🇽 Amparo: Sentite siempre bajo el cuidado maternal de María." },
+    { id: "san11", fact: "San Expedito era un militar romano que no quiso postergar su fe.", hook: "Cuando decidió hacerse cristiano, el demonio en forma de cuervo le dijo 'Mañana'. Él lo pisó y dijo '¡Hoy!'. Por eso es el santo de lo urgente.", cite: "Tradición Católica: Patrono de las causas que necesitan solución inmediata.", recom: "⏰ Decisión: No dejes para mañana el bien que podés hacer hoy mismo." },
+    { id: "san12", fact: "El Cura Brochero recorría las sierras de Córdoba en mula.", hook: "Construyó caminos, escuelas y casas de ejercicios. Es nuestro gran santo cordobés, el 'Cura Gaucho'.", cite: "Canonización 2016: El primer santo que nació y murió en Argentina.", recom: "🐴 Esfuerzo: Sé como Brochero; salí a buscar a los que están lejos para traerlos a Dios." },
+    { id: "san13", fact: "San Antonio de Padua es el santo que 'encuentra' las cosas.", hook: "Se lo llama el 'Santo de todo el mundo'. Se le pide por los objetos perdidos, pero sobre todo por las causas del corazón.", cite: "Doctor de la Iglesia: Famoso por su elocuencia y sus milagros en vida.", recom: "📦 Encuentro: Pedile que te ayude a encontrar la paz si la perdiste." },
+    { id: "san14", fact: "Santa Rita de Casia es la santa de lo imposible y los necesitados.", hook: "Sufrió mucho en su matrimonio y luego como monja recibió una espina de la corona de Jesús en su frente.", cite: "Devoción Universal: Ejemplo de perdón y paciencia heroica.", recom: "🥀 Perdón: El perdón es la llave que abre las puertas más pesadas." },
+    { id: "san15", fact: "San Pantaleón era un médico que curaba en nombre de Jesús.", hook: "Fue médico del emperador romano. Se lo invoca para pedir por la salud de los enfermos y por los médicos.", cite: "Mártir del siglo IV: Sanaba el cuerpo pero también el alma de sus pacientes.", recom: "🏥 Salud: Rezá por los enfermos de tu barrio y por los que los cuidan." },
+    { id: "san16", fact: "San Roque es el patrono de los perros y los enfermos.", hook: "Se contagió de peste y se escondió en un bosque. Un perro le llevaba pan todos los días y le lamía las heridas hasta que sanó.", cite: "Tradición Popular: 'San Roque, San Roque, que este perro no me toque'.", recom: "🐶 Mascotas: Cuidá a tus animales; ellos también son parte de la creación de Dios." },
+    { id: "san17", fact: "San Martín de Porres es el santo de la escoba y la humildad.", hook: "Era un fraile dominico peruano que hacía los trabajos más humildes con alegría. Se dice que hacía comer del mismo plato a perro, gato y ratón.", cite: "Primer Santo Negro de América: Ejemplo de superación del racismo a través del amor.", recom: "🧹 Humildad: Ningún trabajo es pequeño si se hace con amor a Dios." },
+    { id: "san18", fact: "Santa Rosa de Lima fue la primera santa del continente americano.", hook: "Vivía en un jardín y se ponía una corona de espinas de plata escondida bajo las flores para imitar a Jesús.", cite: "Patrona de América y Filipinas: Un lirio de santidad en tierras nuevas.", recom: "🌹 Pureza: Buscá la belleza interior, que es la que nunca se marchita." },
+    { id: "san19", fact: "San Juan Bosco es el amigo y maestro de los jóvenes.", hook: "Fundó los Salesianos. Usaba la magia, el teatro y el deporte para acercar a los chicos de la calle a Dios.", cite: "Sistema Preventivo: 'Educar es cuestión del corazón'.", recom: "⚽ Juventud: Dedicale tiempo a los más chicos; ellos son el futuro de la fe." },
+    { id: "san20", fact: "La Virgen de Fátima se apareció a tres pastorcitos en Portugal.", hook: "Les pidió rezar el Rosario por la paz del mundo. El sol bailó frente a 70.000 personas como prueba del milagro.", cite: "Apariciones de 1917: Lucía, Francisco y Jacinta fueron los testigos.", recom: "📿 Rosario: El arma más poderosa para la paz es el Rosario en familia." },
+    { id: "san21", fact: "San Agustín fue un joven rebelde que se convirtió gracias a su madre.", hook: "Su madre, Santa Mónica, rezó por él durante 30 años. Terminó siendo uno de los sabios más grandes de la Iglesia.", cite: "Confesiones: 'Nos hiciste, Señor, para Ti, y nuestro corazón está inquieto hasta que descanse en Ti'.", recom: "📚 Sabiduría: Nunca es tarde para cambiar de rumbo y buscar la Verdad." },
+    { id: "san22", fact: "Santa Catalina de Siena era tan valiente que aconsejaba al Papa.", hook: "Era una mujer joven y sencilla, pero su santidad era tan grande que los reyes y el Papa la escuchaban para traer paz a la Iglesia.", cite: "Doctora de la Iglesia: 'Si sois lo que debéis ser, prenderéis fuego al mundo'.", recom: "⚔️ Valentía: No tengas miedo de decir la verdad con amor, sin importar quién esté enfrente." },
+    { id: "san23", fact: "San Ignacio de Loyola era un soldado que cambió la espada por la cruz.", hook: "Una herida en batalla lo obligó a quedarse en cama leyendo sobre santos. ¡Ahí descubrió que quería ser un soldado de Cristo!", cite: "Fundador de los Jesuitas: 'En todo amar y servir'.", recom: "📖 Lectura: Un buen libro puede ser el inicio del cambio más grande de tu vida." },
+    { id: "san24", fact: "Santo Tomás de Aquino es el sabio más grande de la Iglesia.", hook: "Escribió libros tan profundos que se dice que Jesús le habló desde una cruz diciéndole: 'Has escrito bien de mí, Tomás'.", cite: "Doctor Angélico: Autor de la Summa Theologiae.", recom: "🧠 Pensar: Usá tu inteligencia para entender mejor las cosas de Dios." },
+    { id: "san25", fact: "Santa Teresa de Ávila reformó los conventos con mucho humor.", hook: "Decía: 'Un santo triste es un triste santo'. Fundó las Carmelitas Descalzas y escribía poemas preciosos a Dios.", cite: "Doctora de la Iglesia: 'Nada te turbe, nada te espante... solo Dios basta'.", recom: "😊 Alegría: Llevá tu fe con buen humor; la alegría atrae más que la seriedad." },
+    { id: "san26", fact: "San Juan de la Cruz escribía poemas en una cárcel oscura.", hook: "A pesar del sufrimiento, su alma estaba tan unida a Dios que escribió las poesías de amor místico más bellas del idioma español.", cite: "Doctor de la Iglesia: El poeta de la 'Noche Oscura del Alma'.", recom: "🕯️ Luz interna: Aunque afuera esté oscuro, Dios brilla adentro tuyo." },
+    { id: "san27", fact: "La Madre Teresa de Calcuta veía a Jesús en los más pobres.", hook: "Recogía a los moribundos de la calle para que murieran sintiéndose amados. Decía: 'No podemos hacer grandes cosas, pero sí cosas pequeñas con gran amor'.", cite: "Premio Nobel de la Paz: Fundadora de las Misioneras de la Caridad.", recom: "🤝 Caridad: Ayudá hoy a alguien que nadie más quiera ayudar." },
+    { id: "san28", fact: "San Juan Pablo II fue el Papa de los jóvenes y la esperanza.", hook: "Viajó por todo el mundo rompiendo muros. Perdonó al hombre que intentó asesinarlo y nos dijo: '¡No tengan miedo!'.", cite: "Totus Tuus: Su lema de entrega total a la Virgen María.", recom: "🏇 Valentía: No te achiques frente a los problemas; Dios camina con vos." },
+    { id: "san29", fact: "San Carlo Acutis es el primer santo 'millennial' de la historia.", hook: "Usaba internet para hablar de los milagros eucarísticos. Le gustaban los videojuegos y el fútbol, pero su centro era la Misa diaria.", cite: "Ciberapóstol de la Eucaristía: 'La Eucaristía es mi autopista hacia el cielo'.", recom: "📱 Redes: Usá tu celular para compartir cosas buenas y no para perder el tiempo." },
+    { id: "san30", fact: "Santa María Goretti perdonó a su asesino antes de morir.", hook: "Era una niña de 11 años. Años después, su asesino se convirtió y estuvo presente en la fiesta de su canonización.", cite: "Mártir de la pureza: Un ejemplo heroico de perdón cristiano.", recom: "❤️ Perdón: No guardes rencor; el perdón te hace libre a vos primero." },
+    { id: "san31", fact: "San Valentín arriesgaba su vida para casar a los enamorados.", hook: "El emperador romano prohibía el matrimonio para que los soldados no se distrajeran. Valentín los casaba en secreto porque creía en el amor sagrado.", cite: "Patrono de los Enamorados: Mártir por defender el sacramento del matrimonio.", recom: "💍 Amor: Cuidá tu relación y pedile a Dios que bendiga tu hogar." },
+    { id: "san32", fact: "San Patricio usaba un trébol para explicar a Dios.", hook: "Para que la gente entendiera la Santísima Trinidad, les mostraba que el trébol es una sola planta con tres hojas. ¡Tres personas, un solo Dios!", cite: "Apóstol de Irlanda: Evangelizó a todo un país con sencillez.", recom: "☘️ Trinidad: Recordá que Dios es Padre, Hijo y Espíritu Santo, siempre con vos." },
+    { id: "san33", fact: "San Nicolás es el origen real de 'Papá Noel'.", hook: "Era un obispo muy generoso que dejaba bolsas de oro en secreto a las familias pobres para que sus hijas pudieran casarse.", cite: "San Nicolás de Bari: Patrono de los niños y de la generosidad.", recom: "🎁 Generosidad: Hacé un regalo o un favor hoy sin que nadie sepa que fuiste vos." },
+    { id: "san34", fact: "Santa Cecilia es la patrona de los músicos.", hook: "Se dice que mientras los músicos tocaban en su boda, ella le cantaba a Dios en su corazón. Murió cantando himnos de alabanza.", cite: "Mártir romana: Ejemplo de fidelidad hasta el final.", recom: "🎶 Música: Cantá en la Misa; el que canta reza dos veces." },
+    { id: "san35", fact: "San Cristóbal significa 'El que lleva a Cristo'.", hook: "Era un gigante que ayudaba a la gente a cruzar un río. Un día cruzó a un niño que pesaba muchísimo: ¡era Jesús llevando el peso del mundo!", cite: "Patrono de los Viajeros: Protector de los que andan por los caminos.", recom: "🚗 Viaje: Antes de salir con el auto, pedile a Dios que te acompañe en el camino." },
+    { id: "san36", fact: "San Jorge venció al dragón con la fuerza de la fe.", hook: "El dragón representa al mal que quería destruir a la ciudad. Jorge lo derrotó con la señal de la cruz y su lanza.", cite: "Caballero Cristiano: Símbolo de la victoria del bien sobre el mal.", recom: "🛡️ Fortaleza: Enfrentá tus 'dragones' (miedos) con la ayuda de Dios." },
+    { id: "san37", fact: "Santa Lucía es la protectora de la vista.", hook: "A pesar de que quisieron cegarla, Dios le devolvió la luz de sus ojos. Su nombre significa 'Luz'.", cite: "Mártir de Siracusa: Una de las santas más invocadas en el mundo.", recom: "👀 Mirada: Pedile a Dios que te ayude a ver lo bueno en las personas." },
+    { id: "san38", fact: "San Blas cura los males de la garganta.", hook: "Salvó a un niño que se estaba ahogando con una espina de pescado. Por eso se bendicen las gargantas en su fiesta.", cite: "Obispo y Mártir: Patrono de los que sufren de la voz y la garganta.", recom: "🗣️ Palabras: Usá tu voz para bendecir y no para insultar o quejarte." },
+    { id: "san39", fact: "San Sebastián era un soldado que defendía a los cristianos.", hook: "Era el jefe de la guardia del emperador. Cuando descubrieron que era cristiano, lo usaron como blanco de flechas, pero sobrevivió para seguir predicando.", cite: "Mártir del siglo III: Un ejemplo de valentía militar y espiritual.", recom: "🏹 Firmeza: No ocultes tu fe por miedo a lo que digan los demás." },
+    { id: "san40", fact: "La Virgen de Lourdes apareció en una cueva de barro.", hook: "Le pidió a Bernardita que cavara en el suelo: de ahí brotó un manantial de agua que ha curado a miles de personas hasta hoy.", cite: "Inmaculada Concepción: El nombre que la Virgen se dio a sí misma en Lourdes.", recom: "💧 Salud: Si estás enfermo, confiá en la intercesión de la Virgen María." },
+    { id: "san41", fact: "San Antonio Abad es el protector de los animales del campo.", hook: "Vivía solo en el desierto y se dice que los animales lo acompañaban y lo respetaban como a un padre.", cite: "Padre de los Monjes: Un hombre que encontró a Dios en el silencio absoluto.", recom: "🐄 Campo: Rezá por los animales de nuestra zona y por los que trabajan la tierra." },
+    { id: "san42", fact: "Santa Filomena es la 'Gran Obradora de Milagros'.", hook: "Sus restos fueron encontrados en las catacumbas después de 1500 años. Ha concedido tantos favores que los Papas la amaban.", cite: "Santa Niña: Patrona de los hijos de María y de las causas difíciles.", recom: "✨ Milagros: Dios sigue haciendo milagros hoy a través de sus amigos los santos." },
+    { id: "san43", fact: "San Judas Tadeo y San Simón se celebran juntos.", hook: "Eran apóstoles de Jesús y predicaron juntos en lugares muy lejanos. Murieron el mismo día defendiendo la fe.", cite: "Pilares de la Iglesia: Los apóstoles son los cimientos de nuestra creencia.", recom: "🤝 Amistad: Buscá amigos que te ayuden a estar más cerca de Dios." },
+    { id: "san44", fact: "San Lucas era médico y también un gran pintor.", hook: "Se dice que él pintó el primer retrato de la Virgen María. También escribió el Evangelio más detallado sobre la infancia de Jesús.", cite: "Evangelista: El escritor de la mansedumbre de Cristo.", recom: "🎨 Arte: El arte es una forma hermosa de contar las cosas de Dios." },
+    { id: "san45", fact: "San Marcos escribió su Evangelio basado en lo que contaba Pedro.", hook: "Era joven y seguía a los apóstoles. Su símbolo es el león porque su Evangelio empieza hablando del desierto donde ruge el león.", cite: "Evangelista: El primer evangelio que se escribió de los cuatro.", recom: "🦁 Fuerza: Pedile a Dios la fuerza del león para defender tus valores." },
+    { id: "san46", fact: "San Mateo dejó de cobrar impuestos para seguir a Jesús.", hook: "Era un hombre rico pero se dio cuenta de que el dinero no daba la felicidad. Cuando Jesús lo llamó, dejó todo en el acto.", cite: "Evangelista: El apóstol que escribió para el pueblo judío.", recom: "💰 Desprendimiento: No dejes que las cosas materiales te impidan seguir a Dios." },
+    { id: "san47", fact: "San Juan era el 'discípulo amado' de Jesús.", hook: "Fue el único que no huyó en la cruz y Jesús le encargó que cuidara a la Virgen María como si fuera su propia madre.", cite: "Evangelista: El águila que vuela alto en las verdades espirituales.", recom: "🦅 Elevación: No te quedes en las bajezas de la tierra; mirá siempre al cielo." },
+    { id: "san48", fact: "Santa Mónica rezó 30 años por la conversión de su hijo.", hook: "Nunca se dio por vencida. Sus lágrimas y oraciones lograron que su hijo Agustín fuera uno de los santos más grandes.", cite: "Patrona de las Madres: Ejemplo de oración perseverante y paciente.", recom: "👵 Paciencia: No dejes de rezar por ese familiar que hoy está lejos de Dios." },
+    { id: "san49", fact: "San Cayetano fundó un banco para ayudar a los pobres.", hook: "No quería que los prestamistas se abusaran de la gente necesitada, así que creó un sistema justo para ayudarlos.", cite: "Padre de la Providencia: El santo que confía en que Dios nunca nos abandona.", recom: "🏦 Justicia: Tratá siempre de ser justo con el dinero y ayudar al que tiene menos." },
+    { id: "san50", fact: "Santa Bárbara protege contra los rayos y las tormentas.", hook: "Su padre la encerró en una torre, pero ella se mantuvo fiel a Dios. Se la invoca cuando hay tormentas muy fuertes.", cite: "Mártir del siglo III: Patrona de los artilleros y mineros.", recom: "⛈️ Calma: En medio de las tormentas de la vida, Dios es tu torre más fuerte." },
+    { id: "san51", fact: "San Lorenzo murió en una parrilla con mucho humor.", hook: "Mientras lo martirizaban, les dijo a los soldados: 'Denme la vuelta, que de este lado ya estoy bien asado'. ¡Un santo valiente!", cite: "Diácono de Roma: Patrono de los cocineros y humoristas.", recom: "😊 Humor: Una sonrisa en medio del dolor es un signo de que Dios está con vos." },
+    { id: "san52", fact: "Santa Inés prefirió morir antes que perder su pureza.", hook: "Era una niña de 13 años. Su nombre significa 'Cordera' y se la representa con un corderito blanco.", cite: "Mártir romana: Símbolo de la inocencia que vence al poder.", recom: "🐑 Inocencia: Cuidá la pureza de tu corazón como el tesoro más grande." },
+    { id: "san53", fact: "San Estanislao Kostka caminó 800 km para ser jesuita.", hook: "A los 17 años, se escapó de su casa y caminó media Europa solo para cumplir su sueño de servir a Dios en la Compañía de Jesús.", cite: "Patrono de los Novicios: Un ejemplo de determinación juvenil.", recom: "🚶‍♂️ Sueños: Si Dios te puso un deseo en el corazón, caminá hasta alcanzarlo." },
+    { id: "san54", fact: "San Luis Gonzaga cuidaba a los enfermos de peste.", hook: "Siendo un joven noble, renunció a sus títulos para cargar a los apestados en sus hombros. Murió contagiado por amor a ellos.", cite: "Patrono de la Juventud Cristiana: Un modelo de sacrificio y caridad.", recom: "🧼 Servicio: Ayudá a los que sufren, aunque te dé un poco de miedo o asco." },
+    { id: "san55", fact: "Santa Gema Galgani hablaba con su ángel de la guarda.", hook: "Tenía una relación tan cercana con el cielo que su ángel le llevaba cartas y la consolaba en sus enfermedades.", cite: "Mística italiana: Ejemplo de unión profunda con los seres celestiales.", recom: "👼 Ángeles: No te olvides de saludar a tu Ángel de la Guarda; él te cuida siempre." },
+    { id: "san56", fact: "San Alberto Hurtado andaba en una camioneta verde ayudando.", hook: "Recogía a los niños que dormían bajo los puentes en Chile. Decía: '¿Qué haría Cristo en mi lugar?'.", cite: "Hogar de Cristo: Un santo que modernizó la caridad social.", recom: "🚚 Acción: Ante cada problema, preguntate: ¿Qué haría Jesús si estuviera acá?" },
+    { id: "san57", fact: "San Maximiliano Kolbe dio su vida por un padre de familia.", hook: "En el campo de concentración de Auschwitz, se ofreció para morir de hambre en lugar de un hombre que tenía hijos. ¡Amor total!", cite: "Mártir de la Caridad: 'Nadie tiene amor más grande que el que da la vida'.", recom: "💎 Sacrificio: Poné el bien de los demás por encima del tuyo de vez en cuando." },
+    { id: "san58", fact: "Santa Faustina Kowalska recibió la imagen de Jesús Misericordioso.", hook: "Jesús se le apareció y le pidió que pintara el cuadro con los rayos blanco y rojo que salen de su corazón.", cite: "Apóstol de la Divina Misericordia: 'Jesús, en Ti confío'.", recom: "❤️ Confianza: No importa qué hayas hecho, la misericordia de Dios es más grande." },
+    { id: "san59", fact: "La Virgen del Carmen entregó el Escapulario como protección.", hook: "Le prometió a San Simón Stock que quien llevara el escapulario con fe recibiría su ayuda especial en la hora de la muerte.", cite: "Reina del Monte Carmelo: Patrona de los marineros y de las almas del Purgatorio.", recom: "🟫 Protección: Llevá el escapulario para recordar que María te cubre con su manto." },
+    { id: "san60", fact: "San Pío X permitió que los niños comulgaran a temprana edad.", hook: "Decía que Jesús quería estar en los corazones puros de los chicos. ¡Por él hacemos la comunión de niños!", cite: "El Papa de la Eucaristía: Gran reformador de la liturgia infantil.", recom: "🍞 Comunión: Recibí a Jesús con la alegría y pureza de un niño." },
+    { id: "san61", fact: "Santa María de la Cabeza era la esposa de San Isidro Labrador.", hook: "Juntos demostraron que un matrimonio trabajador puede ser santo viviendo la fe en las tareas del campo.", cite: "Ejemplo de Matrimonio Santo: Patrona de las amas de casa y del hogar.", recom: "🏠 Hogar: Hacé de tu casa una 'pequeña iglesia' donde se rece y se ame." },
+    { id: "san62", fact: "San Isidro Labrador rezaba mientras los ángeles araban por él.", hook: "Iba a Misa temprano y llegaba tarde al campo, pero Dios mandaba ángeles para que su cosecha fuera la mejor de todas.", cite: "Patrono de los Agricultores: Ejemplo de que la oración no quita tiempo, da frutos.", recom: "🚜 Prioridades: Poné a Dios primero y vas a ver cómo el tiempo te rinde más." },
+    { id: "san63", fact: "Santa Ángela de la Cruz vivía en la pobreza extrema por amor.", hook: "Fundó las Hermanas de la Cruz en Sevilla para cuidar a los enfermos pobres en sus propias casas.", cite: "Madre de los pobres: 'Hay que hacerse pobre con el pobre para llevarlo a Cristo'.", recom: "🧺 Sencillez: Valorá lo que tenés y no te quejes por lo que te falta." },
+    { id: "san64", fact: "San Benito José Labre era un 'vagabundo' santo.", hook: "Pasó su vida peregrinando de santuario en santuario, durmiendo en la calle y rezando todo el día. ¡Dios está en todos lados!", cite: "El Limosnero de Dios: Un recordatorio de que la apariencia no hace a la santidad.", recom: "🚶‍♂️ Respeto: No juzgues a nadie por su ropa; podés estar cruzándote con un santo." },
+    { id: "san65", fact: "Santa Juana de Arco escuchaba voces del cielo para salvar a su país.", hook: "Siendo una campesina joven, lideró ejércitos y salvó a Francia, manteniéndose siempre fiel a sus 'voces' divinas.", cite: "La Doncella de Orleans: Mártir de la fidelidad a la propia conciencia.", recom: "👂 Escucha: Prestá atención a lo que Dios te susurra en el silencio de la oración." },
+    { id: "san66", fact: "San Bruno fundó la orden más silenciosa de la Iglesia.", hook: "Los monjes Cartujos viven en silencio casi total para escuchar mejor a Dios. 'El mundo gira, pero la Cruz permanece quieta'.", cite: "Padre de los Cartujos: El buscador de Dios en la soledad.", recom: "🤫 Silencio: Buscá un momento de silencio hoy para encontrarte con Dios." },
+    { id: "san67", fact: "Santa Escolástica era la hermana de San Benito.", hook: "Una vez rezó tanto para que su hermano no se fuera, que Dios mandó una tormenta gigante para que se quedaran charlando de Dios toda la noche.", cite: "Patrona de las monjas benedictinas: El poder de la oración hecha con amor fraternal.", recom: "👨‍👩‍👧‍👦 Hermanos: Disfrutá de la compañía de tu familia y hablá de cosas buenas con ellos." },
+    { id: "san68", fact: "San Jerónimo tradujo la Biblia entera al latín.", hook: "Vivía en una cueva en Belén con un león al que le había sacado una espina de la pata. ¡Dedicó su vida a la Palabra de Dios!", cite: "Doctor de la Iglesia: 'Desconocer las Escrituras es desconocer a Cristo'.", recom: "📖 Biblia: Leé un poquito de la Biblia cada día; es Dios hablándote." },
+    { id: "san69", fact: "La Virgen del Rosario de San Nicolás es una aparición argentina.", hook: "María se apareció a Gladys Motta con un mensaje de conversión y pidió que se construyera un santuario a orillas del río Paraná.", cite: "Apariciones marianas en Argentina: Un llamado a la oración y a la paz.", recom: "🇦🇷 Fe local: Visitá los santuarios de nuestra tierra para fortalecer tu fe." },
+    { id: "san70", fact: "San Bernardo de Claraval era un gran enamorado de la Virgen.", hook: "Escribió la oración del 'Acordaos' y decía que María es el camino más corto, fácil y seguro para llegar a Jesús.", cite: "Doctor de la Iglesia: El cantor de las grandezas de María.", recom: "🌹 María: Si te sentís lejos de Jesús, agarrate de la mano de María y ella te lleva." },
+    { id: "san71", fact: "Santa Catalina Labouré recibió la Medalla Milagrosa.", hook: "La Virgen se le apareció en París y le mostró el diseño de la medalla, prometiendo grandes gracias a quien la lleve con confianza.", cite: "Hija de la Caridad: La santa del silencio y la humildad.", recom: "🏅 Medalla: Llevá la medalla milagrosa como signo de que sos hijo de la Virgen." },
+    { id: "san72", fact: "Todos estamos llamados a ser santos en el día a día.", hook: "Ser santo no es tener una aureola, es ser la mejor versión de uno mismo, amando a Dios y a los demás en el trabajo, la casa y la calle.", cite: "Gaudete et Exsultate: El llamado a la santidad en el mundo actual.", recom: "🎯 Meta: Tu objetivo hoy es simple: intentá ser un poquito más santo que ayer." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Ejemplo ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-santos.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🌟 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí historias maravillosas sobre la Virgen y los Santos aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Dato de Santidad | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

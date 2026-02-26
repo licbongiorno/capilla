@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Misterios de la Misa | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Misterios de la Misa</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-church"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Verdad Oculta</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-pray recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Vivir la Liturgia</footer>
+
+<script>
+const DATOS = [
+    { id: "mis1", fact: "La palabra 'Misa' viene del latín 'Missio', que significa 'Envío'.", hook: "Al final de la celebración, no nos vamos a casa sin más; el cura nos dice 'Pueden ir en paz', que significa 'Vayan, han sido enviados a cumplir una misión'.", cite: "Misal Romano: La despedida es un envío a testimoniar el Evangelio en el mundo.", recom: "🏃‍♂️ Misión: No dejes la fe en el banco de la capilla; sacala a la calle cuando salgas de Misa." },
+    { id: "mis2", fact: "Hacerse la Señal de la Cruz al entrar es como ponerse el uniforme.", hook: "Al mojarte los dedos con agua bendita y persignarte, estás recordando tu bautismo y declarando que todo lo que vas a hacer ahí es en nombre de la Trinidad.", cite: "Catecismo 2157: 'El cristiano comienza su jornada, sus oraciones y sus acciones con la señal de la cruz'.", recom: "💧 Memoria: Hacelo despacio, sintiendo el agua. Estás entrando en terreno sagrado." },
+    { id: "mis3", fact: "El cura besa el altar apenas llega por una razón de amor.", hook: "El altar representa a Cristo mismo, que es la roca. El beso es un saludo de afecto y respeto al dueño de casa antes de empezar el banquete.", cite: "Instrucción General del Misal Romano: El altar es el centro de la acción de gracias.", recom: "⛪ Respeto: Cuando pases frente al altar, hacé una inclinación; estás saludando a Jesús." },
+    { id: "mis4", fact: "El 'Kyrie Eleison' es la única parte de la Misa que quedó en griego.", hook: "Significa 'Señor, ten piedad'. Se mantuvo en su idioma original como un puente con los primeros cristianos de hace 2000 años.", cite: "Liturgia Romana: Es un canto en el que los fieles aclaman al Señor y piden su misericordia.", recom: "🙏 Sinceridad: Decilo con ganas; es el momento de reconocer que necesitamos a Dios." },
+    { id: "mis5", fact: "El 'Gloria' es el mismo canto que usaron los ángeles en Navidad.", hook: "Cuando lo cantamos, nos unimos al coro del cielo para celebrar que Dios está entre nosotros. ¡Es un himno de alegría pura!", cite: "Lucas 2, 14: '¡Gloria a Dios en las alturas, y en la tierra paz a los que ama el Señor!'.", recom: "🎶 Alabanza: No lo recites de memoria como un robot; ¡cantalo con el alma!" },
+    { id: "mis6", fact: "Nos ponemos de pie para escuchar el Evangelio por respeto al Rey.", hook: "En las otras lecturas estamos sentados como alumnos, pero en el Evangelio Dios mismo nos habla. Por eso nos paramos, como cuando entra un juez o un rey a una sala.", cite: "Liturgia de la Palabra: Estar de pie significa prontitud y respeto máximo.", recom: "👂 Atención: Imaginate que Jesús está parado frente a vos contándote la historia." },
+    { id: "mis7", fact: "Hacer tres cruces chiquitas antes del Evangelio tiene un significado secreto.", hook: "Nos marcamos la frente (para entender), la boca (para anunciar) y el pecho (para guardar) la palabra de Dios.", cite: "Gesto Litúrgico: 'Que el Señor esté en mi mente, en mis labios y en mi corazón'.", recom: "✍️ Compromiso: Pedile a Dios que esa lectura te cambie el pensamiento ese día." },
+    { id: "mis8", fact: "El 'Amén' significa mucho más que 'Así sea'.", hook: "Viene de una raíz hebrea que significa 'firmeza'. Al decir Amén, estás diciendo 'Pongo mi vida sobre esta verdad' o 'Esto es sólido'.", cite: "Diccionario Bíblico: Es una de las palabras más sagradas y universales de la fe.", recom: "🧱 Solidez: Decí los 'Amén' de la Misa con voz firme; estás firmando un contrato con Dios." },
+    { id: "mis9", fact: "El cura pone una gotita de agua en el vino por nuestra humanidad.", hook: "El vino representa la divinidad de Jesús y el agua representa nuestra humanidad. Al mezclarse, pedimos quedar 'sumergidos' en la vida de Dios.", cite: "Gesto del Ofertorio: 'Por el misterio de esta agua y este vino, haz que compartamos la divinidad de quien se dignó compartir nuestra humanidad'.", recom: "🍷 Unión: Ofrecele tus problemas en esa gotita de agua; dejá que se pierdan en su vino sagrado." },
+    { id: "mis10", fact: "Lavarse las manos no es porque el cura tenga las manos sucias.", hook: "Se llama 'Lavabo'. Es un gesto de purificación espiritual. El cura le pide a Dios que lo limpie de sus pecados antes de tocar el cuerpo de Cristo.", cite: "Salmo 26, 6: 'Lavaré mis manos en la inocencia y rodearé tu altar, Señor'.", recom: "🧼 Limpieza: Mientras el cura se lava, pedile vos también a Dios que te limpie el corazón." },
+    { id: "mis11", fact: "El 'Sanctus' es un canto que se escucha en el mismo Cielo.", hook: "La Biblia dice que los ángeles y los santos lo cantan sin parar frente al trono de Dios. Al cantarlo en Misa, ¡el techo desaparece y estamos en el cielo!", cite: "Isaías 6, 3: 'Santo, Santo, Santo es el Señor de los ejércitos'.", recom: "👼 Compañía: No estás solo en el banco; estás rodeado de miles de ángeles cantando con vos." },
+    { id: "mis12", fact: "La Consagración es el momento donde el tiempo se detiene.", hook: "No es un recordatorio de una cena vieja; es el MISMO sacrificio de la Cruz que se hace presente hoy. La hostia deja de ser pan y pasa a ser Jesús vivo.", cite: "Catecismo 1376: La Iglesia llama a este cambio 'Transustanciación'.", recom: "🧎‍♂️ Adoración: Es el momento más sagrado. Poné toda tu atención y tu amor ahí." },
+    { id: "mis13", fact: "Arrodillarse es un gesto de máxima humildad y amor.", hook: "Antiguamente solo se arrodillaban ante los reyes. Nosotros lo hacemos ante el Rey de reyes para decirle que somos suyos y que lo adoramos.", cite: "Filipenses 2, 10: 'Para que al nombre de Jesús se doble toda rodilla'.", recom: "🦶 Humildad: Si podés, arrodillate con orgullo de ser hijo de Dios; si no podés, hacé una inclinación profunda." },
+    { id: "mis14", fact: "El Padre Nuestro nos da permiso de llamar 'Papá' al Creador.", hook: "Jesús nos enseñó esta oración para que entendamos que Dios no es un juez lejano, sino un padre que se preocupa por nuestro pan de cada día.", cite: "Mateo 6, 9-13: La oración que el mismo Señor nos enseñó.", recom: "👨‍👧 Confianza: Decilo despacio, sintiendo que realmente sos un hijo hablándo con su padre." },
+    { id: "mis15", fact: "Darse la paz no es un saludo social, es un compromiso.", hook: "No es el momento del 'recreo'. Es prometerle a Dios que vas a tratar de estar en paz con tu vecino antes de ir a comulgar.", cite: "Mateo 5, 23-24: 'Deja tu ofrenda y ve primero a reconciliarte con tu hermano'.", recom: "🤝 Sinceridad: Mirá a los ojos a la persona a la que le das la paz; deseale el bien de verdad." },
+    { id: "mis16", fact: "Comulgar en la mano o en la boca es igual de sagrado.", hook: "Si es en la mano, tus manos deben formar un 'trono' (la derecha debajo de la izquierda) para recibir al Rey. ¡No se agarra como si fuera un bocado común!", cite: "San Cirilo de Jerusalén: 'Haz de tu mano izquierda un trono para tu mano derecha, que va a recibir al Rey'.", recom: "🤲 Respeto: Mirá la hostia, decí 'Amén' con fe y comulgala ahí mismo antes de caminar." },
+    { id: "mis17", fact: "La patena (el platito) sirve para cuidar cada pedacito de Dios.", hook: "Incluso la migaja más chiquita de la hostia consagrada es Jesús completo. Por eso se usa el platito, para que nada caiga al suelo por error.", cite: "Instrucción General del Misal: Se debe evitar que caiga al suelo la hostia o cualquier fragmento.", recom: "💎 Valor: Jesús se hace chiquito para entrar en nosotros; cuidalo como el tesoro más grande." },
+    { id: "mis18", fact: "La palabra 'Eucaristía' significa 'Acción de Gracias'.", hook: "La Misa es, ante todo, una fiesta para agradecerle a Dios todo lo bueno que nos dio en la semana, incluso las cosas difíciles.", cite: "Catecismo 1360: 'La Eucaristía es un sacrificio de acción de gracias al Padre'.", recom: "🎁 Gratitud: Antes de que termine la Misa, decile a Dios tres cosas por las que estás agradecido." },
+    { id: "mis19", fact: "El cura extiende las manos para actuar como un pararrayos de gracia.", hook: "Ese gesto se llama 'Orante'. Es la posición más antigua de oración (ya estaba en las catacumbas) y significa que el cura está recolectando nuestras oraciones para subirlas a Dios.", cite: "Tradición Apostólica: La posición de las manos elevadas simboliza la súplica y la apertura al cielo.", recom: "👐 Apertura: Cuando el cura diga 'Oremos', cerrá los ojos y 'subí' tu pedido personal." },
+    { id: "mis20", fact: "El color Verde representa la esperanza del tiempo común.", hook: "Se usa la mayor parte del año. Es el color de la vida, de las plantas que crecen y de nuestra fe que debe madurar día a día.", cite: "Ordenación de los Colores Litúrgicos: El verde se usa en el Tiempo Ordinario.", recom: "🌿 Crecimiento: Cada domingo verde es una oportunidad para aprender algo nuevo de Jesús." },
+    { id: "mis21", fact: "El color Morado es el color de la espera y el arrepentimiento.", hook: "Se usa en Adviento (esperando Navidad) y en Cuaresma (preparando Pascua). Es un llamado a 'limpiar la casa' del corazón.", cite: "Liturgia: El morado simboliza la penitencia, la espera y la preparación espiritual.", recom: "💜 Limpieza: En los tiempos morados, aprovechá para confesarte y empezar de cero." },
+    { id: "mis22", fact: "El color Rojo simboliza el fuego y la sangre.", hook: "Se usa en Pentecostés (el fuego del Espíritu Santo) y en las fiestas de los Mártires que dieron su vida por Cristo.", cite: "Liturgia: El rojo es el color de la pasión de Cristo y de los mártires.", recom: "🔥 Valentía: Pedile a Dios el fuego del Espíritu para ser testigo de tu fe sin vergüenza." },
+    { id: "mis23", fact: "El color Blanco es para las fiestas más grandes de alegría.", hook: "Navidad, Pascua y fiestas de la Virgen. Simboliza la pureza, la luz y la victoria definitiva de la vida sobre la muerte.", cite: "Liturgia: El blanco se usa en los tiempos de fiesta y alegría resurreccional.", recom: "⚪ Luz: Celebrá con ganas los domingos blancos; ¡Jesús ganó la batalla contra la muerte!" },
+    { id: "mis24", fact: "El cura usa una estola porque es el signo de su autoridad.", hook: "Es esa banda de tela que cuelga de su cuello. Representa el yugo de Cristo y la autoridad que Dios le dio para perdonar pecados y celebrar los sacramentos.", cite: "Vestiduras Litúrgicas: La estola es el signo esencial del orden sagrado.", recom: "👔 Respeto: El cura es un hombre como nosotros, pero la estola nos recuerda que actúa en nombre de Jesús." },
+    { id: "mis25", fact: "La campana de la Misa sirve para avisarte: '¡Atención, milagro!'.", hook: "Suena justo antes de la consagración. En épocas donde la Misa se decía en latín y de espaldas, la campana avisaba a la gente que Dios estaba bajando al altar en ese momento.", cite: "Instrucción del Misal: El toque de campana ayuda a los fieles a centrar su atención en el momento del milagro.", recom: "🔔 Silencio total: Cuando oigas la campana, dejá de moverte y mirá el altar con todo tu amor." },
+    { id: "mis26", fact: "En la Misa se lee casi toda la Biblia cada tres años.", hook: "Si vas a Misa todos los domingos, al cabo de tres años habrás escuchado los pasajes más importantes de casi todos los libros de la Biblia.", cite: "Leccionario: Organizado en Ciclo A (Mateo), Ciclo B (Marcos) y Ciclo C (Lucas).", recom: "📖 Biblia viva: La Misa es la mejor clase de Biblia que podés tener. ¡No faltes!" },
+    { id: "mis27", fact: "El cáliz siempre es de un material noble (oro o plata).", hook: "No se usa un vaso de plástico porque va a contener la Sangre de Cristo. Se usa lo mejor que el hombre puede fabricar para honrar al Rey.", cite: "Instrucción del Misal: Los vasos sagrados deben ser de metales preciosos o materiales dignos y sólidos.", recom: "🏆 Honor: Dios se merece lo mejor de nosotros, no lo que nos sobra." },
+    { id: "mis28", fact: "La hostia grande que el cura eleva es para que todos la vean.", hook: "Antiguamente las hostias eran trozos de pan común. La forma redonda y blanca de hoy ayuda a simbolizar la unidad y la pureza de Cristo.", cite: "Simbolismo del Pan: Jesús es el 'Pan de Vida' bajado del cielo.", recom: "👀 Mirar: Cuando el cura la eleve, decí bajito: 'Señor mío y Dios mío'. Es el saludo de Santo Tomás." },
+    { id: "mis29", fact: "El incienso representa nuestras oraciones subiendo al cielo.", hook: "Así como el humo sube y huele rico, pedimos que nuestra oración suba a la presencia de Dios y sea agradable a sus ojos.", cite: "Salmo 141, 2: 'Suba mi oración delante de ti como el incienso'.", recom: "🌬️ Aroma: Dejá que el olor del incienso te transporte; estás en la antesala del cielo." },
+    { id: "mis30", fact: "La Misa es el único lugar donde el Cielo y la Tierra se tocan.", hook: "En el momento de la consagración, el tiempo cronológico se borra. Estamos en el Calvario y en el Banquete Celestial al mismo tiempo.", cite: "San Juan Crisóstomo: 'Cuando se celebra la Eucaristía, los ángeles rodean al sacerdote'.", recom: "🌌 Eternidad: Disfrutá esos minutos; estás fuera del tiempo común, estás en la eternidad." },
+    { id: "mis31", fact: "El 'Agnus Dei' (Cordero de Dios) recuerda el sacrificio del templo.", hook: "Antiguamente se sacrificaban corderos para pedir perdón. Jesús es el Cordero definitivo que quita el pecado del mundo de una vez por todas.", cite: "Juan 1, 29: 'He aquí el Cordero de Dios que quita el pecado del mundo'.", recom: "🐏 Paz: Pedile al Cordero que traiga paz a tu familia y a tu corazón." },
+    { id: "mis32", fact: "Comulgar bajo las dos especies (Pan y Vino) es un signo más completo.", hook: "Aunque en la hostia está Jesús completo, recibir también del cáliz es responder más fielmente al mandato de Jesús: 'Tomen y beban todos de él'.", cite: "Catecismo 1390: Bajo cada especie está Cristo entero, pero el signo es más pleno bajo las dos.", recom: "🍷 Respeto: Si el cura ofrece el cáliz, tomalo con las dos manos y con mucha reverencia." },
+    { id: "mis33", fact: "Hacer una genuflexión al pasar frente al Sagrario es reconocer al Rey.", hook: "Doblar la rodilla derecha hasta el suelo es el saludo que los caballeros daban a sus monarcas. ¡Nosotros saludamos así al Dueño del universo!", cite: "Gesto de Adoración: La genuflexión se hace ante el Santísimo Sacramento.", recom: "🧎‍♂️ Conciencia: No lo hagas por inercia; hacelo pensando: 'Hola Jesús, sé que estás ahí'." },
+    { id: "mis34", fact: "El Misal Romano es el libro de las oraciones 'oficiales' de la Iglesia.", hook: "Es el libro grande y rojo que el cura lee. Asegura que en todo el mundo se rece lo mismo, manteniendo la unidad de la fe.", cite: "Unidad Litúrgica: 'Una sola fe, un solo bautismo, un solo Señor'.", recom: "📚 Unión: Sentite unido a un católico en Japón o en África; hoy están rezando las mismas palabras que vos." },
+    { id: "mis35", fact: "El cura actúa 'In Persona Christi' (En la persona de Cristo).", hook: "En el momento de la consagración, el cura no dice 'Esto es el cuerpo de Jesús', dice 'Esto es MI Cuerpo'. ¡Es Jesús mismo hablando a través del cura!", cite: "Teología del Sacerdocio: El sacerdote presta su voz y sus manos a Jesucristo.", recom: "🤲 Misterio: No mires al hombre, mirá al milagro que sucede a través de él." },
+    { id: "mis36", fact: "La Misa tiene dos partes principales: la Palabra y la Eucaristía.", hook: "Es como una cena con un amigo: primero charlamos (Lecturas) y después comemos juntos (Comunión). Las dos partes son igual de importantes.", cite: "Constitución Sacrosanctum Concilium: La mesa de la Palabra y la mesa del Cuerpo de Cristo.", recom: "👂 Hambre: Llegá temprano para escuchar la charla de Dios; no vayas solo por la comida." },
+    { id: "mis37", fact: "El Ambón es el lugar sagrado desde donde se proclama la Palabra.", hook: "No es un simple atril; representa la tumba vacía desde donde los ángeles anunciaron la Resurrección.", cite: "Instrucción del Misal: La dignidad de la palabra exige un lugar adecuado en la iglesia.", recom: "📢 Escucha: Cuando el lector sube al ambón, Dios está abriendo la boca para hablarte a vos." },
+    { id: "mis38", fact: "Las velas en el altar representan a Jesús como Luz del Mundo.", hook: "Siempre debe haber al menos dos velas encendidas. Nos recuerdan que la Misa es una fiesta de luz que disipa nuestra oscuridad.", cite: "Simbolismo de la Luz: 'Yo soy la luz del mundo; el que me sigue no andará en tinieblas'.", recom: "🕯️ Claridad: Pedile a Jesús que ilumine esa decisión difícil que tenés que tomar esta semana." },
+    { id: "mis39", fact: "El 'Lavabo' tiene una oración secreta que el cura dice bajito.", hook: "Mientras se lava los dedos, el cura dice: 'Lávame, Señor, de mi iniquidad y límpiame de mi pecado'.", cite: "Ritos del Ofertorio: Oración privada del sacerdote.", recom: "💧 Humildad: Pensá en algo de lo que te arrepentís y pedile a Dios que te limpie en ese momento." },
+    { id: "mis40", fact: "La procesión de entrada simboliza nuestro caminar hacia el cielo.", hook: "El cura y los acólitos caminan hacia el altar representando al pueblo de Dios peregrino que va hacia la Patria Celestial.", cite: "Simbolismo Litúrgico: La vida cristiana es un camino hacia el encuentro definitivo con Dios.", recom: "🚶‍♂️ Peregrino: No estás estancado; cada Misa es un paso más hacia tu casa verdadera." },
+    { id: "mis41", fact: "El saludo 'El Señor esté con ustedes' es una bendición de fuerza.", hook: "No es un simple 'hola'. Es el deseo de que la fuerza de Dios te acompañe para que puedas celebrar bien el misterio.", cite: "Ritos Iniciales: 'Y con tu espíritu' es la respuesta del pueblo reconociendo la misión del cura.", recom: "🤝 Conexión: Respondé con fuerza; estás aceptando la compañía de Dios en ese momento." },
+    { id: "mis42", fact: "El Acto Penitencial borra los pecados veniales (leves).", hook: "Si pedís perdón de corazón al principio de la Misa, Dios limpia tus faltas pequeñas para que puedas comulgar dignamente.", cite: "Catecismo: La Eucaristía fortalece la caridad y borra los pecados veniales.", recom: "🧼 Limpieza: Aprovechá este momento para sacarte la 'tierrita' del alma antes del banquete." },
+    { id: "mis43", fact: "El 'Aleluya' es una palabra hebrea que significa 'Alaben a Dios'.", hook: "Es un grito de alegría que solo se deja de cantar en Cuaresma (porque estamos de penitencia). ¡En Pascua estalla de alegría!", cite: "Salmos: 'Hallel-u-Yah'. Es el canto de victoria de los redimidos.", recom: "🎉 Jubilo: Cantalo fuerte; es el grito de guerra de los hijos de Dios." },
+    { id: "mis44", fact: "La Homilía no es un discurso político ni una clase de historia.", hook: "Es el momento donde el cura 'rompe' el pan de la palabra para que podamos digerirla y aplicarla a nuestra vida diaria el lunes.", cite: "Instrucción del Misal: La homilía es parte de la misma liturgia y es muy recomendada.", recom: "📝 Tarea: Tratá de llevarte UNA sola frase de la homilía para practicar en la semana." },
+    { id: "mis45", fact: "El Credo es nuestro 'carnet de identidad' cristiano.", hook: "Al rezarlo, estamos diciendo en qué creemos y quiénes somos. Es el resumen de toda nuestra fe heredada de los apóstoles.", cite: "Símbolo de la Fe: Resumen de las verdades cristianas.", recom: "🛡️ Identidad: Rezalo con orgullo; es lo que nos une a millones de cristianos en la historia." },
+    { id: "mis46", fact: "La Oración Universal (de los fieles) es nuestro momento de pedir.", hook: "Como hijos, le presentamos a nuestro Padre las necesidades del mundo, de la Iglesia y de nuestra comunidad de Santa Ana.", cite: "Plegaria Universal: Ejercicio del sacerdocio bautismal de los fieles.", recom: "🌍 Pedido: Sumá en silencio tu pedido por ese familiar enfermo o ese amigo que sufre." },
+    { id: "mis47", fact: "El Pan de la Misa (la hostia) no tiene levadura.", hook: "Es pan 'ácimo', igual al que usó Jesús en la Última Cena y al que usaban los judíos al salir de Egipto a las apuradas.", cite: "Tradición Bíblica: El pan sin levadura simboliza la pureza y la nueva vida.", recom: "🍞 Sencillez: Dios se esconde en lo más básico: harina y agua. Él no necesita lujos para amarte." },
+    { id: "mis48", fact: "El Vino de la Misa debe ser puro de uva y sin mezclas.", hook: "No sirve cualquier jugo. Debe ser 'fruto de la vid' para cumplir con lo que Jesús pidió en la cena de despedida.", cite: "Derecho Canónico: El vino debe ser natural, del fruto de la vid y no corrompido.", recom: "🍇 Verdad: Nuestra fe se basa en cosas reales, no en inventos ni fantasías." },
+    { id: "mis49", fact: "El cura extiende las manos sobre el pan y el vino invocando al Espíritu.", hook: "Ese gesto se llama 'Epíclesis'. El cura pide que baje el Espíritu Santo para que transforme esos dones en el Cuerpo y la Sangre de Jesús.", cite: "Plegaria Eucarística: Invocación de la potencia divina para la consagración.", recom: "🕊️ Invocación: Pedile al Espíritu Santo que también transforme tu vida mientras baja al altar." },
+    { id: "mis50", fact: "El relato de la institución es el corazón de la Misa.", hook: "Cuando el cura repite las palabras de Jesús: 'Tomen y coman...', el milagro ocurre. No es una representación, ¡está pasando de verdad!", cite: "Catecismo 1377: La presencia eucarística de Cristo comienza en el momento de la consagración.", recom: "🧎‍♂️ Silencio sagrado: Es el momento de mayor respeto de toda la semana. ¡No te distraigas!" },
+    { id: "mis51", fact: "La Elevación sirve para que hagas un acto de fe visual.", hook: "El cura levanta la Hostia y el Cáliz para que los mires y reconozcas a tu Dios. Es el momento de decir: '¡Señor mío y Dios mío!'.", cite: "Gesto Litúrgico: Elevación para la adoración de los fieles.", recom: "👀 Mirada: No bajes la cabeza; mirá a Jesús con amor y agradecimiento." },
+    { id: "mis52", fact: "Rezamos por el Papa y el Obispo en cada Misa.", hook: "Lo hacemos para mostrar que no somos una isla, sino que estamos unidos a toda la Iglesia universal bajo una sola cabeza.", cite: "Plegaria Eucarística: Oración por la unidad de la Iglesia jerárquica.", recom: "🇻🇦 Unión: Pedile a Dios que le dé fuerza al Papa Francisco para guiar a la Iglesia." },
+    { id: "mis53", fact: "El 'Por Cristo, con Él y en Él' es el gran grito de alabanza.", hook: "Se llama 'Doxología final'. El cura ofrece a Jesús al Padre, y nosotros respondemos con el 'Amén' más importante de todos.", cite: "Conclusión de la Plegaria Eucarística: Resumen de nuestra mediación a través de Cristo.", recom: "📢 El Gran Amén: Decilo fuerte; estás confirmando todo lo que pasó en el altar." },
+    { id: "mis54", fact: "El Padre Nuestro tiene 7 peticiones perfectas.", hook: "Pedimos por el Reino, por el pan, por el perdón y para que Dios nos libre del mal. ¡No le falta nada!", cite: "Catecismo 2761: El Padre Nuestro es el resumen de todo el Evangelio.", recom: "👨‍👦 Paternidad: Sentite seguro; Dios es tu Papá y sabe qué cosas te hacen falta hoy." },
+    { id: "mis55", fact: "El cura rompe la hostia grande como signo de unidad.", hook: "Ese gesto se llama 'Fracción del pan'. Significa que, aunque somos muchos, todos comemos del mismo y único Pan que es Cristo.", cite: "Hechos 2, 42: 'Perseveraban en la fracción del pan y en las oraciones'.", recom: "🧱 Unidad: Recordá que el que está sentado al lado tuyo es tu hermano en Cristo." },
+    { id: "mis56", fact: "El cura pone un pedacito de hostia en el vino.", hook: "Se llama 'Inmixtión'. Simboliza la unión del Cuerpo y la Sangre de Jesús en la Resurrección. ¡Jesús está vivo y completo!", cite: "Ritos de Comunión: Gesto de unidad del misterio pascual.", recom: "☀️ Resurrección: Alegrate; no adoramos a un muerto, adoramos a alguien que venció a la tumba." },
+    { id: "mis57", fact: "Decimos 'Señor, no soy digno' citando a un soldado romano.", hook: "Repetimos las palabras del centurión que tenía mucha fe. Reconocemos nuestra pequeñez antes de recibir al Gigante.", cite: "Mateo 8, 8: 'Señor, no soy digno de que entres en mi casa...'.", recom: "🛡️ Fe: Decilo con la misma confianza que ese soldado; Dios va a sanar tu alma." },
+    { id: "mis58", fact: "La Comunión es el momento de mayor intimidad del universo.", hook: "El Creador de las galaxias se hace pequeño para entrar en tu cuerpo y fundirse con tu alma. ¡Es una locura de amor!", cite: "Juan 6, 56: 'El que come mi carne y bebe mi sangre, permanece en mí y yo en él'.", recom: "🤫 Silencio post-comunión: No te pongas a charlar ni a mirar el celular; aprovechá esos minutos para hablar a solas con Jesús." },
+    { id: "mis59", fact: "Si no podés comulgar físicamente, podés hacer la 'Comunión Espiritual'.", hook: "Si no estás preparado o no pudiste confesar todavía, pedile a Jesús de corazón que venga a visitarte espiritualmente. ¡Él escucha ese deseo!", cite: "Santo Tomás de Aquino: El deseo de recibir el sacramento produce efectos espirituales.", recom: "❤️ Deseo: No te quedes afuera del banquete; invitá a Jesús a entrar en tu corazón como invitado de honor." },
+    { id: "mis60", fact: "La Misa no termina cuando el cura se va, ahí empieza tu parte.", hook: "La bendición final es un 'despegue'. Salís de la capilla con las pilas cargadas para ser luz en tu familia, en tu trabajo y con tus amigos.", cite: "Ite Missa Est: 'Vayan, la Misa ha terminado'.", recom: "🚀 Acción: Salí de la Misa con la decisión de hacerle un favor a alguien hoy mismo." },
+    { id: "mis61", fact: "El 'Corporal' es el mantelito cuadrado donde se pone a Jesús.", hook: "Se llama así porque sostiene el 'Cuerpo' (Corpus) de Cristo. Es de lino blanco y se dobla de una forma especial para que no se pierda nada.", cite: "Vasos Sagrados: El corporal representa la sábana que envolvió el cuerpo de Jesús en la tumba.", recom: "🧺 Cuidado: Todo en la Misa tiene un orden porque el amor cuida hasta los detalles más mínimos." },
+    { id: "mis62", fact: "El 'Purificador' es el pañito para limpiar el cáliz.", hook: "Se usa para secar el cáliz después de la comunión, asegurando que se trate con respeto la Sangre de Cristo que quedó en el vaso.", cite: "Limpieza Sagrada: El respeto a las especies eucarísticas se mantiene hasta el final.", recom: "🧹 Orden: Dios es ordenado. Aprendé de la liturgia a poner orden en tu propia vida espiritual." },
+    { id: "mis63", fact: "El 'Copón' es el recipiente donde se guardan las hostias.", hook: "Es como un cofre de tesoros. Se tapa con un velo o una tapa para proteger el Pan de Vida que será llevado al Sagrario.", cite: "Reserva Eucarística: Las hostias sobrantes se guardan para los enfermos y la adoración.", recom: "📦 Tesoro: Cuando mires el Sagrario, recordá que ese cofre tiene al tesoro más grande del mundo." },
+    { id: "mis64", fact: "La sede es la silla del cura y representa su servicio.", hook: "No es un trono de rey, es la silla desde donde el pastor guía a sus ovejas durante la oración. Simboliza su misión de enseñar.", cite: "Mobiliario Litúrgico: La sede del celebrante manifiesta su oficio de presidente de la asamblea.", recom: "🐑 Pastor: Rezá por el cura de Santa Ana; su tarea de guiar a tantas almas es pesada." },
+    { id: "mis65", fact: "El agua bendita nos protege y nos recuerda el perdón.", hook: "Persignarse con agua bendita al salir también es un signo de que queremos llevar esa limpieza de la Misa a nuestra vida diaria.", cite: "Sacramentales: El agua bendita es un auxilio espiritual para el cristiano.", recom: "🛡️ Escudo: Usá el agua bendita con fe; es un arma poderosa contra las tentaciones." },
+    { id: "mis66", fact: "El incienso se usa solo en las Misas solemnes o domingos.", hook: "Se usa para marcar que ese día es especial. En la Biblia, el incienso es un regalo de Reyes. ¡Estamos recibiendo al Rey!", cite: "Salmo 141: 'Suba mi oración ante ti como el incienso'.", recom: "👑 Majestad: Sentite importante; el Rey del universo te invitó a su mesa hoy." },
+    { id: "mis67", fact: "El cura se inclina ante el altar al terminar la Misa.", hook: "Es el saludo de despedida. Le agradece a la 'roca' (Cristo) por haberle permitido celebrar el misterio.", cite: "Ritos de Conclusión: Saludo final al altar.", recom: "👋 Adiós y hasta luego: No salgas corriendo; tomate un segundo para despedirte de Jesús antes de irte." },
+    { id: "mis68", fact: "La Misa es la oración más poderosa que existe en la Tierra.", hook: "Ni mil rosarios ni mil horas de meditación valen lo que vale una sola Misa, porque en ella es el mismo Dios el que se ofrece.", cite: "Santo Cura de Ars: 'Si conociéramos el valor de la Misa, moriríamos de alegría'.", recom: "💎 Valoración: Tratá de no faltar nunca; es el regalo más grande que podés recibir gratis cada semana." },
+    { id: "mis69", fact: "A veces el cura usa una capa grande llamada 'Pluvial'.", hook: "Se usa en procesiones o bendiciones con el Santísimo. Es como un manto real que lo cubre todo para resaltar la presencia de Dios.", cite: "Vestiduras: Capa de honor para actos solemnes fuera de la Misa.", recom: "🧥 Protección: Imaginate que el amor de Dios te cubre a vos como ese manto grande." },
+    { id: "mis70", fact: "La 'Pila Bautismal' es la puerta de entrada a la Misa.", hook: "Sin el bautismo no podemos recibir la comunión. Por eso suele estar cerca de la entrada de las iglesias antiguas.", cite: "Catecismo: El Bautismo es el fundamento de toda la vida cristiana.", recom: "🚿 Renacimiento: Agradecele a tus padres por haberte bautizado y haberte abierto la puerta de la Misa." },
+    { id: "mis71", fact: "El 'Alba' es la túnica blanca que usa el cura debajo de todo.", hook: "Representa la pureza que todos los cristianos recibimos en el bautismo. ¡Todos deberíamos tener el alma así de blanca!", cite: "Vestiduras: El alba recuerda la vestidura blanca de los redimidos en el Apocalipsis.", recom: "⚪ Pureza: Pedile a Dios que te ayude a mantener tu alma limpia durante toda esta semana." },
+    { id: "mis72", fact: "La palabra 'Católico' significa 'Universal'.", hook: "Significa que la Misa es para todos: de cualquier país, de cualquier color y de cualquier historia. ¡Todos caben en la Capilla Santa Ana!", cite: "San Ignacio de Antioquía: El primero en usar el término 'Católica' para la Iglesia.", recom: "🌎 Apertura: No juzgues a nadie que entre a la capilla; Jesús lo invitó igual que a vos." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Misterio ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-misa.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `⛪ ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí el misterio completo aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Misterios de la Misa | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

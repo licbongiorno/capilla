@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sucesores de Pedro | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Sucesores de Pedro</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-crown"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Historia del Papa</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-landmark recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Historia de la Iglesia</footer>
+
+<script>
+const DATOS = [
+    { id: "pap1", fact: "San Pedro fue el primer Papa, elegido directamente por Jesús.", hook: "Su nombre original era Simón, pero Jesús le dijo: 'Tú eres Pedro (piedra), y sobre esta piedra edificaré mi Iglesia'.", cite: "Mateo 16, 18: La fundación del papado hace 2000 años.", recom: "🪨 Cimiento: Nuestra fe no es un invento humano; tiene una raíz sólida que empezó con un pescador." },
+    { id: "pap2", fact: "La palabra 'Papa' es un acróstico de una frase en latín.", hook: "Viene de 'Petri Apostoli Potestatem Accipiens', que significa 'El que recibe la potestad del Apóstol Pedro'.", cite: "Etimología Histórica: También se asocia con la palabra afectuosa 'Padre' (Pappas).", recom: "👨‍👩‍👧‍👦 Familia: El Papa es el 'Padre Común' que mantiene unida a la gran familia de la Iglesia." },
+    { id: "pap3", fact: "El Papa Francisco es el primer Papa americano y jesuita de la historia.", hook: "Antes de ser Papa, Jorge Bergoglio viajaba en colectivo y subte por Buenos Aires. ¡Un Papa muy cercano a nosotros!", cite: "Elección del 2013: El primer Papa proveniente del 'fin del mundo'.", recom: "🇦🇷 Orgullo: Rezá por Francisco; es un hermano nuestro que tiene la tarea más difícil del mundo." },
+    { id: "pap4", fact: "El Cónclave es la reunión secreta para elegir al nuevo Papa.", hook: "Significa literalmente 'Con Llave' (Cum Clave), porque los cardenales se encierran bajo llave hasta que deciden quién será el sucesor.", cite: "Tradición desde el siglo XIII: Se hace para evitar presiones externas de reyes o gobiernos.", recom: "🔐 Secreto: El Espíritu Santo es el que guía los votos de los cardenales en ese encierro." },
+    { id: "pap5", fact: "La 'Fumata Blanca' anuncia al mundo que ya tenemos Papa.", hook: "Si sale humo negro, es que no hubo acuerdo. Si sale blanco, es la señal de alegría para la plaza de San Pedro.", cite: "Ritual del Cónclave: Se queman las boletas de votación con aditivos para dar el color al humo.", recom: "🌫️ Señales: A veces Dios nos habla con signos sencillos que todo el mundo puede entender." },
+    { id: "pap6", fact: "San Juan Pablo II fue el Papa que más países visitó.", hook: "Fue apodado 'El Atleta de Dios'. Estuvo en Argentina dos veces y recorrió casi todo el planeta llevando paz.", cite: "Pontificado 1978-2005: Fue uno de los reinados más largos de la historia.", recom: "🌍 Misionero: Sé como él; no te quedes quieto y llevá tu fe a donde sea que vayas." },
+    { id: "pap7", fact: "El Anillo del Pescador es el sello personal de cada Papa.", hook: "Tiene la imagen de San Pedro pescando en una barca. Cuando un Papa muere, el anillo se destruye para que nadie pueda usar su sello.", cite: "Insignias Papales: Representa el oficio del Papa como 'pescador de hombres'.", recom: "💍 Fidelidad: Cada Papa es un eslabón de una cadena que nunca se rompió en 20 siglos." },
+    { id: "pap8", fact: "La Ciudad del Vaticano es el país más pequeño del mundo.", hook: "Tiene su propio correo, su propio ejército y su propia bandera, pero es más chico que muchos barrios de Córdoba.", cite: "Tratados de Letrán (1929): Le dio independencia al Papa para que no dependa de ningún rey terrestre.", recom: "🇻🇦 Independencia: El Papa necesita libertad para poder hablarle al mundo sin que nadie lo presione." },
+    { id: "pap9", fact: "La Guardia Suiza es el ejército más antiguo y colorido que existe.", hook: "Protegen al Papa desde 1506. Sus uniformes amarillos, rojos y azules fueron diseñados inspirándose en pinturas de Rafael.", cite: "Seguridad Papal: Solo pueden ser hombres, suizos, católicos y solteros al entrar.", recom: "🛡️ Protección: Todos estamos llamados a ser 'guardias' de nuestra fe y de nuestra Iglesia." },
+    { id: "pap10", fact: "Benedicto XVI fue un gran teólogo que renunció para rezar en silencio.", hook: "Fue un gesto de humildad gigante: reconoció que ya no tenía fuerzas físicas y dejó el lugar para que otro siguiera.", cite: "Renuncia histórica (2013): Hacía 600 años que un Papa no renunciaba voluntariamente.", recom: "🙇‍♂️ Humildad: Saber cuándo dar un paso al costado es una señal de gran santidad." },
+    { id: "pap11", fact: "El Papa se viste de blanco por una tradición de los dominicos.", hook: "San Pío V era un fraile dominico y, al ser elegido Papa, no quiso dejar su hábito blanco. Desde entonces, todos los Papas visten así.", cite: "Tradición desde 1566: El blanco simboliza la pureza y la luz de Cristo.", recom: "⚪ Pureza: El blanco nos recuerda que el Papa debe ser un reflejo de la luz de Dios en la tierra." },
+    { id: "pap12", fact: "San Lino fue el segundo Papa, sucesor directo de Pedro.", hook: "Aparece mencionado en la Biblia (en una carta de San Pablo). ¡Imaginá lo antigua que es nuestra Iglesia!", cite: "2 Timoteo 4, 21: 'Te saludan Eubulo, Pudente, Lino, Claudia...'.", recom: "📜 Continuidad: Pertenecés a una institución que vio nacer y morir a todos los imperios de la historia." },
+    { id: "pap13", fact: "El Papa tiene un título que significa 'Constructor de Puentes'.", hook: "Se llama 'Pontífice' (Pontifex). Su tarea es unir a Dios con los hombres y a los hombres entre sí.", cite: "Título Papal: Proviene del antiguo cargo romano de constructor de puentes físicos.", recom: "🌉 Unión: Intentá hoy ser un 'pontífice' en tu casa; construí puentes de diálogo y no muros de pelea." },
+    { id: "pap14", fact: "El 'Papa Móvil' se inventó para que todos pudieran verlo de lejos.", hook: "Antes el Papa iba en una silla cargada por hombres (Silla Gestatoria). El primer Papa Móvil moderno se usó con Juan Pablo II.", cite: "Vehículo Papal: Diseñado para la seguridad y la visibilidad en las multitudes.", recom: "🚗 Cercanía: Dios siempre busca la forma de hacerse visible para que podamos sentirlo cerca." },
+    { id: "pap15", fact: "San Pedro murió crucificado cabeza abajo por humildad.", hook: "Dijo que no era digno de morir igual que su Maestro, Jesús. Fue martirizado en la colina del Vaticano.", cite: "Martirio de Pedro (año 67): Su tumba está exactamente debajo del altar mayor del Vaticano.", recom: "🪨 Sacrificio: El primer Papa dio su vida por la verdad. ¿Qué estás dispuesto a dar vos?" },
+    { id: "pap16", fact: "El Papa no puede viajar solo por seguridad y protocolo.", hook: "Siempre va acompañado por la 'Familia Pontificia', que incluye médicos, secretarios y guardias.", cite: "Seguridad de Estado: El Papa es un jefe de estado pero también un blanco de ataques.", recom: "🛡️ Intercesión: Rezá por la seguridad del Papa; tiene muchos enemigos porque dice la verdad." },
+    { id: "pap17", fact: "Existe una lista oficial de todos los Papas desde el año 33.", hook: "Se llama 'Annuario Pontificio'. Hay 266 Papas en total hasta llegar a Francisco.", cite: "Sucesión Apostólica: Una lista ininterrumpida que garantiza que la fe es la misma.", recom: "📋 Orden: La Iglesia es ordenada porque la verdad necesita ser protegida paso a paso." },
+    { id: "pap18", fact: "San León Magno convenció a Atila 'El Rey de los Hunos' de no saquear Roma.", hook: "Solo con su palabra y su autoridad espiritual, frenó a uno de los guerreros más feroces de la historia.", cite: "Historia de la Iglesia (año 452): Atila vio a San Pedro y San Pablo detrás del Papa y tuvo miedo.", recom: "🕊️ Poder de la palabra: La paz siempre es más poderosa que la violencia si se habla con Dios de fondo." },
+    { id: "pap19", fact: "El Papa San Clemente I escribió la carta más antigua después de la Biblia.", hook: "Le escribió a los Corintios para poner orden en su iglesia. ¡Fue el primer ejercicio de autoridad del Papa sobre otras ciudades!", cite: "Epístola a los Corintios (año 96): Un documento clave de la Iglesia primitiva.", recom: "✉️ Guía: A veces necesitamos que alguien desde afuera nos ayude a ver nuestros errores con amor." },
+    { id: "pap20", fact: "San Gregorio Magno es el creador del 'Canto Gregoriano'.", hook: "Era un Papa que amaba la música y la liturgia. Decía que cantar es rezar dos veces.", cite: "Pontificado (590-604): También fue el primero en llamarse 'Siervo de los siervos de Dios'.", recom: "🎶 Música: Usá la música para elevar tu corazón a Dios; el arte es un camino directo al cielo." },
+    { id: "pap21", fact: "El balcón desde donde sale el Papa se llama 'Balcón de las Bendiciones'.", hook: "Es el lugar donde se asoma el nuevo Papa para saludar por primera vez después de decir: 'Habemus Papam'.", cite: "Arquitectura de San Pedro: Está en el centro de la fachada de la basílica.", recom: "👋 Saludo: El Papa siempre termina diciendo: 'No se olviden de rezar por mí'. ¡Cumplí con ese pedido!" },
+    { id: "pap22", fact: "San Pío X fue el Papa que permitió que los niños comulgaran temprano.", hook: "Antes había que ser casi adulto. Él dijo: 'Dejen que los niños vengan a mí', y bajó la edad de la Primera Comunión.", cite: "Decreto Quam Singulari (1910): Un cambio que llenó las iglesias de niños.", recom: "👦 Pureza infantil: Los niños son los amigos preferidos de Jesús. ¡Cuidá su inocencia!" },
+    { id: "pap23", fact: "El Papa San Juan XXIII era llamado 'El Papa Bueno'.", hook: "Era muy gordo y siempre estaba sonriendo. Convocó el Concilio Vaticano II para 'abrir las ventanas' de la Iglesia al mundo moderno.", cite: "Pontificado (1958-1963): Un campesino que llegó a ser el guía del mundo.", recom: "☀️ Bondad: Una sonrisa y un trato amable pueden hacer más por la fe que mil discursos difíciles." },
+    { id: "pap24", fact: "San Pablo VI fue el primer Papa en viajar en avión.", hook: "Fue el primero en visitar Tierra Santa y la ONU en Nueva York, marcando el inicio de los Papas viajeros.", cite: "Pontificado (1963-1978): Continuó la gran reforma de la Iglesia.", recom: "✈️ Movimiento: No te quedes encerrado; la fe es para ser llevada a todos los rincones del mundo." },
+    { id: "pap25", fact: "El Papa Juan Pablo I duró solo 33 días en su cargo.", hook: "Se lo conoció como 'El Papa de la Sonrisa'. Su muerte repentina entristeció al mundo entero.", cite: "Pontificado (1978): Uno de los más cortos pero más luminosos de la historia.", recom: "⏳ Brevedad: Lo importante no es cuánto tiempo vivís, sino cuánto amor ponés en el tiempo que tenés." },
+    { id: "pap26", fact: "San Juan Pablo II perdonó al hombre que intentó asesinarlo.", hook: "Fue a la cárcel, se sentó con él y lo perdonó de corazón. Un ejemplo real de lo que significa ser cristiano.", cite: "Atentado de 1981: La bala fue desviada por la mano de la Virgen de Fátima, según el Papa.", recom: "🤝 Perdón total: Si el Papa perdonó a quien le disparó, ¿quién sos vos para no perdonar una ofensa chica?" },
+    { id: "pap27", fact: "El Papa Francisco eligió su nombre por San Francisco de Asís.", hook: "Lo hizo porque quiere una 'Iglesia pobre para los pobres', preocupada por la naturaleza y la paz.", cite: "Cónclave 2013: El Cardenal Hummes le dijo: 'No te olvides de los pobres'.", recom: "🐦 Sencillez: Desprendete de lo que no necesitás y compartilo con quien tiene menos." },
+    { id: "pap28", fact: "El 'Solideo' es ese gorrito blanco que usa el Papa.", hook: "Significa 'Solo a Dios' (Soli Deo). Es un signo de que el Papa solo se quita el gorro ante Dios (durante la consagración en la Misa).", cite: "Vestidura Litúrgica: Los obispos lo usan morado y los cardenales rojo.", recom: "🙇‍♂️ Respeto: Recordá siempre que por encima de cualquier autoridad humana, solo está Dios." },
+    { id: "pap29", fact: "La Biblioteca Vaticana guarda tesoros de hace miles de años.", hook: "Tiene manuscritos de la Biblia de los primeros siglos y cartas de personajes históricos como Miguel Ángel.", cite: "Patrimonio de la Humanidad: Es una de las bibliotecas más importantes del mundo.", recom: "📖 Verdad: Nuestra fe no tiene miedo a la cultura ni a la historia; las protege como tesoros." },
+    { id: "pap30", fact: "San Pedro fue enterrado en un cementerio romano común.", hook: "Sobre esa tumba humilde se construyó la basílica más grande del mundo. ¡La geografía confirma la historia!", cite: "Excavaciones de 1940: Se encontró el sarcófago con la inscripción 'Petros eni' (Pedro está aquí).", recom: "🪨 Piedra angular: La Iglesia es sólida porque está construida sobre testigos reales, no sobre cuentos." },
+    { id: "pap31", fact: "El Papa es el único que puede usar el color blanco en su ropa diaria.", hook: "Es una distinción que lo identifica rápidamente en cualquier lugar del mundo como el 'Vicario de Cristo'.", cite: "Protocolo Eclesiástico: Símbolo de su misión especial de paz.", recom: "⚪ Diferencia: No tengas miedo de que se note que sos cristiano en tu forma de vestir o hablar." },
+    { id: "pap32", fact: "El Vaticano tiene su propio observatorio astronómico.", hook: "Se llama 'Specola Vaticana'. La Iglesia siempre ha estado interesada en estudiar las estrellas para entender la creación de Dios.", cite: "Ciencia y Fe: Los jesuitas son los encargados de este observatorio científico.", recom: "🔭 Mirar arriba: La ciencia y la religión no pelean; son dos alas para llegar a la verdad." },
+    { id: "pap33", fact: "San Dámaso I fue el Papa que encargó la traducción de la Biblia al latín.", hook: "Gracias a él tenemos la 'Vulgata', la Biblia que todo el pueblo pudo leer durante siglos.", cite: "Pontificado (366-384): También decoró las tumbas de los mártires en las catacumbas.", recom: "📖 Biblia para todos: Agradecé que hoy podés leer la palabra de Dios en tu propio idioma." },
+    { id: "pap34", fact: "El Papa San Silvestre I fue el primero en vivir en libertad.", hook: "Fue el Papa de la época del emperador Constantino, cuando los cristianos dejaron de ser perseguidos y pudieron construir iglesias.", cite: "Edicto de Milán (año 313): El fin de las persecuciones sangrientas.", recom: "🕊️ Libertad: Valorá la suerte de poder ir a la capilla sin que nadie te persiga por eso." },
+    { id: "pap35", fact: "San Sixto II fue martirizado mientras celebraba la Misa en las catacumbas.", hook: "Los soldados romanos lo sorprendieron rezando. Murió junto a sus diáconos por no querer negar a Jesús.", cite: "Persecución de Valeriano (año 258): Un testimonio de fe absoluta.", recom: "🕯️ Entrega: Cada vez que vayas a Misa, recordá a los que murieron para que nosotros hoy podamos celebrarla." },
+    { id: "pap36", fact: "El Papa tiene tres misiones principales según la teología.", hook: "Enseñar (la verdad), Santificar (con los sacramentos) y Gobernar (con amor).", cite: "Munus Regendi, Docendi et Sanctificandi: Las tareas del sucesor de Pedro.", recom: "🛠️ Tareas: Cada uno de nosotros tiene una misión de Dios. ¿Ya descubriste la tuya?" },
+    { id: "pap37", fact: "La Basílica de San Pedro no es la catedral del Papa.", hook: "La verdadera catedral de Roma es San Juan de Letrán. Es la 'madre de todas las iglesias del mundo'.", cite: "Archibasílica de Letrán: Donde el Papa tiene su sede oficial como obispo.", recom: "🏠 Casa Madre: Todas las parroquias y capillas (como la nuestra) están unidas a esa iglesia central." },
+    { id: "pap38", fact: "San Calixto I fue un Papa que empezó siendo esclavo.", hook: "Dios no mira tu pasado ni tu clase social. Lo eligió para ser el guía de la Iglesia a pesar de su origen humilde.", cite: "Pontificado (217-222): Conocido por las catacumbas que llevan su nombre.", recom: "🔗 Sin cadenas: No importa de dónde venís, para Dios lo importante es hacia dónde vas con Él." },
+    { id: "pap39", fact: "El Papa San Martín I murió en el exilio por defender la verdad.", hook: "Fue secuestrado y llevado a una isla desierta porque se negó a cambiar lo que decía la Biblia para complacer al emperador.", cite: "Último Papa mártir (año 655): Un ejemplo de firmeza doctrinal.", recom: "⚔️ Firmeza: A veces defender la verdad te trae problemas, pero es el único camino que vale la pena." },
+    { id: "pap40", fact: "San Pío V organizó la oración del Rosario para pedir por la paz.", hook: "Gracias a su impulso, el Rosario se convirtió en la 'espada' de los cristianos para combatir el mal en el mundo.", cite: "Batalla de Lepanto (1571): Se atribuyó la victoria a la intercesión de la Virgen del Rosario.", recom: "📿 Rosario: Nunca subestimes el poder de esa cadena de rosas; cambia la historia." },
+    { id: "pap41", fact: "La 'Cátedra de Pedro' es un monumento que envuelve una silla de madera.", hook: "Miguel Ángel diseñó el altar donde se guarda lo que se cree fue la silla real de San Pedro. Simboliza el magisterio del Papa.", cite: "Símbolo de Autoridad: Representa que el Papa enseña con la autoridad de Cristo.", recom: "🪑 Asiento firme: Escuchá con atención lo que enseña el Papa; es una guía segura en un mundo confuso." },
+    { id: "pap42", fact: "San Juan Pablo II creó las 'Jornadas Mundiales de la Juventud'.", hook: "Se dio cuenta de que los jóvenes son el presente de la Iglesia y los reunió por millones en todo el mundo.", cite: "JMJ (desde 1985): Un invento papal que cambió la vida de millones de chicos.", recom: "👦 Juventud: Si sos joven, recordá que el Papa cuenta con vos para renovar la Iglesia." },
+    { id: "pap43", fact: "El Papa Francisco tiene un solo pulmón funcional.", hook: "A los 21 años tuvo una enfermedad grave y le quitaron parte de un pulmón. ¡Es un milagro que tenga tanta energía a su edad!", cite: "Biografía de Jorge Bergoglio: Un ejemplo de superación física y fe.", recom: "💪 Fortaleza: No pongas excusas de salud para no servir a Dios; Él te da la fuerza que te falta." },
+    { id: "pap44", fact: "San Pío XII protegió a miles de judíos durante la Segunda Guerra Mundial.", hook: "Los escondió en el Vaticano y en iglesias de Roma para salvarlos de los nazis, actuando en silencio para no empeorar las cosas.", cite: "Justo entre las naciones: Un Papa que trabajó por la vida en medio del horror.", recom: "🛡️ Valentía silenciosa: A veces hacer el bien no requiere gritos, sino acciones concretas y valientes." },
+    { id: "pap45", fact: "El Papa tiene una cuenta de Twitter (X) e Instagram.", hook: "Se llama @Pontifex. Usa las redes sociales para llegar a los jóvenes y a los que no van a la iglesia.", cite: "Evangelización Digital: La Iglesia usa todas las herramientas modernas para hablar de Dios.", recom: "📱 Redes: Usá tu celular para compartir cosas buenas, no para pelear o perder el tiempo." },
+    { id: "pap46", fact: "La tumba de San Juan Pablo II es una de las más visitadas.", hook: "Está en una capilla lateral de San Pedro. Miles de personas dejan cartas y pedidos de milagros todos los días.", cite: "Canonización (2014): El proceso de santidad más rápido de la era moderna.", recom: "✉️ Pedido: Hablá con los santos como amigos; ellos están en el cielo escuchándote." },
+    { id: "pap47", fact: "El Papa San Celestino V fue el primero en renunciar hace siglos.", hook: "Era un monje ermitaño que vivía en una cueva. Lo obligaron a ser Papa y a los pocos meses renunció para volver a su cueva a rezar.", cite: "Gran Renuncia (1294): Un hombre que prefirió la paz de Dios al poder del mundo.", recom: "🏔️ Prioridad: El éxito del mundo no es nada comparado con la paz que sentís estando a solas con Dios." },
+    { id: "pap48", fact: "La Capilla Sixtina es donde se eligen los Papas.", hook: "Se llama así por el Papa Sixto IV. Sus paredes están cubiertas por los frescos de Miguel Ángel que muestran la creación y el juicio final.", cite: "Tesoro del Arte: Es el lugar más sagrado y artístico del Vaticano.", recom: "🎨 Belleza: El arte es una forma de alabar a Dios. ¡Disfrutalo y cuidalo!" },
+    { id: "pap49", fact: "El Papa siempre usa un Rosario en su bolsillo.", hook: "Se lo ve rezando en los traslados y antes de las reuniones. Es su conexión constante con la Virgen María.", cite: "Devoción Mariana: Todos los Papas han sido profundamente devotos de María.", recom: "📿 Compañía: Llevá siempre un rosario con vos; es como llevar la mano de tu Madre agarrada." },
+    { id: "pap50", fact: "San Pedro era un hombre de carácter fuerte y a veces se equivocaba.", hook: "A pesar de sus fallas (negó a Jesús 3 veces), Dios lo eligió. Esto nos enseña que Dios no llama a los perfectos.", cite: "Gracia de Dios: La Iglesia se mantiene en pie no por la perfección de los hombres, sino por Dios.", recom: "🧱 Humildad: No te castigues por tus errores; pedí perdón y seguí construyendo con Jesús." },
+    { id: "pap51", fact: "El Papa Francisco ama el fútbol y es hincha de San Lorenzo.", hook: "Incluso tiene su carnet de socio y ha recibido a muchos jugadores en el Vaticano. ¡Un Papa con pasiones comunes!", cite: "Humor y Cercanía: Francisco nos recuerda que se puede ser muy santo y muy humano a la vez.", recom: "⚽ Vida diaria: Llevá a Dios a tus pasiones, a tu club y a tus amigos." },
+    { id: "pap52", fact: "La palabra 'Vaticano' viene de una colina romana.", hook: "Significa 'Lugar de profecía'. Era una colina fuera de la ciudad donde San Pedro fue martirizado.", cite: "Toponimia: Un nombre pagano que Dios transformó en el centro de la fe.", recom: "🔄 Transformación: Dios puede agarrar cualquier lugar o situación 'pagana' y hacerla santa." },
+    { id: "pap53", fact: "El Papa San Bonifacio IV convirtió el Panteón de Roma en iglesia.", hook: "Era un templo para todos los dioses paganos. Él lo dedicó a la Virgen y a todos los Mártires, naciendo así la fiesta de 'Todos los Santos'.", cite: "Año 609: El triunfo de la fe sobre los antiguos ídolos.", recom: "🏆 Victoria: La fe cristiana siempre termina transformando la cultura para bien." },
+    { id: "pap54", fact: "El Papa San Pascual I rescató miles de cuerpos de mártires de las catacumbas.", hook: "Los llevó a las iglesias de la ciudad para que fueran venerados y protegidos del saqueo de los bárbaros.", cite: "Pontificado (817-824): Un protector de las reliquias de la Iglesia primitiva.", recom: "🦴 Respeto: Honramos los restos de los santos porque fueron templos vivos de Dios." },
+    { id: "pap55", fact: "San Juan XXIII visitó una cárcel de niños en su primera Navidad como Papa.", hook: "Les dijo: 'Ustedes no pueden venir a verme, así que yo vengo a verlos a ustedes'. Rompió con siglos de protocolo rígido.", cite: "Cercanía Papal: Marcó un estilo de pastor que huele a oveja.", recom: "👣 Salida: No esperes a que la gente venga a la capilla; salí vos a buscar a los que sufren." },
+    { id: "pap56", fact: "El Papa Francisco vive en una casa de huéspedes, no en el palacio.", hook: "Eligió la 'Casa Santa Marta' para estar cerca de la gente, comer en el comedor común y no estar aislado.", cite: "Estilo de vida sencillo: Un signo de humildad y reforma desde el ejemplo.", recom: "🏡 Sencillez: Viví con lo necesario; el exceso de lujos a veces te aleja de los hermanos." },
+    { id: "pap57", fact: "San Nicolás I fue el Papa que defendió la indisolubilidad del matrimonio.", hook: "Se enfrentó a reyes poderosos para proteger la sagrada unión de la familia según el Evangelio.", cite: "Pontificado (858-867): Llamado 'El Grande' por su valentía moral.", recom: "👨‍👩‍👧‍👦 Familia: Defendé a tu familia y el valor del matrimonio; es la base de todo lo bueno." },
+    { id: "pap58", fact: "El Papa San Agatón terminó con una gran división en la Iglesia.", hook: "Escribió una carta tan clara sobre la fe que los obispos gritaron: '¡Pedro ha hablado por boca de Agatón!'.", cite: "Concilio de Constantinopla III: Un momento de unidad doctrinal absoluta.", recom: "🤝 Unidad: Buscá siempre lo que une y no lo que divide. La verdad trae paz." },
+    { id: "pap59", fact: "San Pío V mandó a quitar las estatuas desnudas del Vaticano.", hook: "Era un Papa muy austero que quería que todo en la iglesia ayudara a la oración y no a la distracción de los sentidos.", cite: "Reforma Post-Tridentina: Buscaba la máxima dignidad en el arte sagrado.", recom: "🧺 Pureza visual: Cuidá lo que mirás; tus ojos son la ventana por donde entra la luz a tu alma." },
+    { id: "pap60", fact: "El Papa San León IX viajó por toda Europa a pie para reformar la Iglesia.", hook: "Luchó contra la corrupción y la venta de cargos eclesiásticos, devolviendo la dignidad al papado.", cite: "Pontificado (1049-1054): Un reformador incansable que no temía al cansancio físico.", recom: "🚶‍♂️ Esfuerzo: Si algo está mal, no te quejes; ponete a caminar y trabajá para cambiarlo." },
+    { id: "pap61", fact: "El Papa San Gelasio I definió la relación entre el poder de Dios y el del mundo.", hook: "Enseñó que el Papa guía las almas y los reyes los cuerpos, pero que el alma es siempre más importante.", cite: "Teoría de las dos espadas (año 494): Un equilibrio entre fe y política.", recom: "⚖️ Equilibrio: Respetá las leyes del mundo, pero siempre poné la ley de Dios por encima." },
+    { id: "pap62", fact: "San Juan Pablo II escribió una carta especial a las mujeres.", hook: "Les agradeció por su 'genio femenino' y por ser las principales transmisoras de la fe en la familia.", cite: "Mulieris Dignitatem (1988): Un reconocimiento al papel fundamental de la mujer.", recom: "👩 Valor femenino: Agradecé hoy a las mujeres de tu familia; sin ellas, la fe no habría llegado hasta vos." },
+    { id: "pap63", fact: "El Papa San Inocencio I protegió a San Juan Crisóstomo de la injusticia.", hook: "Usó toda su autoridad para defender a un obispo que estaba siendo perseguido injustamente por la emperatriz.", cite: "Defensa de la Verdad: El Papa es el último refugio de los que sufren injusticia en la Iglesia.", recom: "🛡️ Justicia: Sé el defensor de los que no tienen voz en tu barrio o trabajo." },
+    { id: "pap64", fact: "El Papa Francisco ama el tango y la música clásica.", hook: "Dice que la belleza de la música es una forma de sentir la caricia de Dios en el alma.", cite: "Cultura y Fe: La importancia de disfrutar de las cosas buenas que Dios nos regaló.", recom: "🎶 Arte: Disfrutá de un buen tango o una canción linda; Dios también está en la belleza humana." },
+    { id: "pap65", fact: "San Gregorio VII murió en el exilio diciendo: 'Amé la justicia y odié la iniquidad'.", hook: "Luchó toda su vida para que los políticos no se metieran en los asuntos de Dios y de la Iglesia.", cite: "Libertad de la Iglesia: Uno de los Papas más fuertes de la Edad Media.", recom: "⚔️ Coraje: No te achiques frente a los poderosos cuando se trata de defender lo que es de Dios." },
+    { id: "pap66", fact: "El Papa San Sergio I se negó a firmar leyes que iban contra la tradición.", hook: "Prefirió arriesgarse a ser arrestado por el emperador antes que cambiar un solo punto de lo que creía la Iglesia.", cite: "Defensor de la Tradición (año 692): Un Papa de una pieza.", recom: "⚓ Firmeza: No cambies tus valores porque estén 'de moda' otros; la verdad no pasa de moda." },
+    { id: "pap67", fact: "San León X fue el Papa de la época de la construcción de la nueva San Pedro.", hook: "Bajo su mando se reunieron los mejores artistas como Rafael y Miguel Ángel para crear el templo más bello.", cite: "Renacimiento: Una explosión de arte para la gloria de Dios.", recom: "🎨 Excelencia: Lo que hagas para la capilla o para Dios, hacelo con la mejor calidad posible." },
+    { id: "pap68", fact: "El Papa San Juan XXIII fue sargento en el ejército antes de ser Papa.", hook: "Fue enfermero y capellán militar durante la Primera Guerra Mundial. ¡Sabía lo que era el sufrimiento de la guerra!", cite: "Experiencia de Vida: Su pasado lo hizo un Papa muy humano y preocupado por la paz.", recom: "🕊️ Paz: Trabajá por la paz en tu metro cuadrado; evitá los gritos y las peleas hoy." },
+    { id: "pap69", fact: "El Papa San Pío V vivía con una austeridad monástica.", hook: "Dormía en el suelo y comía muy poco, recordando que el Papa es ante todo un siervo de Dios y no un príncipe.", cite: "Santo Dominico: Llevó la vida del convento al palacio papal.", recom: "🧺 Austeridad: No te llenes de cosas que te sobran; viví ligero para poder volar alto con el espíritu." },
+    { id: "pap70", fact: "San Juan Pablo II sobrevivió a las dos dictaduras más terribles del siglo XX.", hook: "Sufrió el nazismo y el comunismo en Polonia. Por eso luchó tanto para que el mundo respetara la libertad de los pueblos.", cite: "Héroe de la Libertad: Sus viajes a Polonia ayudaron a caer el Muro de Berlín.", recom: "🔓 Libertad: Rezá por los países que hoy no tienen libertad para creer en Dios." },
+    { id: "pap71", fact: "El Papa Francisco reza 15 misterios del Rosario todos los días.", hook: "Dice que es su oración preferida porque es sencilla, profunda y lo mantiene unido a la Virgen.", cite: "Vida de Oración: El secreto de su energía y su paz en medio de tantos problemas.", recom: "📿 Constancia: No hace falta rezar mucho un solo día, sino un poquito todos los días." },
+    { id: "pap72", fact: "Jesús prometió que 'los poderes del infierno no vencerán a la Iglesia'.", hook: "A pesar de las crisis y los errores humanos, el papado sigue en pie después de 2000 años. ¡Es el milagro histórico más grande!", cite: "Mateo 16, 18: Una promesa que se cumple cada día.", recom: "🎯 Confianza: No te asustes por las noticias malas; la barca de Pedro tiene al mejor Capitán al mando." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Dato Papal ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-papas.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🇻🇦 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí historias asombrosas sobre los Papas y el Vaticano entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Dato Papal | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

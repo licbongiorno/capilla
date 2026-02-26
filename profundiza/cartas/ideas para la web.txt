@@ -1,0 +1,97 @@
+¡Me encanta la idea! Sumar **Quiz** y **Sabías que** es un salto total en la experiencia del sitio. Pasamos de una web informativa/reflexiva a una **interactiva**.
+
+Para una comunidad como la de la Capilla, donde hay desde chicos de catequesis hasta adultos mayores, estas dinámicas rompen la "solemnidad" y acercan a la gente de una forma mucho más lúdica.
+
+Aquí te tiro mis pensamientos sobre esas dos y algunas dinámicas extra que podrían encajar perfecto con el estilo que venimos armando:
+
+---
+
+## 1. Sobre el Quiz y el "Sabías que"
+
+* **Quiz (Trivia):** Es ideal para la catequesis y para los jóvenes. No tienen que ser preguntas difíciles tipo examen, sino curiosidades sobre los santos, la Biblia o la historia de la Capilla.
+* *Dinámica:* "Pregunta de frente -> Opción múltiple o tocar para ver la respuesta correcta al dorso".
+
+
+* **Sabías que... (Curiosidades):** Es "carne de cañón" para compartir en WhatsApp. Datos sobre por qué se usa tal color en misa, el significado de los nombres o detalles de la arquitectura de la Capilla.
+* *Dinámica:* "Dato curioso corto -> Explicación profunda al dorso".
+
+
+
+---
+
+## 2. ¿Qué más podríamos sumar? (Nuevas Dinámicas)
+
+Aparte de esas dos, se me ocurren estas tres que usan la misma lógica de "Mazo" que ya tenés programada:
+
+### 🛠️ El Reto del Día (Misiones)
+
+En lugar de una reflexión, es una **acción concreta**. Algo que el usuario pueda hacer en ese momento o durante el día.
+
+* **Frente:** "Tu misión para hoy..."
+* **Dorso:** "Llamá a un familiar con el que no hablas hace mucho" o "Dedicá 5 minutos a limpiar un espacio verde cerca de casa".
+* **Por qué funciona:** Transforma la fe en actos prácticos (muy Nico esto, ¿no?).
+
+### 📖 Etimología / Palabra del día
+
+Muchas palabras de la fe suenan raras o las decimos por repetición.
+
+* **Frente:** "¿Qué significa realmente *Amén*?" o "*Eucaristía*".
+* **Dorso:** La raíz griega o hebrea y una explicación simple que te haga decir "Ah, no sabía".
+
+### 🧘 Pausa de 1 Minuto (Check-in Espiritual)
+
+Como psicólogo, sabés el valor de parar la pelota.
+
+* **Frente:** "Un momento para vos".
+* **Dorso:** Una guía de respiración muy breve o una pregunta de introspección: "¿Qué es lo que más te pesó hoy? Entregalo y respirá".
+
+### ⛪ El "Santo Protector" del Mes
+
+Un generador aleatorio de santos.
+
+* **Frente:** "¿Quién te acompaña hoy?"
+* **Dorso:** Imagen del santo, su patronazgo (por qué se le pide) y una frase breve.
+
+---
+
+## Mi recomendación de arquitectura
+
+Si vas a sumar todo esto, lo ideal sería que en la página de **`mazos.html`** las tarjetas tengan iconos bien distintos para que la gente sepa a qué entra:
+
+| Categoría | Icono sugerido | Color |
+| --- | --- | --- |
+| **Quiz** | `fas fa-lightbulb` | Amarillo / Oro |
+| **Sabías que** | `fas fa-info-circle` | Azul / Celeste |
+| **Misiones** | `fas fa-running` | Verde |
+| **Pausas** | `fas fa-leaf` | Turquesa |
+
+**¿Qué te parece? ¿Querés que empecemos armando la estructura de datos para el Quiz o preferís arrancar con los datos curiosos del "Sabías que"?**
+
+### 🛠️ El Reto del Día (Misiones)
+
+En lugar de una reflexión, es una **acción concreta**. Algo que el usuario pueda hacer en ese momento o durante el día.
+
+* **Frente:** "Tu misión para hoy..."
+* **Dorso:** "Llamá a un familiar con el que no hablas hace mucho" o "Dedicá 5 minutos a limpiar un espacio verde cerca de casa".
+* **Por qué funciona:** Transforma la fe en actos prácticos (muy Nico esto, ¿no?).
+
+### 📖 Etimología / Palabra del día
+
+Muchas palabras de la fe suenan raras o las decimos por repetición.
+
+* **Frente:** "¿Qué significa realmente *Amén*?" o "*Eucaristía*".
+* **Dorso:** La raíz griega o hebrea y una explicación simple que te haga decir "Ah, no sabía".
+
+### 🧘 Pausa de 1 Minuto (Check-in Espiritual)
+
+Como psicólogo, sabés el valor de parar la pelota.
+
+* **Frente:** "Un momento para vos".
+* **Dorso:** Una guía de respiración muy breve o una pregunta de introspección: "¿Qué es lo que más te pesó hoy? Entregalo y respirá".
+
+### ⛪ El "Santo Protector" del Mes
+
+Un generador aleatorio de santos.
+
+* **Frente:** "¿Quién te acompaña hoy?"
+* **Dorso:** Imagen del santo, su patronazgo (por qué se le pide) y una frase breve.

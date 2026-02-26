@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sabiduría de Vida - Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --bg: #121015;
+            --card: #F9F7FA;
+            --card-back: #5E35B1; /* Violeta Profundo */
+            --accent: #BDBDBD; /* Plata */
+            --primario: #311B92;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); font-family: 'Montserrat', sans-serif; }
+
+        .main-background {
+            position: fixed; inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('2.webp');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+
+        .bg-words { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .floating-word {
+            position: absolute; font-weight: 800; color: rgba(149, 117, 205, 0.06);
+            transform: rotate(45deg); user-select: none; white-space: nowrap; font-family: 'Playfair Display', serif;
+        }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(45deg); } to { transform: translateY(-20vh) rotate(45deg); } }
+
+        nav { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; }
+        .btn-home { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .btn-home:hover { color: var(--accent); }
+
+        .container { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+
+        .card-scene { width: min(85vw, 400px); height: min(65vh, 520px); perspective: 1500px; margin-bottom: 30px; }
+        .card { position: relative; width: 100%; height: 100%; border-radius: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px; }
+
+        .front { background: var(--card); color: var(--primario); border-left: 10px solid var(--card-back); }
+        .question { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; line-height: 1.5; margin-bottom: 25px; }
+        .verse-box { background: rgba(94, 53, 177, 0.05); padding: 18px; border-radius: 12px; width: 100%; border-right: 3px solid var(--accent); }
+        .verse-text { font-size: 0.85rem; font-style: italic; color: #444; margin-bottom: 5px; line-height: 1.6; }
+        .verse-ref { font-size: 0.8rem; font-weight: 800; color: var(--card-back); text-transform: uppercase; display: block; text-align: right; }
+        
+        .back { background: radial-gradient(circle at 50% 0%, #4527a0 0%, #311b92 70%, #000 100%); color: var(--accent); transform: rotateY(180deg); border: 1px solid rgba(255,255,255,0.1); }
+        .back i { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(189,189,189,0.3)); }
+        .back h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0; line-height: 1.1; color: white; }
+
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        button { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 15px 25px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .btn-main { background: var(--card-back); border-color: var(--card-back); color: #fff; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.5s; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="main-background"></div>
+    <div class="bg-words" id="bg"></div>
+
+    <nav>
+        <a href="index.html" class="btn-home"><i class="fas fa-home"></i> Inicio Capilla</a>
+        <div class="nav-socials">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card-scene">
+            <div class="card is-flipped" id="card">
+                <div class="face front">
+                    <p class="question" id="q-text">...</p>
+                    <div class="verse-box">
+                        <p class="verse-text" id="v-text"></p>
+                        <span class="verse-ref" id="v-ref"></span>
+                    </div>
+                </div>
+                <div class="face back">
+                    <i class="fas fa-scroll"></i>
+                    <h2>Sabiduría<br>de Vida</h2>
+                    <p style="font-size:10px; text-transform:uppercase; letter-spacing:2px; margin-top:15px; opacity:0.8; color:var(--accent);">Abuelos de Santa Ana</p>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="btn-next" class="btn-main"><i class="fas fa-leaf"></i> Nueva Reflexión</button>
+            <button id="btn-share"><i class="fab fa-whatsapp"></i> Compartir</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">¡Enlace copiado!</div>
+
+    <script>
+        const CARTAS = [
+            { id: "sb-1", q: "¿Sos consciente de que tu oración hoy es el motor silencioso que sostiene a los más jóvenes de nuestra Capilla?", v: "No se apartaba del templo, sirviendo de noche y de día con ayunos y oraciones.", c: "Lucas 2:37" },
+            { id: "sb-2", q: "¿Qué historia de fe o de milagro cotidiano te gustaría que tus nietos nunca olviden?", v: "Se lo contaremos a la generación venidera: las alabanzas del Señor y su poder.", c: "Salmo 78:4" },
+            { id: "sb-3", q: "Santa Ana cuidó a María para que ella cuidara a Jesús. ¿Cómo estás regando hoy la fe de los que vienen detrás?", v: "Traigo a la memoria la fe no fingida que hay en ti, la cual habitó primero en tu abuela Loide.", c: "2 Timoteo 1:5" },
+            { id: "sb-4", q: "A veces el cuerpo se cansa, pero el alma se ilumina. ¿Sentís la paz de Dios en tus momentos de silencio?", v: "Aunque nuestro hombre exterior se va desgastando, el interior se renueva de día en día.", c: "2 Corintios 4:16" },
+            { id: "sb-5", q: "Cuando te sentís solo/a, ¿podés ver a Jesús sentado a tu lado, acompañando cada uno de tus suspiros?", v: "Aun en la vejez y las canas, oh Dios, no me desampares.", c: "Salmo 71:18" },
+            { id: "sb-6", q: "¿Qué consejo le darías hoy a una pareja joven que recién empieza, basado en lo que Dios te enseñó a vos?", v: "Que las ancianas... enseñen a las mujeres jóvenes a amar a sus maridos y a sus hijos.", c: "Tito 2:3-4" },
+            { id: "sb-7", q: "¿Podés mirar tus manos y dar gracias por todo el trabajo y las caricias que repartieron en nombre de Dios?", v: "Hasta la vejez yo mismo, y hasta las canas os soportaré yo.", c: "Isaías 46:4" },
+            { id: "sb-8", q: "La paciencia es el fruto de los años. ¿Cómo podés usar esa paz hoy para calmar las ansiedades de tu familia?", v: "En la vejez todavía darán fruto; estarán vigorosos y verdes.", c: "Salmo 92:14" },
+            { id: "sb-9", q: "¿Hay algún perdón que todavía esté pendiente en tu corazón? Dios te espera para darte esa libertad total.", v: "Si perdonáis a los hombres sus ofensas, os perdonará también a vosotros vuestro Padre.", c: "Mateo 6:14" },
+            { id: "sb-10", q: "Tu presencia en la Misa es un testimonio de fidelidad. ¿Sabías que los chicos te miran y aprenden de tu constancia?", v: "Corona de los ancianos son los nietos, y la honra de los hijos, sus padres.", c: "Proverbios 17:6" },
+            { id: "sb-11", q: "¿Cómo estás preparando el jardín de tu alma para el encuentro definitivo con el Señor?", v: "Para mí el vivir es Cristo, y el morir es ganancia.", c: "Filipenses 1:21" },
+            { id: "sb-12", q: "¿Qué le preguntarías a Santa Ana sobre cómo mantenía la esperanza mientras esperaba el nacimiento de María?", v: "La esperanza no avergüenza; porque el amor de Dios ha sido derramado en nuestros corazones.", c: "Romanos 5:5" },
+            { id: "sb-13", q: "En los días de dolor físico, ¿lográs ofrecer ese sacrificio por la conversión de algún ser querido?", v: "Completo en mi carne lo que falta a las aflicciones de Cristo.", c: "Colosenses 1:24" },
+            { id: "sb-14", q: "¿Sentís orgullo de las 'arrugas de tu alma', que son las marcas de haber amado mucho?", v: "El amor es sufrido, es benigno... todo lo sufre, todo lo cree.", c: "1 Corintios 13:4-7" },
+            { id: "sb-15", q: "¿Quién es la persona de la comunidad por la que vas a rezar hoy especialmente?", v: "La oración ferviente del justo tiene mucho poder.", c: "Santiago 5:16" },
+            { id: "sb-16", q: "¿Podés recordar un momento donde Dios te sacó de un pozo oscuro? Dale gracias hoy de nuevo.", v: "Me sacó del pozo de la desesperación, del lodo cenagoso; puso mis pies sobre peña.", c: "Salmo 40:2" },
+            { id: "sb-17", q: "La soledad puede ser un desierto o un jardín de encuentro. ¿Cómo estás habitando tu silencio hoy?", v: "He aquí, yo la llevaré al desierto, y hablaré a su corazón.", c: "Oseas 2:14" },
+            { id: "sb-18", q: "¿Qué es lo que más te hace reír hoy en día? La alegría del Espíritu no tiene edad.", v: "El corazón alegre constituye buen remedio.", c: "Proverbios 17:22" },
+            { id: "sb-19", q: "¿Te permitís ser cuidado/a por los demás, reconociendo en ellos la caridad de Dios?", v: "Llevad los unos las cargas de los otros, y cumplid así la ley de Cristo.", c: "Gálatas 6:2" },
+            { id: "sb-20", q: "¿Qué bendición especial le pedís hoy al Señor para el futuro de tus nietos?", v: "El Señor te bendiga y te guarde... el Señor alce sobre ti su rostro, y ponga en ti paz.", c: "Números 6:24-26" },
+            { id: "sb-21", q: "A veces los jóvenes no escuchan, pero siempre observan. ¿Cómo es el testimonio de tu alegría?", v: "Estad siempre gozosos. Orad sin cesar.", c: "1 Tesalonicenses 5:16-17" },
+            { id: "sb-22", q: "¿Qué parte del Evangelio es la que más te consuela en esta etapa de tu vida?", v: "Vengan a mí todos los que están trabajados y cargados, y yo los haré descansar.", c: "Mateo 11:28" },
+            { id: "sb-23", q: "¿Sentís que tu sabiduría es un talento que debés compartir o te la guardás para vos?", v: "En los ancianos está la ciencia, y en la larga edad la inteligencia.", c: "Job 12:12" },
+            { id: "sb-24", q: "¿Cómo podés ser hoy un puente de unión en tu familia cuando hay discusiones?", v: "Bienaventurados los pacificadores, porque ellos serán llamados hijos de Dios.", c: "Mateo 5:9" },
+            { id: "sb-25", q: "¿Has dado gracias hoy por el pan, por el techo y por la fe que te mantuvo en pie?", v: "Bendice, alma mía, al Señor, y no olvides ninguno de sus beneficios.", c: "Salmo 103:2" },
+            { id: "sb-26", q: "¿Qué le dirías a tu 'yo' más joven si pudieras volver atrás por un momento?", v: "Acuérdate de tu Creador en los días de tu juventud.", c: "Eclesiastés 12:1" },
+            { id: "sb-27", q: "Cuando las fuerzas fallan, ¿recordás que Dios es tu verdadera roca?", v: "Mi carne y mi corazón desfallecen; mas la roca de mi corazón y mi porción es Dios.", c: "Salmo 73:26" },
+            { id: "sb-28", q: "¿Cómo vivís la esperanza de la Resurrección hoy?", v: "Yo soy la resurrección y la vida; el que cree en mí, aunque esté muerto, vivirá.", c: "Juan 11:25" },
+            { id: "sb-29", q: "¿Sos capaz de ver la belleza en la debilidad, como la veía San Pablo?", v: "Mi poder se perfecciona en la debilidad.", c: "2 Corintios 12:9" },
+            { id: "sb-30", q: "¿Qué legado de valores, más que de cosas, querés dejar en este mundo?", v: "Tesoro precioso y aceite hay en la casa del sabio.", c: "Proverbios 21:20" },
+            { id: "sb-31", q: "¿Cómo es tu conversación con la Virgen María al rezar el Rosario?", v: "Dichosa tú que has creído, porque se cumplirá lo que te fue dicho.", c: "Lucas 1:45" },
+            { id: "sb-32", q: "¿Sentís que Dios te sigue llamando a nuevas misiones, aunque sean pequeñas y ocultas?", v: "El que es fiel en lo muy poco, también en lo más es fiel.", c: "Lucas 16:10" },
+            { id: "sb-33", q: "¿Cómo podés transmitir paz a quienes te rodean hoy?", v: "La paz os dejo, mi paz os doy.", c: "Juan 14:27" },
+            { id: "sb-34", q: "¿Qué significa para vos la 'Comunión de los Santos' ahora que tenés seres queridos en el Cielo?", v: "No queremos que ignoréis acerca de los que duermen, para que no os entristezcáis.", c: "1 Tesalonicenses 4:13" },
+            { id: "sb-35", q: "¿Has pedido hoy sabiduría al Espíritu Santo para entender los tiempos actuales?", v: "Si a alguno de vosotros le falta sabiduría, pídala a Dios.", c: "Santiago 1:5" },
+            { id: "sb-36", q: "¿Cómo evitás caer en la queja y buscás motivos para bendecir?", v: "Bendecid, y no maldigáis.", c: "Romanos 12:14" },
+            { id: "sb-37", q: "¿Sentís que tu casa es una 'Iglesia doméstica' donde se respira a Dios?", v: "Yo y mi casa serviremos al Señor.", c: "Josué 24:15" },
+            { id: "sb-38", q: "¿Qué te gustaría decirle a Jesús cuando finalmente lo veas cara a cara?", v: "Ahora vemos por espejo, oscuramente; mas entonces veremos cara a cara.", c: "1 Corintios 13:12" },
+            { id: "sb-39", q: "¿Sos consciente de que cada día es un regalo nuevo que Dios te hace?", v: "Este es el día que hizo el Señor; nos gozaremos y alegraremos en él.", c: "Salmo 118:24" },
+            { id: "sb-40", q: "¿Cómo podés acompañar con tu consejo a alguien que está sufriendo hoy?", v: "Consolaos unos a otros, y edificaos unos a otros.", c: "1 Tesalonicenses 5:11" },
+            { id: "sb-41", q: "¿Qué lugar ocupa la Eucaristía en tu semana? ¿Es tu alimento real?", v: "El que come mi carne y bebe mi sangre, tiene vida eterna.", c: "Juan 6:54" },
+            { id: "sb-42", q: "¿Has perdonado a Dios por las cosas que no entendiste de tu vida?", v: "¿Quién es el hombre para que alterque con Dios?", c: "Romanos 9:20" },
+            { id: "sb-43", q: "¿Cómo podés ser hoy un testimonio de esperanza para los que están desesperanzados?", v: "Estad siempre preparados para presentar defensa con mansedumbre.", c: "1 Pedro 3:15" },
+            { id: "sb-44", q: "¿Sentís que tus sufrimientos presentes no se comparan con la gloria que vendrá?", v: "Pues tengo por cierto que las aflicciones del tiempo presente no son comparables.", c: "Romanos 8:18" },
+            { id: "sb-45", q: "¿Qué le dirías a San Joaquín, el esposo de Santa Ana, sobre la importancia de la familia?", v: "Por esto doblo mis rodillas ante el Padre... de quien toma nombre toda familia.", c: "Efesios 3:14-15" },
+            { id: "sb-46", q: "¿Sos capaz de agradecer incluso por las cruces que te tocó cargar?", v: "Llevando siempre por todas partes por cuerpo la muerte de Jesús.", c: "2 Corintios 4:10" },
+            { id: "sb-47", q: "¿Cómo podés ser hoy un signo del amor de Dios para tus vecinos?", v: "Amarás a tu prójimo como a ti mismo.", c: "Mateo 22:39" },
+            { id: "sb-48", q: "¿Qué te genera pensar que Dios te amó desde antes de la fundación del mundo?", v: "Según nos escogió en él antes de la fundación del mundo.", c: "Efesios 1:4" },
+            { id: "sb-49", q: "¿Cómo estás cultivando la humildad en esta etapa de tu vida?", v: "Dios resiste a los soberbios, y da gracia a los humildes.", c: "Santiago 4:6" },
+            { id: "sb-50", q: "Si hoy fuera tu último día, ¿podrías decir como San Pablo: 'He peleado la buena batalla'?", v: "He peleado la buena batalla, he acabado la carrera, he guardado la fe.", c: "2 Timoteo 4:7" }
+        ];
+
+        const card = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const vText = document.getElementById('v-text');
+        const vRef = document.getElementById('v-ref');
+        const toast = document.getElementById('toast');
+        const nextBtn = document.getElementById('btn-next');
+        const shareBtn = document.getElementById('btn-share');
+
+        let currentIdx = -1;
+        let isFlipped = true;
+        let audioInit = false;
+
+        const noise = new Tone.Noise("white").start();
+        const filter = new Tone.Filter(100, "lowpass").toDestination();
+        noise.connect(filter);
+        noise.volume.value = -60;
+
+        function playSound() {
+            if (!audioInit) { Tone.start(); audioInit = true; }
+            filter.frequency.setValueAtTime(100, Tone.now());
+            filter.frequency.exponentialRampToValueAtTime(4500, Tone.now() + 0.3);
+            noise.volume.setValueAtTime(-15, Tone.now());
+            noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
+        }
+
+        function render(idx) {
+            currentIdx = idx;
+            const item = CARTAS[idx];
+            qText.textContent = item.q;
+            vText.textContent = `"${item.v}"`;
+            vRef.textContent = item.c;
+            window.location.hash = item.id;
+        }
+
+        function random() {
+            let i;
+            do { i = Math.floor(Math.random() * CARTAS.length); } while (i === currentIdx);
+            render(i);
+        }
+
+        function flip() {
+            playSound();
+            card.classList.toggle('is-flipped');
+            isFlipped = !isFlipped;
+        }
+
+        card.addEventListener('click', flip);
+        nextBtn.addEventListener('click', () => {
+            if (!isFlipped) { flip(); setTimeout(() => { random(); flip(); }, 600); }
+            else { random(); flip(); }
+        });
+
+        shareBtn.addEventListener('click', async () => {
+            if (currentIdx === -1) return;
+            const url = window.location.href;
+            const msg = `💜 Te comparto esta sabiduría de la Capilla Santa Ana:\n\n"${CARTAS[currentIdx].q}"\n\n`;
+            if (navigator.share) { try { await navigator.share({ title: 'Sabiduría de Vida', text: msg, url: url }); } catch (e) {} }
+            else { navigator.clipboard.writeText(msg + url).then(() => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }); }
+        });
+
+        function initBG() {
+            const bg = document.getElementById('bg');
+            const words = ['SABIDURÍA', 'LEGADO', 'PAZ', 'SANTA ANA', 'INTERCESIÓN'];
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = words[Math.floor(Math.random() * words.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (16 + Math.random() * 30) + 'px';
+                const d = 15 + Math.random() * 25;
+                s.style.animation = `floatUp ${d}s linear infinite`;
+                s.style.animationDelay = `-${Math.random() * d}s`;
+                bg.appendChild(s);
+            }
+        }
+
+        window.onload = () => {
+            initBG();
+            const h = window.location.hash.substring(1);
+            const found = CARTAS.findIndex(c => c.id === h);
+            if (found !== -1) render(found); else random();
+        };
+    </script>
+</body>
+</html>

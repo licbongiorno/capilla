@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Devociones y Tradiciones | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Nuestras Tradiciones</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-hands-praying"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">Herencia de Fe</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-candle-holder recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Cultura y Devoción</footer>
+
+<script>
+const DATOS = [
+    { id: "tra1", fact: "El primer pesebre de la historia lo armó San Francisco de Asís.", hook: "Fue en el año 1223, en una cueva de Greccio (Italia). ¡Usó animales reales para que la gente sintiera el frío y la pobreza donde nació Jesús!", cite: "Tradición Franciscana: San Francisco quería 'ver con los ojos del cuerpo' la humildad del portal.", recom: "🎄 Navidad: Cuando armes el pesebre en casa, recordá que lo más importante es el amor, no el lujo." },
+    { id: "tra2", fact: "El Árbol de Navidad tiene su origen en San Bonifacio.", hook: "Este santo alemán reemplazó un roble sagrado de los paganos por un pino, cuya forma triangular simboliza la Santísima Trinidad y sus hojas siempre verdes la vida eterna.", cite: "Historia de las Misiones: Un símbolo pagano transformado en un mensaje de fe.", recom: "🌲 Firmeza: Que tu fe sea como el pino: siempre viva, incluso en el invierno de los problemas." },
+    { id: "tra3", fact: "Las velas encendidas representan a Cristo, la Luz del Mundo.", hook: "La cera pura simboliza la humanidad de Jesús y la llama su divinidad. Por eso nunca falta una vela en el altar.", cite: "Liturgia de la Luz: 'Yo soy la luz del mundo; el que me sigue no andará en tinieblas'.", recom: "🕯️ Brillo: Sé una 'velita' de Dios hoy, iluminando a alguien que esté triste con una buena palabra." },
+    { id: "tra4", fact: "El nombre 'Rosario' significa 'Corona de Rosas'.", hook: "Antiguamente, los que no sabían leer los 150 salmos rezaban 150 Avemarías. Cada oración es una rosa espiritual que le regalamos a la Virgen.", cite: "Devoción Mariana: Una de las oraciones más amadas por los santos de todos los tiempos.", recom: "📿 Regalo: Hoy regalale un 'ramito' de Avemarías a nuestra Madre por tu familia." },
+    { id: "tra5", fact: "La Corona de Adviento marca el tiempo de espera para Navidad.", hook: "Las cuatro velas representan las cuatro semanas. El círculo de ramas verdes simboliza el amor de Dios que no tiene principio ni fin.", cite: "Tiempo de Espera: Cada vela que se enciende aumenta la luz ante la llegada del Salvador.", recom: "🕯️ Paciencia: Usá este tiempo para limpiar los 'rincones' de tu corazón antes de que llegue Jesús." },
+    { id: "tra6", fact: "El huevo de Pascua simboliza la vida nueva y la Resurrección.", hook: "Al igual que un pollito rompe el cascarón para nacer, Jesús rompió la piedra del sepulcro para salir victorioso a la vida eterna.", cite: "Tradición Popular: Regalar huevos en Pascua es celebrar que la muerte fue vencida.", recom: "🥚 Vida: No te desanimes; después de cada 'cascarón' de dolor, Dios trae una vida nueva." },
+    { id: "tra7", fact: "Las procesiones son el símbolo de que somos un pueblo que camina.", hook: "No son desfiles; es la Iglesia que sale a la calle para decir que Dios camina con nosotros en el barrio y en el trabajo.", cite: "Piedad Popular: Una manifestación pública de fe y comunidad.", recom: "🚶‍♂️ Pasos: Sentí que hoy Dios camina al lado tuyo cuando vayas al almacén o al trabajo." },
+    { id: "tra8", fact: "El color morado en Cuaresma invita a mirar hacia adentro.", hook: "Es el color de la penitencia y la reflexión. Nos ayuda a prepararnos para la gran fiesta de la Pascua limpiando el alma.", cite: "Colores Litúrgicos: Signos que nos ayudan a vivir el tiempo espiritual.", recom: "💜 Silencio: Tomate 5 minutos de silencio hoy para pensar en qué podés mejorar." },
+    { id: "tra9", fact: "La tradición de las campanas nació para llamar a la oración.", hook: "Su sonido 'santifica' el aire y nos recuerda que Dios está presente en medio de nuestras tareas diarias.", cite: "Arquitectura Sacra: La campana es la voz de la Iglesia llamando a sus hijos.", recom: "🔔 Atención: Cuando escuches una campana, hacé una oración cortita de un segundo." },
+    { id: "tra10", fact: "El agua bendita nos recuerda nuestro propio Bautismo.", hook: "Al hacernos la señal de la cruz con ella al entrar a la capilla, estamos diciendo: 'Señor, recordame que soy tu hijo'.", cite: "Sacramentales: Signos que nos disponen a recibir la gracia de Dios.", recom: "💧 Protección: Usá el agua bendita con fe; es un escudo contra las malas energías." },
+    { id: "tra11", fact: "La novena consiste en rezar durante nueve días seguidos.", hook: "Recuerda los nueve días que los apóstoles y María pasaron rezando juntos después de que Jesús subió al cielo, esperando al Espíritu Santo.", cite: "Hechos 1, 14: 'Todos estos perseveraban unánimes en oración'.", recom: "🗓️ Constancia: No pidas una sola vez; la perseverancia en la oración abre las puertas del cielo." },
+    { id: "tra12", fact: "Bendecir la mesa es agradecer que Dios es el que nos provee.", hook: "Al rezar antes de comer, reconocemos que el pan de cada día es un regalo de su amor y pedimos por los que no tienen.", cite: "Gratitud Cristiana: 'Danos hoy nuestro pan de cada día'.", recom: "🍽️ Pan: Nunca empieces a comer sin decir 'gracias'; el agradecimiento hace que la comida rinda más." },
+    { id: "tra13", fact: "La señal de la Cruz es la 'firma' del cristiano.", hook: "En la frente (para que Dios purifique mis pensamientos), en la boca (mis palabras) y en el pecho (mis sentimientos).", cite: "Símbolo de Salvación: 'En el nombre del Padre, del Hijo y del Espíritu Santo'.", recom: "✝️ Firma: Hacete la cruz despacio y con amor; es el signo más poderoso que tenés." },
+    { id: "tra14", fact: "Los Reyes Magos representan a todos los pueblos del mundo.", hook: "No eran solo tres hombres, eran la prueba de que Jesús no venía solo para unos pocos, sino para toda la humanidad sin distinción.", cite: "Mateo 2: El relato de la Epifanía o manifestación de Dios.", recom: "👑 Inclusión: No juzgues a nadie por su origen; todos somos buscadores de la misma estrella." },
+    { id: "tra15", fact: "La procesión de antorchas simboliza la fe que brilla en la noche.", hook: "Es muy común en santuarios como Lourdes o Fátima. Nos recuerda que aunque afuera esté oscuro, nuestra fe es una luz que guía.", cite: "Vigilias Marianas: La oración cantada bajo el resplandor del fuego.", recom: "🕯️ Esperanza: Aunque estés pasando un momento difícil, mantené tu 'antorcha' encendida." },
+    { id: "tra16", fact: "El escapulario es un signo de protección maternal de María.", hook: "Originalmente era parte del hábito de los monjes, pero la Virgen se lo dio a San Simón Stock como un 'vestido' de protección para todos sus hijos.", cite: "Privilegio Sabatino: La promesa de auxilio especial en la hora de la muerte.", recom: "🟫 Amparo: Llevá el escapulario para recordar que María te cubre con su manto cada día." },
+    { id: "tra17", fact: "La fiesta del Santo Patrono une a todo el pueblo.", hook: "En Santa Ana y en cada localidad de Córdoba, el día del patrono es el cumpleaños espiritual del pueblo. ¡Es tiempo de familia y fe!", cite: "Religiosidad Popular: La identidad de un pueblo reflejada en su santo protector.", recom: "🎂 Identidad: Sentite orgulloso de tu capilla; es el corazón espiritual de tu zona." },
+    { id: "tra18", fact: "El Vía Crucis tiene 14 estaciones que recorren la pasión.", hook: "Nació para que la gente que no podía viajar a Jerusalén pudiera acompañar a Jesús en su camino a la cruz desde su propio barrio.", cite: "Camino de la Cruz: Una meditación sobre el amor extremo de Dios por nosotros.", recom: "🚶‍♂️ Acompañar: Cuando veas a alguien que sufre, recordá que estás viendo una estación del Vía Crucis vivo." },
+    { id: "tra19", fact: "El Domingo de Ramos abre la Semana Santa con alegría y humildad.", hook: "Usamos ramas de olivo para recibir a Jesús, pero recordamos que Él entró montado en un burrito, no en un gran caballo de guerra.", cite: "Mateo 21: '¡Hosanna al Hijo de David!'.", recom: "🌿 Humildad: Buscá la grandeza en la sencillez, como hizo Jesús ese día." },
+    { id: "tra20", fact: "El Jueves Santo se celebra el Lavatorio de los Pies.", hook: "Jesús, siendo Dios, se arrodilló para lavar los pies de sus amigos. Es la tradición que nos enseña que mandar es servir.", cite: "Juan 13, 14: 'Si yo, el Señor y el Maestro, he lavado vuestros pies...'.", recom: "🧼 Servicio: Hoy bajate del 'caballo' y ayudá a alguien en una tarea sencilla." },
+    { id: "tra21", fact: "El Viernes Santo es el único día del año en que no hay Misa.", hook: "La Iglesia está de luto por la muerte de Jesús. Se hace la Adoración de la Cruz, besando el madero como signo de amor agradecido.", cite: "Triduo Pascual: El día del sacrificio supremo en el Calvario.", recom: "✝️ Silencio: Guardá un ratito de silencio hoy en honor a quien dio la vida por vos." },
+    { id: "tra22", fact: "La Vigilia Pascual es la 'Madre de todas las vigilias'.", hook: "Se bendice el fuego nuevo y el Cirio Pascual. Es la noche más feliz porque celebramos que Jesús derrotó a la muerte para siempre.", cite: "Sábado Santo: La noche que brilla como el día.", recom: "🔥 Alegría: ¡Jesús resucitó! Que esa sea la noticia que maneje tu humor hoy." },
+    { id: "tra23", fact: "El bautismo de los bebés es una tradición de confianza total.", hook: "Los padres no esperan a que el hijo sea grande para darle comida o educación; tampoco esperan para darle el regalo de ser hijo de Dios.", cite: "Catecismo 1250: La gratuidad de la gracia se manifiesta especialmente en el bautismo de niños.", recom: "👶 Regalo: Agradecé hoy el día en que tus padres te abrieron la puerta del cielo." },
+    { id: "tra24", fact: "La tradición de las 'Misas de Aguinaldo' prepara la Navidad.", hook: "Son nueve misas antes del 25 de diciembre. En muchos lugares se hacen al amanecer para recibir al Sol que nace de lo alto.", cite: "Novena de Navidad: La preparación gozosa para el cumpleaños del Niño Jesús.", recom: "☀️ Despertar: Despertate con ganas; Dios tiene una sorpresa para vos cada mañana." },
+    { id: "tra25", fact: "Los padrinos tienen la misión de ser guías de fe.", hook: "No están solo para la fiesta; su tarea es ayudar a los padres a que el niño crezca como un buen cristiano. ¡Es un vínculo para toda la vida!", cite: "Derecho Canónico: El padrino debe velar por la vida cristiana del bautizado.", recom: "🤝 Guía: Si sos padrino, mandale un mensaje a tu ahijado hoy y decile que rezás por él." },
+    { id: "tra26", fact: "El 'Besamanos' de la Virgen es un gesto de ternura filial.", hook: "En muchas fiestas patronales se le besa la mano o el manto a la imagen. Es decirle: 'Mamá, acá estoy, te quiero mucho'.", cite: "Piedad Filial: María como el camino más tierno para llegar a Jesús.", recom: "🌹 Ternura: Tratate hoy con la misma dulzura con la que María trata a sus hijos." },
+    { id: "tra27", fact: "La tradición de San Blas consiste en bendecir las gargantas.", hook: "Se cruzan dos velas frente a la garganta pidiendo salud. San Blas salvó a un niño de morir atragantado con una espina de pescado.", cite: "Santos Auxiliadores: Dios usa a sus amigos para cuidar nuestra salud física.", recom: "🗣️ Palabras: Usá tu garganta para bendecir y no para insultar o quejarte." },
+    { id: "tra28", fact: "El miércoles de Ceniza nos recuerda nuestra humildad.", hook: "Al ponernos ceniza en la frente decimos: 'Soy frágil, te necesito Dios'. Es el inicio del entrenamiento para la Pascua.", cite: "Génesis 3, 19: 'Polvo eres, y al polvo volverás'.", recom: "⌛ Realidad: Aprovechá el tiempo; la vida pasa rápido, lo único que queda es el amor." },
+    { id: "tra29", fact: "La fiesta de Corpus Christi saca a Jesús a la calle.", hook: "Se lleva la Hostia consagrada en una custodia de oro bajo un palio. Es el Rey que sale a visitar a sus vecinos.", cite: "Solemne Procesión: El reconocimiento público de la presencia real de Cristo.", recom: "🍞 Vecino: Recordá que Jesús vive en el sagrario de nuestra capilla, ¡pasá a saludarlo!" },
+    { id: "tra30", fact: "La tradición del 'Pan de San Antonio' es para los pobres.", hook: "En honor al santo, se bendicen panes pequeños que se reparten para que nunca falte el alimento en las casas más necesitadas.", cite: "Caridad Antoniana: El amor a Dios se traduce en pan para el hermano.", recom: "🍞 Compartir: Si tenés pan de sobra, hoy es un buen día para compartirlo con alguien." },
+    { id: "tra31", fact: "El 'Velo de la Novia' simboliza la entrega total y pura.", hook: "En el matrimonio cristiano, representa que los esposos se pertenecen el uno al otro de forma sagrada y exclusiva.", cite: "Misterio del Matrimonio: 'Lo que Dios unió, no lo separe el hombre'.", recom: "💍 Fidelidad: Cuidá tu relación de pareja; es el jardín donde Dios quiere vivir." },
+    { id: "tra32", fact: "Las 'Luminarias' de la Inmaculada iluminan la víspera del 8 de diciembre.", hook: "En muchos pueblos se encienden velas en las veredas para marcarle el camino a la Virgen. ¡Nuestra zona se llena de luces!", cite: "Vigilia de la Inmaculada: 'Toda hermosa eres, María'.", recom: "🕯️ Camino: Hacé que tu conducta sea una luz que guíe a otros hacia lo bueno." },
+    { id: "tra33", fact: "La tradición de San Pantaleón convoca a pedir por la salud.", hook: "Era un médico que curaba gratis en nombre de Jesús. Cada 27 de mes, miles de personas le piden por sus enfermos.", cite: "Mártir del Siglo IV: El patrono de los médicos y los enfermos.", recom: "🏥 Salud: Rezá por los que hoy están sufriendo en un hospital; tu oración les da fuerza." },
+    { id: "tra34", fact: "El 'Viento de Pentecostés' es el cumpleaños de la Iglesia.", hook: "Celebramos cuando el Espíritu Santo bajó sobre María y los apóstoles. ¡Ese día perdimos el miedo y salimos a evangelizar!", cite: "Hechos 2: El nacimiento de la comunidad cristiana universal.", recom: "🔥 Fuego: Pedile al Espíritu que te quite el miedo de decir que sos creyente." },
+    { id: "tra35", fact: "La tradición de 'San Juan' incluye las fogatas de invierno.", hook: "Se quema lo viejo para dejar pasar lo nuevo. El fuego representa a Juan el Bautista que anuncia la luz de Jesús.", cite: "Nacimiento de San Juan Bautista: 'Él debe crecer y yo disminuir'.", recom: "🔥 Renovación: Quemá hoy tus broncas y tus rencores en el fuego del perdón." },
+    { id: "tra36", fact: "Las 'Ermitas' en los caminos son puntos de oración rápida.", hook: "Están ahí para que el caminante o el que maneja sepa que Dios lo acompaña en el viaje. ¡En nuestras sierras hay muchísimas!", cite: "Piedad en el Camino: La presencia de lo sagrado en el paisaje cotidiano.", recom: "🚗 Viaje: Cada vez que pases por una ermita, hacé un saludito a la Virgen." },
+    { id: "tra37", fact: "La tradición de la 'Misa de Gallo' es a medianoche.", hook: "Se llama así porque el gallo es el primero en anunciar el nacimiento del sol, y nosotros anunciamos el nacimiento de Jesús.", cite: "Liturgia de Navidad: La luz brilla en medio de la noche.", recom: "🌟 Anuncio: Sé el primero en dar buenas noticias en tu familia hoy." },
+    { id: "tra38", fact: "La 'Bendición de las Mascotas' se hace el día de San Antonio Abad.", hook: "Recuerda que todos los animales son parte de la creación de Dios y merecen nuestro cuidado y respeto.", cite: "Cuidado de la Creación: 'Alaben al Señor todas sus criaturas'.", recom: "🐶 Mascotas: Tratale bien a tu perro o gato hoy; ellos son un regalo de Dios." },
+    { id: "tra39", fact: "La tradición de la 'Santa Camisa' o ropa bendecida.", hook: "Muchas abuelas guardan la ropa de bautismo o cintas bendecidas como signo de protección. ¡Es fe sencilla que confía en Dios!", cite: "Signos de Fe: El valor de lo pequeño hecho con devoción.", recom: "🎀 Confianza: Confiá en que Dios te cuida en los detalles más chiquitos de tu vida." },
+    { id: "tra40", fact: "El 'Cirio Pascual' representa a Jesús resucitado en la iglesia.", hook: "Se enciende en Pascua y de él se sacan todas las luces. Es la columna de fuego que nos guía en la oscuridad.", cite: "Lumen Christi: 'Luz de Cristo, demos gracias a Dios'.", recom: "🕯️ Guía: Buscá la luz de Dios cuando no sepas qué decisión tomar." },
+    { id: "tra41", fact: "La tradición cordobesa del 'Cura Brochero' y su mula.", hook: "Nos enseña que no hay caminos imposibles si se hacen con fe. ¡Brochero unió a los pueblos con amor y esfuerzo!", cite: "Santo Gaucho: Un ejemplo de fe aplicada al progreso de la comunidad.", recom: "🐴 Esfuerzo: Si algo te cuesta, hacelo igual por amor a Dios y a los demás." },
+    { id: "tra42", fact: "La tradición de regalar 'Ramos' bendecidos el domingo.", hook: "Muchos los ponen detrás de la puerta de casa para pedir protección y recordar que Jesús es el Rey del hogar.", cite: "Piedad Familiar: El olivo como signo de paz y victoria espiritual.", recom: "🌿 Paz: Llevá paz a tu casa hoy; no entres con las quejas del trabajo." },
+    { id: "tra43", fact: "La 'Misa Crismal' es cuando se bendicen todos los aceites.", hook: "El Obispo bendice el óleo de los enfermos, el de los catecúmenos y el Crisma que se usará en todos los bautismos del año.", cite: "Unidad de la Iglesia: Una sola bendición para toda la diócesis.", recom: "🕊️ Unidad: Sentite unido a todos los cristianos de Córdoba; usamos el mismo aceite bendito." },
+    { id: "tra44", fact: "La tradición del 'Ayuno y Abstinencia' no es para pasar hambre.", hook: "Es para hacernos dueños de nuestros deseos y para que lo que ahorramos en comida se lo demos a alguien que no tiene nada.", cite: "Disciplina Cuaresmal: Un ejercicio de libertad y solidaridad.", recom: "🍎 Privación: Privale de algo rico hoy y usá esa plata para ayudar a alguien." },
+    { id: "tra45", fact: "La 'Visita a las Siete Iglesias' es una tradición del Jueves Santo.", hook: "Recordamos el recorrido de Jesús desde el Huerto hasta el Calvario. Es acompañar a un amigo que está sufriendo.", cite: "Triduo Pascual: Una noche de vigilia y oración con el Señor.", recom: "🚶‍♂️ Acompañamiento: Visitá a alguien que esté solo hoy; eso es 'visitar una iglesia' viva." },
+    { id: "tra46", fact: "La tradición de 'San Cayetano' y el pedido de trabajo.", hook: "Cayetano confió tanto en Dios que decía que nunca nos faltaría el pan si éramos justos. ¡Es el santo de la Providencia!", cite: "Padre de la Providencia: El santo que no quería que nadie pasara hambre.", recom: "🍞 Trabajo: Si tenés trabajo, cuidalo y agradecé; si te falta, pedilo con mucha fe." },
+    { id: "tra47", fact: "El 'Rosario de la Aurora' se reza caminando al amanecer.", hook: "Es una tradición muy antigua para empezar el día de la mano de María antes de que empiece el ruido de las tareas.", cite: "Oración Matutina: Consagrar el nuevo día a la Virgen.", recom: "🌅 Amanecer: Empezá tu día con un 'buenos días' a Dios; te va a cambiar el humor." },
+    { id: "tra48", fact: "La tradición de las 'Campanadas de Gloria' el Sábado Santo.", hook: "Después del luto del viernes, las campanas suenan con todo para anunciar que Jesús está vivo. ¡Es el ruido de la victoria!", cite: "Aleluya Pascual: El fin de la tristeza y el inicio de la vida nueva.", recom: "🔔 Festejo: Hacé un poquito de 'ruido' lindo hoy; compartí algo que te haga feliz." },
+    { id: "tra49", fact: "La tradición de la 'Adoración al Santísimo' es estar a solas con Jesús.", hook: "Se expone la Hostia en la custodia. Es el momento de silencio más profundo para descargar tus problemas en el Corazón de Dios.", cite: "Presencia Real: 'Estaré con vosotros todos los días hasta el fin del mundo'.", recom: "🤫 Silencio: Pasá un ratito por la capilla hoy; Jesús te está esperando para escucharte." },
+    { id: "tra50", fact: "La tradición del 'Pesebre Viviente' revive el misterio.", hook: "Ver a niños y adultos del barrio representando el nacimiento nos recuerda que Jesús nace hoy, en nuestros vecinos y en nosotros.", cite: "Catequesis Viva: La representación del amor de Dios hecho hombre.", recom: "👶 Nacimiento: Dejá que algo bueno 'nazca' en vos hoy: una paciencia nueva, un perdón." },
+    { id: "tra51", fact: "La 'Bendición de las Gargantas' con velas cruzadas.", hook: "Se hace el día de San Blas. Pedimos protección contra enfermedades y contra el mal uso de nuestras palabras.", cite: "Protección de la Salud: Dios cuida lo que decimos y lo que comemos.", recom: "🗣️ Bendición: Que de tu boca solo salgan palabras que ayuden y nunca que destruyan." },
+    { id: "tra52", fact: "La tradición de 'San Judas Tadeo' para causas imposibles.", hook: "Muchas personas le prenden una vela o le rezan cuando sienten que ya no hay salida. ¡Es el santo de la esperanza final!", cite: "Patrono de los Casos Desesperados: Un apóstol que intercede en los momentos críticos.", recom: "🔥 Esperanza: Si tenés un problema muy difícil, no te rindas; encargáselo a San Judas." },
+    { id: "tra53", fact: "La tradición de 'San Expedito' y las soluciones urgentes.", hook: "Representa la decisión de no postergar el bien. Si tenés que cambiar algo, hacelo hoy, no esperes a mañana.", cite: "Hodie: La palabra en la cruz de San Expedito que significa 'Hoy'.", recom: "⏰ Decisión: No dejes para mañana ese pedido de perdón o ese favor. ¡Hacelo hoy!" },
+    { id: "tra54", fact: "La tradición de las 'Flores de Mayo' para María.", hook: "Es el mes de la Virgen. Se acostumbra llevarle flores frescas al altar como signo de cariño de sus hijos.", cite: "Mes de María: El florecer de la primavera espiritual.", recom: "🌸 Detalle: Tené un detalle lindo con tu mamá o con una mujer que quieras hoy." },
+    { id: "tra55", fact: "La tradición del 'Incienso' purifica el ambiente.", hook: "Su humo sube al cielo como nuestras oraciones. Su aroma rico nos dice que estamos en un lugar sagrado y diferente.", cite: "Salmo 141, 2: 'Suba mi oración delante de ti como el incienso'.", recom: "🌬️ Aroma: Que tu presencia hoy sea agradable para los que te rodean." },
+    { id: "tra56", fact: "La tradición de las 'Misas por los Difuntos'.", hook: "Rezamos por los que ya se fueron porque creemos que el amor no se corta con la muerte. Los ayudamos a llegar más rápido al cielo.", cite: "Comunión de los Santos: La unión de todos los cristianos, vivos y muertos.", recom: "🕯️ Memoria: Recordá con una sonrisa a ese familiar que ya no está; él reza por vos desde arriba." },
+    { id: "tra57", fact: "La tradición del 'Altar Familiar' en casa.", hook: "Tener un rincón con una imagen, una vela o la Biblia hace que la casa se sienta protegida y que Dios sea un habitante más del hogar.", cite: "Iglesia Doméstica: El lugar donde empieza la fe.", recom: "🏠 Rincón: Armá un lugarcito lindo en tu casa para rezar, aunque sea muy chiquito." },
+    { id: "tra58", fact: "La tradición de la 'Medalla Milagrosa' nació de una aparición.", hook: "La Virgen se la dio a Santa Catalina Labouré prometiendo grandes gracias. ¡Llevala con confianza como escudo!", cite: "Aparición de 1830: 'Los que la lleven recibirán grandes gracias'.", recom: "🏅 Confianza: No camines solo; llevá un signo de que sos hijo de la Virgen." },
+    { id: "tra59", fact: "La tradición de 'San Nicolás' y los regalos a los niños.", hook: "Es el origen real de Papá Noel. San Nicolás era un obispo muy generoso que ayudaba a las familias pobres en secreto.", cite: "Generosidad Cristiana: Dar sin que la mano izquierda sepa lo que hace la derecha.", recom: "🎁 Generosidad: Hacé un favor hoy a alguien sin decirle que fuiste vos." },
+    { id: "tra60", fact: "La tradición de 'Santa Lucía' y el cuidado de la vista.", hook: "Se bendicen los ojos y se pide luz espiritual para ver las cosas como Dios las ve. ¡Que no estemos ciegos al dolor ajeno!", cite: "Patrona de la Vista: La luz de la fe que ilumina el camino.", recom: "👀 Mirada: Intentá ver lo bueno en esa persona que siempre te cae mal." },
+    { id: "tra61", fact: "La tradición de las 'Rogativas' pide por la lluvia y las cosechas.", hook: "En nuestras zonas rurales se sigue haciendo. Es reconocer que dependemos del cielo para que la tierra dé sus frutos.", cite: "Dependencia de Dios: 'El Señor dará la lluvia y nuestra tierra dará su fruto'.", recom: "🌱 Cuidado: Cuidá el agua y las plantas hoy; son regalos de Dios que nos mantienen vivos." },
+    { id: "tra62", fact: "La tradición de 'San Pantaleón' cada 27 de mes.", hook: "En Argentina es una devoción masiva. Se pide salud y se agradece la vida. El aceite de su lámpara se usa para ungir a los enfermos.", cite: "Médico y Mártir: La intercesión por el bienestar del cuerpo y del alma.", recom: "🏥 Salud: Si tenés salud, agradecé; es un tesoro que a veces valoramos poco." },
+    { id: "tra63", fact: "La tradición de 'San Roque' y la bendición de los perros.", hook: "Roque se enfermó de peste y un perro le llevaba pan todos los días. ¡Dios usa a los animales para cuidarnos!", cite: "Amigo de los Pobres: El santo que encontró compañía en la creación.", recom: "🐶 Compañía: Agradecé la lealtad de tus mascotas; ellos te enseñan a amar sin condiciones." },
+    { id: "tra64", fact: "La tradición del 'Angelus' se reza al mediodía.", hook: "Las campanas suenan a las 12 para recordarnos el momento en que Jesús se hizo hombre en el vientre de María. ¡Un parate en el día!", cite: "La Encarnación: Dios que se hace uno de nosotros para salvarnos.", recom: "🕛 Parate: A las 12 del mediodía, frená un segundo y saludá a María." },
+    { id: "tra65", fact: "La tradición de las 'Alfombras de Flores' para las procesiones.", hook: "Se hacen con mucho esfuerzo solo para que pase Jesús y se deshagan. Nos enseña que lo mejor es para Dios.", cite: "Efímero y Sagrado: La belleza puesta al servicio de la adoración.", recom: "🌸 Desprendimiento: No te apegues tanto a las cosas; lo más lindo es darlas por amor." },
+    { id: "tra66", fact: "La tradición de los 'Exvotos' o agradecimientos públicos.", hook: "Son esas plaquitas o fotos que la gente deja en los santuarios para decir 'Gracias'. ¡Es la memoria agradecida del pueblo!", cite: "Testimonio de Fe: El reconocimiento de que Dios escuchó nuestro pedido.", recom: "📝 Memoria: Anotá hoy tres cosas por las que le tenés que dar las gracias a Dios." },
+    { id: "tra67", fact: "La tradición de la 'Fiesta de la Candelaria' el 2 de febrero.", hook: "Se bendicen las velas que se usarán todo el año. Recuerda cuando llevaron a Jesús bebé al templo: 'Luz para iluminar a las naciones'.", cite: "Presentación del Señor: La luz que entra en la vida de cada familia.", recom: "🕯️ Luz familiar: Que tu casa sea un lugar luminoso donde no haya lugar para las peleas." },
+    { id: "tra68", fact: "La tradición del 'Abrazo de la Paz' en la Misa.", hook: "No es un saludo social; es decir: 'Te perdono y te quiero como hermano antes de comulgar'. ¡Sin paz no hay comunión!", cite: "Gesto Litúrgico: La reconciliación previa al banquete eucarístico.", recom: "🤝 Paz real: Perdoná hoy a ese vecino con el que estás distanciado." },
+    { id: "tra69", fact: "La tradición de la 'Lectura de la Biblia' en familia.", hook: "Tener la Biblia abierta en una mesa invita a que la palabra de Dios guíe nuestras conversaciones y decisiones diarias.", cite: "Salmo 119, 105: 'Lámpara es a mis pies tu palabra'.", recom: "📖 Guía: Leé tres renglones de la Biblia hoy; vas a ver cómo te aclara la cabeza." },
+    { id: "tra70", fact: "La tradición de las 'Caminatas de Peregrinos'.", hook: "Caminar kilómetros cansados nos enseña que la vida es un esfuerzo, pero que al final del camino siempre está el abrazo de Dios.", cite: "Homo Viator: El hombre como un caminante eterno hacia la casa del Padre.", recom: "🚶‍♂️ Esfuerzo: Si estás cansado de luchar, seguí caminando; la meta está cerca." },
+    { id: "tra71", fact: "La tradición de las 'Fiestas Patronales' en las Sierras de Córdoba.", hook: "Son el alma de nuestra cultura: caballos, música, comidas típicas y, sobre todo, mucha fe compartida en comunidad.", cite: "Cultura Gaucha: La fe que se vive con las tradiciones de nuestra tierra.", recom: "🏇 Raíces: Valorá de dónde venís; tus tradiciones son el suelo donde crece tu fe." },
+    { id: "tra72", fact: "La tradición más linda de la Capilla Santa Ana es recibirte a vos.", hook: "Cada vez que venís, mantenés viva la tradición más antigua de la Iglesia: la de los hijos que vuelven a la casa del Padre para ser felices.", cite: "Comunidad Viva: 'Donde dos o tres están reunidos en mi nombre, allí estoy yo'.", recom: "🎯 Meta: Tu misión es simple: mantené vivas las tradiciones de fe en tu familia." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Tradición ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-tradiciones.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🙏 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí las historias escondidas detrás de nuestras devociones entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Tradiciones de Fe | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>
