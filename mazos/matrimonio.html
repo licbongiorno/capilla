@@ -12,6 +12,7 @@
     })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
     
     <link rel="stylesheet" href="../master-estilos.css">
+    <link rel="stylesheet" href="cartas.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,37 +22,10 @@
 
     <style>
         :root {
-            --bg: #150809; 
-            --card-back: #7A2031; 
-            --accent: #E5C158; 
-            --primario: #3A171D;
+            --bg: #150809; --card-back: #7A2031; --accent: #E5C158; --primario: #3A171D;
         }
         body.dark-mode {
             --bg: #0A0304; --card-back: #4A121D; --accent: #CBA03A; --primario: #F3E6E8;
-        }
-
-        /* Fuerza al botón flotante de donar a ir a la derecha */
-        .float-help { left: auto !important; right: 20px !important; }
-
-        /* NAVEGACIÓN CÁPSULA FLOTANTE */
-        .top-navbar {
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 380px;
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.15); border-radius: 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
-        }
-        body.dark-mode .top-navbar {
-            background: rgba(0, 0, 0, 0.3); border-color: rgba(255,255,255,0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        
-        .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.5px; margin-left: 5px; }
-        .top-navbar .controls { display: flex; gap: 8px; }
-        .top-navbar .icon-btn { 
-            width: 38px; height: 38px; font-size: 1rem;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
         }
     </style>
 </head>
@@ -73,7 +47,7 @@
         <i class="fas fa-hand-holding-heart"></i>
     </button>
 
-    <div class="container">
+    <div class="app-wrapper">
         <h1>Vínculo Sagrado</h1>
         
         <div class="scene-wrapper">
@@ -106,12 +80,10 @@
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModal()">&times;</button>
             <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
-            
             <span class="section-title">Ofrenda de Amor</span>
             <p class="copy-donar-dinero" style="font-size: 0.9rem; margin: 0;"></p>
             <div class="alias-box alias-global"></div>
             <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
-
             <span class="section-title">Ofrenda de Vida</span>
             <p class="copy-donar-talento" style="font-size: 0.9rem; margin: 0 0 15px;"></p>
             <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
@@ -195,24 +167,17 @@
             if(!isFlipped) return;
             vibrar(30);
             try { Tone.start(); synth.triggerAttackRelease("G4", "32n"); } catch(e){}
-
             const claseSalida = (dir === 'der') ? 'swipe-left' : 'swipe-right';
             const claseEntrada = (dir === 'der') ? 'swipe-right' : 'swipe-left';
-            
             scene.classList.add(claseSalida);
-
             setTimeout(() => {
                 if (dir === 'der') {
                     currentPos++;
                     if (currentPos >= historyStack.length) historyStack.push(CARTAS_MATRIMONIO[Math.floor(Math.random() * CARTAS_MATRIMONIO.length)]);
-                } else {
-                    currentPos--;
-                }
+                } else { currentPos--; }
                 pintarCarta(historyStack[currentPos]);
-                
                 scene.classList.remove(claseSalida);
                 scene.classList.add(claseEntrada);
-                
                 requestAnimationFrame(() => { setTimeout(() => scene.classList.remove(claseEntrada), 50); });
             }, 300);
         }
@@ -224,7 +189,6 @@
             else { navigator.clipboard.writeText(msg).then(mostrarToast); }
         }
 
-        // Modales y Utilidades
         function abrirModal() { vibrar(30); const m = document.getElementById('modalHelp'); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); }
         function cerrarModal() { const m = document.getElementById('modalHelp'); m.classList.remove('show'); setTimeout(() => m.style.display = 'none', 300); }
         window.onclick = (e) => { if (e.target == document.getElementById('modalHelp')) cerrarModal(); }
@@ -237,23 +201,19 @@
         function mostrarToast() { const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
         function toggleDarkMode() {
-            vibrar(20);
-            document.body.classList.toggle('dark-mode');
+            vibrar(20); document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('darkIcon');
             if (document.body.classList.contains('dark-mode')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
             } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'light');
+                icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
             }
         }
 
         window.onload = () => {
             initBG();
             if(localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('darkIcon').classList.replace('fa-moon', 'fa-sun');
+                document.body.classList.add('dark-mode'); document.getElementById('darkIcon').classList.replace('fa-moon', 'fa-sun');
             }
             const p = new URLSearchParams(window.location.search);
             inicializarCarta(p.get('id'));
