@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Conecta con tu Fe | Capilla Santa Ana</title>
+    <title>Encuentro Sagrado | Capilla Santa Ana</title>
     
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -15,91 +15,119 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* Ajustes específicos para esta página */
         html, body { 
-            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
+            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg); scroll-behavior: smooth;
         }
 
-        /* Colores Tierra (Basados en tu diseño original) */
+        /* Colores Tierra Espirituales */
         :root {
-            --bg: #F5F5F0;
+            --bg: #F9F8F6;
             --card: #FFFFFF;
-            --accent: #C19A6B;
-            --primario: #5D4037;
-            --texto: #2D2D2D;
+            --accent: #B8860B; /* Oro Antiguo */
+            --primario: #4A332D; /* Marrón Cálido */
+            --texto: #4A4A4A;
+            --brillo: rgba(184, 134, 11, 0.15);
         }
 
         body.dark-mode {
-            --bg: #1A1512;
-            --card: #2D241F;
+            --bg: #120E0C;
+            --card: #1E1815;
             --accent: #D4AF37;
-            --primario: #F5F5F0;
-            --texto: #EAEAEA;
+            --primario: #F9F8F6;
+            --texto: #CCCCCC;
+            --brillo: rgba(212, 175, 55, 0.15);
         }
 
-        /* Botón de donación a la derecha */
-        .float-help { left: auto !important; right: 20px !important; }
-
-        /* Contenedor App para centrar en PC */
-        .app-container {
-            max-width: 500px;
-            margin: 120px auto 100px;
-            padding: 0 20px;
+        /* Fondo Animado "Partículas de Luz" */
+        .luz-fondo { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+        .particula { position: absolute; bottom: -20px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px 2px var(--accent); opacity: 0; }
+        @keyframes subirLuz {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin: 0; }
-        .subtitle { font-style: italic; opacity: 0.8; margin-top: 10px; color: var(--texto); }
+        /* Contenedor App */
+        .app-container { max-width: 550px; margin: 100px auto 100px; padding: 0 20px; }
 
-        /* Estilo Acordeón Mejorado */
-        .accordion {
-            background: var(--card); color: var(--primario); cursor: pointer;
-            padding: 20px; width: 100%; text-align: left; border: none;
-            outline: none; transition: 0.4s; display: flex; align-items: center;
-            justify-content: space-between; font-weight: 700; font-size: 1rem;
-            border-radius: 15px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .accordion.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: var(--primario); color: #fff; }
-        .accordion i.main-icon { margin-right: 15px; font-size: 1.2rem; color: var(--accent); }
-        .accordion.active i.main-icon { color: #fff; }
-
-        .panel {
-            padding: 0 20px; background-color: var(--card); max-height: 0;
-            overflow: hidden; transition: max-height 0.3s ease-out;
-            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .panel-content { padding: 20px 0; }
+        /* Header con Animación */
+        header { text-align: center; margin-bottom: 50px; animation: fadeDown 1s ease-out; }
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Links dentro del acordeón */
-        .conecta-link {
-            display: flex; align-items: center; padding: 12px;
-            text-decoration: none; color: var(--texto); border-radius: 10px;
-            transition: 0.2s; margin-bottom: 5px;
-        }
-        .conecta-link:hover { background: rgba(193, 154, 107, 0.1); color: var(--primario); }
-        .conecta-link i { width: 30px; color: var(--accent); }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primario); margin: 0; font-weight: 700; text-shadow: 0 4px 15px var(--brillo); }
+        .oracion-header { font-family: 'Playfair Display', serif; font-style: italic; color: var(--accent); font-size: 1.15rem; margin-top: 15px; line-height: 1.6; }
+        .separador { width: 50px; height: 2px; background: var(--accent); margin: 20px auto; border-radius: 2px; }
 
-        /* Navegación Cápsula */
-        .top-navbar {
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 400px;
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.3); border-radius: 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        /* Tarjetas Espirituales (Reemplazo del Acordeón) */
+        .spiritual-card {
+            background: var(--card); border-radius: 20px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06); overflow: hidden;
+            border: 1px solid rgba(184, 134, 11, 0.1); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeUp 0.8s ease-out forwards; opacity: 0; transform: translateY(30px);
         }
+        .spiritual-card:hover { box-shadow: 0 15px 40px var(--brillo); transform: translateY(-5px); }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        .card-header { padding: 25px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+        .card-title-group { display: flex; align-items: center; gap: 18px; }
+        
+        /* Icono con pulsación suave */
+        .icon-glow { width: 45px; height: 45px; border-radius: 50%; background: var(--brillo); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.3rem; transition: 0.4s; animation: latido 3s infinite ease-in-out; }
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); box-shadow: 0 0 15px var(--brillo); } }
+        
+        .spiritual-card.active .icon-glow { background: var(--accent); color: var(--card); animation: none; transform: scale(1.1); }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primario); font-weight: 700; margin: 0; }
+        .card-subtitle { font-size: 0.85rem; color: var(--texto); opacity: 0.8; margin-top: 4px; font-weight: 500; }
+        .arrow-btn { color: var(--accent); font-size: 1.1rem; transition: 0.4s; }
+        .spiritual-card.active .arrow-btn { transform: rotate(180deg); }
+
+        /* Contenido Desplegable Animado */
+        .card-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); background: var(--card); }
+        .spiritual-card.active .card-body { max-height: 1000px; transition: max-height 0.8s ease-in-out; }
+        
+        .card-content-inner { padding: 0 25px 30px; border-top: 1px dashed rgba(184, 134, 11, 0.2); margin-top: 10px; padding-top: 20px; }
+        .frase-inspiradora { font-family: 'Playfair Display', serif; font-style: italic; color: var(--texto); font-size: 1rem; text-align: center; margin-bottom: 25px; line-height: 1.5; }
+
+        /* Botones de Acción Mejorados */
+        .action-link {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; background: rgba(0,0,0,0.02); border-radius: 12px;
+            text-decoration: none; color: var(--primario); font-weight: 600; font-size: 0.95rem;
+            margin-bottom: 12px; transition: 0.3s; border: 1px solid transparent;
+            position: relative; overflow: hidden;
+        }
+        body.dark-mode .action-link { background: rgba(255,255,255,0.03); }
+        
+        .action-link:hover { background: var(--primario); color: var(--bg); border-color: var(--primario); transform: translateX(5px); }
+        .link-left { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        .link-left i { font-size: 1.2rem; color: var(--accent); transition: 0.3s; }
+        .action-link:hover .link-left i { color: var(--bg); }
+        .action-link .fa-chevron-right { font-size: 0.8rem; opacity: 0.5; transition: 0.3s; z-index: 2; }
+        .action-link:hover .fa-chevron-right { opacity: 1; transform: translateX(3px); }
+
+        /* Efecto onda en hover de botones */
+        .action-link::after { content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; z-index: 1; }
+        .action-link:hover::after { left: 100%; }
+
+        /* Navegación y Ayuda Fija */
+        .top-navbar { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         body.dark-mode .top-navbar { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
         .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .icon-btn { width: 38px; height: 38px; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--accent); text-decoration: none; cursor: pointer; transition: 0.3s; }
+        
+        .float-help { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; animation: pulse 3s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(184, 134, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); } }
+
     </style>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="luz-fondo" id="fondoLuz"></div>
 
     <nav class="top-navbar">
         <div class="logo-text">Santa Ana</div>
@@ -109,58 +137,99 @@
         </div>
     </nav>
 
-    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
+    <button class="float-help" onclick="abrirModal()" title="Ofrenda de Amor">
         <i class="fas fa-hand-holding-heart"></i>
     </button>
 
     <main class="app-container">
         <header>
-            <h1>Conectar</h1>
-            <p class="subtitle">Encontrá tu espacio para el encuentro y la oración diaria.</p>
+            <h1>Refugio del Alma</h1>
+            <div class="separador"></div>
+            <p class="oracion-header">"Señor, aquieta mi mente, abre mi corazón y hazme instrumento de tu paz en este día."</p>
+            <p class="subtitle" style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin-top: 15px;">Elegí cómo querés acercarte hoy a Su presencia.</p>
         </header>
 
-        <button class="accordion">
-            <span><i class="fas fa-pray main-icon"></i> Canales de Oración</span>
-            <i class="fas fa-chevron-down arrow"></i>
-        </button>
-        <div class="panel">
-            <div class="panel-content">
-                <a href="https://wa.me/5493517023789" class="conecta-link" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Grupo de Intenciones
-                </a>
-                <a href="https://www.youtube.com/@CapillaSantaAna" class="conecta-link" target="_blank">
-                    <i class="fab fa-youtube"></i> Rosario en Vivo
-                </a>
+        <div class="spiritual-card" style="animation-delay: 0.1s;">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-title-group">
+                    <div class="icon-glow"><i class="fas fa-hands-praying"></i></div>
+                    <div>
+                        <h2 class="card-title">Comunión en Oración</h2>
+                        <p class="card-subtitle">Donde dos o tres se reúnen en mi nombre...</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down arrow-btn"></i>
+            </div>
+            <div class="card-body">
+                <div class="card-content-inner">
+                    <p class="frase-inspiradora">Rezar en comunidad multiplica nuestra fuerza. Dejá tu intención o sumate a rezar por los demás.</p>
+                    
+                    <a href="https://wa.me/5493517023789" class="action-link" target="_blank">
+                        <div class="link-left"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span>Unirme al Grupo de Oración</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="https://www.youtube.com/@CapillaSantaAna" class="action-link" target="_blank">
+                        <div class="link-left"><i class="fab fa-youtube" style="color:#FF0000;"></i> <span>Rezar el Santo Rosario en Vivo</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <button class="accordion">
-            <span><i class="fas fa-heart main-icon"></i> Vida de Fe</span>
-            <i class="fas fa-chevron-down arrow"></i>
-        </button>
-        <div class="panel">
-            <div class="panel-content">
-                <a href="profundiza.html" class="conecta-link">
-                    <i class="fas fa-book-open"></i> Dinámicas y Formación
-                </a>
-                <a href="mazos/index.html" class="conecta-link">
-                    <i class="fas fa-layer-group"></i> Cartas de Reflexión
-                </a>
+        <div class="spiritual-card" style="animation-delay: 0.3s;">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-title-group">
+                    <div class="icon-glow"><i class="fas fa-dove"></i></div>
+                    <div>
+                        <h2 class="card-title">Alimento para el Alma</h2>
+                        <p class="card-subtitle">Lámpara es a mis pies tu palabra...</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down arrow-btn"></i>
+            </div>
+            <div class="card-body">
+                <div class="card-content-inner">
+                    <p class="frase-inspiradora">Detené la marcha. Hacé una pausa consciente y dejá que el Espíritu te hable a través de estas reflexiones.</p>
+                    
+                    <a href="mazos/index.html" class="action-link">
+                        <div class="link-left"><i class="fas fa-layer-group"></i> <span>Sacar una Carta de Reflexión</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="profundiza.html" class="action-link">
+                        <div class="link-left"><i class="fas fa-book-open"></i> <span>Explorar Material de Formación</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <button class="accordion">
-            <span><i class="fas fa-church main-icon"></i> Sacramentos</span>
-            <i class="fas fa-chevron-down arrow"></i>
-        </button>
-        <div class="panel">
-            <div class="panel-content">
-                <a href="#" class="conecta-link">
-                    <i class="fas fa-cross"></i> Pedir Bautismo
-                </a>
-                <a href="#" class="conecta-link">
-                    <i class="fas fa-ring"></i> Charlas Matrimoniales
-                </a>
+        <div class="spiritual-card" style="animation-delay: 0.5s;">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-title-group">
+                    <div class="icon-glow"><i class="fas fa-cross"></i></div>
+                    <div>
+                        <h2 class="card-title">Gracia Sacramental</h2>
+                        <p class="card-subtitle">Signos visibles del amor invisible...</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down arrow-btn"></i>
+            </div>
+            <div class="card-body">
+                <div class="card-content-inner">
+                    <p class="frase-inspiradora">Iniciá o fortalecé tu camino en la fe. La Capilla te acompaña en cada paso importante de tu vida.</p>
+                    
+                    <a href="#" class="action-link">
+                        <div class="link-left"><i class="fas fa-water"></i> <span>Solicitar Bautismo</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="#" class="action-link">
+                        <div class="link-left"><i class="fas fa-ring"></i> <span>Preparación Matrimonial</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -186,30 +255,45 @@
 
     <script src="config-global.js"></script>
     <script>
-        // Lógica de Acordeón
-        const acc = document.getElementsByClassName("accordion");
-        for (let i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                const arrow = this.querySelector(".arrow");
-                arrow.classList.toggle("fa-chevron-up");
-                arrow.classList.toggle("fa-chevron-down");
-                
-                const panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
-                } 
-            });
+        // Animación de Partículas de Luz
+        function crearLuces() {
+            const fondo = document.getElementById('fondoLuz');
+            for (let i = 0; i < 20; i++) {
+                let particula = document.createElement('div');
+                particula.className = 'particula';
+                particula.style.left = Math.random() * 100 + 'vw';
+                particula.style.animation = `subirLuz ${10 + Math.random() * 15}s ease-in infinite`;
+                particula.style.animationDelay = `${Math.random() * 5}s`;
+                fondo.appendChild(particula);
+            }
         }
 
-        // Modales y Otros
+        // Lógica de Tarjetas Expandibles (Acordeón Premium)
+        function toggleCard(header) {
+            const card = header.parentElement;
+            const todas = document.querySelectorAll('.spiritual-card');
+            
+            // Si la que tocamos ya está abierta, la cerramos
+            if (card.classList.contains('active')) {
+                card.classList.remove('active');
+            } else {
+                // Cerramos las demás y abrimos la elegida
+                todas.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                
+                // Pequeña vibración en el celular al abrir
+                if(navigator.vibrate) navigator.vibrate(20);
+            }
+        }
+
+        // Modales
         function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
         function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
         function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
         
+        // Tema y Carga Inicial
         function toggleDarkMode() {
+            if(navigator.vibrate) navigator.vibrate(20);
             document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('darkIcon');
             icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
@@ -217,6 +301,7 @@
         }
 
         window.onload = () => {
+            crearLuces(); // Iniciar partículas mágicas
             if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.getElementById('darkIcon').className = 'fas fa-sun';
