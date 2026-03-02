@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Conecta con tu Fe | Capilla Santa Ana</title>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+
+    <link rel="stylesheet" href="master-estilos.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* Ajustes específicos para esta página */
+        html, body { 
+            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
+        }
+
+        /* Colores Tierra (Basados en tu diseño original) */
+        :root {
+            --bg: #F5F5F0;
+            --card: #FFFFFF;
+            --accent: #C19A6B;
+            --primario: #5D4037;
+            --texto: #2D2D2D;
+        }
+
+        body.dark-mode {
+            --bg: #1A1512;
+            --card: #2D241F;
+            --accent: #D4AF37;
+            --primario: #F5F5F0;
+            --texto: #EAEAEA;
+        }
+
+        /* Botón de donación a la derecha */
+        .float-help { left: auto !important; right: 20px !important; }
+
+        /* Contenedor App para centrar en PC */
+        .app-container {
+            max-width: 500px;
+            margin: 120px auto 100px;
+            padding: 0 20px;
+        }
+
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin: 0; }
+        .subtitle { font-style: italic; opacity: 0.8; margin-top: 10px; color: var(--texto); }
+
+        /* Estilo Acordeón Mejorado */
+        .accordion {
+            background: var(--card); color: var(--primario); cursor: pointer;
+            padding: 20px; width: 100%; text-align: left; border: none;
+            outline: none; transition: 0.4s; display: flex; align-items: center;
+            justify-content: space-between; font-weight: 700; font-size: 1rem;
+            border-radius: 15px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .accordion.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: var(--primario); color: #fff; }
+        .accordion i.main-icon { margin-right: 15px; font-size: 1.2rem; color: var(--accent); }
+        .accordion.active i.main-icon { color: #fff; }
+
+        .panel {
+            padding: 0 20px; background-color: var(--card); max-height: 0;
+            overflow: hidden; transition: max-height 0.3s ease-out;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .panel-content { padding: 20px 0; }
+        
+        /* Links dentro del acordeón */
+        .conecta-link {
+            display: flex; align-items: center; padding: 12px;
+            text-decoration: none; color: var(--texto); border-radius: 10px;
+            transition: 0.2s; margin-bottom: 5px;
+        }
+        .conecta-link:hover { background: rgba(193, 154, 107, 0.1); color: var(--primario); }
+        .conecta-link i { width: 30px; color: var(--accent); }
+
+        /* Navegación Cápsula */
+        .top-navbar {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 400px;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .top-navbar { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
+        .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <nav class="top-navbar">
+        <div class="logo-text">Santa Ana</div>
+        <div class="controls">
+            <a href="index.html" class="icon-btn" title="Inicio"><i class="fas fa-home"></i></a>
+            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
+        </div>
+    </nav>
+
+    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
+        <i class="fas fa-hand-holding-heart"></i>
+    </button>
+
+    <main class="app-container">
+        <header>
+            <h1>Conectar</h1>
+            <p class="subtitle">Encontrá tu espacio para el encuentro y la oración diaria.</p>
+        </header>
+
+        <button class="accordion">
+            <span><i class="fas fa-pray main-icon"></i> Canales de Oración</span>
+            <i class="fas fa-chevron-down arrow"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <a href="https://wa.me/5493517023789" class="conecta-link" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Grupo de Intenciones
+                </a>
+                <a href="https://www.youtube.com/@CapillaSantaAna" class="conecta-link" target="_blank">
+                    <i class="fab fa-youtube"></i> Rosario en Vivo
+                </a>
+            </div>
+        </div>
+
+        <button class="accordion">
+            <span><i class="fas fa-heart main-icon"></i> Vida de Fe</span>
+            <i class="fas fa-chevron-down arrow"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <a href="profundiza.html" class="conecta-link">
+                    <i class="fas fa-book-open"></i> Dinámicas y Formación
+                </a>
+                <a href="mazos/index.html" class="conecta-link">
+                    <i class="fas fa-layer-group"></i> Cartas de Reflexión
+                </a>
+            </div>
+        </div>
+
+        <button class="accordion">
+            <span><i class="fas fa-church main-icon"></i> Sacramentos</span>
+            <i class="fas fa-chevron-down arrow"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <a href="#" class="conecta-link">
+                    <i class="fas fa-cross"></i> Pedir Bautismo
+                </a>
+                <a href="#" class="conecta-link">
+                    <i class="fas fa-ring"></i> Charlas Matrimoniales
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="modalHelp" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
+            <span class="section-title">Ofrenda de Amor</span>
+            <p class="copy-donar-dinero"></p>
+            <div class="alias-box alias-global"></div>
+            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
+            <span class="section-title">Ofrenda de Vida</span>
+            <p class="copy-donar-talento"></p>
+            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
+                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
+            </a>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">¡Copiado con éxito!</div>
+
+    <script src="config-global.js"></script>
+    <script>
+        // Lógica de Acordeón
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                const arrow = this.querySelector(".arrow");
+                arrow.classList.toggle("fa-chevron-up");
+                arrow.classList.toggle("fa-chevron-down");
+                
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+
+        // Modales y Otros
+        function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
+        function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
+        function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        window.onload = () => {
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkIcon').className = 'fas fa-sun';
+            }
+        };
+    </script>
+</body>
+</html>
