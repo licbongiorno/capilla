@@ -1,0 +1,68 @@
+/* cartas.css - Guardar DENTRO de la carpeta /mazos */
+
+/* Base y Centrado en PC */
+html, body { height: 100vh; width: 100vw; margin: 0; padding: 0; overflow: hidden; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--card); transition: background 0.5s ease; display: flex; justify-content: center; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+/* Contenedor tipo App (Evita que se deforme en monitores grandes) */
+.app-wrapper { width: 100%; max-width: 420px; height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 80px 20px; }
+
+/* Fondo animado */
+.bg-words { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; width: 100vw; }
+.floating-word { position: absolute; bottom: -50px; color: rgba(255, 255, 255, 0.04); font-family: 'Playfair Display', serif; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+@keyframes floatUp { to { transform: translateY(-120vh) rotate(15deg) scale(1.2); opacity: 0; } }
+
+/* Cápsula de Navegación */
+.top-navbar { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 380px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: 0.3s; }
+body.dark-mode .top-navbar { background: rgba(0, 0, 0, 0.3); border-color: rgba(255,255,255,0.05); }
+.top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-left: 5px; }
+.top-navbar .controls { display: flex; gap: 8px; }
+.icon-btn { width: 38px; height: 38px; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: 0.3s; }
+.icon-btn:active { transform: scale(0.9); }
+
+/* Título */
+h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 2.2rem); text-align: center; color: var(--accent); margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+
+/* Magia 3D de la Carta */
+.scene-wrapper { width: 100%; flex: 1; max-height: 480px; min-height: 320px; position: relative; perspective: 1500px; margin: 2vh 0; }
+.scene { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.card { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+.card.is-flipped { transform: rotateY(180deg); cursor: default; }
+.card:not(.is-flipped) { animation: breathe 4s ease-in-out infinite; }
+@keyframes breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.02); } }
+
+.card__face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: max(20px, 8%); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.1); }
+.card__face--front { background: radial-gradient(circle at top right, var(--card-back) 0%, var(--primario) 100%); }
+.card__face--back { background: var(--card); color: var(--primario); transform: rotateY(180deg); border: 3px solid var(--accent); justify-content: space-between; }
+
+.pregunta { font-size: clamp(1rem, 4.5vw, 1.25rem); font-weight: 600; line-height: 1.45; margin: auto 0; width: 100%; }
+.autor { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--card-back); font-style: italic; font-weight: 600; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 15px; width: 100%; }
+body.dark-mode .autor { color: var(--accent); }
+
+/* Barra de Controles (Abajo) */
+.action-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 8px 12px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); opacity: 0; transform: translateY(20px); transition: 0.5s; }
+.action-bar.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+.btn-nav { background: transparent; border: none; color: var(--accent); font-size: 1.4rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.btn-nav:disabled { opacity: 0.2; cursor: not-allowed; }
+.btn-share { background: linear-gradient(135deg, var(--accent), #B8860B); color: var(--bg); border-radius: 25px; height: 44px; font-weight: 800; font-size: 0.9rem; flex-grow: 1; border: none; margin: 0 10px; text-transform: uppercase; cursor: pointer; }
+
+/* Botón Donar y Modal */
+.float-help { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: linear-gradient(135deg, var(--card-back), var(--primario)); border: 2px solid var(--accent); color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: pulseGlow 3s infinite; border: none; cursor: pointer;}
+@keyframes pulseGlow { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.2); } 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255,255,255,0); } }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: flex-end; padding: 15px; padding-bottom: 30px; opacity: 0; transition: 0.3s; backdrop-filter: blur(5px); }
+.modal.show { opacity: 1; }
+.modal-content { background: var(--card); color: var(--primario); padding: 35px 25px; border-radius: 25px; width: 100%; max-width: 420px; text-align: center; border: 2px solid var(--accent); transform: translateY(100%); transition: 0.4s; position: relative; }
+.modal.show .modal-content { transform: translateY(0); }
+.modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.05); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primario); }
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 20px 0 10px; color: var(--card-back); display: block; font-weight: 700; }
+.alias-box { font-family: monospace; font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; background: rgba(0,0,0,0.04); padding: 15px 10px; border-radius: 12px; border: 2px dashed var(--accent); margin: 15px 0; color: var(--primario); word-break: break-all; }
+.btn-action { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 50px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; }
+
+/* Efectos y Swipe */
+.swipe-left { transform: translateX(-130%) rotate(-12deg) scale(0.9) !important; opacity: 0; }
+.swipe-right { transform: translateX(130%) rotate(12deg) scale(0.9) !important; opacity: 0; }
+.ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple-anim 0.6s linear; background: rgba(255, 255, 255, 0.4); pointer-events: none; }
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+.toast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--bg); padding: 12px 25px; border-radius: 50px; font-weight: 800; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 10000; font-size: 0.9rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.toast.show { top: 40px; }
