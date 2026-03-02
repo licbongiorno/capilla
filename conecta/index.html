@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Encuentro Sagrado | Capilla Santa Ana</title>
+    <title>Santuario de Oración | Capilla Santa Ana</title>
     
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -27,10 +27,10 @@
         :root {
             --bg: #F9F8F6;
             --card: #FFFFFF;
-            --accent: #B8860B; /* Oro Antiguo */
-            --primario: #4A332D; /* Marrón Cálido */
+            --accent: #C19A6B; /* Dorado Capilla */
+            --primario: #5D4037; /* Marrón Cálido */
             --texto: #4A4A4A;
-            --brillo: rgba(184, 134, 11, 0.15);
+            --brillo: rgba(193, 154, 107, 0.2);
         }
 
         body.dark-mode {
@@ -66,10 +66,10 @@
         .spiritual-card {
             background: var(--card); border-radius: 20px; margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06); overflow: hidden;
-            border: 1px solid rgba(184, 134, 11, 0.1); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(193, 154, 107, 0.15); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             animation: fadeUp 0.8s ease-out forwards; opacity: 0; transform: translateY(30px);
         }
-        .spiritual-card:hover { box-shadow: 0 15px 40px var(--brillo); transform: translateY(-5px); }
+        .spiritual-card:hover { box-shadow: 0 15px 40px var(--brillo); transform: translateY(-5px); border-color: var(--accent); }
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
         .card-header { padding: 25px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
@@ -89,7 +89,7 @@
         .card-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); background: var(--card); }
         .spiritual-card.active .card-body { max-height: 1000px; transition: max-height 0.8s ease-in-out; }
         
-        .card-content-inner { padding: 0 25px 30px; border-top: 1px dashed rgba(184, 134, 11, 0.2); margin-top: 10px; padding-top: 20px; }
+        .card-content-inner { padding: 0 25px 30px; border-top: 1px dashed rgba(193, 154, 107, 0.3); margin-top: 10px; padding-top: 20px; }
         .frase-inspiradora { font-family: 'Playfair Display', serif; font-style: italic; color: var(--texto); font-size: 1rem; text-align: center; margin-bottom: 25px; line-height: 1.5; }
 
         /* Botones de Acción Mejorados */
@@ -104,14 +104,17 @@
         
         .action-link:hover { background: var(--primario); color: var(--bg); border-color: var(--primario); transform: translateX(5px); }
         .link-left { display: flex; align-items: center; gap: 15px; z-index: 2; }
-        .link-left i { font-size: 1.2rem; color: var(--accent); transition: 0.3s; }
+        .link-left i { font-size: 1.2rem; transition: 0.3s; }
+        
+        /* Colores específicos de redes para los iconos */
+        .icon-wa { color: #25D366; }
+        .icon-yt { color: #FF0000; }
+        .icon-ig { color: #E1306C; }
+        .icon-fb { color: #1877F2; }
+        
         .action-link:hover .link-left i { color: var(--bg); }
-        .action-link .fa-chevron-right { font-size: 0.8rem; opacity: 0.5; transition: 0.3s; z-index: 2; }
-        .action-link:hover .fa-chevron-right { opacity: 1; transform: translateX(3px); }
-
-        /* Efecto onda en hover de botones */
-        .action-link::after { content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; z-index: 1; }
-        .action-link:hover::after { left: 100%; }
+        .action-link .fa-chevron-right { font-size: 0.8rem; opacity: 0.5; transition: 0.3s; z-index: 2; color: var(--accent); }
+        .action-link:hover .fa-chevron-right { opacity: 1; transform: translateX(3px); color: var(--bg); }
 
         /* Navegación y Ayuda Fija */
         .top-navbar { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
@@ -119,8 +122,9 @@
         .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primario); font-size: 1.1rem; }
         .icon-btn { width: 38px; height: 38px; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--accent); text-decoration: none; cursor: pointer; transition: 0.3s; }
         
-        .float-help { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; animation: pulse 3s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(184, 134, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); } }
+        /* Botón Donar a la derecha */
+        .float-help { position: fixed; bottom: 20px; right: 20px; left: auto !important; z-index: 100; background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; animation: pulse 3s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(193, 154, 107, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(193, 154, 107, 0); } 100% { box-shadow: 0 0 0 0 rgba(193, 154, 107, 0); } }
 
     </style>
 </head>
@@ -137,16 +141,16 @@
         </div>
     </nav>
 
-    <button class="float-help" onclick="abrirModal()" title="Ofrenda de Amor">
+    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
         <i class="fas fa-hand-holding-heart"></i>
     </button>
 
     <main class="app-container">
         <header>
-            <h1>Refugio del Alma</h1>
+            <h1>Oración</h1>
             <div class="separador"></div>
-            <p class="oracion-header">"Señor, aquieta mi mente, abre mi corazón y hazme instrumento de tu paz en este día."</p>
-            <p class="subtitle" style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin-top: 15px;">Elegí cómo querés acercarte hoy a Su presencia.</p>
+            <p class="oracion-header">"Señor, aquieta mi mente, abre mi corazón y escucha mi plegaria en este día."</p>
+            <p class="subtitle" style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin-top: 15px; color: var(--texto);">Elegí cómo querés conectar hoy con la Capilla.</p>
         </header>
 
         <div class="spiritual-card" style="animation-delay: 0.1s;">
@@ -154,23 +158,23 @@
                 <div class="card-title-group">
                     <div class="icon-glow"><i class="fas fa-hands-praying"></i></div>
                     <div>
-                        <h2 class="card-title">Comunión en Oración</h2>
-                        <p class="card-subtitle">Donde dos o tres se reúnen en mi nombre...</p>
+                        <h2 class="card-title">Comunidad de Oración</h2>
+                        <p class="card-subtitle">Dejá tu intención y recemos juntos</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down arrow-btn"></i>
             </div>
             <div class="card-body">
                 <div class="card-content-inner">
-                    <p class="frase-inspiradora">Rezar en comunidad multiplica nuestra fuerza. Dejá tu intención o sumate a rezar por los demás.</p>
+                    <p class="frase-inspiradora">Rezar en comunidad multiplica nuestra fuerza. Sumate a nuestra red o acompañanos en el Rosario.</p>
                     
                     <a href="https://wa.me/5493517023789" class="action-link" target="_blank">
-                        <div class="link-left"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span>Unirme al Grupo de Oración</span></div>
+                        <div class="link-left"><i class="fab fa-whatsapp icon-wa"></i> <span>Mandar Intención (WhatsApp)</span></div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     
                     <a href="https://www.youtube.com/@CapillaSantaAna" class="action-link" target="_blank">
-                        <div class="link-left"><i class="fab fa-youtube" style="color:#FF0000;"></i> <span>Rezar el Santo Rosario en Vivo</span></div>
+                        <div class="link-left"><i class="fab fa-youtube icon-yt"></i> <span>Santo Rosario en Vivo</span></div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
@@ -180,53 +184,24 @@
         <div class="spiritual-card" style="animation-delay: 0.3s;">
             <div class="card-header" onclick="toggleCard(this)">
                 <div class="card-title-group">
-                    <div class="icon-glow"><i class="fas fa-dove"></i></div>
+                    <div class="icon-glow"><i class="fas fa-church"></i></div>
                     <div>
-                        <h2 class="card-title">Alimento para el Alma</h2>
-                        <p class="card-subtitle">Lámpara es a mis pies tu palabra...</p>
+                        <h2 class="card-title">Nuestras Redes</h2>
+                        <p class="card-subtitle">Seguí el día a día de la Capilla</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down arrow-btn"></i>
             </div>
             <div class="card-body">
                 <div class="card-content-inner">
-                    <p class="frase-inspiradora">Detené la marcha. Hacé una pausa consciente y dejá que el Espíritu te hable a través de estas reflexiones.</p>
+                    <p class="frase-inspiradora">Mantenete al tanto de los horarios de misa, eventos solidarios y mensajes de nuestra comunidad.</p>
                     
-                    <a href="mazos/index.html" class="action-link">
-                        <div class="link-left"><i class="fas fa-layer-group"></i> <span>Sacar una Carta de Reflexión</span></div>
+                    <a href="https://www.instagram.com/capilla.santa.ana/" class="action-link" target="_blank">
+                        <div class="link-left"><i class="fab fa-instagram icon-ig"></i> <span>Seguinos en Instagram</span></div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    
-                    <a href="profundiza.html" class="action-link">
-                        <div class="link-left"><i class="fas fa-book-open"></i> <span>Explorar Material de Formación</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <div class="spiritual-card" style="animation-delay: 0.5s;">
-            <div class="card-header" onclick="toggleCard(this)">
-                <div class="card-title-group">
-                    <div class="icon-glow"><i class="fas fa-cross"></i></div>
-                    <div>
-                        <h2 class="card-title">Gracia Sacramental</h2>
-                        <p class="card-subtitle">Signos visibles del amor invisible...</p>
-                    </div>
-                </div>
-                <i class="fas fa-chevron-down arrow-btn"></i>
-            </div>
-            <div class="card-body">
-                <div class="card-content-inner">
-                    <p class="frase-inspiradora">Iniciá o fortalecé tu camino en la fe. La Capilla te acompaña en cada paso importante de tu vida.</p>
-                    
-                    <a href="#" class="action-link">
-                        <div class="link-left"><i class="fas fa-water"></i> <span>Solicitar Bautismo</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    
-                    <a href="#" class="action-link">
-                        <div class="link-left"><i class="fas fa-ring"></i> <span>Preparación Matrimonial</span></div>
+                    <a href="#" class="action-link" target="_blank"> <div class="link-left"><i class="fab fa-facebook icon-fb"></i> <span>Seguinos en Facebook</span></div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
@@ -273,15 +248,11 @@
             const card = header.parentElement;
             const todas = document.querySelectorAll('.spiritual-card');
             
-            // Si la que tocamos ya está abierta, la cerramos
             if (card.classList.contains('active')) {
                 card.classList.remove('active');
             } else {
-                // Cerramos las demás y abrimos la elegida
                 todas.forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
-                
-                // Pequeña vibración en el celular al abrir
                 if(navigator.vibrate) navigator.vibrate(20);
             }
         }
@@ -291,7 +262,7 @@
         function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
         function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
         
-        // Tema y Carga Inicial
+        // Tema Oscuro
         function toggleDarkMode() {
             if(navigator.vibrate) navigator.vibrate(20);
             document.body.classList.toggle('dark-mode');
@@ -301,7 +272,7 @@
         }
 
         window.onload = () => {
-            crearLuces(); // Iniciar partículas mágicas
+            crearLuces(); 
             if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.getElementById('darkIcon').className = 'fas fa-sun';
