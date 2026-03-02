@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Reflexiones y Sabiduría | Capilla Santa Ana</title>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    <link rel="stylesheet" href="../master-estilos.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* OVERRIDES: Desbloqueamos el scroll que el CSS maestro oculta para las cartas */
+        html, body { 
+            height: auto; 
+            overflow: visible; 
+            overflow-x: hidden; 
+            background-color: var(--bg);
+        }
+
+        :root {
+            --sombra-mazos: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --sombra-hover-mazos: 0 20px 40px rgba(0, 0, 0, 0.2);
+            --texto-secundario: #555;
+        }
+
+        body.dark-mode {
+            --sombra-mazos: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --sombra-hover-mazos: 0 20px 40px rgba(0, 0, 0, 0.7);
+            --texto-secundario: #aaa;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        /* --- Header --- */
+        header { text-align: center; padding: 100px 20px 40px; position: relative; }
+        header::after {
+            content: '☩'; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%); font-size: 1.5rem; color: var(--accent); opacity: 0.6;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 3.5rem); color: var(--accent); margin: 0; font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-weight: 500; font-style: italic; color: var(--card);
+            margin-top: 15px; font-size: 1.1rem; max-width: 600px; margin-inline: auto; opacity: 0.9;
+        }
+
+        /* --- Grid de Mazos --- */
+        .mazos-container { max-width: 1200px; margin: 20px auto 100px; padding: 0 20px; }
+        
+        .seccion-titulo {
+            font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--card);
+            margin: 50px 0 25px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+
+        /* Tarjeta individual */
+        .mazo-card {
+            background: var(--card); border-radius: 20px; padding: 35px 25px;
+            text-decoration: none; color: var(--primario);
+            box-shadow: var(--sombra-mazos); position: relative;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            border-top: 4px solid transparent; opacity: 0; transform: translateY(30px);
+            animation: fadeUp 0.6s forwards; transition: all 0.4s ease;
+        }
+        .mazo-card:hover {
+            transform: translateY(-8px); box-shadow: var(--sombra-hover-mazos);
+            border-top: 4px solid var(--accent);
+        }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        .icon-wrapper {
+            width: 75px; height: 75px; border-radius: 50%;
+            background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; color: var(--accent); margin-bottom: 20px; transition: all 0.3s;
+        }
+        .mazo-card:hover .icon-wrapper { background: var(--accent); color: var(--bg); transform: scale(1.1); }
+
+        .mazo-card h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario);
+            margin: 0 0 10px; font-weight: 700;
+        }
+        .mazo-card p { font-size: 0.95rem; color: var(--texto-secundario); margin: 0; line-height: 1.5; font-weight: 500;}
+
+        .btn-entrar {
+            margin-top: 25px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--accent); display: flex; align-items: center; gap: 8px;
+            transition: 0.3s;
+        }
+        .mazo-card:hover .btn-entrar { color: var(--primario); gap: 12px; }
+
+        footer { text-align: center; padding: 40px; color: var(--card); font-size: 0.9rem; opacity: 0.7;}
+        
+        /* Ajuste top-bar para esta página */
+        .top-bar-mazos { position: absolute; top: 0; left: 0; width: 100%; padding: 25px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="top-bar-mazos">
+        <div class="logo-text" style="color: var(--accent); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem;">Santa Ana</div>
+        <div class="controls">
+            <a href="../index.html" class="icon-btn" title="Ir al Inicio"><i class="fas fa-home"></i></a>
+            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
+        </div>
+    </div>
+
+    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
+        <i class="fas fa-hand-holding-heart"></i>
+    </button>
+
+    <header>
+        <h1>Cartas de Reflexión</h1>
+        <p class="subtitle">Elegí un mazo, sacá una carta al azar y dejá que Dios te hable al corazón en este momento.</p>
+    </header>
+
+    <main class="mazos-container">
+        <h2 class="seccion-titulo">Caminos de Crecimiento</h2>
+        <div class="grid">
+            <a href="nenes4-6.html" class="mazo-card" style="animation-delay: 0.1s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-child-reaching"></i></div>
+                <h3>Niños (4 a 6)</h3>
+                <p>Pequeñas semillitas de amor para hablar de Jesús con los más chicos.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="creciendo.html" class="mazo-card" style="animation-delay: 0.2s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-seedling"></i></div>
+                <h3>Creciendo (6 a 8)</h3>
+                <p>Preguntas y juegos para descubrir el camino de la fe jugando.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="jovenes.html" class="mazo-card" style="animation-delay: 0.3s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-bolt"></i></div>
+                <h3>Jóvenes</h3>
+                <p>Identidad, propósito y luz. Reflexiones para la juventud de hoy.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
+
+        <h2 class="seccion-titulo">Sacramentos y Vocación</h2>
+        <div class="grid">
+            <a href="catequesis.html" class="mazo-card" style="animation-delay: 0.4s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-book-bible"></i></div>
+                <h3>Catequesis</h3>
+                <p>Formación profunda para entender y amar las raíces de nuestra fe.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="comunion.html" class="mazo-card" style="animation-delay: 0.5s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-wheat-awn"></i></div>
+                <h3>1° Comunión</h3>
+                <p>Preparando el corazón para recibir el Pan de Vida por primera vez.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="confirmacion.html" class="mazo-card" style="animation-delay: 0.6s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <h3>Confirmación</h3>
+                <p>Los dones del Espíritu Santo para ser testigos valientes en el mundo.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="matrimonio.html" class="mazo-card" style="animation-delay: 0.7s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-ring"></i></div>
+                <h3>Matrimonio</h3>
+                <p>Amor, unidad y paciencia. Un refugio para fortalecer la pareja diaria.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
+
+        <h2 class="seccion-titulo">Espiritualidad y Sanación</h2>
+        <div class="grid">
+            <a href="abrazo.html" class="mazo-card" style="animation-delay: 0.8s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-hands-holding-child"></i></div>
+                <h3>Abrazo de Dios</h3>
+                <p>Palabras de consuelo profundo para los momentos de tristeza y dolor.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="sabiduria.html" class="mazo-card" style="animation-delay: 0.9s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-feather-pointed"></i></div>
+                <h3>Sabiduría</h3>
+                <p>El legado de los Santos para iluminar nuestras decisiones diarias.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="servidores.html" class="mazo-card" style="animation-delay: 1.0s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-hands-praying"></i></div>
+                <h3>Servidores</h3>
+                <p>Aliento y humildad para quienes trabajan sirviendo en la Capilla.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="ecologia.html" class="mazo-card" style="animation-delay: 1.1s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-leaf"></i></div>
+                <h3>Hermana Tierra</h3>
+                <p>Reflexiones sobre el cuidado de la creación y la casa común.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="trascendencia.html" class="mazo-card" style="animation-delay: 1.2s;">
+                <div class="icon-wrapper"><i class="fa-solid fa-infinity"></i></div>
+                <h3>Trascendencia</h3>
+                <p>Mirar hacia lo eterno: la esperanza del cielo y la vida definitiva.</p>
+                <div class="btn-entrar">Sacar carta <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
+    </main>
+
+    <div id="modalHelp" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
+            
+            <span class="section-title">Ofrenda de Amor</span>
+            <p class="copy-donar-dinero" style="font-size: 0.95rem; margin: 0;"></p>
+            <div class="alias-box alias-global"></div>
+            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
+
+            <span class="section-title">Ofrenda de Vida</span>
+            <p class="copy-donar-talento" style="font-size: 0.95rem; margin: 0 0 15px;"></p>
+            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
+                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
+            </a>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">¡Copiado con éxito!</div>
+
+    <footer>&copy; 2026 Capilla Santa Ana | Que la Palabra ilumine tu vida.</footer>
+
+    <script src="../config-global.js"></script>
+
+    <script>
+        // Lógica Modal
+        function abrirModal() { const m = document.getElementById('modalHelp'); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); }
+        function cerrarModal() { const m = document.getElementById('modalHelp'); m.classList.remove('show'); setTimeout(() => m.style.display = 'none', 300); }
+        window.onclick = (e) => { if (e.target == document.getElementById('modalHelp')) cerrarModal(); }
+        
+        function copiarAlias() {
+            if (navigator.vibrate) navigator.vibrate([30,50,30]);
+            navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => {
+                const t = document.getElementById('toast'); 
+                t.classList.add('show'); 
+                setTimeout(() => t.classList.remove('show'), 3000);
+            });
+        }
+
+        // Modo Oscuro (Mantiene compatibilidad con el Master CSS)
+        function toggleDarkMode() {
+            if (navigator.vibrate) navigator.vibrate(20);
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = () => {
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkIcon').classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+    </script>
+</body>
+</html>
