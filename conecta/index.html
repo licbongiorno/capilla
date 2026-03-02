@@ -3,279 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Santuario de Oración | Capilla Santa Ana</title>
+    <title>Conecta con Dios | Capilla Santa Ana</title>
     
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
-
-    <link rel="stylesheet" href="master-estilos.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        html, body { 
-            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg); scroll-behavior: smooth;
-        }
-
-        /* Colores Tierra Espirituales */
+        /* PALETA DE COLORES Y MODO OSCURO */
         :root {
-            --bg: #F9F8F6;
-            --card: #FFFFFF;
-            --accent: #C19A6B; /* Dorado Capilla */
-            --primario: #5D4037; /* Marrón Cálido */
-            --texto: #4A4A4A;
-            --brillo: rgba(193, 154, 107, 0.2);
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+            --borde: rgba(93, 64, 55, 0.1);
         }
 
         body.dark-mode {
-            --bg: #120E0C;
-            --card: #1E1815;
-            --accent: #D4AF37;
-            --primario: #F9F8F6;
-            --texto: #CCCCCC;
-            --brillo: rgba(212, 175, 55, 0.15);
+            --primario: #D7CCC8; 
+            --acento: #D4AF37; 
+            --fondo: #1A1A1A; 
+            --blanco: #2D2D2D;
+            --texto: #F5F5F0; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.5);
+            --borde: rgba(255, 255, 255, 0.1);
         }
 
-        /* Fondo Animado "Partículas de Luz" */
-        .luz-fondo { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
-        .particula { position: absolute; bottom: -20px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px 2px var(--accent); opacity: 0; }
-        @keyframes subirLuz {
-            0% { transform: translateY(0) scale(0.5); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Contenedor App */
-        .app-container { max-width: 550px; margin: 100px auto 100px; padding: 0 20px; }
-
-        /* Header con Animación */
-        header { text-align: center; margin-bottom: 50px; animation: fadeDown 1s ease-out; }
-        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primario); margin: 0; font-weight: 700; text-shadow: 0 4px 15px var(--brillo); }
-        .oracion-header { font-family: 'Playfair Display', serif; font-style: italic; color: var(--accent); font-size: 1.15rem; margin-top: 15px; line-height: 1.6; }
-        .separador { width: 50px; height: 2px; background: var(--accent); margin: 20px auto; border-radius: 2px; }
-
-        /* Tarjetas Espirituales (Reemplazo del Acordeón) */
-        .spiritual-card {
-            background: var(--card); border-radius: 20px; margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06); overflow: hidden;
-            border: 1px solid rgba(193, 154, 107, 0.15); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            animation: fadeUp 0.8s ease-out forwards; opacity: 0; transform: translateY(30px);
+        /* NAVEGACIÓN SUPERIOR */
+        nav { 
+            position: sticky; top: 0; width: 100%; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: var(--fondo);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: background 0.3s;
         }
-        .spiritual-card:hover { box-shadow: 0 15px 40px var(--brillo); transform: translateY(-5px); border-color: var(--accent); }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        .card-header { padding: 25px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
-        .card-title-group { display: flex; align-items: center; gap: 18px; }
-        
-        /* Icono con pulsación suave */
-        .icon-glow { width: 45px; height: 45px; border-radius: 50%; background: var(--brillo); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.3rem; transition: 0.4s; animation: latido 3s infinite ease-in-out; }
-        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); box-shadow: 0 0 15px var(--brillo); } }
-        
-        .spiritual-card.active .icon-glow { background: var(--accent); color: var(--card); animation: none; transform: scale(1.1); }
-        .card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primario); font-weight: 700; margin: 0; }
-        .card-subtitle { font-size: 0.85rem; color: var(--texto); opacity: 0.8; margin-top: 4px; font-weight: 500; }
-        .arrow-btn { color: var(--accent); font-size: 1.1rem; transition: 0.4s; }
-        .spiritual-card.active .arrow-btn { transform: rotate(180deg); }
-
-        /* Contenido Desplegable Animado */
-        .card-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); background: var(--card); }
-        .spiritual-card.active .card-body { max-height: 1000px; transition: max-height 0.8s ease-in-out; }
-        
-        .card-content-inner { padding: 0 25px 30px; border-top: 1px dashed rgba(193, 154, 107, 0.3); margin-top: 10px; padding-top: 20px; }
-        .frase-inspiradora { font-family: 'Playfair Display', serif; font-style: italic; color: var(--texto); font-size: 1rem; text-align: center; margin-bottom: 25px; line-height: 1.5; }
-
-        /* Botones de Acción Mejorados */
-        .action-link {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 20px; background: rgba(0,0,0,0.02); border-radius: 12px;
-            text-decoration: none; color: var(--primario); font-weight: 600; font-size: 0.95rem;
-            margin-bottom: 12px; transition: 0.3s; border: 1px solid transparent;
-            position: relative; overflow: hidden;
+        .nav-btn {
+            background: var(--blanco); padding: 8px 16px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 700;
+            font-size: 0.9rem; display: flex; gap: 8px; align-items: center;
+            box-shadow: var(--sombra); transition: 0.3s;
         }
-        body.dark-mode .action-link { background: rgba(255,255,255,0.03); }
-        
-        .action-link:hover { background: var(--primario); color: var(--bg); border-color: var(--primario); transform: translateX(5px); }
-        .link-left { display: flex; align-items: center; gap: 15px; z-index: 2; }
-        .link-left i { font-size: 1.2rem; transition: 0.3s; }
-        
-        /* Colores específicos de redes para los iconos */
-        .icon-wa { color: #25D366; }
-        .icon-yt { color: #FF0000; }
-        .icon-ig { color: #E1306C; }
-        .icon-fb { color: #1877F2; }
-        
-        .action-link:hover .link-left i { color: var(--bg); }
-        .action-link .fa-chevron-right { font-size: 0.8rem; opacity: 0.5; transition: 0.3s; z-index: 2; color: var(--accent); }
-        .action-link:hover .fa-chevron-right { opacity: 1; transform: translateX(3px); color: var(--bg); }
 
-        /* Navegación y Ayuda Fija */
-        .top-navbar { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        body.dark-mode .top-navbar { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
-        .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primario); font-size: 1.1rem; }
-        .icon-btn { width: 38px; height: 38px; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--accent); text-decoration: none; cursor: pointer; transition: 0.3s; }
-        
-        /* Botón Donar a la derecha */
-        .float-help { position: fixed; bottom: 20px; right: 20px; left: auto !important; z-index: 100; background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; animation: pulse 3s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(193, 154, 107, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(193, 154, 107, 0); } 100% { box-shadow: 0 0 0 0 rgba(193, 154, 107, 0); } }
+        .icon-btn { cursor: pointer; border: none; font-size: 1.2rem; color: var(--acento); }
 
+        /* TOAST DICCIONARIO SUTIL */
+        #toast-diccionario {
+            position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%);
+            background: var(--primario); color: white; padding: 20px;
+            border-radius: 16px; font-weight: 500; font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000;
+            display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 400px;
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-top: 5px solid var(--acento); text-align: center;
+        }
+        #toast-diccionario.show { bottom: 30px; }
+        .dic-title { color: var(--acento); font-weight: 700; font-family: 'Playfair Display', serif; font-size: 1.2rem;}
+
+        .diccionario {
+            border-bottom: 2px dotted var(--acento);
+            color: var(--primario); font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+        body.dark-mode .diccionario { color: var(--acento); }
+
+        /* CABECERA */
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
+        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+
+        .container { max-width: 800px; margin: 0 auto 40px; width: 100%; padding: 0 20px; }
+
+        /* ACORDEÓN */
+        .accordion { background: var(--blanco); border-radius: 16px; overflow: hidden; box-shadow: var(--sombra); margin-bottom: 15px; border: 1px solid var(--borde); transition: 0.3s; }
+        .accordion-header { width: 100%; text-align: left; padding: 20px; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: var(--primario); font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; transition: 0.3s; }
+        .accordion-header i.icon-main { font-size: 1.5rem; color: var(--acento); margin-right: 15px; width: 30px; text-align: center; }
+        .accordion-header i.icon-arrow { font-size: 1rem; color: var(--texto); opacity: 0.5; transition: transform 0.3s; }
+        .accordion-header.active i.icon-arrow { transform: rotate(180deg); color: var(--acento); opacity: 1; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: var(--fondo); }
+        .accordion-body { padding: 20px; font-size: 0.95rem; line-height: 1.6; color: var(--texto); border-top: 1px solid var(--borde); }
+
+        /* LISTAS Y ORACIONES */
+        .step-list { list-style: none; padding: 0; margin-top: 10px; }
+        .step-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .step-list li i { position: absolute; left: 0; top: 3px; font-size: 1.2rem; color: var(--acento); width: 30px; text-align: center; }
+        .step-title { font-weight: 700; color: var(--primario); font-size: 1.05rem; display: block; margin-bottom: 5px; }
+        
+        .oracion-box { 
+            background: var(--fondo); padding: 20px; border-radius: 10px; 
+            border-left: 4px solid var(--acento); margin: 15px 0; 
+            font-size: 0.95rem; line-height: 1.6; color: var(--texto);
+        }
+        body.dark-mode .oracion-box { background: rgba(255,255,255,0.05); }
+
+        /* SECCIÓN DE DONACIÓN UNIFICADA */
+        .donacion-banner {
+            background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px);
+            border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); 
+            display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3);
+        }
+        .donacion-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .donacion-text { font-size: 0.85rem; opacity: 0.8; max-width: 600px; line-height: 1.5;}
+        
+        .donacion-alias {
+            background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 15px 0;
+            border: 1px dashed var(--acento); width: 100%; max-width: 350px;
+        }
+        .alias-texto { font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px; }
+        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
+
+        .donacion-btn {
+            background: transparent; color: var(--acento); border: 2px solid var(--acento);
+            padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .donacion-btn:hover { background: var(--acento); color: var(--blanco); }
+
+        /* FOOTER Y BOTONES FLOTANTES */
+        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
+        .f-title { font-weight: 700; font-size: 1rem; }
+        .f-sub { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
+
+        .float-container { position: fixed; bottom: 25px; right: 25px; z-index: 100; display: flex; flex-direction: column; gap: 10px; }
+        .f-btn {
+            width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
+            color: white; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: transform 0.3s;
+        }
+        .f-btn:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <div class="luz-fondo" id="fondoLuz"></div>
-
-    <nav class="top-navbar">
-        <div class="logo-text">Santa Ana</div>
-        <div class="controls">
-            <a href="index.html" class="icon-btn" title="Inicio"><i class="fas fa-home"></i></a>
-            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
-        </div>
-    </nav>
-
-    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
-        <i class="fas fa-hand-holding-heart"></i>
-    </button>
-
-    <main class="app-container">
-        <header>
-            <h1>Oración</h1>
-            <div class="separador"></div>
-            <p class="oracion-header">"Señor, aquieta mi mente, abre mi corazón y escucha mi plegaria en este día."</p>
-            <p class="subtitle" style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin-top: 15px; color: var(--texto);">Elegí cómo querés conectar hoy con la Capilla.</p>
-        </header>
-
-        <div class="spiritual-card" style="animation-delay: 0.1s;">
-            <div class="card-header" onclick="toggleCard(this)">
-                <div class="card-title-group">
-                    <div class="icon-glow"><i class="fas fa-hands-praying"></i></div>
-                    <div>
-                        <h2 class="card-title">Comunidad de Oración</h2>
-                        <p class="card-subtitle">Dejá tu intención y recemos juntos</p>
-                    </div>
-                </div>
-                <i class="fas fa-chevron-down arrow-btn"></i>
-            </div>
-            <div class="card-body">
-                <div class="card-content-inner">
-                    <p class="frase-inspiradora">Rezar en comunidad multiplica nuestra fuerza. Sumate a nuestra red o acompañanos en el Rosario.</p>
-                    
-                    <a href="https://wa.me/5493517023789" class="action-link" target="_blank">
-                        <div class="link-left"><i class="fab fa-whatsapp icon-wa"></i> <span>Mandar Intención (WhatsApp)</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    
-                    <a href="https://www.youtube.com/@CapillaSantaAna" class="action-link" target="_blank">
-                        <div class="link-left"><i class="fab fa-youtube icon-yt"></i> <span>Santo Rosario en Vivo</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="spiritual-card" style="animation-delay: 0.3s;">
-            <div class="card-header" onclick="toggleCard(this)">
-                <div class="card-title-group">
-                    <div class="icon-glow"><i class="fas fa-church"></i></div>
-                    <div>
-                        <h2 class="card-title">Nuestras Redes</h2>
-                        <p class="card-subtitle">Seguí el día a día de la Capilla</p>
-                    </div>
-                </div>
-                <i class="fas fa-chevron-down arrow-btn"></i>
-            </div>
-            <div class="card-body">
-                <div class="card-content-inner">
-                    <p class="frase-inspiradora">Mantenete al tanto de los horarios de misa, eventos solidarios y mensajes de nuestra comunidad.</p>
-                    
-                    <a href="https://www.instagram.com/capilla.santa.ana/" class="action-link" target="_blank">
-                        <div class="link-left"><i class="fab fa-instagram icon-ig"></i> <span>Seguinos en Instagram</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-
-                    <a href="#" class="action-link" target="_blank"> <div class="link-left"><i class="fab fa-facebook icon-fb"></i> <span>Seguinos en Facebook</span></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <div id="modalHelp" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="cerrarModal()">&times;</button>
-            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
-            <span class="section-title">Ofrenda de Amor</span>
-            <p class="copy-donar-dinero"></p>
-            <div class="alias-box alias-global"></div>
-            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
-            <span class="section-title">Ofrenda de Vida</span>
-            <p class="copy-donar-talento"></p>
-            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
-                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
+    <nav>
+        <div style="display: flex; gap: 10px;">
+            <a href="profundiza.html" class="nav-btn">
+                <i class="fas fa-arrow-left"></i> Volver
             </a>
         </div>
+        <button class="nav-btn icon-btn" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <div id="toast-diccionario">
+        <div class="dic-title" id="dic-word">Palabra</div>
+        <div id="dic-def">Definición de la palabra.</div>
     </div>
 
-    <div class="toast" id="toast">¡Copiado con éxito!</div>
+    <header>
+        <h1>Conecta con Dios</h1>
+        <p class="subtitle">Hablar con Dios no tiene que ser complicado. Tocá la guía que necesites hoy y descubrí lo fácil que es encontrarte con Él. (Tocá las palabras subrayadas para aprender su significado).</p>
+    </header>
 
-    <script src="config-global.js"></script>
-    <script>
-        // Animación de Partículas de Luz
-        function crearLuces() {
-            const fondo = document.getElementById('fondoLuz');
-            for (let i = 0; i < 20; i++) {
-                let particula = document.createElement('div');
-                particula.className = 'particula';
-                particula.style.left = Math.random() * 100 + 'vw';
-                particula.style.animation = `subirLuz ${10 + Math.random() * 15}s ease-in infinite`;
-                particula.style.animationDelay = `${Math.random() * 5}s`;
-                fondo.appendChild(particula);
-            }
-        }
-
-        // Lógica de Tarjetas Expandibles (Acordeón Premium)
-        function toggleCard(header) {
-            const card = header.parentElement;
-            const todas = document.querySelectorAll('.spiritual-card');
-            
-            if (card.classList.contains('active')) {
-                card.classList.remove('active');
-            } else {
-                todas.forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                if(navigator.vibrate) navigator.vibrate(20);
-            }
-        }
-
-        // Modales
-        function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
-        function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
-        function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
+    <div class="container">
         
-        // Tema Oscuro
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-book-open icon-main"></i> Orar con la Biblia</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <p>La <span class="diccionario" onclick="mostrarDefinicion('Lectio Divina', 'Expresión latina que significa literalmente «Lectura de Dios». Es un método muy antiguo de oración y meditación.')">Lectio Divina</span> es un método milenario para leer la Biblia como un mensaje escrito para vos hoy. Elegí un pasaje corto y seguí estos 5 pasos:</p>
+                    
+                    <ul class="step-list">
+                        <li><i class="fas fa-eye"></i><span class="step-title">1. Lectura (¿Qué dice?)</span> Leé el texto lentamente. ¿Qué está pasando en la historia? Prestá atención a las palabras clave.</li>
+                        <li><i class="fas fa-brain"></i><span class="step-title">2. Meditación (¿Qué me dice?)</span> ¿Qué me dice Dios a mí a través de este texto? Dejá que una palabra te haga eco.</li>
+                        <li><i class="fas fa-hands-praying"></i><span class="step-title">3. Oración (¿Qué le respondo?)</span> Hablale desde lo que sentiste: pedí perdón, da gracias o pedile ayuda.</li>
+                        <li><i class="fas fa-heart"></i><span class="step-title">4. Contemplación (Descansar)</span> Hacé silencio. Ya no hacen falta palabras, solo disfrutar de que Él está con vos.</li>
+                        <li><i class="fas fa-shoe-prints"></i><span class="step-title">5. Acción (¿A qué me comprometo?)</span> Llevate un propósito pequeño para cumplir en el día.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-compass icon-main"></i> Pausa para cerrar el día</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <p>Conocido como el <span class="diccionario" onclick="mostrarDefinicion('Examen Ignaciano', 'Práctica espiritual creada por San Ignacio de Loyola para revisar el día y encontrar dónde estuvo Dios.')">Examen Ignaciano</span>, se hace preferentemente de noche. Sirve para revisar tu día y encontrar las huellas de Dios.</p>
+                    
+                    <ul class="step-list">
+                        <li><i class="fas fa-gift"></i><span class="step-title">1. Agradecer</span> Agradecele a Dios por 2 o 3 cosas buenas que te pasaron hoy, por más chicas que sean.</li>
+                        <li><i class="fas fa-lightbulb"></i><span class="step-title">2. Pedir Luz</span> Pedile a Dios que te ayude a ver tu día sin juzgarte duro, sino con su mirada de amor.</li>
+                        <li><i class="fas fa-film"></i><span class="step-title">3. Repasar la película</span> Pasá la "película" de tu día desde que te levantaste hasta ahora.</li>
+                        <li><i class="fas fa-hand-holding-heart"></i><span class="step-title">4. Pedir Perdón</span> Si te das cuenta de que perdiste la paciencia o lastimaste a alguien, pedile perdón a Dios.</li>
+                        <li><i class="fas fa-sun"></i><span class="step-title">5. Mirar a mañana</span> Decidí un pequeño cambio positivo para el día siguiente.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-ring icon-main"></i> Cómo rezar el Rosario</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <p>El Rosario es como mirar el álbum de fotos de la vida de Jesús junto a su Mamá.</p>
+                    
+                    <ul class="step-list">
+                        <li><i class="fas fa-cross"></i><span class="step-title">1. El inicio</span> Empezá persignándote y rezando el Credo.</li>
+                        <li><i class="fas fa-circle-dot"></i><span class="step-title">2. Preparación</span> Rezá un Padrenuestro, tres Avemarías y un Gloria.</li>
+                        <li><i class="fas fa-om"></i><span class="step-title">3. Los 5 Misterios</span> Anunciá el <span class="diccionario" onclick="mostrarDefinicion('Misterios', 'Son 20 episodios o escenas importantes de la vida de Jesús y la Virgen que recordamos al rezar.')">Misterio</span> que toca. Rezá 1 Padrenuestro, 10 Avemarías y 1 Gloria. (Hacé esto 5 veces).</li>
+                        <li><i class="fas fa-crown"></i><span class="step-title">4. El cierre</span> Al terminar, rezá la oración de "La <span class="diccionario" onclick="mostrarDefinicion('Salve', 'Significa ¡Dios te salve!. Es una oración antigua y muy querida para coronar a la Virgen como Reina y Madre.')">Salve</span>".</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-hands icon-main"></i> Oraciones de Siempre</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    
+                    <div class="oracion-box">
+                        <span class="step-title">Padrenuestro</span>
+                        Padre nuestro, que estás en el cielo, santificado sea tu Nombre; venga a nosotros tu reino; hágase tu voluntad en la tierra como en el cielo.<br><br>
+                        Danos hoy nuestro pan de cada día; perdona nuestras ofensas, como también nosotros perdonamos a los que nos ofenden; no nos dejes caer en la tentación, y líbranos del mal. Amén.
+                    </div>
+
+                    <div class="oracion-box">
+                        <span class="step-title">Avemaría</span>
+                        Dios te salve, María, llena eres de gracia, el Señor es contigo. Bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús.<br><br>
+                        Santa María, Madre de Dios, ruega por nosotros, pecadores, ahora y en la hora de nuestra muerte. Amén.
+                    </div>
+
+                    <div class="oracion-box">
+                        <span class="step-title">Gloria</span>
+                        Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.
+                    </div>
+
+                    <div class="oracion-box">
+                        <span class="step-title">Ángel de la Guarda</span>
+                        Ángel de mi guarda, dulce compañía, no me desampares ni de noche ni de día, hasta que me pongas en paz y alegría, con todos los santos, Jesús, José y María. Amén.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="donacion-banner">
+        <div class="donacion-title"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <div class="donacion-text">Si este contenido te ayudó a vivir mejor tu fe y querés colaborar para que sigamos evangelizando, podés hacer tu aporte voluntario a la Capilla.</div>
+        
+        <div class="donacion-alias">
+            <span class="alias-texto">Alias de la cuenta:</span>
+            <strong class="alias-valor">capillas.fatima.ag</strong>
+        </div>
+
+        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
+            <i class="fab fa-whatsapp"></i> Enviar Comprobante
+        </a>
+    </div>
+
+    <footer>
+        <div class="f-title">Capilla Santa Ana</div>
+        <div class="f-sub">Guías prácticas para vivir la fe</div>
+    </footer>
+
+    <div class="float-container">
+        <a href="index.html" class="f-btn" style="background: var(--primario);" title="Volver al Inicio" aria-label="Inicio">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        // Funciones del Diccionario de Fe (Toast)
+        let diccionarioTimeout;
+        function mostrarDefinicion(palabra, definicion) {
+            document.getElementById('dic-word').innerText = palabra;
+            document.getElementById('dic-def').innerText = definicion;
+            const toast = document.getElementById('toast-diccionario');
+            
+            clearTimeout(diccionarioTimeout);
+            toast.classList.add('show');
+            
+            // Ocultar a los 6 segundos automáticamente
+            diccionarioTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 6000);
+        }
+
+        const accordions = document.querySelectorAll(".accordion-header");
+        accordions.forEach(acc => {
+            acc.addEventListener("click", function() {
+                accordions.forEach(otherAcc => {
+                    if(otherAcc !== this && otherAcc.classList.contains("active")) {
+                        otherAcc.classList.remove("active");
+                        otherAcc.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) { content.style.maxHeight = null; } 
+                else { content.style.maxHeight = content.scrollHeight + "px"; }
+            });
+        });
+
         function toggleDarkMode() {
-            if(navigator.vibrate) navigator.vibrate(20);
             document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('darkIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            const icon = document.querySelector('.icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
+            }
         }
 
         window.onload = () => {
-            crearLuces(); 
-            if(localStorage.getItem('theme') === 'dark') {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-mode');
-                document.getElementById('darkIcon').className = 'fas fa-sun';
+                icon.classList.replace('fa-moon', 'fa-sun');
             }
         };
     </script>
