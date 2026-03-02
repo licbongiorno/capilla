@@ -18,12 +18,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* OVERRIDES: Desbloqueamos el scroll que el CSS maestro oculta para las cartas */
+        /* OVERRIDES: Desbloqueamos el scroll y ajustamos el botón a la derecha */
         html, body { 
             height: auto; 
             overflow: visible; 
             overflow-x: hidden; 
             background-color: var(--bg);
+        }
+
+        /* Fuerza al botón flotante a ir a la derecha en esta pantalla */
+        .float-help {
+            left: auto !important;
+            right: 20px !important;
         }
 
         :root {
@@ -106,7 +112,6 @@
 
         footer { text-align: center; padding: 40px; color: var(--card); font-size: 0.9rem; opacity: 0.7;}
         
-        /* Ajuste top-bar para esta página */
         .top-bar-mazos { position: absolute; top: 0; left: 0; width: 100%; padding: 25px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
     </style>
 </head>
@@ -118,6 +123,7 @@
         <div class="logo-text" style="color: var(--accent); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem;">Santa Ana</div>
         <div class="controls">
             <a href="../index.html" class="icon-btn" title="Ir al Inicio"><i class="fas fa-home"></i></a>
+            <a href="../profundiza.html" class="icon-btn" title="Ir a Profundiza"><i class="fas fa-layer-group"></i></a>
             <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
         </div>
     </div>
