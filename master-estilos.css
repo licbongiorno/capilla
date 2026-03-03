@@ -1,46 +1,19 @@
-/* master-estilos.css - Va en la RAÍZ del proyecto */
+/* Variables de color */
 :root {
-    --bg: #150809; 
-    --card: #FFFAF0;
-    --card-back: #7A2031; 
-    --accent: #E5C158; 
-    --primario: #3A171D;
-    --transition-swipe: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+    --texto: #2D2D2D; --gold-light: rgba(193, 154, 107, 0.2);
 }
 
-body.dark-mode {
-    --bg: #0A0304; --card: #1C1113; --card-back: #4A121D;
-    --accent: #CBA03A; --primario: #F3E6E8;
+/* Estilos de la Cabecera */
+nav { 
+    position: fixed; top: 0; width: 100%; height: 95px; 
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+    z-index: 1000; display: flex; justify-content: space-between; 
+    align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); 
 }
 
-html, body { height: 100dvh; width: 100vw; margin: 0; overflow-x: hidden; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--card); transition: background 0.5s ease; }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+.logo-container { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.nav-logo-img { height: 65px; width: auto; object-fit: contain; }
+.logo-texto { font-size: 1.25rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1px; }
 
-/* Fondo animado */
-.bg-words { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
-.floating-word { position: absolute; bottom: -50px; color: rgba(255, 255, 255, 0.05); font-family: 'Playfair Display', serif; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
-@keyframes floatUp { to { transform: translateY(-120vh) rotate(15deg) scale(1.2); opacity: 0; } }
-
-/* Botones Iconos Base */
-.icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--accent); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; backdrop-filter: blur(12px); text-decoration: none; transition: 0.3s; }
-.icon-btn:active { transform: scale(0.9); }
-
-/* Botón Ayudar Fijo */
-.float-help { position: fixed; bottom: 20px; left: 20px; z-index: 100; background: linear-gradient(135deg, var(--card-back), var(--primario)); border: 2px solid var(--accent); color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: pulseGlow 3s infinite; border: none; cursor: pointer;}
-@keyframes pulseGlow { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.2); } 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255,255,255,0); } }
-
-/* Modal Premium */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: flex-end; padding: 15px; padding-bottom: 30px; opacity: 0; transition: 0.3s; backdrop-filter: blur(5px); }
-.modal.show { opacity: 1; }
-.modal-content { background: var(--card); color: var(--primario); padding: 35px 25px; border-radius: 25px; width: 100%; max-width: 420px; text-align: center; border: 2px solid var(--accent); transform: translateY(100%); transition: 0.4s; position: relative; }
-.modal.show .modal-content { transform: translateY(0); }
-.modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.05); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primario); }
-.section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 20px 0 10px; color: var(--card-back); display: block; font-weight: 700; }
-.alias-box { font-family: monospace; font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; background: rgba(0,0,0,0.04); padding: 15px 10px; border-radius: 12px; border: 2px dashed var(--accent); margin: 15px 0; color: var(--primario); word-break: break-all; }
-.btn-action { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 50px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; }
-
-/* Efecto Click */
-.ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple-anim 0.6s linear; background: rgba(255, 255, 255, 0.4); pointer-events: none; }
-@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
-.toast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--bg); padding: 12px 25px; border-radius: 50px; font-weight: 800; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 10000; font-size: 0.9rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.toast.show { top: 40px; }
+/* ... el resto de tus estilos de nav-links y menu-toggle ... */
