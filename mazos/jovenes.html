@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Jóvenes | Capilla Santa Ana</title>
+    <title>Abrazo de Dios | Capilla Santa Ana</title>
     
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
     
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
@@ -34,12 +38,12 @@
     </nav>
 
     <main style="padding-top: 140px; text-align: center; min-height: 85vh;">
-        <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 5px;">Horizontes Nuevos</h2>
-        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Propósito y Realidad</p>
+        <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 5px;">Abrazo de Dios</h2>
+        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Consuelo y Esperanza</p>
         
         <div class="card-scene">
             <div class="card-display" id="cardBox">
-                <i class="fas fa-bolt card-icon" style="color: #00BCD4;"></i>
+                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4;"></i>
                 <div class="card-text" id="cardText">Cargando reflexión...</div>
             </div>
         </div>
@@ -52,7 +56,7 @@
 
     <div class="float-container">
         <button class="f-btn" onclick="toggleModal('modalOfrenda')" title="Sumá tu Corazón">
-            <i class="fas fa-hand-holding-heart"></i>
+            <i class="fas fa-heart"></i>
         </button>
     </div>
 
@@ -61,39 +65,54 @@
             <button class="modal-close" onclick="toggleModal('modalOfrenda')">&times;</button>
             <i class="fas fa-heart" style="font-size: 3rem; color: var(--acento); margin-bottom: 15px;"></i>
             <h3>Sumá tu Corazón</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 20px;">Tu ofrenda nos ayuda a seguir creando espacios para que los jóvenes encuentren su camino.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">Tu ofrenda nos ayuda a sostener estos espacios de paz.</p>
             <div class="alias-box">capillas.fatima.ag</div>
             <button class="btn-card btn-next" style="width:100%; justify-content:center;" onclick="copiarAlias()">Copiar Alias</button>
         </div>
     </div>
 
-    <script src="../config-global.js"></script>
+    <script src="data-abrazo.js"></script> <script src="../config-global.js"></script>
     <script>
+        // Inicialización de datos
+        // Asumimos que el array dentro de data-abrazo.js se llama 'dataAbrazo'
         const mazoData = {
-            titulo: "Horizontes Nuevos",
-            preguntas: [
-                "¿Cuál es el 'ruido' que más te impide escuchar lo que realmente sentís hoy?",
-                "Si pudieras pedirle un solo consejo a Jesús sobre tu futuro, ¿qué le preguntarías?",
-                "¿En qué momento de hoy sentiste que estabas siendo realmente vos mismo?",
-                "¿Qué etiqueta que el mundo te puso te gustaría sacarte hoy delante de Dios?",
-                "¿Cómo podés ser hoy luz para un amigo que la está pasando mal?",
-                "¿Qué es lo que más te apasiona y cómo creés que eso puede ayudar a otros?"
-            ]
+            titulo: "Abrazo de Dios",
+            preguntas: typeof dataAbrazo !== 'undefined' ? dataAbrazo : ["No se encontraron preguntas en el archivo de datos."]
         };
-        let currentIdx = 0;
-        document.getElementById('cardText').innerText = mazoData.preguntas[0];
+
+        let currentIdx = Math.floor(Math.random() * mazoData.preguntas.length);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('cardText').innerText = mazoData.preguntas[currentIdx];
+        });
+
         function proximaCarta() {
             const card = document.getElementById('cardBox');
             card.classList.add('changing');
+            
             setTimeout(() => {
-                currentIdx = (currentIdx + 1) % mazoData.preguntas.length;
+                // Seleccionamos una nueva pregunta al azar para que sea más dinámico (72 opciones)
+                let newIdx;
+                do {
+                    newIdx = Math.floor(Math.random() * mazoData.preguntas.length);
+                } while (newIdx === currentIdx);
+                
+                currentIdx = newIdx;
                 document.getElementById('cardText').innerText = mazoData.preguntas[currentIdx];
                 card.classList.remove('changing');
             }, 400);
         }
+
         function compartirWA() {
             const txt = mazoData.preguntas[currentIdx];
-            window.open(`https://wa.me/?text=${encodeURIComponent("✨ Una pregunta para el alma joven:\n\n\"" + txt + "\"\n\nReflexioná acá: " + window.location.href)}`, '_blank');
+            const url = window.location.href;
+            const link = `https://wa.me/?text=${encodeURIComponent("✨ Una pregunta para el alma:\n\n" + "\"" + txt + "\"\n\nReflexioná acá: " + url)}`;
+            window.open(link, '_blank');
+        }
+
+        function copiarAlias() {
+            navigator.clipboard.writeText("capillas.fatima.ag");
+            alert("¡Alias copiado! Muchas gracias por tu generosidad.");
         }
     </script>
 </body>
