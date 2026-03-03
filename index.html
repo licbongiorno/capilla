@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
@@ -7,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#F5F5F0">
     <meta name="color-scheme" content="light dark">
-    
     <meta name="author" content="Capilla Santa Ana">
     <meta name="description" content="Bienvenido a tu casa. Sumate a la Capilla Santa Ana en Villa Parque Santa Ana. Horarios de misa, Cáritas, ropero comunitario, sacramentos, casamientos, bautismos y vida comunitaria.">
     <meta name="keywords" content="Misa, Iglesia Católica, Capilla Santa Ana, Villa Parque Santa Ana, Córdoba, Cáritas, Merendero, Ropero Comunitario, Bautismos, Casamientos, Comunión, Horarios de Misa">
@@ -37,10 +35,9 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      // REEMPLAZÁ G-XXXXXXXXXX POR TU ID REAL
       gtag('config', 'G-XXXXXXXXXX');
     </script>
+
     <style>
         :root {
             --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
@@ -56,7 +53,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html, body { overflow-x: hidden; }
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; } /* Ajustado para el nuevo nav más alto */
         
         body { 
             font-family: 'Montserrat', sans-serif; 
@@ -86,18 +83,47 @@
         .progress-container { width: 100%; height: 4px; background: transparent; position: fixed; top: 0; z-index: 2001; }
         .progress-bar { height: 100%; background: var(--acento); width: 0%; transition: width 0.1s ease; }
 
-        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
+        /* =========================================================
+           NUEVA CABECERA (NAV) CON LOGO PNG INTEGRADO Y MÁS ALTA 
+           ========================================================= */
+        nav { 
+            position: fixed; top: 0; width: 100%; height: 95px; /* Altura ajustada a 95px */
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+            z-index: 1000; display: flex; justify-content: space-between; 
+            align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); 
+            transition: 0.3s; 
+        }
         body.dark-mode nav { background: rgba(18,18,18,0.95); }
         
-        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; }
-        
-        .nav-links { display: flex; list-style: none; gap: 20px; transition: 0.3s ease-in-out; }
-        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        /* Contenedor del Logo (Imagen + Texto) */
+        .logo-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; /* Espacio reducido y estético entre el logo y el texto */
+            text-decoration: none; 
+        }
+        .nav-logo-img { 
+            height: 65px; /* El tamaño grande y majestuoso que pediste */
+            width: auto; 
+            object-fit: contain; 
+        }
+        .logo-texto { 
+            font-size: 1.25rem; 
+            font-weight: 800; 
+            color: var(--primario); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            line-height: 1;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; list-style: none; gap: 15px; transition: 0.3s ease-in-out; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         .nav-links a i { display: none; }
         .nav-links a:hover { color: var(--acento); }
         
-        .nav-actions { display: flex; gap: 20px; align-items: center; }
-        .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.3rem; transition: 0.3s; }
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.2rem; transition: 0.3s; }
         .icon-btn:hover { color: var(--acento); }
         
         .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1001; }
@@ -108,10 +134,13 @@
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
         @media (max-width: 900px) {
+            nav { height: 85px; } /* En celulares lo achicamos apenas */
+            .nav-logo-img { height: 55px; } /* Ajuste del logo en celular */
+            .logo-texto { font-size: 1.1rem; }
             .menu-toggle { display: flex; }
-            .nav-links { position: absolute; top: 80px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
+            .nav-links { position: absolute; top: 85px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
             body.dark-mode .nav-links { background: #1a1a1a; border-top: 1px solid #333; }
-            .nav-links.active { max-height: calc(100vh - 80px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
+            .nav-links.active { max-height: calc(100vh - 85px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
             .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid var(--gold-light); }
             body.dark-mode .nav-links li { border-bottom: 1px solid #333; }
             .nav-links li:last-child { border-bottom: none; }
@@ -120,10 +149,10 @@
         }
 
         /* --- HERO --- */
-        .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; }
+        .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; /* Empujamos el hero para que no se meta abajo del nav */ }
+        @media (max-width: 900px) { .hero { margin-top: 85px; } }
         
         picture { display: contents; }
-        
         .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; }
         .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8)); z-index: 1; }
 
@@ -207,24 +236,28 @@
     <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
     
     <nav>
-        <div class="logo">Capilla Santa Ana</div>
+        <a href="index.html" class="logo-container">
+            <img src="icono.png" alt="Cruz de la Capilla" class="nav-logo-img">
+            <span class="logo-texto">Capilla Santa Ana</span>
+        </a>
         
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
-            <li><a href="#espiritual" onclick="closeMenu()"><i class="fas fa-book-open"></i> Alimento</a></li>
-            <li><a href="mazos.html" onclick="closeMenu()"><i class="fas fa-layer-group"></i> Mazos</a></li>
-            <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
-            <li><a href="#participa" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Participá</a></li>
-            <li><a href="#donar" onclick="closeMenu()"><i class="fas fa-heart"></i> Donar</a></li>
-        </ul>
-
-        <div class="nav-actions">
-            <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
-            <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+        <div class="nav-right">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
+                <li><a href="#espiritual" onclick="closeMenu()"><i class="fas fa-book-open"></i> Alimento</a></li>
+                <li><a href="mazos.html" onclick="closeMenu()"><i class="fas fa-layer-group"></i> Mazos</a></li>
+                <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
+                <li><a href="#participa" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Participá</a></li>
+                <li><a href="#donar" onclick="closeMenu()"><i class="fas fa-heart"></i> Donar</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -289,18 +322,15 @@
             </div>
             
             <div class="grid-cards">
-                
                 <div class="card">
                     <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Grupos Juveniles</h3>
                     <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="far fa-clock"></i> Sábados 16:30 hs</p>
                     <p style="margin-bottom: 15px;">Sala de Catequesis</p>
-                    
                     <ul style="text-align: left; list-style: none; padding-left: 0; font-size: 0.95rem; margin-bottom: 20px;">
                         <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Pre-Juvenil:</strong> 12 a 14 años</li>
                         <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Juvenil:</strong> 15+ años</li>
                     </ul>
-                    
                     <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento);">
                         <strong>Requisitos de Confirmación:</strong><br>Fotocopia de DNI y Certificado de Bautismo.<br><br>
                         <strong>Coordinadores (Escribinos):</strong><br>
@@ -342,9 +372,9 @@
                     <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Talleres</h3>
                     <p>Brindamos apoyo solidario a familias en vulnerabilidad y fomentamos el desarrollo a través de talleres de oficios y manualidades.</p>
                 </div>
-
             </div>
         </section>
+
         <section id="participa">
             <div class="section-header">
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">No seas un espectador</p>
