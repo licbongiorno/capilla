@@ -3,294 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Reflexiones para el Alma | Capilla Santa Ana</title>
+    <title>Glosario de la Fe | Capilla Santa Ana</title>
     
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
-    
-    <link rel="stylesheet" href="../master-estilos.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* OVERRIDES: Desbloqueamos el scroll */
-        html, body { 
-            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
-        }
-
-        /* Fuerza al botón flotante de donar a ir a la derecha en esta pantalla */
-        .float-help { left: auto !important; right: 20px !important; }
-
         :root {
-            --sombra-mazos: 0 15px 35px rgba(0, 0, 0, 0.1);
-            --sombra-hover-mazos: 0 20px 40px rgba(0, 0, 0, 0.2);
-            --texto-secundario: #555;
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08); --borde: rgba(93, 64, 55, 0.1);
         }
 
         body.dark-mode {
-            --sombra-mazos: 0 15px 35px rgba(0, 0, 0, 0.5);
-            --sombra-hover-mazos: 0 20px 40px rgba(0, 0, 0, 0.7);
-            --texto-secundario: #aaa;
+            --primario: #D7CCC8; --acento: #D4AF37; --fondo: #1A1A1A; --blanco: #2D2D2D;
+            --texto: #F5F5F0; --sombra: 0 10px 25px rgba(0,0,0,0.5); --gold-light: rgba(212, 175, 55, 0.2);
+            --borde: rgba(255, 255, 255, 0.1);
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--fondo); color: var(--texto); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; scroll-behavior: smooth; }
 
-        /* --- NUEVA NAVEGACIÓN "FLOATING PILL" --- */
-        .top-navbar {
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 500px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            transition: 0.3s;
-        }
-        body.dark-mode .top-navbar {
-            background: rgba(0, 0, 0, 0.3); border-color: rgba(255,255,255,0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
+        /* NAVEGACIÓN SUPERIOR */
+        nav { position: sticky; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; background: var(--fondo); box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: background 0.3s; }
+        .nav-btn { background: var(--blanco); padding: 8px 16px; border-radius: 50px; text-decoration: none; color: var(--primario); font-weight: 700; font-size: 0.9rem; display: flex; gap: 8px; align-items: center; box-shadow: var(--sombra); transition: 0.3s; }
+        .icon-btn { cursor: pointer; border: none; font-size: 1.2rem; color: var(--acento); background: transparent; }
+
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
+        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+
+        /* BÚSQUEDA */
+        .search-container { max-width: 600px; margin: 0 auto 20px; padding: 0 20px; width: 100%; position: relative; }
+        .search-icon { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); color: var(--acento); font-size: 1.2rem; }
+        .search-box { width: 100%; padding: 15px 20px 15px 50px; border-radius: 50px; border: 2px solid var(--gold-light); background: var(--blanco); color: var(--texto); font-size: 1rem; font-family: 'Montserrat', sans-serif; box-shadow: var(--sombra); transition: 0.3s; outline: none; }
+        .search-box:focus { border-color: var(--acento); }
+
+        /* FILTROS (CATEGORÍAS Y LETRAS) */
+        .filtros-wrapper { max-width: 900px; margin: 0 auto 30px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
+        .wrap-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         
-        .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.5px; margin-left: 5px; }
-        .top-navbar .controls { display: flex; gap: 8px; }
-        .top-navbar .icon-btn { 
-            width: 38px; height: 38px; font-size: 1rem; /* Un poco más chicos para la cápsula */
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* --- Header --- */
-        header { text-align: center; padding: 120px 20px 40px; position: relative; }
-        header::after {
-            content: '☩'; position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%); font-size: 1.5rem; color: var(--accent); opacity: 0.6;
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.2rem, 6vw, 3.5rem); color: var(--accent); margin: 0; font-weight: 700; line-height: 1.1;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .subtitle {
-            font-weight: 500; font-style: italic; color: var(--card);
-            margin-top: 18px; font-size: 1.05rem; max-width: 600px; margin-inline: auto; opacity: 0.9; line-height: 1.6;
-        }
-
-        /* --- Grid de Mazos --- */
-        .mazos-container { max-width: 1200px; margin: 20px auto 100px; padding: 0 20px; }
+        .cat-btn { background: var(--fondo); border: 1px solid var(--gold-light); color: var(--texto); padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cat-btn.active { background: var(--primario); color: var(--blanco); border-color: var(--primario); }
         
-        .seccion-titulo {
-            font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--card);
-            margin: 50px 0 25px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 10px;
-        }
+        .abc-btn { background: var(--blanco); border: 1px solid var(--gold-light); color: var(--primario); font-weight: 700; width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: var(--sombra); }
+        .abc-btn.active { background: var(--acento); color: var(--blanco); border-color: var(--acento); transform: scale(1.1); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        /* GRILLA Y TARJETAS */
+        .grid-glosario { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto 50px; padding: 0 20px; width: 100%; }
+        .term-card { background: var(--blanco); border-radius: 16px; padding: 25px 25px 25px 25px; box-shadow: var(--sombra); border-left: 5px solid var(--acento); transition: 0.3s; animation: fadeIn 0.4s ease-in-out; position: relative; }
+        .term-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        
+        /* ILUMINACIÓN AL ABRIR UN LINK COMPARTIDO */
+        .term-card.destacado { border-left: 5px solid var(--verde-wa); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); animation: pulse 2s infinite; }
+        
+        .term-badge { background: var(--gold-light); color: var(--primario); font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .term-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primario); margin-bottom: 8px; font-weight: 700; padding-right: 30px; }
+        .term-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.85; }
+        
+        /* BOTÓN COMPARTIR WHATSAPP */
+        .share-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; font-size: 1.4rem; color: #b0b0b0; cursor: pointer; transition: 0.3s; }
+        .share-btn:hover { color: var(--verde-wa); transform: scale(1.15); }
 
-        .mazo-card {
-            background: var(--card); border-radius: 20px; padding: 35px 25px;
-            text-decoration: none; color: var(--primario);
-            box-shadow: var(--sombra-mazos); position: relative;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            border-top: 4px solid transparent; opacity: 0; transform: translateY(30px);
-            animation: fadeUp 0.6s forwards; transition: all 0.4s ease;
-        }
-        .mazo-card:hover {
-            transform: translateY(-8px); box-shadow: var(--sombra-hover-mazos);
-            border-top: 4px solid var(--accent);
-        }
+        .no-results { text-align: center; width: 100%; font-size: 1.1rem; opacity: 0.7; grid-column: 1 / -1; display: none; padding: 40px; font-style: italic; }
+        .error-msg { text-align: center; width: 100%; color: #d32f2f; font-weight: bold; padding: 20px; display: none; grid-column: 1 / -1; background: #ffebee; border-radius: 10px; margin-bottom: 20px; }
 
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        .icon-wrapper {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; color: var(--accent); margin-bottom: 20px; transition: all 0.3s;
-        }
-        .mazo-card:hover .icon-wrapper { background: var(--accent); color: var(--bg); transform: scale(1.1); }
+        /* DONACIÓN UNIFICADA */
+        .donacion-banner { background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px); border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3); }
+        .donacion-alias { background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 15px 0; border: 1px dashed var(--acento); width: 100%; max-width: 350px; }
+        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
+        .donacion-btn { background: transparent; color: var(--acento); border: 2px solid var(--acento); padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
 
-        .mazo-card h3 {
-            font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primario);
-            margin: 0 0 10px; font-weight: 700;
-        }
-        .mazo-card p { font-size: 0.95rem; color: var(--texto-secundario); margin: 0; line-height: 1.5; font-weight: 500;}
-
-        .btn-entrar {
-            margin-top: 25px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--accent); display: flex; align-items: center; gap: 8px;
-            transition: 0.3s;
-        }
-        .mazo-card:hover .btn-entrar { color: var(--primario); gap: 12px; }
-
-        footer { text-align: center; padding: 40px; color: var(--card); font-size: 0.9rem; opacity: 0.7;}
+        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
+        .float-container { position: fixed; bottom: 25px; right: 25px; z-index: 100; display: flex; flex-direction: column; gap: 10px; }
+        .f-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: white; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: transform 0.3s; }
+        .f-btn:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <nav class="top-navbar">
-        <div class="logo-text">Santa Ana</div>
-        <div class="controls">
-            <a href="../index.html" class="icon-btn" title="Ir al Inicio"><i class="fas fa-home"></i></a>
-            <a href="../profundiza.html" class="icon-btn" title="Ir a Profundiza"><i class="fas fa-layer-group"></i></a>
-            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
-        </div>
+    <nav>
+        <a href="profundiza.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Volver</a>
+        <button class="nav-btn icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
     </nav>
 
-    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
-        <i class="fas fa-hand-holding-heart"></i>
-    </button>
-
     <header>
-        <h1>Reflexiones<br>para el Alma</h1>
-        <p class="subtitle">Elegí un mazo y hacé una pausa. Una invitación a mirar hacia adentro, buscar la luz y encontrar respuestas en el camino.</p>
+        <h1>Glosario de la Fe</h1>
+        <p class="subtitle">Un diccionario simple y amigable para entender aquellas palabras de la Iglesia que a veces parecen difíciles.</p>
     </header>
 
-    <main class="mazos-container">
-        <h2 class="seccion-titulo">Caminos de Crecimiento</h2>
-        <div class="grid">
-            <a href="nenes4-6.html" class="mazo-card" style="animation-delay: 0.1s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-child-reaching"></i></div>
-                <h3>Niños (4 a 6)</h3>
-                <p>Pequeñas semillitas de amor para hablar de Jesús con los más chicos.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="creciendo.html" class="mazo-card" style="animation-delay: 0.2s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-seedling"></i></div>
-                <h3>Creciendo (6 a 8)</h3>
-                <p>Preguntas y juegos para descubrir el camino de la fe jugando.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="jovenes.html" class="mazo-card" style="animation-delay: 0.3s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-bolt"></i></div>
-                <h3>Jóvenes</h3>
-                <p>Identidad, propósito y luz. Reflexiones para la juventud de hoy.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-box" placeholder="Buscá una palabra o significado..." oninput="aplicarFiltros()">
+    </div>
+
+    <div class="filtros-wrapper">
+        <div class="wrap-container" id="catContainer">
+            <button class="cat-btn active" onclick="setCategoria('ALL')">Todas las categorías</button>
         </div>
-
-        <h2 class="seccion-titulo">Sacramentos y Vocación</h2>
-        <div class="grid">
-            <a href="catequesis.html" class="mazo-card" style="animation-delay: 0.4s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-book-bible"></i></div>
-                <h3>Catequesis</h3>
-                <p>Formación profunda para entender y amar las raíces de nuestra fe.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="comunion.html" class="mazo-card" style="animation-delay: 0.5s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-wheat-awn"></i></div>
-                <h3>1° Comunión</h3>
-                <p>Preparando el corazón para recibir el Pan de Vida por primera vez.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="confirmacion.html" class="mazo-card" style="animation-delay: 0.6s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-fire-flame-curved"></i></div>
-                <h3>Confirmación</h3>
-                <p>Los dones del Espíritu Santo para ser testigos valientes en el mundo.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="matrimonio.html" class="mazo-card" style="animation-delay: 0.7s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-ring"></i></div>
-                <h3>Matrimonio</h3>
-                <p>Amor, unidad y paciencia. Un refugio para fortalecer la pareja diaria.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-        </div>
-
-        <h2 class="seccion-titulo">Espiritualidad y Sanación</h2>
-        <div class="grid">
-            <a href="abrazo.html" class="mazo-card" style="animation-delay: 0.8s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-hands-holding-child"></i></div>
-                <h3>Abrazo de Dios</h3>
-                <p>Palabras de consuelo profundo para los momentos de tristeza y dolor.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="sabiduria.html" class="mazo-card" style="animation-delay: 0.9s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-feather-pointed"></i></div>
-                <h3>Sabiduría</h3>
-                <p>El legado de los Santos para iluminar nuestras decisiones diarias.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="servidores.html" class="mazo-card" style="animation-delay: 1.0s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-hands-praying"></i></div>
-                <h3>Servidores</h3>
-                <p>Aliento y humildad para quienes trabajan sirviendo en la Capilla.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="ecologia.html" class="mazo-card" style="animation-delay: 1.1s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-leaf"></i></div>
-                <h3>Hermana Tierra</h3>
-                <p>Reflexiones sobre el cuidado de la creación y la casa común.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-            <a href="trascendencia.html" class="mazo-card" style="animation-delay: 1.2s;">
-                <div class="icon-wrapper"><i class="fa-solid fa-infinity"></i></div>
-                <h3>Trascendencia</h3>
-                <p>Mirar hacia lo eterno: la esperanza del cielo y la vida definitiva.</p>
-                <div class="btn-entrar">Explorar <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
-        </div>
-    </main>
-
-    <div id="modalHelp" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="cerrarModal()">&times;</button>
-            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
-            
-            <span class="section-title">Ofrenda de Amor</span>
-            <p class="copy-donar-dinero" style="font-size: 0.95rem; margin: 0;"></p>
-            <div class="alias-box alias-global"></div>
-            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
-
-            <span class="section-title">Ofrenda de Vida</span>
-            <p class="copy-donar-talento" style="font-size: 0.95rem; margin: 0 0 15px;"></p>
-            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
-                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
-            </a>
+        <div class="wrap-container" id="abcContainer">
+            <button class="abc-btn active" onclick="setLetra('ALL')">All</button>
         </div>
     </div>
-    
-    <div class="toast" id="toast">¡Copiado con éxito!</div>
 
-    <footer>&copy; 2026 Capilla Santa Ana | Que la Palabra ilumine tu vida.</footer>
+    <div class="grid-glosario" id="glosarioGrid">
+        <div id="error-msg" class="error-msg">Error: No se pudo cargar el archivo glosario-data.js. Asegurate de que no falten comas en el archivo.</div>
+        <div id="no-results" class="no-results">
+            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--acento); margin-bottom: 15px; display:block;"></i>
+            No encontramos resultados con esos filtros.
+        </div>
+    </div>
 
-    <script src="../config-global.js"></script>
+    <div class="donacion-banner">
+        <div style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <div style="font-size: 0.85rem; opacity: 0.8; max-width: 600px;">Si este glosario te ayudó a conocer más tu fe, podés hacer tu aporte voluntario a la Capilla.</div>
+        <div class="donacion-alias">
+            <span style="font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px;">Alias de la cuenta:</span>
+            <strong class="alias-valor">capillas.fatima.ag</strong>
+        </div>
+        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
+            <i class="fab fa-whatsapp"></i> Enviar Comprobante
+        </a>
+    </div>
+
+    <footer>
+        <div style="font-weight: 700;">Capilla Santa Ana</div>
+        <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Formación y Catequesis Permanente</div>
+    </footer>
+
+    <div class="float-container">
+        <a href="index.html" class="f-btn" style="background: var(--primario);"><i class="fas fa-home"></i></a>
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <script src="glosario-data.js"></script>
 
     <script>
-        function abrirModal() { const m = document.getElementById('modalHelp'); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); }
-        function cerrarModal() { const m = document.getElementById('modalHelp'); m.classList.remove('show'); setTimeout(() => m.style.display = 'none', 300); }
-        window.onclick = (e) => { if (e.target == document.getElementById('modalHelp')) cerrarModal(); }
+        let letraActual = 'ALL';
+        let categoriaActual = 'ALL';
         
-        function copiarAlias() {
-            if (navigator.vibrate) navigator.vibrate([30,50,30]);
-            navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => {
-                const t = document.getElementById('toast'); 
-                t.classList.add('show'); 
-                setTimeout(() => t.classList.remove('show'), 3000);
+        const grid = document.getElementById('glosarioGrid');
+        const catContainer = document.getElementById('catContainer');
+        const abcContainer = document.getElementById('abcContainer');
+        const noResults = document.getElementById('no-results');
+        const errorMsg = document.getElementById('error-msg');
+
+        function iniciarGlosario() {
+            if (typeof glosarioTerminos === 'undefined') {
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // 1. Ordenar alfabéticamente
+            glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino, 'es', { sensitivity: 'base' }));
+
+            // 2. Extraer Categorías Únicas
+            const categoriasUnicas = [...new Set(glosarioTerminos.map(t => t.categoria))].filter(Boolean);
+            categoriasUnicas.forEach(cat => {
+                catContainer.innerHTML += `<button class="cat-btn" onclick="setCategoria('${cat}')">${cat}</button>`;
             });
+
+            // 3. Extraer Letras Únicas
+            const letrasUnicas = [...new Set(glosarioTerminos.map(t => t.termino.charAt(0).toUpperCase()))];
+            letrasUnicas.forEach(letra => {
+                abcContainer.innerHTML += `<button class="abc-btn" onclick="setLetra('${letra}')">${letra}</button>`;
+            });
+
+            aplicarFiltros();
+            
+            // Revisar si entraron desde un link compartido (ej: #bautismo)
+            setTimeout(revisarLinkCompartido, 300);
+        }
+
+        // --- FUNCIÓN PARA COMPARTIR POR WHATSAPP ---
+        function compartirTermino(id, termino) {
+            // Agarramos la URL actual, le sacamos cualquier hash viejo y le sumamos el ID nuevo
+            const baseUrl = window.location.origin + window.location.pathname;
+            const urlCompartir = `${baseUrl}#${id}`;
+            
+            const textoMensaje = `¡Mirá esto! Significado de "${termino}" en el Glosario de la Capilla Santa Ana: ${urlCompartir}`;
+            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(textoMensaje)}`;
+            
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        // --- FUNCIÓN PARA LEER EL LINK COMPARTIDO AL ABRIR ---
+        function revisarLinkCompartido() {
+            const hash = window.location.hash; // Ej: "#bautismo"
+            if (hash) {
+                const tarjetaId = hash.substring(1); // "bautismo"
+                const tarjeta = document.getElementById(tarjetaId);
+                
+                if (tarjeta) {
+                    // Hacer scroll suave hasta la tarjeta
+                    tarjeta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Iluminarla en verde
+                    tarjeta.classList.add('destacado');
+                    // Sacarle la luz después de 4 segundos
+                    setTimeout(() => tarjeta.classList.remove('destacado'), 4000);
+                }
+            }
+        }
+
+        function setCategoria(cat) {
+            categoriaActual = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            Array.from(document.querySelectorAll('.cat-btn')).find(b => b.innerText === (cat === 'ALL' ? 'Todas las categorías' : cat)).classList.add('active');
+            aplicarFiltros();
+        }
+
+        function setLetra(letra) {
+            letraActual = letra;
+            document.querySelectorAll('.abc-btn').forEach(b => b.classList.remove('active'));
+            Array.from(document.querySelectorAll('.abc-btn')).find(b => b.innerText === (letra === 'ALL' ? 'All' : letra)).classList.add('active');
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase().trim();
+            grid.innerHTML = '';
+            grid.appendChild(noResults);
+            grid.appendChild(errorMsg);
+
+            let resultados = glosarioTerminos.filter(t => {
+                let coincideTexto = textoBusqueda === '' || 
+                    t.termino.toLowerCase().includes(textoBusqueda) || 
+                    t.definicion.toLowerCase().includes(textoBusqueda);
+                let coincideCat = categoriaActual === 'ALL' || t.categoria === categoriaActual;
+                let letraTermino = t.termino.charAt(0).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+                let coincideLetra = letraActual === 'ALL' || letraTermino === letraActual;
+
+                return coincideTexto && coincideCat && coincideLetra;
+            });
+
+            if (textoBusqueda !== '') {
+                resultados.sort((a, b) => {
+                    const aTerm = a.termino.toLowerCase();
+                    const bTerm = b.termino.toLowerCase();
+                    if (aTerm === textoBusqueda && bTerm !== textoBusqueda) return -1;
+                    if (bTerm === textoBusqueda && aTerm !== textoBusqueda) return 1;
+                    const aEmpieza = aTerm.startsWith(textoBusqueda);
+                    const bEmpieza = bTerm.startsWith(textoBusqueda);
+                    if (aEmpieza && !bEmpieza) return -1;
+                    if (!aEmpieza && bEmpieza) return 1;
+                    return 0;
+                });
+            }
+
+            if (resultados.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                resultados.forEach(item => {
+                    grid.innerHTML += `
+                        <div class="term-card" id="${item.id}">
+                            <button class="share-btn" onclick="compartirTermino('${item.id}', '${item.termino}')" title="Compartir por WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <div class="term-badge">${item.categoria || 'Término'}</div>
+                            <div class="term-title">${item.termino}</div>
+                            <div class="term-desc">${item.definicion}</div>
+                        </div>
+                    `;
+                });
+            }
         }
 
         function toggleDarkMode() {
-            if (navigator.vibrate) navigator.vibrate(20);
             document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('darkIcon');
+            const icon = document.querySelector('.icon-btn i');
             if (document.body.classList.contains('dark-mode')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
             } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'light');
+                icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
             }
         }
 
         window.onload = () => {
-            if(localStorage.getItem('theme') === 'dark') {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-mode');
-                document.getElementById('darkIcon').classList.replace('fa-moon', 'fa-sun');
+                icon.classList.replace('fa-moon', 'fa-sun');
             }
+            iniciarGlosario();
         };
     </script>
 </body>
