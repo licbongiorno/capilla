@@ -5,293 +5,230 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Glosario de la Fe | Capilla Santa Ana</title>
     
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+
+    <link rel="stylesheet" href="master-estilos.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+        html, body { 
+            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
+        }
+
         :root {
-            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
-            --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
-            --sombra: 0 10px 25px rgba(0,0,0,0.08); --borde: rgba(93, 64, 55, 0.1);
+            --bg: #F9F8F6;
+            --card: #FFFFFF;
+            --accent: #B8860B; 
+            --primario: #4A332D; 
+            --texto: #4A4A4A;
+            --brillo: rgba(184, 134, 11, 0.15);
         }
 
         body.dark-mode {
-            --primario: #D7CCC8; --acento: #D4AF37; --fondo: #1A1A1A; --blanco: #2D2D2D;
-            --texto: #F5F5F0; --sombra: 0 10px 25px rgba(0,0,0,0.5); --gold-light: rgba(212, 175, 55, 0.2);
-            --borde: rgba(255, 255, 255, 0.1);
+            --bg: #120E0C; --card: #1E1815; --accent: #D4AF37; 
+            --primario: #F9F8F6; --texto: #CCCCCC; --brillo: rgba(212, 175, 55, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--fondo); color: var(--texto); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; scroll-behavior: smooth; }
+        /* --- NAVEGACIÓN INVISIBLE Y ESTÉTICA --- */
+        .top-nav-clean {
+            position: absolute; top: 20px; left: 0; width: 100%;
+            display: flex; justify-content: space-between; padding: 0 20px; z-index: 100;
+        }
+        .clean-btn {
+            width: 45px; height: 45px; border-radius: 50%; background: var(--card);
+            color: var(--primario); display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer; text-decoration: none; font-size: 1.1rem; transition: 0.3s;
+        }
+        .clean-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--brillo); color: var(--accent); }
+        body.dark-mode .clean-btn { border-color: rgba(255,255,255,0.05); }
 
-        /* NAVEGACIÓN SUPERIOR */
-        nav { position: sticky; top: 0; width: 100%; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; background: var(--fondo); box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: background 0.3s; }
-        .nav-btn { background: var(--blanco); padding: 8px 16px; border-radius: 50px; text-decoration: none; color: var(--primario); font-weight: 700; font-size: 0.9rem; display: flex; gap: 8px; align-items: center; box-shadow: var(--sombra); transition: 0.3s; }
-        .icon-btn { cursor: pointer; border: none; font-size: 1.2rem; color: var(--acento); background: transparent; }
+        /* Contenedor Principal */
+        .app-container { max-width: 600px; margin: 100px auto 100px; padding: 0 20px; }
 
-        header { text-align: center; padding: 40px 20px 20px; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
-        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+        header { text-align: center; margin-bottom: 35px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin: 0; font-weight: 700; }
+        .subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: var(--texto); margin-top: 10px; opacity: 0.8; }
 
-        /* BÚSQUEDA */
-        .search-container { max-width: 600px; margin: 0 auto 20px; padding: 0 20px; width: 100%; position: relative; }
-        .search-icon { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); color: var(--acento); font-size: 1.2rem; }
-        .search-box { width: 100%; padding: 15px 20px 15px 50px; border-radius: 50px; border: 2px solid var(--gold-light); background: var(--blanco); color: var(--texto); font-size: 1rem; font-family: 'Montserrat', sans-serif; box-shadow: var(--sombra); transition: 0.3s; outline: none; }
-        .search-box:focus { border-color: var(--acento); }
+        /* Buscador */
+        .search-wrapper { position: sticky; top: 20px; z-index: 90; margin-bottom: 30px; }
+        .search-box {
+            display: flex; align-items: center; background: var(--card);
+            border-radius: 50px; padding: 15px 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(184, 134, 11, 0.1); transition: 0.3s;
+        }
+        .search-box:focus-within { box-shadow: 0 10px 30px var(--brillo); border-color: var(--accent); transform: translateY(-2px); }
+        .search-box i { color: var(--accent); font-size: 1.2rem; margin-right: 15px; }
+        .search-box input {
+            border: none; background: transparent; outline: none; width: 100%;
+            font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--primario); font-weight: 500;
+        }
+        .search-box input::placeholder { color: var(--texto); opacity: 0.5; }
 
-        /* FILTROS (CATEGORÍAS Y LETRAS) */
-        .filtros-wrapper { max-width: 900px; margin: 0 auto 30px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
-        .wrap-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        /* Grid de Palabras */
+        .terms-grid { display: flex; flex-direction: column; gap: 20px; }
+
+        .term-card {
+            background: var(--card); border-radius: 20px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 4px solid var(--accent);
+            transition: 0.3s; position: relative;
+        }
+        .term-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px var(--brillo); }
+
+        .term-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .term-badge { background: var(--brillo); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         
-        .cat-btn { background: var(--fondo); border: 1px solid var(--gold-light); color: var(--texto); padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .cat-btn.active { background: var(--primario); color: var(--blanco); border-color: var(--primario); }
-        
-        .abc-btn { background: var(--blanco); border: 1px solid var(--gold-light); color: var(--primario); font-weight: 700; width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: var(--sombra); }
-        .abc-btn.active { background: var(--acento); color: var(--blanco); border-color: var(--acento); transform: scale(1.1); }
+        .share-btn { background: transparent; border: none; color: var(--texto); font-size: 1.2rem; cursor: pointer; opacity: 0.4; transition: 0.3s; }
+        .share-btn:hover { color: var(--accent); opacity: 1; transform: scale(1.1); }
 
-        /* GRILLA Y TARJETAS */
-        .grid-glosario { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto 50px; padding: 0 20px; width: 100%; }
-        .term-card { background: var(--blanco); border-radius: 16px; padding: 25px 25px 25px 25px; box-shadow: var(--sombra); border-left: 5px solid var(--acento); transition: 0.3s; animation: fadeIn 0.4s ease-in-out; position: relative; }
-        .term-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-        
-        /* ILUMINACIÓN AL ABRIR UN LINK COMPARTIDO */
-        .term-card.destacado { border-left: 5px solid var(--verde-wa); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); animation: pulse 2s infinite; }
-        
-        .term-badge { background: var(--gold-light); color: var(--primario); font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .term-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primario); margin-bottom: 8px; font-weight: 700; padding-right: 30px; }
-        .term-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.85; }
-        
-        /* BOTÓN COMPARTIR WHATSAPP */
-        .share-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; font-size: 1.4rem; color: #b0b0b0; cursor: pointer; transition: 0.3s; }
-        .share-btn:hover { color: var(--verde-wa); transform: scale(1.15); }
+        .term-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario); margin: 0 0 10px; font-weight: 700; }
+        .term-desc { font-size: 0.95rem; color: var(--texto); line-height: 1.6; margin: 0; font-weight: 500; }
 
-        .no-results { text-align: center; width: 100%; font-size: 1.1rem; opacity: 0.7; grid-column: 1 / -1; display: none; padding: 40px; font-style: italic; }
-        .error-msg { text-align: center; width: 100%; color: #d32f2f; font-weight: bold; padding: 20px; display: none; grid-column: 1 / -1; background: #ffebee; border-radius: 10px; margin-bottom: 20px; }
+        .no-results { text-align: center; color: var(--texto); padding: 40px 20px; font-style: italic; opacity: 0.7; display: none; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
-        /* DONACIÓN UNIFICADA */
-        .donacion-banner { background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px); border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3); }
-        .donacion-alias { background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 15px 0; border: 1px dashed var(--acento); width: 100%; max-width: 350px; }
-        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
-        .donacion-btn { background: transparent; color: var(--acento); border: 2px solid var(--acento); padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-
-        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
-        .float-container { position: fixed; bottom: 25px; right: 25px; z-index: 100; display: flex; flex-direction: column; gap: 10px; }
-        .f-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: white; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: transform 0.3s; }
-        .f-btn:hover { transform: scale(1.1); }
+        /* Seguro local para el botón de ayuda a la derecha por si master-estilos falla */
+        .float-help { 
+            position: fixed; bottom: 20px; right: 20px; left: unset !important; z-index: 100; 
+            background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; 
+            width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; 
+        }
     </style>
 </head>
 <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <nav>
-        <a href="profundiza.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Volver</a>
-        <button class="nav-btn icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+    <nav class="top-nav-clean">
+        <a href="profundiza.html" class="clean-btn" title="Volver"><i class="fas fa-arrow-left"></i></a>
+        <button class="clean-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
     </nav>
 
-    <header>
-        <h1>Glosario de la Fe</h1>
-        <p class="subtitle">Un diccionario simple y amigable para entender aquellas palabras de la Iglesia que a veces parecen difíciles.</p>
-    </header>
+    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
+        <i class="fas fa-hand-holding-heart"></i>
+    </button>
 
-    <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-box" placeholder="Buscá una palabra o significado..." oninput="aplicarFiltros()">
-    </div>
+    <main class="app-container">
+        <header>
+            <h1>Palabras de Luz</h1>
+            <p class="subtitle">Buscá y descubrí el significado de los términos más usados en nuestra fe.</p>
+        </header>
 
-    <div class="filtros-wrapper">
-        <div class="wrap-container" id="catContainer">
-            <button class="cat-btn active" onclick="setCategoria('ALL')">Todas las categorías</button>
+        <div class="search-wrapper">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="buscador" placeholder="Buscar palabra (ej: Eucaristía)..." onkeyup="filtrarGlosario()">
+            </div>
         </div>
-        <div class="wrap-container" id="abcContainer">
-            <button class="abc-btn active" onclick="setLetra('ALL')">All</button>
+
+        <div id="noResults" class="no-results">
+            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i><br>
+            No encontramos esa palabra. Probá buscar un sinónimo.
+        </div>
+
+        <div id="listaTerminos" class="terms-grid"></div>
+    </main>
+
+    <div id="modalHelp" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
+            <span class="section-title">Ofrenda de Amor</span>
+            <p class="copy-donar-dinero"></p>
+            <div class="alias-box alias-global"></div>
+            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
+            <span class="section-title">Ofrenda de Vida</span>
+            <p class="copy-donar-talento"></p>
+            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
+                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
+            </a>
         </div>
     </div>
 
-    <div class="grid-glosario" id="glosarioGrid">
-        <div id="error-msg" class="error-msg">Error: No se pudo cargar el archivo glosario-data.js. Asegurate de que no falten comas en el archivo.</div>
-        <div id="no-results" class="no-results">
-            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--acento); margin-bottom: 15px; display:block;"></i>
-            No encontramos resultados con esos filtros.
-        </div>
-    </div>
+    <div class="toast" id="toast">¡Copiado con éxito!</div>
 
-    <div class="donacion-banner">
-        <div style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
-        <div style="font-size: 0.85rem; opacity: 0.8; max-width: 600px;">Si este glosario te ayudó a conocer más tu fe, podés hacer tu aporte voluntario a la Capilla.</div>
-        <div class="donacion-alias">
-            <span style="font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px;">Alias de la cuenta:</span>
-            <strong class="alias-valor">capillas.fatima.ag</strong>
-        </div>
-        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
-            <i class="fab fa-whatsapp"></i> Enviar Comprobante
-        </a>
-    </div>
-
-    <footer>
-        <div style="font-weight: 700;">Capilla Santa Ana</div>
-        <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Formación y Catequesis Permanente</div>
-    </footer>
-
-    <div class="float-container">
-        <a href="index.html" class="f-btn" style="background: var(--primario);"><i class="fas fa-home"></i></a>
-        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    </div>
-
-    <script src="glosario-data.js"></script>
-
+    <script src="config-global.js"></script>
+    <script src="glosario-data.js"></script> 
+    
     <script>
-        let letraActual = 'ALL';
-        let categoriaActual = 'ALL';
-        
-        const grid = document.getElementById('glosarioGrid');
-        const catContainer = document.getElementById('catContainer');
-        const abcContainer = document.getElementById('abcContainer');
-        const noResults = document.getElementById('no-results');
-        const errorMsg = document.getElementById('error-msg');
+        const contenedor = document.getElementById('listaTerminos');
+        const msjNoResults = document.getElementById('noResults');
 
-        function iniciarGlosario() {
-            if (typeof glosarioTerminos === 'undefined') {
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            // 1. Ordenar alfabéticamente
-            glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino, 'es', { sensitivity: 'base' }));
-
-            // 2. Extraer Categorías Únicas
-            const categoriasUnicas = [...new Set(glosarioTerminos.map(t => t.categoria))].filter(Boolean);
-            categoriasUnicas.forEach(cat => {
-                catContainer.innerHTML += `<button class="cat-btn" onclick="setCategoria('${cat}')">${cat}</button>`;
-            });
-
-            // 3. Extraer Letras Únicas
-            const letrasUnicas = [...new Set(glosarioTerminos.map(t => t.termino.charAt(0).toUpperCase()))];
-            letrasUnicas.forEach(letra => {
-                abcContainer.innerHTML += `<button class="abc-btn" onclick="setLetra('${letra}')">${letra}</button>`;
-            });
-
-            aplicarFiltros();
-            
-            // Revisar si entraron desde un link compartido (ej: #bautismo)
-            setTimeout(revisarLinkCompartido, 300);
-        }
-
-        // --- FUNCIÓN PARA COMPARTIR POR WHATSAPP ---
-        function compartirTermino(id, termino) {
-            // Agarramos la URL actual, le sacamos cualquier hash viejo y le sumamos el ID nuevo
-            const baseUrl = window.location.origin + window.location.pathname;
-            const urlCompartir = `${baseUrl}#${id}`;
-            
-            const textoMensaje = `¡Mirá esto! Significado de "${termino}" en el Glosario de la Capilla Santa Ana: ${urlCompartir}`;
-            const urlWhatsApp = `https://wa.me/?text=${encodeURIComponent(textoMensaje)}`;
-            
-            window.open(urlWhatsApp, '_blank');
-        }
-
-        // --- FUNCIÓN PARA LEER EL LINK COMPARTIDO AL ABRIR ---
-        function revisarLinkCompartido() {
-            const hash = window.location.hash; // Ej: "#bautismo"
-            if (hash) {
-                const tarjetaId = hash.substring(1); // "bautismo"
-                const tarjeta = document.getElementById(tarjetaId);
-                
-                if (tarjeta) {
-                    // Hacer scroll suave hasta la tarjeta
-                    tarjeta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Iluminarla en verde
-                    tarjeta.classList.add('destacado');
-                    // Sacarle la luz después de 4 segundos
-                    setTimeout(() => tarjeta.classList.remove('destacado'), 4000);
-                }
-            }
-        }
-
-        function setCategoria(cat) {
-            categoriaActual = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            Array.from(document.querySelectorAll('.cat-btn')).find(b => b.innerText === (cat === 'ALL' ? 'Todas las categorías' : cat)).classList.add('active');
-            aplicarFiltros();
-        }
-
-        function setLetra(letra) {
-            letraActual = letra;
-            document.querySelectorAll('.abc-btn').forEach(b => b.classList.remove('active'));
-            Array.from(document.querySelectorAll('.abc-btn')).find(b => b.innerText === (letra === 'ALL' ? 'All' : letra)).classList.add('active');
-            aplicarFiltros();
-        }
-
-        function aplicarFiltros() {
-            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase().trim();
-            grid.innerHTML = '';
-            grid.appendChild(noResults);
-            grid.appendChild(errorMsg);
-
-            let resultados = glosarioTerminos.filter(t => {
-                let coincideTexto = textoBusqueda === '' || 
-                    t.termino.toLowerCase().includes(textoBusqueda) || 
-                    t.definicion.toLowerCase().includes(textoBusqueda);
-                let coincideCat = categoriaActual === 'ALL' || t.categoria === categoriaActual;
-                let letraTermino = t.termino.charAt(0).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-                let coincideLetra = letraActual === 'ALL' || letraTermino === letraActual;
-
-                return coincideTexto && coincideCat && coincideLetra;
-            });
-
-            if (textoBusqueda !== '') {
-                resultados.sort((a, b) => {
-                    const aTerm = a.termino.toLowerCase();
-                    const bTerm = b.termino.toLowerCase();
-                    if (aTerm === textoBusqueda && bTerm !== textoBusqueda) return -1;
-                    if (bTerm === textoBusqueda && aTerm !== textoBusqueda) return 1;
-                    const aEmpieza = aTerm.startsWith(textoBusqueda);
-                    const bEmpieza = bTerm.startsWith(textoBusqueda);
-                    if (aEmpieza && !bEmpieza) return -1;
-                    if (!aEmpieza && bEmpieza) return 1;
-                    return 0;
-                });
-            }
-
-            if (resultados.length === 0) {
-                noResults.style.display = 'block';
+        function renderizarGlosario(terminos) {
+            contenedor.innerHTML = '';
+            if (terminos.length === 0) {
+                msjNoResults.style.display = 'block';
             } else {
-                noResults.style.display = 'none';
-                resultados.forEach(item => {
-                    grid.innerHTML += `
-                        <div class="term-card" id="${item.id}">
-                            <button class="share-btn" onclick="compartirTermino('${item.id}', '${item.termino}')" title="Compartir por WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
+                msjNoResults.style.display = 'none';
+                terminos.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'term-card';
+                    card.innerHTML = `
+                        <div class="term-header">
+                            <span class="term-badge">${item.categoria || 'Glosario'}</span>
+                            <button class="share-btn" onclick="compartirTermino('${item.termino.replace(/'/g, "\\'")}', '${item.definicion.replace(/'/g, "\\'")}')" title="Compartir">
+                                <i class="fas fa-share-nodes"></i>
                             </button>
-                            <div class="term-badge">${item.categoria || 'Término'}</div>
-                            <div class="term-title">${item.termino}</div>
-                            <div class="term-desc">${item.definicion}</div>
                         </div>
+                        <h3 class="term-title">${item.termino}</h3>
+                        <p class="term-desc">${item.definicion}</p>
                     `;
+                    contenedor.appendChild(card);
                 });
             }
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('.icon-btn i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
+        function filtrarGlosario() {
+            const texto = document.getElementById('buscador').value.toLowerCase();
+            const filtrados = glosarioTerminos.filter(t => 
+                t.termino.toLowerCase().includes(texto) || 
+                t.definicion.toLowerCase().includes(texto)
+            );
+            renderizarGlosario(filtrados);
+        }
+
+        async function compartirTermino(titulo, definicion) {
+            if(navigator.vibrate) navigator.vibrate(30);
+            const msg = `📖 *${titulo}*\\n${definicion}\\n\\nAprendé más en la web de la Capilla Santa Ana: ${window.location.href}`;
+            if (navigator.share) {
+                await navigator.share({ title: titulo, text: msg });
             } else {
-                icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
+                navigator.clipboard.writeText(msg).then(() => {
+                    const t = document.getElementById('toast');
+                    t.innerText = "¡Definición copiada!";
+                    t.classList.add('show'); 
+                    setTimeout(() => { t.classList.remove('show'); t.innerText = "¡Copiado con éxito!"; }, 3000);
+                });
             }
+        }
+
+        function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
+        function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
+        function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
+        
+        function toggleDarkMode() {
+            if(navigator.vibrate) navigator.vibrate(20);
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
         }
 
         window.onload = () => {
-            const savedTheme = localStorage.getItem('theme');
-            const icon = document.querySelector('.icon-btn i');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino));
+            renderizarGlosario(glosarioTerminos);
+
+            if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
-                icon.classList.replace('fa-moon', 'fa-sun');
+                document.getElementById('darkIcon').className = 'fas fa-sun';
             }
-            iniciarGlosario();
         };
     </script>
 </body>
