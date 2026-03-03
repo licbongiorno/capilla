@@ -23,20 +23,19 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="mazos.html">Mazos</a></li>
+                <li><a href="../profundiza.html">Profundizá</a></li>
                 <li><a href="#" onclick="toggleModal('modalOfrenda')">Ofrenda</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="toggleDarkMode()" aria-label="Cambiar modo"><i class="fas fa-moon" id="darkIcon"></i></button>
-                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menú">
-                    <span></span><span></span><span></span>
-                </button>
+                <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
     <main style="padding-top: 140px; text-align: center; min-height: 85vh;">
         <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 5px;">Pan de Vida</h2>
-        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Reflexiones sobre la Eucaristía</p>
+        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Comunión y Alimento</p>
         
         <div class="card-scene">
             <div class="card-display" id="cardBox">
@@ -46,12 +45,8 @@
         </div>
 
         <div class="mazo-actions">
-            <button class="btn-card btn-share" onclick="compartirWA()">
-                <i class="fab fa-whatsapp"></i> Compartir
-            </button>
-            <button class="btn-card btn-next" onclick="proximaCarta()">
-                Siguiente <i class="fas fa-arrow-right"></i>
-            </button>
+            <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
         </div>
     </main>
 
@@ -66,7 +61,7 @@
             <button class="modal-close" onclick="toggleModal('modalOfrenda')">&times;</button>
             <i class="fas fa-heart" style="font-size: 3rem; color: var(--acento); margin-bottom: 15px;"></i>
             <h3>Sumá tu Corazón</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 20px; opacity: 0.8;">Tu ofrenda nos permite seguir compartiendo el Pan de la Palabra de forma digital.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">Tu ofrenda nos permite seguir compartiendo la Palabra digitalmente.</p>
             <div class="alias-box">capillas.fatima.ag</div>
             <button class="btn-card btn-next" style="width:100%; justify-content:center;" onclick="copiarAlias()">Copiar Alias</button>
         </div>
@@ -77,39 +72,27 @@
         const mazoData = {
             titulo: "Pan de Vida",
             preguntas: [
-                "¿Qué significa para vos hoy que Jesús sea el 'Pan' que te da fuerzas en medio de tus cansancios?",
-                "¿En qué momento de esta semana sentiste más hambre de paz y de encuentro con lo sagrado?",
-                "Si Jesús te invitara a compartir su mesa hoy, ¿de qué te gustaría charlar con Él sinceramente?",
-                "¿Cómo podés convertirte vos en 'alimento' o consuelo para alguien que lo necesite en tu familia hoy?",
-                "¿Qué parte de tu vida personal o familiar te gustaría que Jesús transforme con su presencia?",
-                "¿A quién te gustaría acercar a la mesa de Jesús que hoy se siente lejos o excluido?"
+                "¿Qué significa hoy para vos recibir a Jesús?",
+                "¿Cómo te sentís después de comulgar y entrar en silencio?",
+                "¿Qué le dirías a Jesús en este momento si estuviera sentado con vos?",
+                "¿En qué área de tu vida necesitás que Él sea hoy tu fortaleza?",
+                "¿Cómo podés llevar hoy a Jesús a los demás con tus acciones?"
             ]
         };
-
         let currentIdx = 0;
         document.getElementById('cardText').innerText = mazoData.preguntas[0];
-
         function proximaCarta() {
             const card = document.getElementById('cardBox');
             card.classList.add('changing');
-            
             setTimeout(() => {
                 currentIdx = (currentIdx + 1) % mazoData.preguntas.length;
                 document.getElementById('cardText').innerText = mazoData.preguntas[currentIdx];
                 card.classList.remove('changing');
             }, 400);
         }
-
         function compartirWA() {
             const txt = mazoData.preguntas[currentIdx];
-            const url = window.location.href;
-            const link = `https://wa.me/?text=${encodeURIComponent("✨ Una pregunta para el alma de la Capilla Santa Ana:\n\n" + "\"" + txt + "\"\n\nReflexioná acá: " + url)}`;
-            window.open(link, '_blank');
-        }
-
-        function copiarAlias() {
-            navigator.clipboard.writeText("capillas.fatima.ag");
-            alert("¡Alias copiado! Muchas gracias por tu generosidad.");
+            window.open(`https://wa.me/?text=${encodeURIComponent("✨ Una pregunta para el alma:\n\n\"" + txt + "\"\n\nRespondé acá: " + window.location.href)}`, '_blank');
         }
     </script>
 </body>
