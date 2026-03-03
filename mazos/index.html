@@ -5,159 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Glosario de la Fe | Capilla Santa Ana</title>
     
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
 
     <link rel="stylesheet" href="master-estilos.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        html, body { 
-            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
-        }
-
+        /* VARIABLES EXACTAS DE TU WEB PRINCIPAL */
         :root {
-            --bg: #F9F8F6;
-            --card: #FFFFFF;
-            --accent: #B8860B; 
-            --primario: #4A332D; 
-            --texto: #4A4A4A;
-            --brillo: rgba(184, 134, 11, 0.15);
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 30px rgba(0,0,0,0.08); --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
         }
-
         body.dark-mode {
-            --bg: #120E0C; --card: #1E1815; --accent: #D4AF37; 
-            --primario: #F9F8F6; --texto: #CCCCCC; --brillo: rgba(212, 175, 55, 0.15);
+            --primario: #E0C097; --acento: #D4A373; --fondo: #121212; --blanco: #1E1E1E; 
+            --texto: #E0E0E0; --sombra: 0 10px 30px rgba(0,0,0,0.5); --sombra-fuerte: 0 15px 40px rgba(0, 0, 0, 0.8);
         }
 
-        /* --- NAVEGACIÓN INVISIBLE Y ESTÉTICA --- */
-        .top-nav-clean {
-            position: absolute; top: 20px; left: 0; width: 100%;
-            display: flex; justify-content: space-between; padding: 0 20px; z-index: 100;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; background-color: var(--fondo); color: var(--texto); font-family: 'Montserrat', sans-serif; }
+
+        /* --- CABECERA (NAV) IGUAL AL INDEX --- */
+        nav { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
+        body.dark-mode nav { background: rgba(18,18,18,0.95); }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1.5px; }
+        .nav-links { display: flex; list-style: none; gap: 20px; transition: 0.3s ease-in-out; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a i { display: none; }
+        .nav-links a:hover { color: var(--acento); }
+        .nav-actions { display: flex; gap: 20px; align-items: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.3rem; transition: 0.3s; }
+        .icon-btn:hover { color: var(--acento); }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { display: block; width: 100%; height: 3px; background-color: var(--primario); border-radius: 3px; transition: all 0.3s ease-in-out; }
+        body.dark-mode .menu-toggle span { background-color: var(--acento); }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links { position: absolute; top: 80px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
+            body.dark-mode .nav-links { background: #1a1a1a; border-top: 1px solid #333; }
+            .nav-links.active { max-height: calc(100vh - 80px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid var(--gold-light); }
+            body.dark-mode .nav-links li { border-bottom: 1px solid #333; }
+            .nav-links li:last-child { border-bottom: none; }
+            .nav-links a { display: flex; align-items: center; gap: 15px; padding: 22px 8%; font-size: 1.1rem; font-weight: 700; text-transform: none; }
+            .nav-links a i { display: inline-block; font-size: 1.3rem; color: var(--acento); width: 25px; text-align: center; }
         }
-        .clean-btn {
-            width: 45px; height: 45px; border-radius: 50%; background: var(--card);
-            color: var(--primario); display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
-            cursor: pointer; text-decoration: none; font-size: 1.1rem; transition: 0.3s;
+
+        /* --- BOTÓN DONACIÓN A LA DERECHA ESTRICTO --- */
+        .float-help {
+            position: fixed;
+            bottom: 30px;
+            right: 30px !important; /* Siempre a la derecha */
+            left: auto !important;  /* Cancela cualquier left viejo */
+            z-index: 100; background: linear-gradient(135deg, var(--acento), var(--primario)); 
+            border: none; color: #fff; width: 60px; height: 60px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer;
         }
-        .clean-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--brillo); color: var(--accent); }
-        body.dark-mode .clean-btn { border-color: rgba(255,255,255,0.05); }
 
-        /* Contenedor Principal */
-        .app-container { max-width: 600px; margin: 100px auto 100px; padding: 0 20px; }
-
-        header { text-align: center; margin-bottom: 35px; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin: 0; font-weight: 700; }
-        .subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: var(--texto); margin-top: 10px; opacity: 0.8; }
-
-        /* Buscador */
-        .search-wrapper { position: sticky; top: 20px; z-index: 90; margin-bottom: 30px; }
-        .search-box {
-            display: flex; align-items: center; background: var(--card);
-            border-radius: 50px; padding: 15px 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-            border: 1px solid rgba(184, 134, 11, 0.1); transition: 0.3s;
+        @media (max-width: 768px) {
+            .float-help { right: 20px !important; bottom: 20px; width: 55px; height: 55px; font-size: 1.4rem; }
         }
-        .search-box:focus-within { box-shadow: 0 10px 30px var(--brillo); border-color: var(--accent); transform: translateY(-2px); }
-        .search-box i { color: var(--accent); font-size: 1.2rem; margin-right: 15px; }
-        .search-box input {
-            border: none; background: transparent; outline: none; width: 100%;
-            font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--primario); font-weight: 500;
-        }
-        .search-box input::placeholder { color: var(--texto); opacity: 0.5; }
 
-        /* Grid de Palabras */
-        .terms-grid { display: flex; flex-direction: column; gap: 20px; }
-
-        .term-card {
-            background: var(--card); border-radius: 20px; padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 4px solid var(--accent);
-            transition: 0.3s; position: relative;
-        }
-        .term-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px var(--brillo); }
-
-        .term-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .term-badge { background: var(--brillo); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        /* --- CUERPO DEL GLOSARIO --- */
+        .main-container { padding: 130px 5% 100px; max-width: 800px; margin: 0 auto; }
         
-        .share-btn { background: transparent; border: none; color: var(--texto); font-size: 1.2rem; cursor: pointer; opacity: 0.4; transition: 0.3s; }
-        .share-btn:hover { color: var(--accent); opacity: 1; transform: scale(1.1); }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primario); margin-bottom: 15px; }
+        .section-header p.subtitle { font-size: 1.1rem; opacity: 0.9; margin: 0 auto; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
 
-        .term-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario); margin: 0 0 10px; font-weight: 700; }
-        .term-desc { font-size: 0.95rem; color: var(--texto); line-height: 1.6; margin: 0; font-weight: 500; }
+        .search-box { display: flex; align-items: center; background: var(--blanco); border-radius: 50px; padding: 15px 25px; box-shadow: var(--sombra); border: 1px solid var(--gold-light); transition: 0.3s; margin-bottom: 40px; }
+        .search-box i { color: var(--acento); font-size: 1.2rem; margin-right: 15px; }
+        .search-box input { border: none; background: transparent; outline: none; width: 100%; font-family: 'Montserrat', sans-serif; font-size: 1.05rem; color: var(--texto); font-weight: 500; }
 
-        .no-results { text-align: center; color: var(--texto); padding: 40px 20px; font-style: italic; opacity: 0.7; display: none; }
+        .terms-grid { display: flex; flex-direction: column; gap: 20px; }
+        .term-card { background: var(--blanco); border-radius: 20px; padding: 30px; box-shadow: var(--sombra); border-left: 5px solid var(--acento); transition: transform 0.3s; }
+        .term-card:hover { transform: translateY(-5px); box-shadow: var(--sombra-fuerte); }
+        .term-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .term-badge { background: var(--gold-light); color: var(--primario); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .share-btn { background: transparent; border: none; color: var(--texto); font-size: 1.3rem; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .share-btn:hover { color: var(--acento); opacity: 1; transform: scale(1.1); }
+        .term-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primario); margin: 0 0 10px; font-weight: 700; }
+        .term-desc { font-size: 1.05rem; line-height: 1.7; margin: 0; }
 
-        /* Seguro local para el botón de ayuda a la derecha por si master-estilos falla */
-        .float-help { 
-            position: fixed; bottom: 20px; right: 20px; left: unset !important; z-index: 100; 
-            background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; 
-            width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; 
-        }
+        .no-results { text-align: center; padding: 40px 20px; font-style: italic; opacity: 0.7; display: none; }
     </style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-    <nav class="top-nav-clean">
-        <a href="profundiza.html" class="clean-btn" title="Volver"><i class="fas fa-arrow-left"></i></a>
-        <button class="clean-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
+    <nav>
+        <div class="logo">Capilla Santa Ana</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" onclick="closeMenu()"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="profundiza.html" onclick="closeMenu()"><i class="fas fa-layer-group"></i> Profundizá</a></li>
+            <li><a href="#" onclick="abrirModal(); closeMenu()"><i class="fas fa-heart"></i> Donar</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+            <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </nav>
 
     <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
         <i class="fas fa-hand-holding-heart"></i>
     </button>
 
-    <main class="app-container">
-        <header>
-            <h1>Palabras de Luz</h1>
-            <p class="subtitle">Buscá y descubrí el significado de los términos más usados en nuestra fe.</p>
-        </header>
+    <main class="main-container">
+        <div class="section-header">
+            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Glosario de la Fe</p>
+            <h2>Palabras de Luz</h2>
+            <div class="divider"></div>
+            <p class="subtitle">Buscá y descubrí el significado de los términos más usados en la Iglesia para comprender mejor nuestra fe.</p>
+        </div>
 
-        <div class="search-wrapper">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="buscador" placeholder="Buscar palabra (ej: Eucaristía)..." onkeyup="filtrarGlosario()">
-            </div>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscador" placeholder="Buscar palabra (ej: Eucaristía, Amén)..." onkeyup="filtrarGlosario()">
         </div>
 
         <div id="noResults" class="no-results">
-            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i><br>
+            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--acento); margin-bottom: 15px;"></i><br>
             No encontramos esa palabra. Probá buscar un sinónimo.
         </div>
 
         <div id="listaTerminos" class="terms-grid"></div>
     </main>
 
-    <div id="modalHelp" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="cerrarModal()">&times;</button>
-            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
-            <span class="section-title">Ofrenda de Amor</span>
-            <p class="copy-donar-dinero"></p>
-            <div class="alias-box alias-global"></div>
-            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
-            <span class="section-title">Ofrenda de Vida</span>
-            <p class="copy-donar-talento"></p>
-            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
-                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
-            </a>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">¡Copiado con éxito!</div>
-
     <script src="config-global.js"></script>
     <script src="glosario-data.js"></script> 
     
     <script>
+        // --- NAVEGACIÓN ---
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+            document.querySelector('.menu-toggle').classList.toggle('active');
+        }
+        function closeMenu() {
+            if(window.innerWidth <= 900) {
+                document.getElementById('navLinks').classList.remove('active');
+                document.querySelector('.menu-toggle').classList.remove('active');
+            }
+        }
+
+        // --- MODO OSCURO ---
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // --- GLOSARIO LOGIC ---
         const contenedor = document.getElementById('listaTerminos');
         const msjNoResults = document.getElementById('noResults');
 
@@ -172,7 +179,7 @@
                     card.className = 'term-card';
                     card.innerHTML = `
                         <div class="term-header">
-                            <span class="term-badge">${item.categoria || 'Glosario'}</span>
+                            <span class="term-badge">${item.categoria || 'Término'}</span>
                             <button class="share-btn" onclick="compartirTermino('${item.termino.replace(/'/g, "\\'")}', '${item.definicion.replace(/'/g, "\\'")}')" title="Compartir">
                                 <i class="fas fa-share-nodes"></i>
                             </button>
@@ -195,36 +202,21 @@
         }
 
         async function compartirTermino(titulo, definicion) {
-            if(navigator.vibrate) navigator.vibrate(30);
             const msg = `📖 *${titulo}*\\n${definicion}\\n\\nAprendé más en la web de la Capilla Santa Ana: ${window.location.href}`;
             if (navigator.share) {
                 await navigator.share({ title: titulo, text: msg });
             } else {
-                navigator.clipboard.writeText(msg).then(() => {
-                    const t = document.getElementById('toast');
-                    t.innerText = "¡Definición copiada!";
-                    t.classList.add('show'); 
-                    setTimeout(() => { t.classList.remove('show'); t.innerText = "¡Copiado con éxito!"; }, 3000);
-                });
+                navigator.clipboard.writeText(msg);
+                alert("¡Definición copiada al portapapeles!");
             }
         }
 
-        function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
-        function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
-        function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
-        
-        function toggleDarkMode() {
-            if(navigator.vibrate) navigator.vibrate(20);
-            document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('darkIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        }
-
+        // Inicialización
         window.onload = () => {
-            glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino));
-            renderizarGlosario(glosarioTerminos);
-
+            if(typeof glosarioTerminos !== 'undefined') {
+                glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino));
+                renderizarGlosario(glosarioTerminos);
+            }
             if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.getElementById('darkIcon').className = 'fas fa-sun';
