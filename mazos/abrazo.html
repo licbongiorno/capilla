@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Abrazo de Dios | Capilla Santa Ana</title>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
-    <nav class="master-nav">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <nav>
         <a href="../index.html" class="logo-container">
             <img src="../icono.png" alt="Logo" class="nav-logo-img">
             <span class="logo-texto">Capilla Santa Ana</span>
@@ -19,6 +23,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="mazos.html">Mazos</a></li>
+                <li><a href="../profundiza.html">Profundizá</a></li>
                 <li><a href="#" onclick="toggleModal('modalOfrenda')">Ofrenda</a></li>
             </ul>
             <div class="nav-actions">
@@ -28,27 +33,36 @@
         </div>
     </nav>
 
-    <main style="padding-top: 140px; text-align: center; min-height: 80vh;">
-        <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento);">Abrazo de Dios</h2>
+    <main style="padding-top: 140px; text-align: center; min-height: 85vh;">
+        <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 5px;">Abrazo de Dios</h2>
+        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Consuelo y Esperanza</p>
+        
         <div class="card-scene">
             <div class="card-display" id="cardBox">
-                <i class="fas fa-hand-holding-heart card-icon"></i>
+                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4;"></i>
                 <div class="card-text" id="cardText">Cargando reflexión...</div>
             </div>
         </div>
+
         <div class="mazo-actions">
             <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i> Compartir</button>
             <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
         </div>
     </main>
 
+    <div class="float-container">
+        <button class="f-btn" onclick="toggleModal('modalOfrenda')" title="Sumá tu Corazón">
+            <i class="fas fa-hand-holding-heart"></i>
+        </button>
+    </div>
+
     <div id="modalOfrenda" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="toggleModal('modalOfrenda')">&times;</button>
-            <i class="fas fa-heart" style="font-size: 3rem; color: var(--acento);"></i>
+            <i class="fas fa-heart" style="font-size: 3rem; color: var(--acento); margin-bottom: 15px;"></i>
             <h3>Sumá tu Corazón</h3>
-            <p>Tu ofrenda nos ayuda a sostener estos espacios de paz.</p>
-            <div class="alias-box" style="background:var(--fondo); padding:15px; border-radius:12px; font-weight:700; margin:15px 0;">capillas.fatima.ag</div>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">Tu ofrenda nos ayuda a sostener estos espacios de paz.</p>
+            <div class="alias-box">capillas.fatima.ag</div>
             <button class="btn-card btn-next" style="width:100%; justify-content:center;" onclick="copiarAlias()">Copiar Alias</button>
         </div>
     </div>
@@ -58,11 +72,11 @@
         const mazoData = {
             titulo: "Abrazo de Dios",
             preguntas: [
-                "¿Qué parte de tu corazón necesita hoy un consuelo que solo el silencio puede dar?",
-                "Si pudieras soltar una sola carga hoy, ¿cuál elegirías para volver a caminar liviano?",
-                "¿Dónde sentiste la paz de Dios en medio del ruido de esta semana?",
-                "¿A quién podrías llevarle hoy un 'abrazo' de esperanza con un simple mensaje?",
-                "¿Qué miedo te gustaría entregarle a Jesús para que Él lo transforme en fortaleza?"
+                "¿Qué parte de tu corazón necesita hoy un abrazo de paz?",
+                "¿A quién podrías llevarle hoy un mensaje de consuelo?",
+                "¿Qué carga te gustaría entregarle a Dios para descansar esta noche?",
+                "¿Por qué motivo darías gracias si hoy fuera el último día del año?",
+                "¿Qué miedo te gustaría soltar delante de Jesús hoy?"
             ]
         };
         let currentIdx = 0;
@@ -78,7 +92,7 @@
         }
         function compartirWA() {
             const txt = mazoData.preguntas[currentIdx];
-            window.open(`https://wa.me/?text=${encodeURIComponent("✨ Reflexión de la Capilla:\n\n\"" + txt + "\"\n\nLeela acá: " + window.location.href)}`, '_blank');
+            window.open(`https://wa.me/?text=${encodeURIComponent("✨ Una pregunta para el alma:\n\n\"" + txt + "\"\n\nReflexioná acá: " + window.location.href)}`, '_blank');
         }
     </script>
 </body>
