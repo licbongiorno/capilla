@@ -2,194 +2,30 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Corazón de Servidor - Capilla Santa Ana</title>
-    
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Servidores | Capilla Santa Ana</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
-    <link rel="stylesheet" href="cartas.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-
-    <style>
-        :root {
-            --bg: #0d1b1e; 
-            --card-back: #A0522D; 
-            --accent: #4DB6AC; 
-            --primario: #0d1b1e;
-        }
-        body.dark-mode {
-            --bg: #050a0b; --card-back: #7e4023; --accent: #80cbc4; --primario: #e0f2f1;
-        }
-    </style>
+    <style>.card-cita { font-family: 'Montserrat', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--acento); margin-top: 25px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; }</style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-    <div class="bg-words" id="bg"></div>
-
-    <nav class="top-navbar">
-        <div class="logo-text">Santa Ana</div>
-        <div class="controls">
-            <a href="../index.html" class="icon-btn" title="Ir al Inicio"><i class="fas fa-home"></i></a>
-            <a href="index.html" class="icon-btn" title="Ver más Mazos"><i class="fas fa-layer-group"></i></a>
-            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
-        </div>
-    </nav>
-
-    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
-        <i class="fas fa-hand-holding-heart"></i>
-    </button>
-
-    <div class="app-wrapper">
-        <h1>Servidores</h1>
-        
-        <div class="scene-wrapper">
-            <div class="scene" id="scene">
-                <div class="card" id="tarjeta" onclick="flipCard()">
-                    <div class="card__face card__face--front">
-                        <i class="fa-solid fa-hands-praying" style="font-size: 5rem; color: var(--accent); margin-bottom: 20px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));"></i>
-                        <h2 style="font-family: 'Playfair Display', serif; margin:0; font-size: 1.8rem;">La Misión</h2>
-                        <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 15px; font-weight: 500; border-top: 1px solid rgba(77, 182, 172, 0.3); padding-top: 10px;">Tocá para descubrir</p>
-                    </div>
-                    
-                    <div class="card__face card__face--back">
-                        <i class="fa-solid fa-hammer" style="font-size: 1.5rem; color: var(--card-back); opacity: 0.15; margin-bottom: 10px;"></i>
-                        <p class="pregunta" id="textoFrase"></p>
-                        <p class="autor" id="textoAutor"></p>
-                        <div style="font-size: 0.75rem; letter-spacing: 2px; color: var(--accent); font-weight: 800; margin-top: 15px;">SERVIDORES</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="action-bar" id="actionBar">
-            <button class="btn-nav" id="btnAnterior" onclick="moverCarta('izq')" disabled><i class="fas fa-arrow-left"></i></button>
-            <button class="btn-share" onclick="shareReflexion(event)"><i class="fas fa-share-nodes"></i> Compartir</button>
-            <button class="btn-nav" id="btnSiguiente" onclick="moverCarta('der')"><i class="fas fa-arrow-right"></i></button>
-        </div>
-    </div>
-
-    <div id="modalHelp" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="cerrarModal()">&times;</button>
-            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
-            <span class="section-title">Ofrenda de Amor</span>
-            <p class="copy-donar-dinero" style="font-size: 0.9rem; margin: 0;"></p>
-            <div class="alias-box alias-global"></div>
-            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
-            <span class="section-title">Ofrenda de Vida</span>
-            <p class="copy-donar-talento" style="font-size: 0.9rem; margin: 0 0 15px;"></p>
-            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
-                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
-            </a>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">¡Copiado con éxito!</div>
-
-    <script src="../config-global.js"></script>
-    <script src="data-servidores.js"></script>
-    
+    <nav><a href="../index.html" class="logo-container"><img src="../icono.png" class="nav-logo-img"><span class="logo-texto">Capilla Santa Ana</span></a><div class="nav-right"><ul class="nav-links" id="navLinks"><li><a href="../index.html">Inicio</a></li><li><a href="mazos.html">Mazos</a></li><li><a href="../profundiza.html">Profundizá</a></li><li><a href="https://capillasantaana.com.ar/ofrenda">Ofrenda</a></li></ul><div class="nav-actions"><button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button><button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button></div></div></nav>
+    <main style="padding-top: 140px; text-align: center; min-height: 85vh;">
+        <h2 id="mazoTitle" style="font-family: 'Playfair Display'; color: var(--acento);">Manos a la Obra</h2>
+        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase;">Servidores</p>
+        <div class="card-scene"><div class="card-display" id="cardBox"><i class="fas fa-hammer card-icon" style="color: #A0522D;"></i><div class="card-text" id="cardText" style="white-space: pre-wrap;">Cargando...</div><div class="card-cita" id="cardCita"></div></div></div>
+        <div class="mazo-actions"><button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i> Compartir</button><button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button></div>
+    </main>
+    <div class="float-container"><a href="https://capillasantaana.com.ar/ofrenda" class="f-btn"><i class="fas fa-heart"></i></a></div>
+    <script src="data-servidores.js"></script><script src="../config-global.js"></script>
     <script>
-        let isFlipped = false;
-        const card = document.getElementById('tarjeta');
-        const scene = document.getElementById('scene');
-        const actionBar = document.getElementById('actionBar');
-        let historyStack = [];
-        let currentPos = -1;
-
-        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-
-        function vibrar(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
-
-        function initBG() {
-            const bg = document.getElementById('bg');
-            const words = ['MANOS', 'SERVICIO', 'ENTREGA', 'OBRA', 'HUMILDAD'];
-            for (let i = 0; i < 15; i++) {
-                const s = document.createElement('span');
-                s.className = 'floating-word';
-                s.textContent = words[Math.floor(Math.random() * words.length)];
-                s.style.left = Math.random() * 100 + 'vw';
-                s.style.animation = `floatUp ${20 + Math.random() * 15}s linear infinite`;
-                bg.appendChild(s);
-            }
-        }
-
-        function inicializarCarta(id = null) {
-            let idx = (id) ? CARTAS_SERVIDORES.findIndex(c => c.id === id) : -1;
-            if (idx === -1) idx = Math.floor(Math.random() * CARTAS_SERVIDORES.length);
-            historyStack.push(CARTAS_SERVIDORES[idx]);
-            currentPos = 0;
-            pintarCarta(historyStack[currentPos]);
-        }
-
-        function pintarCarta(carta) {
-            document.getElementById('textoFrase').innerText = carta.q;
-            document.getElementById('textoAutor').innerText = carta.a;
-            window.history.replaceState(null, '', `?id=${carta.id}`);
-            document.getElementById('btnAnterior').disabled = (currentPos <= 0);
-        }
-
-        function flipCard() {
-            if (!isFlipped) {
-                vibrar(40);
-                card.classList.add('is-flipped');
-                isFlipped = true;
-                actionBar.classList.add('visible');
-                try { Tone.start(); synth.triggerAttackRelease(["A4", "D5"], "16n"); } catch(e){}
-            }
-        }
-
-        function moverCarta(dir) {
-            if(!isFlipped) return;
-            vibrar(30);
-            const claseSalida = (dir === 'der') ? 'swipe-left' : 'swipe-right';
-            const claseEntrada = (dir === 'der') ? 'swipe-right' : 'swipe-left';
-            scene.classList.add(claseSalida);
-            setTimeout(() => {
-                if (dir === 'der') {
-                    currentPos++;
-                    if (currentPos >= historyStack.length) historyStack.push(CARTAS_SERVIDORES[Math.floor(Math.random() * CARTAS_SERVIDORES.length)]);
-                } else { currentPos--; }
-                pintarCarta(historyStack[currentPos]);
-                scene.classList.remove(claseSalida);
-                scene.classList.add(claseEntrada);
-                requestAnimationFrame(() => { setTimeout(() => scene.classList.remove(claseEntrada), 50); });
-            }, 300);
-        }
-
-        function shareReflexion() {
-            vibrar(30);
-            const msg = `🛠️ Reflexión para servidores - Capilla Santa Ana:\n\n"${document.getElementById('textoFrase').innerText}"\n\nRenová tu misión aquí: ${window.location.href}`;
-            if (navigator.share) { navigator.share({ title: 'Corazón de Servidor', text: msg }); }
-            else { navigator.clipboard.writeText(msg).then(mostrarToast); }
-        }
-
-        function abrirModal() { vibrar(30); const m = document.getElementById('modalHelp'); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); }
-        function cerrarModal() { const m = document.getElementById('modalHelp'); m.classList.remove('show'); setTimeout(() => m.style.display = 'none', 300); }
-        function copiarAlias() { vibrar([30,50,30]); navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(mostrarToast); }
-        function mostrarToast() { const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
-        function toggleDarkMode() {
-            vibrar(20); document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('darkIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
-        }
-
-        window.onload = () => {
-            initBG();
-            if(localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode'); document.getElementById('darkIcon').className = 'fas fa-sun';
-            }
-            const p = new URLSearchParams(window.location.search);
-            inicializarCarta(p.get('id'));
-        };
+        let mazoPreguntas = typeof CARTAS_SERVIDORES !== 'undefined' ? CARTAS_SERVIDORES : [{ q: "Error: No se encontró CARTAS_SERVIDORES", a: "Soporte" }];
+        let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
+        document.addEventListener('DOMContentLoaded', actualizarCartaDOM);
+        function actualizarCartaDOM() { document.getElementById('cardText').innerText = mazoPreguntas[currentIdx].q; document.getElementById('cardCita').innerText = "— " + mazoPreguntas[currentIdx].a; }
+        function proximaCarta() { const card = document.getElementById('cardBox'); card.classList.add('changing'); setTimeout(() => { currentIdx = Math.floor(Math.random() * mazoPreguntas.length); actualizarCartaDOM(); card.classList.remove('changing'); }, 400); }
+        function compartirWA() { window.open(`https://wa.me/?text=${encodeURIComponent("✨ Reflexión de la Capilla:\n\n\"" + mazoPreguntas[currentIdx].q + "\"\n(" + mazoPreguntas[currentIdx].a + ")\n\n" + window.location.href)}`, '_blank'); }
     </script>
 </body>
 </html>
