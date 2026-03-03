@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="index, follow">
     <title>Diálogos del Corazón | Capilla Santa Ana</title>
     
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -33,7 +35,7 @@
         .hero-mazos { 
             padding: 80px 5% 60px; 
             text-align: center; 
-            background: linear-gradient(rgba(93, 64, 55, 0.85), rgba(93, 64, 55, 0.95)), url('../1.webp'); /* Ruta de imagen ajustada */
+            background: linear-gradient(rgba(93, 64, 55, 0.85), rgba(93, 64, 55, 0.95)), url('../1.webp'); /* Ruta ajustada ../ */
             background-size: cover; background-position: center; color: white;
             margin-top: 95px; /* Compensa la altura del Nav Master */
         }
@@ -71,7 +73,23 @@
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <div id="nav-placeholder"></div>
+    <nav class="master-nav">
+        <a href="../index.html" class="logo-container"> <img src="../icono.png" alt="Logo" class="nav-logo-img"> <span class="logo-texto">Capilla Santa Ana</span>
+        </a>
+        <div class="nav-right">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Inicio</a></li> <li><a href="mazos.html">Mazos</a></li> <li><a href="../glosario.html">Glosario</a></li> <li><a href="#" onclick="toggleModal('modalOfrenda')">Ofrenda</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="toggleDarkMode()" aria-label="Cambiar modo oscuro"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
 
     <header class="hero-mazos">
         <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; color:var(--acento); font-weight: 800; margin-bottom:10px;">Tu momento de paz</p>
