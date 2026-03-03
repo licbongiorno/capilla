@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Glosario de la Fe | Capilla Santa Ana</title>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+
+    <link rel="stylesheet" href="master-estilos.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        html, body { 
+            height: auto; overflow: visible; overflow-x: hidden; background-color: var(--bg);
+        }
+
+        /* Paleta Libro/Sabiduría */
+        :root {
+            --bg: #F9F8F6;
+            --card: #FFFFFF;
+            --accent: #B8860B; /* Dorado Antiguo */
+            --primario: #4A332D; /* Marrón Tinta */
+            --texto: #4A4A4A;
+            --brillo: rgba(184, 134, 11, 0.15);
+        }
+
+        body.dark-mode {
+            --bg: #120E0C;
+            --card: #1E1815;
+            --accent: #D4AF37;
+            --primario: #F9F8F6;
+            --texto: #CCCCCC;
+            --brillo: rgba(212, 175, 55, 0.15);
+        }
+
+        /* Contenedor App */
+        .app-container { max-width: 600px; margin: 100px auto 100px; padding: 0 20px; }
+
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin: 0; font-weight: 700; }
+        .subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: var(--texto); margin-top: 10px; opacity: 0.8; }
+
+        /* Buscador Fijo/Flotante */
+        .search-wrapper {
+            position: sticky; top: 80px; z-index: 100; margin-bottom: 30px;
+            background: var(--bg); padding: 10px 0;
+        }
+        .search-box {
+            display: flex; align-items: center; background: var(--card);
+            border-radius: 50px; padding: 12px 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid rgba(184, 134, 11, 0.2); transition: 0.3s;
+        }
+        .search-box:focus-within { box-shadow: 0 10px 30px var(--brillo); border-color: var(--accent); }
+        .search-box i { color: var(--accent); font-size: 1.2rem; margin-right: 15px; }
+        .search-box input {
+            border: none; background: transparent; outline: none; width: 100%;
+            font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--primario); font-weight: 500;
+        }
+        .search-box input::placeholder { color: var(--texto); opacity: 0.5; }
+
+        /* Grid de Palabras */
+        .terms-grid { display: flex; flex-direction: column; gap: 20px; }
+
+        .term-card {
+            background: var(--card); border-radius: 20px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 4px solid var(--accent);
+            animation: fadeIn 0.5s ease-out; transition: 0.3s; position: relative;
+        }
+        .term-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px var(--brillo); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .term-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .term-badge { 
+            background: var(--brillo); color: var(--accent); padding: 4px 10px; 
+            border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        }
+        
+        .share-btn { 
+            background: transparent; border: none; color: var(--texto); font-size: 1.2rem; 
+            cursor: pointer; opacity: 0.5; transition: 0.3s;
+        }
+        .share-btn:hover { color: var(--accent); opacity: 1; transform: scale(1.1); }
+
+        .term-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario); margin: 0 0 10px; font-weight: 700; }
+        .term-desc { font-size: 0.95rem; color: var(--texto); line-height: 1.6; margin: 0; font-weight: 500; }
+
+        /* Mensaje sin resultados */
+        .no-results { text-align: center; color: var(--texto); padding: 40px 20px; font-style: italic; opacity: 0.7; display: none; }
+
+        /* Navegación y Ayuda Fija */
+        .top-navbar { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        body.dark-mode .top-navbar { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
+        .top-navbar .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .icon-btn { width: 38px; height: 38px; font-size: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--accent); text-decoration: none; cursor: pointer; transition: 0.3s; }
+        
+        .float-help { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: linear-gradient(135deg, var(--accent), var(--primario)); border: none; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; animation: pulse 3s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(184, 134, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); } }
+
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <nav class="top-navbar">
+        <div class="logo-text">Santa Ana</div>
+        <div class="controls">
+            <a href="profundiza.html" class="icon-btn" title="Volver a Profundiza"><i class="fas fa-layer-group"></i></a>
+            <a href="index.html" class="icon-btn" title="Inicio"><i class="fas fa-home"></i></a>
+            <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
+        </div>
+    </nav>
+
+    <button class="float-help" onclick="abrirModal()" title="Ayudar a la Capilla">
+        <i class="fas fa-hand-holding-heart"></i>
+    </button>
+
+    <main class="app-container">
+        <header>
+            <h1>Palabras de Luz</h1>
+            <p class="subtitle">Buscá y descubrí el significado de los términos más usados en nuestra fe.</p>
+        </header>
+
+        <div class="search-wrapper">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="buscador" placeholder="Ej: Eucaristía, Amén, Gracia..." onkeyup="filtrarGlosario()">
+            </div>
+        </div>
+
+        <div id="noResults" class="no-results">
+            <i class="fas fa-book-open" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i><br>
+            No encontramos esa palabra. Probá buscar un sinónimo o revisá la ortografía.
+        </div>
+
+        <div id="listaTerminos" class="terms-grid">
+            </div>
+
+    </main>
+
+    <div id="modalHelp" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <i class="fas fa-church" style="font-size: 3rem; color: var(--accent);"></i>
+            <span class="section-title">Ofrenda de Amor</span>
+            <p class="copy-donar-dinero"></p>
+            <div class="alias-box alias-global"></div>
+            <button class="btn-action" style="background: var(--primario); color: white;" onclick="copiarAlias(event)">Copiar Alias Bancario</button>
+            <span class="section-title">Ofrenda de Vida</span>
+            <p class="copy-donar-talento"></p>
+            <a href="https://wa.me/5493517023789" target="_blank" class="btn-action" style="background: #25D366; color: white;">
+                <i class="fab fa-whatsapp"></i> Ofrecer mi talento
+            </a>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">¡Copiado con éxito!</div>
+
+    <script src="config-global.js"></script>
+    <script src="glosario-data.js"></script> <script>
+        const contenedor = document.getElementById('listaTerminos');
+        const msjNoResults = document.getElementById('noResults');
+
+        // Renderizar el diccionario
+        function renderizarGlosario(terminos) {
+            contenedor.innerHTML = '';
+            
+            if (terminos.length === 0) {
+                msjNoResults.style.display = 'block';
+            } else {
+                msjNoResults.style.display = 'none';
+                terminos.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'term-card';
+                    card.innerHTML = `
+                        <div class="term-header">
+                            <span class="term-badge">${item.categoria || 'Glosario'}</span>
+                            <button class="share-btn" onclick="compartirTermino('${item.termino.replace(/'/g, "\\'")}', '${item.definicion.replace(/'/g, "\\'")}')" title="Compartir">
+                                <i class="fas fa-share-nodes"></i>
+                            </button>
+                        </div>
+                        <h3 class="term-title">${item.termino}</h3>
+                        <p class="term-desc">${item.definicion}</p>
+                    `;
+                    contenedor.appendChild(card);
+                });
+            }
+        }
+
+        // Buscador en tiempo real
+        function filtrarGlosario() {
+            const texto = document.getElementById('buscador').value.toLowerCase();
+            const filtrados = glosarioTerminos.filter(t => 
+                t.termino.toLowerCase().includes(texto) || 
+                t.definicion.toLowerCase().includes(texto)
+            );
+            renderizarGlosario(filtrados);
+        }
+
+        // Compartir término
+        async function compartirTermino(titulo, definicion) {
+            if(navigator.vibrate) navigator.vibrate(30);
+            const msg = `📖 *${titulo}*\\n${definicion}\\n\\nAprendé más en la web de la Capilla Santa Ana: ${window.location.href}`;
+            
+            if (navigator.share) {
+                await navigator.share({ title: titulo, text: msg });
+            } else {
+                navigator.clipboard.writeText(msg).then(() => {
+                    const t = document.getElementById('toast');
+                    t.innerText = "¡Definición copiada!";
+                    t.classList.add('show'); 
+                    setTimeout(() => { t.classList.remove('show'); t.innerText = "¡Copiado con éxito!"; }, 3000);
+                });
+            }
+        }
+
+        // Modales y Utilidades
+        function abrirModal() { document.getElementById('modalHelp').style.display = 'flex'; setTimeout(() => document.getElementById('modalHelp').classList.add('show'), 10); }
+        function cerrarModal() { document.getElementById('modalHelp').classList.remove('show'); setTimeout(() => document.getElementById('modalHelp').style.display = 'none', 300); }
+        function copiarAlias() { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias).then(() => { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000); }); }
+        
+        function toggleDarkMode() {
+            if(navigator.vibrate) navigator.vibrate(20);
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        window.onload = () => {
+            // Ordenar alfabéticamente antes de mostrar
+            glosarioTerminos.sort((a, b) => a.termino.localeCompare(b.termino));
+            renderizarGlosario(glosarioTerminos);
+
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkIcon').className = 'fas fa-sun';
+            }
+        };
+    </script>
+</body>
+</html>
