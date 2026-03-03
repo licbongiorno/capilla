@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Abrazo de Dios | Capilla Santa Ana</title>
     
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
     
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
@@ -71,15 +67,29 @@
         </div>
     </div>
 
-    <script src="data-abrazo.js"></script> <script src="../config-global.js"></script>
+    <script src="data-abrazo.js"></script> 
+    <script src="../config-global.js"></script>
+
     <script>
-        // Inicialización de datos
-        // Asumimos que el array dentro de data-abrazo.js se llama 'dataAbrazo'
+        // 3. BUSCAMOS CÓMO SE LLAMA LA VARIABLE EN TU ARCHIVO JS
+        // Esto revisa los nombres más comunes que pudimos haberle puesto.
+        let listaPreguntas = [];
+        
+        if (typeof preguntas !== 'undefined') { listaPreguntas = preguntas; }
+        else if (typeof preguntasAbrazo !== 'undefined') { listaPreguntas = preguntasAbrazo; }
+        else if (typeof dataAbrazo !== 'undefined') { listaPreguntas = dataAbrazo; }
+        else if (typeof abrazo !== 'undefined') { listaPreguntas = abrazo; }
+        else {
+            // Si no encuentra ninguna, muestra este mensaje para avisarte.
+            listaPreguntas = ["⚠️ Error: El HTML no encuentra cómo se llama la variable en tu archivo data-abrazo.js. Por favor, revisá la primera línea de ese archivo."];
+        }
+
         const mazoData = {
             titulo: "Abrazo de Dios",
-            preguntas: typeof dataAbrazo !== 'undefined' ? dataAbrazo : ["No se encontraron preguntas en el archivo de datos."]
+            preguntas: listaPreguntas
         };
 
+        // Elegimos una carta al azar al entrar
         let currentIdx = Math.floor(Math.random() * mazoData.preguntas.length);
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -91,11 +101,11 @@
             card.classList.add('changing');
             
             setTimeout(() => {
-                // Seleccionamos una nueva pregunta al azar para que sea más dinámico (72 opciones)
+                // Selecciona otra al azar (para aprovechar las 72 preguntas)
                 let newIdx;
                 do {
                     newIdx = Math.floor(Math.random() * mazoData.preguntas.length);
-                } while (newIdx === currentIdx);
+                } while (newIdx === currentIdx && mazoData.preguntas.length > 1);
                 
                 currentIdx = newIdx;
                 document.getElementById('cardText').innerText = mazoData.preguntas[currentIdx];
