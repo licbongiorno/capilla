@@ -3,39 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title id="pageTitle">Cargando... | Capilla Santa Ana</title>
-
+    <title id="pageTitle">Capilla Santa Ana</title>
+    
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
-
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <script>
-        const CONFIG_MAZO = {
-            titulo: "Pequeñas Luces",
-            iconoClase: "fas fa-sun card-icon",
-            iconoColor: "#FFD600",
-            dataScript: "data-nenes4-6.js",
-            arrayNombre: "CARTAS_NENES"
+        const MAZO_INFO = {
+        titulo: "Pequeñas Luces",
+        icono: "fa-sun",
+        colorIcono: "#FFD600",
+        archivoJS: "data-nenes4-6.js",
+        variableArray: "CARTAS_NENES"
         };
     </script>
-
     <style>
         body, html { height: 100%; overflow: hidden; margin: 0; background-color: var(--fondo); }
         main { display: flex; flex-direction: column; height: 100dvh; padding: 90px 20px 100px; box-sizing: border-box; text-align: center; }
         .card-scene { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; overflow: hidden; }
         .card-display { width: 100%; max-width: 450px; height: 100%; max-height: 500px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; position: relative; }
-        .card-text { font-size: 1.5rem; line-height: 1.4; margin: 0; overflow: hidden; }
+        .card-text { font-size: 1.5rem; line-height: 1.4; margin: 0; overflow: hidden; font-weight: 500; }
         .card-cita { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--acento); margin-top: 20px; text-transform: uppercase; }
         .mazo-actions { margin-top: 20px; display: flex; gap: 15px; justify-content: center; width: 100%; }
-        .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }
         .float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
     <nav>
         <a href="../index.html" class="logo-container">
             <img src="../icono.png" alt="Logo" class="nav-logo-img">
@@ -55,41 +51,33 @@
     </nav>
 
     <main>
-        <h2 id="tituloMazo" style="font-family:'Playfair Display'; color:var(--acento); margin-bottom:10px;"></h2>
-
+        <h2 id="displayTitulo" style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;"></h2>
         <div class="card-scene">
             <div class="card-display" id="cardBox">
-                <i id="iconoMazo" style="margin-bottom:15px;"></i>
+                <i id="displayIcono" class="fas" style="margin-bottom: 15px; font-size: 2rem;"></i>
                 <div class="card-text" id="cardText">Cargando...</div>
                 <div class="card-cita" id="cardCita"></div>
             </div>
         </div>
-
         <div class="mazo-actions">
-            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir">
-                <i class="fas fa-share-alt"></i>
-            </button>
-            <button class="btn-card btn-next" onclick="proximaCarta()">
-                Siguiente <i class="fas fa-arrow-right"></i>
-            </button>
+            <button class="btn-card btn-share" onclick="compartirNativo()"><i class="fas fa-share-alt"></i></button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
         </div>
     </main>
 
     <div class="float-container">
-        <button class="f-btn heartbeat-btn" onclick="abrirModalAyuda()" title="Sumá tu Corazón">
+        <button class="f-btn heartbeat-btn" onclick="toggleModal('modalAyuda')" title="Sumá tu Corazón">
             <i class="fas fa-heart"></i>
         </button>
     </div>
 
     <div id="modalAyuda" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="cerrarModalAyuda()">&times;</button>
+            <button class="modal-close" onclick="toggleModal('modalAyuda')">&times;</button>
             <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
             <h3>Ayudanos a seguir</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9;">Este espacio se sostiene con tu oración, tu tiempo y tu colaboración económica. ¡Toda ayuda suma!</p>
-            
-            <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin-bottom: 15px;">Cargando alias...</div>
-            
+            <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9;">Tu oración, tu tiempo y tu colaboración económica sostienen este espacio.</p>
+            <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin-bottom: 15px;"></div>
             <button class="btn-card btn-next" style="width:100%; justify-content:center; margin-bottom: 10px;" onclick="copiarAliasGlobal()">Copiar Alias</button>
             <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white; border:none; margin-bottom: 15px;" onclick="comprobanteGlobal()">
                 <i class="fab fa-whatsapp"></i> Enviar Comprobante
@@ -99,64 +87,59 @@
     </div>
 
     <script src="../config-global.js"></script>
-
     <script>
+        // Lógica de carga dinámica
         let mazoPreguntas = [];
         let currentIdx = 0;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Inyectar datos dinámicos en la interfaz
-            document.getElementById("tituloMazo").innerText = CONFIG_MAZO.titulo;
-            document.getElementById("pageTitle").innerText = CONFIG_MAZO.titulo + " | Capilla Santa Ana";
-            
-            const icono = document.getElementById("iconoMazo");
-            icono.className = CONFIG_MAZO.iconoClase;
-            icono.style.color = CONFIG_MAZO.iconoColor;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aplicar configuración del mazo
+            document.getElementById('displayTitulo').innerText = MAZO_INFO.titulo;
+            document.getElementById('pageTitle').innerText = MAZO_INFO.titulo + " | Capilla Santa Ana";
+            const iconoEl = document.getElementById('displayIcono');
+            iconoEl.classList.add(MAZO_INFO.icono);
+            iconoEl.style.color = MAZO_INFO.colorIcono;
 
-            // 2. Cargar el script de datos dinámicamente
-            const script = document.createElement("script");
-            script.src = CONFIG_MAZO.dataScript;
-            
+            // Cargar Alias
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
+            }
+
+            // Cargar el archivo JS de datos
+            const script = document.createElement('script');
+            script.src = MAZO_INFO.archivoJS;
             script.onload = () => {
-                mazoPreguntas = window[CONFIG_MAZO.arrayNombre] || [];
-                if(mazoPreguntas.length > 0) {
+                mazoPreguntas = window[MAZO_INFO.variableArray] || [];
+                if (mazoPreguntas.length > 0) {
                     currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
                     actualizarCarta();
-                } else {
-                    document.getElementById("cardText").innerText = "Error: Mazo vacío o no encontrado.";
                 }
             };
             document.body.appendChild(script);
-
-            // 3. Cargar Alias Global
-            if (typeof CONFIG_CAPILLA !== "undefined") {
-                document.getElementById("aliasDisplay").innerText = CONFIG_CAPILLA.donaciones.alias;
-            }
         });
 
         function actualizarCarta() {
-            if (mazoPreguntas.length === 0) return;
-            document.getElementById("cardText").innerText = mazoPreguntas[currentIdx].q;
-            document.getElementById("cardCita").innerText = "— " + mazoPreguntas[currentIdx].a;
+            const textEl = document.getElementById('cardText');
+            const citaEl = document.getElementById('cardCita');
+            textEl.innerText = mazoPreguntas[currentIdx].q;
+            citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
             ajustarTexto();
         }
 
         function proximaCarta() {
-            if (mazoPreguntas.length === 0) return;
-            const card = document.getElementById("cardBox");
-            card.classList.add("changing");
+            const card = document.getElementById('cardBox');
+            card.classList.add('changing');
             setTimeout(() => {
                 currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
                 actualizarCarta();
-                card.classList.remove("changing");
+                card.classList.remove('changing');
             }, 400);
         }
 
         function ajustarTexto() {
-            const container = document.getElementById("cardBox");
-            const textEl = document.getElementById("cardText");
-            let fontSize = 1.6;
-            
+            const container = document.getElementById('cardBox');
+            const textEl = document.getElementById('cardText');
+            let fontSize = 1.6; 
             textEl.style.fontSize = fontSize + "rem";
             while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) {
                 fontSize -= 0.1;
@@ -167,30 +150,27 @@
         function compartirNativo() {
             const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
             if (navigator.share) {
-                navigator.share({ title: CONFIG_MAZO.titulo, text: msg, url: window.location.href });
+                navigator.share({ title: MAZO_INFO.titulo, text: msg, url: window.location.href });
             } else {
-                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
             }
         }
 
-        function abrirModalAyuda() { document.getElementById("modalAyuda").style.display = "flex"; }
-        function cerrarModalAyuda() { document.getElementById("modalAyuda").style.display = "none"; }
-        
+        function toggleModal(id) {
+            const m = document.getElementById(id);
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
+
         function copiarAliasGlobal() {
-            if (typeof CONFIG_CAPILLA !== "undefined") {
-                navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
-                alert("¡Alias copiado!");
-            }
+            navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
+            alert("¡Alias copiado!");
         }
 
         function comprobanteGlobal() {
-            if (typeof CONFIG_CAPILLA !== "undefined") {
-                const num = CONFIG_CAPILLA.whatsapp;
-                const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA);
-                window.open(`https://wa.me/${num}?text=${msg}`, "_blank");
-            }
+            const num = CONFIG_CAPILLA.whatsapp;
+            const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA);
+            window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
         }
     </script>
 </body>
 </html>
-
