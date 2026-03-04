@@ -2,382 +2,177 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Pequeños de Jesús - Capilla Santa Ana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Pequeñas Luces | Capilla Santa Ana</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="../master-estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-
+    
     <style>
-        :root {
-            --bg1: #e3f2fd; /* Celeste Suave */
-            --bg2: #b3e5fc;
-            --card: #ffffff;
-            --card-back: #0277bd; /* Azul Cielo */
-            --accent: #FFD600; /* Amarillo Sol */
-            --primario: #0277bd; 
-            --texto: #37474f;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { height: 100%; overflow: hidden; margin: 0; background-color: var(--fondo); }
         
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, var(--bg1), var(--bg2));
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            color: var(--texto);
-        }
-
-        /* FONDO DINÁMICO */
-        .main-background {
-            position: fixed; inset: 0;
-            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(227, 242, 253, 0.9)), url('2.webp');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
-        /* FONDO PALABRAS FLOTANTES */
-        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-        .floating-word {
-            position: absolute;
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            color: rgba(2, 119, 189, 0.08); /* Azul transparente */
-            user-select: none;
-            white-space: nowrap;
-        }
-        @keyframes floatUp {
-            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
-            20% { opacity: 1; }
-            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
-        }
-
-        /* NAVEGACIÓN */
-        nav { padding: 20px; display: flex; justify-content: space-between; z-index: 2; position: relative; }
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 10px 18px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: var(--primario);
-            font-weight: 800;
-            font-size: .8rem;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 2px solid rgba(2, 119, 189, 0.1);
-            transition: 0.3s;
-        }
-        .nav-btn:hover { background: rgba(255, 255, 255, 1); border-color: var(--primario); }
-
-        /* CONTENEDOR PRINCIPAL */
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 2; position: relative; }
-
-        /* ESCENA DE LA CARTA */
-        .card-scene {
-            width: 100%;
-            max-width: 380px;
-            aspect-ratio: 2/3;
-            perspective: 1500px;
-            margin-bottom: 25px;
-        }
-        .card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform .6s cubic-bezier(.4, .2, .2, 1), opacity .3s;
-            cursor: pointer;
-            border-radius: 35px; /* Bordes más redonditos para los peques */
-            box-shadow: 0 15px 40px rgba(2, 119, 189, 0.2);
-        }
-        .card.is-flipped { transform: rotateY(180deg); }
-        .card.slide-out { transform: translateX(80px) rotateZ(8deg); opacity: 0; }
-
-        .face {
-            position: absolute;
-            inset: 0;
-            border-radius: 35px;
-            padding: 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            backface-visibility: hidden;
-            border: 4px solid var(--accent);
-        }
-
-        /* FRENTE DE LA CARTA */
-        .front { background: var(--card); }
-        .question {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.2rem, 5vw, 1.6rem);
-            font-weight: 800;
-            color: var(--primario);
-            line-height: 1.35;
-        }
+        /* Padding inferior de 100px para proteger el botón Siguiente */
+        main { display: flex; flex-direction: column; height: 100dvh; padding: 90px 20px 100px; box-sizing: border-box; text-align: center; }
         
-        /* DORSO DE LA CARTA */
-        .back { 
-            background: radial-gradient(circle at 50% 0%, #0288d1 0%, #01579b 100%);
-            transform: rotateY(180deg); 
-            color: white; 
-            border-color: white;
-        }
-        .back i { font-size: 5rem; margin-bottom: 20px; color: var(--accent); filter: drop-shadow(0 0 15px rgba(255, 214, 0, 0.5)); }
-        .verse {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1rem, 4.5vw, 1.25rem);
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.4;
-            color: #fff;
-        }
-        .ref {
-            font-weight: 900;
-            font-size: .85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-        }
-
-        /* BOTONES DE ACCIÓN */
-        .actions { width: 100%; max-width: 380px; display: flex; gap: 12px; }
-        .btn-action {
-            flex: 1;
-            padding: 16px;
-            border-radius: 20px;
-            border: 2px solid var(--accent);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: .3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn-main { background: var(--accent); color: var(--primario); box-shadow: 0 8px 20px rgba(255, 214, 0, 0.4); }
-        .btn-main:active { transform: scale(0.95); }
-        .btn-sec { flex: 0 0 70px; background: white; color: var(--primario); font-size: 1.3rem; border-color: var(--primario); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-
-        /* FOOTER */
-        .mazo-footer { text-align: center; padding: 20px; font-size: 11px; opacity: .7; font-weight: 700; color: var(--primario); letter-spacing: 0.5px; }
-
-        /* TOAST / ALERTA */
-        #toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--primario); color: white; padding: 12px 25px; border-radius: 50px;
-            font-weight: 800; font-size: 13px; text-transform: uppercase; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.4); border: 2px solid var(--accent);
-        }
-        #toast.show { transform: translateX(-50%) translateY(0); }
+        .card-scene { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; overflow: hidden; }
+        .card-display { width: 100%; max-width: 450px; height: 100%; max-height: 500px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; position: relative; }
+        .card-text { font-size: 1.5rem; line-height: 1.4; margin: 0; overflow: hidden; }
+        .card-cita { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--acento); margin-top: 20px; text-transform: uppercase; }
+        .mazo-actions { margin-top: 20px; display: flex; gap: 15px; justify-content: center; width: 100%; }
+        .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }
+        
+        /* Corazón fijo en la esquina inferior derecha */
+        .float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
     </style>
 </head>
 <body>
-
-    <div class="main-background"></div>
-    <div class="bg-words" id="bg"></div>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <nav>
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i>Inicio</a>
-        <a href="mazos.html" class="nav-btn"><i class="fas fa-layer-group"></i>Mazos</a>
+        <a href="../index.html" class="logo-container">
+            <img src="../icono.png" alt="Logo" class="nav-logo-img">
+            <span class="logo-texto">Capilla Santa Ana</span>
+        </a>
+        <div class="nav-right">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../mazos/">Mazos</a></li>
+                <li><a href="../ayudanos/">Ayudanos</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+            </div>
+        </div>
     </nav>
 
-    <div class="container">
+    <main>
+        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Pequeñas Luces</h2>
+        
         <div class="card-scene">
-            <div id="card" class="card">
-                <div class="face front">
-                    <p id="q-text" class="question">Cargando...</p>
-                </div>
-                <div class="face back">
-                    <i class="fas fa-sun"></i>
-                    <p id="v-text" class="verse"></p>
-                    <p id="v-ref" class="ref"></p>
-                </div>
+            <div class="card-display" id="cardBox">
+                <i class="fas fa-sun card-icon" style="color: #FFD600; margin-bottom: 15px;"></i>
+                <div class="card-text" id="cardText">Cargando...</div>
+                <div class="card-cita" id="cardCita"></div>
             </div>
         </div>
 
-        <div class="actions">
-            <button id="btn-next" class="btn-action btn-main"><i class="fas fa-magic"></i> ¡Otra Carta!</button>
-            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir enlace"><i class="fas fa-share-alt"></i></button>
+        <div class="mazo-actions">
+            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">
+                Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <div class="float-container">
+        <button class="f-btn heartbeat-btn" onclick="abrirModalAyuda()" title="Sumá tu Corazón">
+            <i class="fas fa-heart"></i>
+        </button>
+    </div>
+
+    <div id="modalAyuda" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalAyuda()">&times;</button>
+            <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
+            <h3>Ayudanos a seguir</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9;">Este espacio se sostiene con tu oración, tu tiempo y tu colaboración económica. ¡Toda ayuda suma!</p>
+            
+            <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin-bottom: 15px;">Cargando alias...</div>
+            
+            <button class="btn-card btn-next" style="width:100%; justify-content:center; margin-bottom: 10px;" onclick="copiarAliasGlobal()">Copiar Alias</button>
+            
+            <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white; border:none; margin-bottom: 15px;" onclick="comprobanteGlobal()">
+                <i class="fab fa-whatsapp"></i> Enviar Comprobante
+            </button>
+
+            <button class="btn-card btn-outline" onclick="window.location.href='../ayudanos/'">
+                Otras formas de ayudar
+            </button>
         </div>
     </div>
 
-    <div id="toast">¡Enlace copiado!</div>
-
-    <footer class="mazo-footer">Nicolás Bongiorno – Capilla Santa Ana</footer>
-
-<script>
-// Cartas Pequeños de Jesús (4-6 años)
-const CARTAS = [
-    { id: "pq-1", q: "¿Sabías que Dios hizo el sol para darte calor y las flores para que huelan rico?", v: "Dios hizo todas las cosas hermosas.", c: "Eclesiastés 3:11" },
-    { id: "pq-2", q: "¿Le dijiste hoy 'Hola' a Jesús? Él está muy feliz de escucharte.", v: "Jesús dijo: 'Dejen que los niños vengan a mí'.", c: "Mateo 19:14" },
-    { id: "pq-3", q: "¿Quién es tu mejor amigo? Jesús también quiere ser tu amigo de todo el corazón.", v: "Yo los llamo amigos.", c: "Juan 15:15" },
-    { id: "pq-4", q: "¿Sabías que tenés un Ángel que te cuida cuando dormís y cuando jugás?", v: "Él mandará a sus ángeles para que te cuiden.", c: "Salmo 91:11" },
-    { id: "pq-5", q: "¿Cómo le agradecés a Dios por la rica comida que tenés hoy?", v: "Den gracias a Dios porque Él es bueno.", c: "Salmo 118:1" },
-    { id: "pq-6", q: "La Virgen María es nuestra Mamá del Cielo. ¿Le mandás un besito volador?", v: "María dijo: 'Mi alma se alegra en Dios'.", c: "Lucas 1:46" },
-    { id: "pq-7", q: "¿Podés ayudar a mamá o papá hoy con una sonrisa gigante?", v: "Hagan todo con amor.", c: "1 Corintios 16:14" },
-    { id: "pq-8", q: "Cuando compartís tus juguetes, ¡Jesús se pone muy, pero muy contento!", v: "Dios ama al que da con alegría.", c: "2 Corintios 9:7" },
-    { id: "pq-9", q: "¿Sabías que Santa Ana era la abuela de Jesús? Ella también te cuida a vos.", v: "Su amor dura para siempre.", c: "Salmo 100:5" },
-    { id: "pq-10", q: "¿Rezamos el 'Ángel de la Guarda' antes de ir a la cama hoy?", v: "El ángel de Dios me acompaña.", c: "Oración de los niños" },
-    { id: "pq-11", q: "¿Qué animalito te gusta más? ¡Dios lo creó solo para que el mundo sea más lindo!", v: "Dios vio que todo era bueno.", c: "Génesis 1:25" },
-    { id: "pq-12", q: "Jesús siempre te perdona si le decís 'perdón' de verdad. ¿Te sentís más livianito?", v: "Dios nos perdona porque nos ama mucho.", c: "Efesios 4:32" },
-    { id: "pq-13", q: "¿Te gusta cantar canciones para Dios? A Él le encanta tu voz.", v: "Canten al Señor con alegría.", c: "Salmo 98:4" },
-    { id: "pq-14", q: "¿Le pedimos a Jesús que cuide a todos los abuelitos de Santa Ana?", v: "Bendigan al Señor en todo momento.", c: "Salmo 34:1" },
-    { id: "pq-15", q: "¿Qué es lo que más te gusta de ir a la Capilla?", v: "¡Qué alegría ir a la casa de Dios!", c: "Salmo 122:1" },
-    { id: "pq-16", q: "¿Sabías que Dios te conoce por tu nombre y sabe cuántos años cumplís?", v: "Te he llamado por tu nombre, eres mío.", c: "Isaías 43:1" },
-    { id: "pq-17", q: "Cuando ves una estrella, ¡recordá que Dios te está guiando!", v: "Yo soy la luz del mundo.", c: "Juan 8:12" },
-    { id: "pq-18", q: "¿Podés darle un abrazo a alguien hoy para que sienta el amor de Jesús?", v: "Ámense unos a otros.", c: "Juan 13:34" },
-    { id: "pq-19", q: "Si tenés miedo, cerrá los ojos y decí: 'Jesús, yo confío en Vos'.", v: "No temas, yo estoy con vos.", c: "Isaías 41:10" },
-    { id: "pq-20", q: "¿Cómo podemos cuidar el agua y las plantas que Dios nos regaló?", v: "Cuiden la tierra que Dios les dio.", c: "Génesis 2:15" },
-    { id: "pq-21", q: "Jesús era un niño como vos y ayudaba a San José en el trabajo. ¿Vos ayudás en casa?", v: "Jesús crecía en sabiduría y amor.", c: "Lucas 2:52" },
-    { id: "pq-22", q: "La Iglesia es la casa de Dios. ¿Caminamos despacito y hablamos bajito ahí?", v: "Mi casa es casa de oración.", c: "Mateo 21:13" },
-    { id: "pq-23", q: "¿Le pedimos a María que cuide a los niños que están enfermitos?", v: "Madre, cuidá a tus hijos.", c: "Plegaria sencilla" },
-    { id: "pq-24", q: "¿Sabías que para Dios sos un tesoro muy valioso?", v: "Sos muy importante para mí.", c: "Isaías 43:4" },
-    { id: "pq-25", q: "¿Qué le vas a contar a Dios cuando reces esta noche?", v: "Hablá con Dios, Él te escucha.", c: "Mateo 6:6" },
-    { id: "pq-26", q: "¿Podés decir 'Gracias', 'Por favor' y 'Perdón' hoy? Son palabras mágicas de Dios.", v: "Sean siempre amables.", c: "Filipenses 4:5" },
-    { id: "pq-27", q: "Dios hizo la lluvia para que las plantas tomen agua. ¿Te gusta el olor a tierra mojada?", v: "Él manda la lluvia sobre la tierra.", c: "Job 5:10" },
-    { id: "pq-28", q: "Jesús es como un pastor que cuida a sus ovejitas. ¡Vos sos su ovejita favorita!", v: "El Señor es mi Pastor, nada me falta.", c: "Salmo 23:1" },
-    { id: "pq-29", q: "¿Le damos las gracias a Dios por tus maestros de la catequesis?", v: "Den gracias por todo.", c: "1 Tesalonicenses 5:18" },
-    { id: "pq-30", q: "¿Sabías que cuando sonreís, hacés que el mundo sea más brillante?", v: "El corazón alegre embellece el rostro.", c: "Proverbios 15:13" },
-    { id: "pq-31", q: "¿Podemos rezar por los niños que no tienen juguetes hoy?", v: "Ayuden a los que lo necesitan.", c: "Hebreos 13:16" },
-    { id: "pq-32", q: "Dios nos dio oídos para escuchar música y ojos para ver los colores. ¡Gracias, Dios!", v: "¡Qué grandes son tus obras, Señor!", c: "Salmo 92:5" },
-    { id: "pq-33", q: "¿Rezamos juntos el Padrenuestro con las manos unidas?", v: "Padre nuestro, que estás en el cielo.", c: "Mateo 6:9" },
-    { id: "pq-34", q: "¿Sabías que Jesús nunca te deja solo, aunque no lo veas?", v: "Estaré con ustedes siempre.", c: "Mateo 28:20" },
-    { id: "pq-35", q: "¿A quién le vas a dar un beso hoy por amor a Dios?", v: "El amor viene de Dios.", c: "1 Juan 4:7" },
-    { id: "pq-36", q: "San José cuidaba a Jesús con mucho amor. ¿Quién te cuida a vos?", v: "Honrá a tus padres.", c: "Éxodo 20:12" },
-    { id: "pq-37", q: "¿Podés juntar tus manos y decir: 'Jesús, te amo mucho'?", v: "Te amo, Señor, fuerza mía.", c: "Salmo 18:1" },
-    { id: "pq-38", q: "¿Sabías que Dios te abraza cuando sentís tristeza?", v: "Dios consuela a los que están tristes.", c: "Mateo 5:4" },
-    { id: "pq-39", q: "¿Qué colores tiene el arcoíris? Es una promesa de amor de Dios.", v: "Pongo mi arco en las nubes.", c: "Génesis 9:13" },
-    { id: "pq-40", q: "¿Le pedimos a Santa Ana que bendiga a todos los amiguitos del barrio?", v: "Bendigan al Señor.", c: "Salmo 103:1" },
-    { id: "pq-41", q: "Jesús dijo: 'Dejen que los niños vengan a mí'. ¡Él te está llamando!", v: "Vengan a mí.", c: "Marcos 10:14" },
-    { id: "pq-42", q: "¿Podés contar hasta tres y dar gracias por tres cosas lindas?", v: "Todo lo bueno viene de Dios.", c: "Santiago 1:17" },
-    { id: "pq-43", q: "Dios hizo la luna para que no tengas miedo en la oscuridad.", v: "La noche brilla como el día para Dios.", c: "Salmo 139:12" },
-    { id: "pq-44", q: "¿Sabías que tu corazón es como una casita donde vive Jesús?", v: "Cristo vive en sus corazones.", c: "Efesios 3:17" },
-    { id: "pq-45", q: "¿Le pedimos perdón a un amiguito si nos peleamos hoy?", v: "Perdónense unos a otros.", c: "Colosenses 3:13" },
-    { id: "pq-46", q: "La Biblia es un libro de cuentos reales sobre Dios. ¿Te gusta que te lean?", v: "Tu palabra me da vida.", c: "Salmo 119:50" },
-    { id: "pq-47", q: "¿Podés hacer la señal de la Cruz muy despacito y bien hecha?", v: "En el nombre del Padre, del Hijo y del Espíritu Santo.", c: "Mateo 28:19" },
-    { id: "pq-48", q: "¿Sabías que sos un hijo de Dios muy, muy valiente?", v: "Sé valiente, Dios te ayuda.", c: "Josué 1:9" },
-    { id: "pq-49", q: "Dios te dio una boca para decir palabras dulces. ¿Qué palabra linda vas a decir hoy?", v: "Hablen siempre con amor.", c: "Colosenses 4:6" },
-    { id: "pq-50", q: "¡Jesús te ama más que a nadie en el mundo! ¿Lo sabías?", v: "Dios nos amó primero.", c: "1 Juan 4:19" }
-];
-
-let currentIdx = 0;
-let deck = [...CARTAS];
-let audioInit = false;
-
-// Configuración de Sonido
-const noise = new Tone.Noise("white").start();
-const filter = new Tone.Filter(100, "lowpass").toDestination();
-noise.connect(filter);
-noise.volume.value = -60;
-
-function playSound() {
-    if (!audioInit) { Tone.start(); audioInit = true; }
-    filter.frequency.setValueAtTime(100, Tone.now());
-    filter.frequency.exponentialRampToValueAtTime(3000, Tone.now() + 0.3);
-    noise.volume.setValueAtTime(-15, Tone.now());
-    noise.volume.linearRampToValueAtTime(-60, Tone.now() + 0.4);
-}
-
-// Inicialización
-function initMazo() {
-    const params = new URLSearchParams(window.location.search);
-    const cardIdRequested = params.get("card");
-
-    if (cardIdRequested) {
-        const foundIndex = CARTAS.findIndex(c => c.id === cardIdRequested);
-        if (foundIndex !== -1) {
-            currentIdx = foundIndex;
-        } else {
-            deck.sort(() => Math.random() - 0.5);
-        }
-    } else {
-        deck.sort(() => Math.random() - 0.5);
-    }
-    renderCard();
-}
-
-function renderCard() {
-    const c = CARTAS[currentIdx];
-    document.getElementById("q-text").innerText = c.q;
-    document.getElementById("v-text").innerText = `"${c.v}"`;
-    document.getElementById("v-ref").innerText = c.c;
-    // Remueve la clase para que inicie mostrando la pregunta de frente
-    document.getElementById("card").classList.remove("is-flipped"); 
-}
-
-function nextCard() {
-    const cardElement = document.getElementById("card");
-    cardElement.classList.add("slide-out");
+    <script src="data-nenes4-6.js"></script> 
+    <script src="../config-global.js"></script>
     
-    setTimeout(() => {
-        let next;
-        do {
-            next = Math.floor(Math.random() * CARTAS.length);
-        } while (next === currentIdx);
-        
-        currentIdx = next;
-        renderCard();
-        cardElement.classList.remove("slide-out");
-    }, 300);
-}
+    <script>
+        let mazoPreguntas = typeof CARTAS_NENES !== 'undefined' ? CARTAS_NENES : [];
+        let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
 
-function flipCard() {
-    playSound();
-    document.getElementById("card").classList.toggle("is-flipped");
-}
-
-async function shareCard() {
-    const c = CARTAS[currentIdx];
-    const url = `${window.location.origin}${window.location.pathname}?card=${c.id}`;
-    const text = `🧸 Mirá esta pregunta para charlar con los chicos:\n\n"${c.q}"\n\n`;
-
-    if (navigator.share) {
-        try {
-            await navigator.share({ title: 'Amiguitos de Jesús', text: text, url: url });
-        } catch (e) { console.log("Compartir cancelado"); }
-    } else {
-        navigator.clipboard.writeText(text + url).then(() => {
-            const toast = document.getElementById("toast");
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 3000);
+        document.addEventListener('DOMContentLoaded', () => {
+            actualizarCartaDOM();
+            
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
+            } else {
+                document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; 
+            }
         });
-    }
-}
 
-function initBG() {
-    const words = ['JESÚS', 'AMIGUITOS', 'ALEGRÍA', 'SANTA ANA', 'AMOR', 'LUZ', 'PAZ'];
-    const bg = document.getElementById("bg");
-    for(let i=0; i<18; i++) {
-        const s = document.createElement("span");
-        s.className = "floating-word";
-        s.innerText = words[Math.floor(Math.random()*words.length)];
-        s.style.left = Math.random() * 100 + "vw";
-        s.style.fontSize = (16 + Math.random() * 25) + "px";
-        const duration = 15 + Math.random() * 25;
-        s.style.animation = `floatUp ${duration}s linear infinite`;
-        s.style.animationDelay = `-${Math.random() * duration}s`;
-        bg.appendChild(s);
-    }
-}
+        function actualizarCartaDOM() {
+            const textEl = document.getElementById('cardText');
+            const citaEl = document.getElementById('cardCita');
+            
+            if (mazoPreguntas.length > 0) {
+                textEl.innerText = mazoPreguntas[currentIdx].q;
+                citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
+                ajustarTexto();
+            }
+        }
 
-document.getElementById("card").onclick = flipCard;
-document.getElementById("btn-next").onclick = nextCard;
-document.getElementById("btn-share").onclick = shareCard;
+        function ajustarTexto() {
+            const container = document.getElementById('cardBox');
+            const textEl = document.getElementById('cardText');
+            let fontSize = 1.6; 
+            
+            textEl.style.fontSize = fontSize + "rem";
+            while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) {
+                fontSize -= 0.1;
+                textEl.style.fontSize = fontSize + "rem";
+            }
+        }
 
-initBG();
-initMazo();
-</script>
+        function proximaCarta() {
+            if (mazoPreguntas.length === 0) return;
+            document.getElementById('cardBox').classList.add('changing');
+            setTimeout(() => {
+                currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
+                actualizarCartaDOM();
+                document.getElementById('cardBox').classList.remove('changing');
+            }, 400);
+        }
+
+        function compartirNativo() {
+            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Diálogos del Corazón', text: msg, url: window.location.href });
+            } else {
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+
+        function abrirModalAyuda() { document.getElementById('modalAyuda').style.display = 'flex'; }
+        function cerrarModalAyuda() { document.getElementById('modalAyuda').style.display = 'none'; }
+        
+        function copiarAliasGlobal() {
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
+                alert("¡Alias copiado!");
+            }
+        }
+
+        function comprobanteGlobal() {
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                const num = CONFIG_CAPILLA.whatsapp;
+                const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA);
+                window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+            }
+        }
+    </script>
 </body>
 </html>
