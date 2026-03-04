@@ -13,13 +13,19 @@
     
     <style>
         body, html { height: 100%; overflow: hidden; margin: 0; background-color: var(--fondo); }
-        main { display: flex; flex-direction: column; height: 100dvh; padding: 90px 20px 30px; box-sizing: border-box; text-align: center; }
+        
+        /* Aumentamos el padding inferior a 100px para que el botón Siguiente frene antes */
+        main { display: flex; flex-direction: column; height: 100dvh; padding: 90px 20px 100px; box-sizing: border-box; text-align: center; }
+        
         .card-scene { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; overflow: hidden; }
         .card-display { width: 100%; max-width: 450px; height: 100%; max-height: 500px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; position: relative; }
         .card-text { font-size: 1.5rem; line-height: 1.4; margin: 0; overflow: hidden; }
         .card-cita { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--acento); margin-top: 20px; text-transform: uppercase; }
         .mazo-actions { margin-top: 20px; display: flex; gap: 15px; justify-content: center; width: 100%; }
         .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }
+        
+        /* Anclamos el corazón fijo abajo a la derecha */
+        .float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -101,11 +107,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             actualizarCartaDOM();
             
-            // Verificación segura de la variable global
             if (typeof CONFIG_CAPILLA !== 'undefined') {
                 document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
             } else {
-                document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; // Fallback por si demora
+                document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; 
             }
         });
 
@@ -157,7 +162,7 @@
         function copiarAliasGlobal() {
             if (typeof CONFIG_CAPILLA !== 'undefined') {
                 navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
-                alert("¡Alias copiado! Gracias por tu generosidad.");
+                alert("¡Alias copiado!");
             }
         }
 
