@@ -1,218 +1,41 @@
-<!DOCTYPE html>
-<html lang="es-AR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Abrazo de Dios | Capilla Santa Ana</title>
-    
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-    <link rel="stylesheet" href="../master-estilos.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        /* Bloqueo de Scroll General */
-        body, html { 
-            height: 100%; 
-            overflow: hidden; 
-            margin: 0; 
-            background-color: var(--fondo);
-        }
-        
-        main {
-            display: flex;
-            flex-direction: column;
-            height: 100dvh;
-            padding: 90px 20px 30px;
-            box-sizing: border-box;
-            text-align: center;
-        }
+// config-global.js - El Cerebro de la Capilla
+const CONFIG_CAPILLA = {
+    nombre: "Capilla Santa Ana",
+    logo: "icono.png",
+    whatsapp: "5493517023789", // Tu número real
+    donaciones: {
+        alias: "capillas.fatima.ag",
+        mensajeWA: "Hola! Les comparto el comprobante de mi ofrenda/ayuda a la Capilla. ¡Bendiciones!"
+    }
+};
 
-        /* Contenedor de la Carta que se adapta al espacio sobrante */
-        .card-scene {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            overflow: hidden; /* Evita que la carta crezca fuera de la pantalla */
-        }
+// --- FUNCIONES GLOBALES ---
 
-        .card-display {
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            max-height: 500px; /* Tamaño máximo para que no se deforme en tablets */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 30px;
-            box-sizing: border-box;
-            position: relative;
-        }
+// Menú móvil
+function toggleMenu() { 
+    document.getElementById('navLinks').classList.toggle('active'); 
+}
 
-        /* Texto Dinámico: El JS ajustará el font-size */
-        .card-text {
-            font-size: 1.5rem; /* Tamaño base */
-            line-height: 1.4;
-            margin: 0;
-            overflow: hidden;
-        }
+// Abrir y cerrar cualquier Modal
+function toggleModal(id) { 
+    const modal = document.getElementById(id);
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'flex';
+    }
+}
 
-        .card-cita {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--acento);
-            margin-top: 20px;
-            text-transform: uppercase;
-        }
+// Modo Oscuro
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const icon = document.getElementById('darkIcon');
+    const isDark = document.body.classList.contains('dark-mode');
+    if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
 
-        .mazo-actions {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="../index.html" class="logo-container">
-            <img src="../icono.png" alt="Logo" class="nav-logo-img">
-            <span class="logo-texto">Capilla Santa Ana</span>
-        </a>
-        <div class="nav-right">
-            <ul class="nav-links" id="navLinks">
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../mazos/">Mazos</a></li>
-                <li><a href="#" onclick="abrirOfrenda()">Ofrenda</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
-                <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-            </div>
-        </div>
-    </nav>
-
-    <main>
-        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Abrazo de Dios</h2>
-        
-        <div class="card-scene">
-            <div class="card-display" id="cardBox">
-                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4; margin-bottom: 15px;"></i>
-                <div class="card-text" id="cardText">Cargando...</div>
-                <div class="card-cita" id="cardCita"></div>
-            </div>
-        </div>
-
-        <div class="mazo-actions">
-            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir">
-                <i class="fas fa-share-alt"></i>
-            </button>
-            <button class="btn-card btn-next" onclick="proximaCarta()">
-                Siguiente <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </main>
-
-    <div class="float-container">
-        <button class="f-btn" onclick="abrirOfrenda()">
-            <i class="fas fa-heart"></i>
-        </button>
-    </div>
-
-    <div id="modalOfrenda" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="cerrarOfrenda()">&times;</button>
-            <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
-            <h3>Sumá tu Corazón</h3>
-            <p>Tu ofrenda nos ayuda a seguir.</p>
-            <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin: 15px 0;"></div>
-            <button class="btn-card btn-next" style="width:100%; justify-content:center; margin-bottom: 10px;" onclick="copiarAliasGlobal()">Copiar Alias</button>
-            <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white;" onclick="comprobanteGlobal()">
-                <i class="fab fa-whatsapp"></i> Enviar Comprobante
-            </button>
-        </div>
-    </div>
-
-    <script src="data-abrazo.js"></script> 
-    <script src="../config-global.js"></script>
-    
-    <script>
-        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [];
-        let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            actualizarCartaDOM();
-            // Cargar el alias desde el config-global.js
-            if(window.CONFIG_CAPILLA) {
-                document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
-            }
-        });
-
-        function actualizarCartaDOM() {
-            const textEl = document.getElementById('cardText');
-            const citaEl = document.getElementById('cardCita');
-            
-            textEl.innerText = mazoPreguntas[currentIdx].q;
-            citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
-
-            ajustarTexto();
-        }
-
-        // Función para que el texto siempre entre en la carta sin scroll
-        function ajustarTexto() {
-            const container = document.getElementById('cardBox');
-            const textEl = document.getElementById('cardText');
-            let fontSize = 1.6; // Empieza en tamaño grande (rem)
-            
-            textEl.style.fontSize = fontSize + "rem";
-
-            // Mientras el texto sea más alto que el contenedor, achicamos la letra
-            while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) {
-                fontSize -= 0.1;
-                textEl.style.fontSize = fontSize + "rem";
-            }
-        }
-
-        function proximaCarta() {
-            document.getElementById('cardBox').classList.add('changing');
-            setTimeout(() => {
-                currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
-                actualizarCartaDOM();
-                document.getElementById('cardBox').classList.remove('changing');
-            }, 400);
-        }
-
-        // BOTÓN COMPARTIR: Usa el menú nativo del celular (WhatsApp, Instagram, Telegram, etc)
-        function compartirNativo() {
-            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
-            if (navigator.share) {
-                navigator.share({ title: 'Diálogos del Corazón', text: msg, url: window.location.href });
-            } else {
-                // Si el navegador es viejo, abre WhatsApp directamente
-                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-            }
-        }
-
-        // FUNCIONES VINCULADAS AL GLOBAL JS
-        function abrirOfrenda() { document.getElementById('modalOfrenda').style.display = 'flex'; }
-        function cerrarOfrenda() { document.getElementById('modalOfrenda').style.display = 'none'; }
-        
-        function copiarAliasGlobal() {
-            const alias = CONFIG_CAPILLA.donaciones.alias;
-            navigator.clipboard.writeText(alias);
-            alert("¡Alias copiado!");
-        }
-
-        function comprobanteGlobal() {
-            const num = CONFIG_CAPILLA.contacto.whatsapp;
-            const msg = encodeURIComponent("Hola! Envío el comprobante de mi ofrenda.");
-            window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
-        }
-    </script>
-</body>
-</html>
+// Cargar tema al iniciar
+if(localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+}
