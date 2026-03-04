@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Abrazo de Dios | Capilla Santa Ana</title>
+    <title>Pequeñas Luces | Capilla Santa Ana</title>
     
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
     
@@ -50,11 +50,11 @@
     </nav>
 
     <main>
-        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Abrazo de Dios</h2>
+        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Pequeñas Luces</h2>
         
         <div class="card-scene">
             <div class="card-display" id="cardBox">
-                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4; margin-bottom: 15px;"></i>
+                <i class="fas fa-sun card-icon" style="color: #FFD600; margin-bottom: 15px;"></i>
                 <div class="card-text" id="cardText">Cargando...</div>
                 <div class="card-cita" id="cardCita"></div>
             </div>
@@ -97,11 +97,11 @@
         </div>
     </div>
 
-    <script src="data-abrazo.js"></script> 
+    <script src="data-nenes4-6.js"></script> 
     <script src="../config-global.js"></script>
     
     <script>
-        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [];
+        let mazoPreguntas = typeof CARTAS_NENES !== 'undefined' ? CARTAS_NENES : [];
         let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -150,7 +150,7 @@
         function compartirNativo() {
             const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
             if (navigator.share) {
-                navigator.share({ title: 'Diálogos del Corazón', text: msg, url: window.location.href });
+                navigator.share({ title: 'Pequeñas Luces', text: msg, url: window.location.href });
             } else {
                 window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
             }
