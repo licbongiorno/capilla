@@ -34,8 +34,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="../mazos/">Mazos</a></li>
-                <li><a href="../profundiza.html">Profundizá</a></li>
-                <li><a href="#" onclick="toggleModal('modalAyuda')">Ayudanos</a></li>
+                <li><a href="../ayudanos/">Ayudanos</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
@@ -66,15 +65,15 @@
     </main>
 
     <div class="float-container">
-        <button class="f-btn heartbeat-btn" onclick="toggleModal('modalAyuda')" title="Ayudanos a seguir">
-            <i class="fas fa-hands-helping"></i>
+        <button class="f-btn heartbeat-btn" onclick="abrirModalAyuda()" title="Sumá tu Corazón">
+            <i class="fas fa-heart"></i>
         </button>
     </div>
 
     <div id="modalAyuda" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="toggleModal('modalAyuda')">&times;</button>
-            <i class="fas fa-hands-helping" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
+            <button class="modal-close" onclick="cerrarModalAyuda()">&times;</button>
+            <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
             <h3>Ayudanos a seguir</h3>
             <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9;">Este espacio se sostiene con tu oración, tu tiempo y tu colaboración económica. ¡Toda ayuda suma!</p>
             
@@ -86,7 +85,7 @@
                 <i class="fab fa-whatsapp"></i> Enviar Comprobante
             </button>
 
-            <button class="btn-card btn-outline" onclick="window.location.href='https://capillasantaana.com.ar/ofrenda'">
+            <button class="btn-card btn-outline" onclick="window.location.href='../ayudanos/'">
                 Otras formas de ayudar
             </button>
         </div>
@@ -101,9 +100,12 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             actualizarCartaDOM();
-            // Llenar el Alias directamente desde el global
-            if(window.CONFIG_CAPILLA) {
+            
+            // Verificación segura de la variable global
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
                 document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
+            } else {
+                document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; // Fallback por si demora
             }
         });
 
@@ -111,9 +113,11 @@
             const textEl = document.getElementById('cardText');
             const citaEl = document.getElementById('cardCita');
             
-            textEl.innerText = mazoPreguntas[currentIdx].q;
-            citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
-            ajustarTexto();
+            if (mazoPreguntas.length > 0) {
+                textEl.innerText = mazoPreguntas[currentIdx].q;
+                citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
+                ajustarTexto();
+            }
         }
 
         function ajustarTexto() {
@@ -129,6 +133,7 @@
         }
 
         function proximaCarta() {
+            if (mazoPreguntas.length === 0) return;
             document.getElementById('cardBox').classList.add('changing');
             setTimeout(() => {
                 currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
@@ -137,7 +142,6 @@
             }, 400);
         }
 
-        // COMPARTIR NATIVO: Abre las opciones del celular (WA, IG, FB)
         function compartirNativo() {
             const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
             if (navigator.share) {
@@ -147,17 +151,19 @@
             }
         }
 
-        // ACCIONES VINCULADAS AL CEREBRO GLOBAL
+        function abrirModalAyuda() { document.getElementById('modalAyuda').style.display = 'flex'; }
+        function cerrarModalAyuda() { document.getElementById('modalAyuda').style.display = 'none'; }
+        
         function copiarAliasGlobal() {
-            if(window.CONFIG_CAPILLA) {
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
                 navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
                 alert("¡Alias copiado! Gracias por tu generosidad.");
             }
         }
 
         function comprobanteGlobal() {
-            if(window.CONFIG_CAPILLA) {
-                const num = CONFIG_CAPILLA.whatsapp; // Ahora lee directo de la raíz
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                const num = CONFIG_CAPILLA.whatsapp;
                 const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA);
                 window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
             }
