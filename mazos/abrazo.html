@@ -12,38 +12,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
-        /* Diseño de Pantalla Única (No Scroll) */
+        /* Bloqueo de Scroll General */
         body, html { 
             height: 100%; 
             overflow: hidden; 
             margin: 0; 
+            background-color: var(--fondo);
         }
         
         main {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100dvh; /* Altura dinámica para móviles */
-            padding: 80px 20px 20px;
+            height: 100dvh;
+            padding: 90px 20px 30px;
             box-sizing: border-box;
+            text-align: center;
         }
 
+        /* Contenedor de la Carta que se adapta al espacio sobrante */
         .card-scene {
-            flex-grow: 1;
+            flex: 1;
             display: flex;
             align-items: center;
+            justify-content: center;
             width: 100%;
-            max-width: 400px;
-            max-height: 60vh; /* La carta nunca ocupará más del 60% de la pantalla */
+            overflow: hidden; /* Evita que la carta crezca fuera de la pantalla */
         }
 
         .card-display {
+            width: 100%;
+            max-width: 450px;
             height: 100%;
+            max-height: 500px; /* Tamaño máximo para que no se deforme en tablets */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            overflow-y: auto; /* Si el texto es muy largo, se desliza solo dentro de la carta */
+            padding: 30px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Texto Dinámico: El JS ajustará el font-size */
+        .card-text {
+            font-size: 1.5rem; /* Tamaño base */
+            line-height: 1.4;
+            margin: 0;
+            overflow: hidden;
         }
 
         .card-cita {
@@ -51,23 +65,20 @@
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--acento);
-            margin-top: 15px;
+            margin-top: 20px;
             text-transform: uppercase;
         }
 
-        /* Estilos del Modal de Ofrenda */
-        .modal-btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
+        .mazo-actions {
             margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
     <nav>
         <a href="../index.html" class="logo-container">
             <img src="../icono.png" alt="Logo" class="nav-logo-img">
@@ -77,7 +88,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="../mazos/">Mazos</a></li>
-                <li><a href="#" onclick="toggleModal('modalOfrenda')">Ofrenda</a></li>
+                <li><a href="#" onclick="abrirOfrenda()">Ofrenda</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
@@ -87,42 +98,43 @@
     </nav>
 
     <main>
-        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin: 0;">Abrazo de Dios</h2>
+        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Abrazo de Dios</h2>
         
         <div class="card-scene">
             <div class="card-display" id="cardBox">
-                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4;"></i>
-                <div class="card-text" id="cardText" style="white-space: pre-wrap;">Cargando...</div>
+                <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4; margin-bottom: 15px;"></i>
+                <div class="card-text" id="cardText">Cargando...</div>
                 <div class="card-cita" id="cardCita"></div>
             </div>
         </div>
 
-        <div class="mazo-actions" style="margin-top: 20px;">
-            <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i></button>
-            <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
+        <div class="mazo-actions">
+            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">
+                Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
     </main>
 
     <div class="float-container">
-        <button class="f-btn" onclick="toggleModal('modalOfrenda')">
+        <button class="f-btn" onclick="abrirOfrenda()">
             <i class="fas fa-heart"></i>
         </button>
     </div>
 
     <div id="modalOfrenda" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="toggleModal('modalOfrenda')">&times;</button>
+            <button class="modal-close" onclick="cerrarOfrenda()">&times;</button>
             <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
             <h3>Sumá tu Corazón</h3>
-            <p style="font-size: 0.9rem; opacity: 0.8;">Copiá el alias para tu ofrenda:</p>
-            <div class="alias-box" style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-weight: bold; margin: 10px 0;">capillas.fatima.ag</div>
-            
-            <div class="modal-btn-group">
-                <button class="btn-card btn-next" style="width:100%; justify-content:center;" onclick="copiarAlias()">Copiar Alias</button>
-                <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white;" onclick="enviarComprobante()">
-                    <i class="fab fa-whatsapp"></i> Enviar Comprobante
-                </button>
-            </div>
+            <p>Tu ofrenda nos ayuda a seguir.</p>
+            <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin: 15px 0;"></div>
+            <button class="btn-card btn-next" style="width:100%; justify-content:center; margin-bottom: 10px;" onclick="copiarAliasGlobal()">Copiar Alias</button>
+            <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white;" onclick="comprobanteGlobal()">
+                <i class="fab fa-whatsapp"></i> Enviar Comprobante
+            </button>
         </div>
     </div>
 
@@ -130,39 +142,76 @@
     <script src="../config-global.js"></script>
     
     <script>
-        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [{ q: "Error de datos", a: "Revisar JS" }];
+        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [];
         let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
 
-        document.addEventListener('DOMContentLoaded', actualizarCartaDOM);
+        document.addEventListener('DOMContentLoaded', () => {
+            actualizarCartaDOM();
+            // Cargar el alias desde el config-global.js
+            if(window.CONFIG_CAPILLA) {
+                document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
+            }
+        });
 
         function actualizarCartaDOM() {
-            document.getElementById('cardText').innerText = mazoPreguntas[currentIdx].q;
-            document.getElementById('cardCita').innerText = "— " + mazoPreguntas[currentIdx].a;
+            const textEl = document.getElementById('cardText');
+            const citaEl = document.getElementById('cardCita');
+            
+            textEl.innerText = mazoPreguntas[currentIdx].q;
+            citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
+
+            ajustarTexto();
+        }
+
+        // Función para que el texto siempre entre en la carta sin scroll
+        function ajustarTexto() {
+            const container = document.getElementById('cardBox');
+            const textEl = document.getElementById('cardText');
+            let fontSize = 1.6; // Empieza en tamaño grande (rem)
+            
+            textEl.style.fontSize = fontSize + "rem";
+
+            // Mientras el texto sea más alto que el contenedor, achicamos la letra
+            while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) {
+                fontSize -= 0.1;
+                textEl.style.fontSize = fontSize + "rem";
+            }
         }
 
         function proximaCarta() {
-            const card = document.getElementById('cardBox');
-            card.classList.add('changing');
+            document.getElementById('cardBox').classList.add('changing');
             setTimeout(() => {
                 currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
                 actualizarCartaDOM();
-                card.classList.remove('changing');
+                document.getElementById('cardBox').classList.remove('changing');
             }, 400);
         }
 
-        function copiarAlias() {
-            navigator.clipboard.writeText("capillas.fatima.ag");
+        // BOTÓN COMPARTIR: Usa el menú nativo del celular (WhatsApp, Instagram, Telegram, etc)
+        function compartirNativo() {
+            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Diálogos del Corazón', text: msg, url: window.location.href });
+            } else {
+                // Si el navegador es viejo, abre WhatsApp directamente
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+
+        // FUNCIONES VINCULADAS AL GLOBAL JS
+        function abrirOfrenda() { document.getElementById('modalOfrenda').style.display = 'flex'; }
+        function cerrarOfrenda() { document.getElementById('modalOfrenda').style.display = 'none'; }
+        
+        function copiarAliasGlobal() {
+            const alias = CONFIG_CAPILLA.donaciones.alias;
+            navigator.clipboard.writeText(alias);
             alert("¡Alias copiado!");
         }
 
-        function enviarComprobante() {
-            const msg = encodeURIComponent("¡Hola! Envío el comprobante de mi ofrenda para la Capilla Santa Ana.");
-            window.open(`https://wa.me/543512345678?text=${msg}`, '_blank'); // Cambiá el número por el real
-        }
-
-        function compartirWA() {
-            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n(${mazoPreguntas[currentIdx].a})\n\nReflexioná en: ${window.location.href}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        function comprobanteGlobal() {
+            const num = CONFIG_CAPILLA.contacto.whatsapp;
+            const msg = encodeURIComponent("Hola! Envío el comprobante de mi ofrenda.");
+            window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
         }
     </script>
 </body>
