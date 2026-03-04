@@ -4,26 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Pequeñas Luces | Capilla Santa Ana</title>
+    
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
+    
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="../master-estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
         body, html { height: 100%; overflow: hidden; margin: 0; background-color: var(--fondo); }
+        
+        /* Padding inferior de 100px para que el botón Siguiente no se solape con el corazón */
         main { display: flex; flex-direction: column; height: 100dvh; padding: 90px 20px 100px; box-sizing: border-box; text-align: center; }
+        
         .card-scene { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; overflow: hidden; }
         .card-display { width: 100%; max-width: 450px; height: 100%; max-height: 500px; display: flex; flex-direction: column; justify-content: center; padding: 30px; box-sizing: border-box; position: relative; }
         .card-text { font-size: 1.5rem; line-height: 1.4; margin: 0; overflow: hidden; }
         .card-cita { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--acento); margin-top: 20px; text-transform: uppercase; }
         .mazo-actions { margin-top: 20px; display: flex; gap: 15px; justify-content: center; width: 100%; }
         .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }
+        
+        /* Corazón fijo en la esquina inferior derecha para móviles */
         .float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
     </style>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ6QSWZ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
     <nav>
-        <a href="../index.html" class="logo-container"><img src="../icono.png" alt="Logo" class="nav-logo-img"><span class="logo-texto">Capilla Santa Ana</span></a>
+        <a href="../index.html" class="logo-container">
+            <img src="../icono.png" alt="Logo" class="nav-logo-img">
+            <span class="logo-texto">Capilla Santa Ana</span>
+        </a>
         <div class="nav-right">
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
@@ -36,8 +48,10 @@
             </div>
         </div>
     </nav>
+
     <main>
         <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin-bottom: 10px;">Pequeñas Luces</h2>
+        
         <div class="card-scene">
             <div class="card-display" id="cardBox">
                 <i class="fas fa-sun card-icon" style="color: #FFD600; margin-bottom: 15px;"></i>
@@ -45,59 +59,123 @@
                 <div class="card-cita" id="cardCita"></div>
             </div>
         </div>
+
         <div class="mazo-actions">
-            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir"><i class="fas fa-share-alt"></i></button>
-            <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-card btn-share" onclick="compartirNativo()" title="Compartir">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">
+                Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
     </main>
+
     <div class="float-container">
-        <button class="f-btn heartbeat-btn" onclick="abrirModalAyuda()" title="Sumá tu Corazón"><i class="fas fa-heart"></i></button>
+        <button class="f-btn heartbeat-btn" onclick="toggleModal('modalAyuda')" title="Sumá tu Corazón">
+            <i class="fas fa-heart"></i>
+        </button>
     </div>
+
     <div id="modalAyuda" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModalAyuda()">&times;</button>
             <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
             <h3>Ayudanos a seguir</h3>
             <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9;">Este espacio se sostiene con tu oración, tu tiempo y tu colaboración económica. ¡Toda ayuda suma!</p>
+            
             <div id="aliasDisplay" class="alias-box" style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; font-weight: 800; margin-bottom: 15px;">Cargando alias...</div>
+            
             <button class="btn-card btn-next" style="width:100%; justify-content:center; margin-bottom: 10px;" onclick="copiarAliasGlobal()">Copiar Alias</button>
-            <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white; border:none; margin-bottom: 15px;" onclick="comprobanteGlobal()"><i class="fab fa-whatsapp"></i> Enviar Comprobante</button>
-            <button class="btn-card btn-outline" onclick="window.location.href='../ayudanos/'">Otras formas de ayudar</button>
+            
+            <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white; border:none; margin-bottom: 15px;" onclick="comprobanteGlobal()">
+                <i class="fab fa-whatsapp"></i> Enviar Comprobante
+            </button>
+
+            <button class="btn-card btn-outline" onclick="window.location.href='../ayudanos/'">
+                Otras formas de ayudar
+            </button>
         </div>
     </div>
-    <script src="data-nenes4-6.js"></script>
+
+    <script src="data-nenes4-6.js"></script> 
     <script src="../config-global.js"></script>
+    
     <script>
+        // Cambio de variable a CARTAS_NENES
         let mazoPreguntas = typeof CARTAS_NENES !== 'undefined' ? CARTAS_NENES : [];
         let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
+
         document.addEventListener('DOMContentLoaded', () => {
             actualizarCartaDOM();
-            if (typeof CONFIG_CAPILLA !== 'undefined') { document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias; }
-            else { document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; }
+            
+            // Verificación del cerebro global
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                document.getElementById('aliasDisplay').innerText = CONFIG_CAPILLA.donaciones.alias;
+            } else {
+                document.getElementById('aliasDisplay').innerText = "capillas.fatima.ag"; 
+            }
         });
+
         function actualizarCartaDOM() {
-            const textEl = document.getElementById('cardText'); const citaEl = document.getElementById('cardCita');
-            if (mazoPreguntas.length > 0) { textEl.innerText = mazoPreguntas[currentIdx].q; citaEl.innerText = "— " + mazoPreguntas[currentIdx].a; ajustarTexto(); }
+            const textEl = document.getElementById('cardText');
+            const citaEl = document.getElementById('cardCita');
+            
+            if (mazoPreguntas.length > 0) {
+                textEl.innerText = mazoPreguntas[currentIdx].q;
+                citaEl.innerText = "— " + mazoPreguntas[currentIdx].a;
+                ajustarTexto();
+            }
         }
+
         function ajustarTexto() {
-            const container = document.getElementById('cardBox'); const textEl = document.getElementById('cardText'); let fontSize = 1.6;
+            const container = document.getElementById('cardBox');
+            const textEl = document.getElementById('cardText');
+            let fontSize = 1.6; 
+            
             textEl.style.fontSize = fontSize + "rem";
-            while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) { fontSize -= 0.1; textEl.style.fontSize = fontSize + "rem"; }
+            // Reducir fuente si el texto desborda el alto de la carta
+            while (textEl.scrollHeight > container.offsetHeight - 150 && fontSize > 0.8) {
+                fontSize -= 0.1;
+                textEl.style.fontSize = fontSize + "rem";
+            }
         }
+
         function proximaCarta() {
             if (mazoPreguntas.length === 0) return;
             document.getElementById('cardBox').classList.add('changing');
-            setTimeout(() => { currentIdx = Math.floor(Math.random() * mazoPreguntas.length); actualizarCartaDOM(); document.getElementById('cardBox').classList.remove('changing'); }, 400);
+            setTimeout(() => {
+                currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
+                actualizarCartaDOM();
+                document.getElementById('cardBox').classList.remove('changing');
+            }, 400);
         }
+
         function compartirNativo() {
-            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con la Capilla Santa Ana acá: ${window.location.href}`;
-            if (navigator.share) { navigator.share({ title: 'Diálogos del Corazón', text: msg, url: window.location.href }); }
-            else { window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank'); }
+            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n\nReflexioná con los más chiquitos en la Capilla Santa Ana: ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Pequeñas Luces', text: msg, url: window.location.href });
+            } else {
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            }
         }
+
         function abrirModalAyuda() { document.getElementById('modalAyuda').style.display = 'flex'; }
         function cerrarModalAyuda() { document.getElementById('modalAyuda').style.display = 'none'; }
-        function copiarAliasGlobal() { if (typeof CONFIG_CAPILLA !== 'undefined') { navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias); alert("¡Alias copiado!"); } }
-        function comprobanteGlobal() { if (typeof CONFIG_CAPILLA !== 'undefined') { const num = CONFIG_CAPILLA.whatsapp; const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA); window.open(`https://wa.me/${num}?text=${msg}`, '_blank'); } }
+        
+        function copiarAliasGlobal() {
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                navigator.clipboard.writeText(CONFIG_CAPILLA.donaciones.alias);
+                alert("¡Alias copiado! Gracias por tu generosidad.");
+            }
+        }
+
+        function comprobanteGlobal() {
+            if (typeof CONFIG_CAPILLA !== 'undefined') {
+                const num = CONFIG_CAPILLA.whatsapp;
+                const msg = encodeURIComponent(CONFIG_CAPILLA.donaciones.mensajeWA);
+                window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+            }
+        }
     </script>
 </body>
 </html>
