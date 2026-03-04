@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Abrazo de Dios | Capilla Santa Ana</title>
     
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TZ6QSWZ6');</script>
@@ -12,15 +12,56 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
+        /* Diseño de Pantalla Única (No Scroll) */
+        body, html { 
+            height: 100%; 
+            overflow: hidden; 
+            margin: 0; 
+        }
+        
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100dvh; /* Altura dinámica para móviles */
+            padding: 80px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .card-scene {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            max-height: 60vh; /* La carta nunca ocupará más del 60% de la pantalla */
+        }
+
+        .card-display {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto; /* Si el texto es muy largo, se desliza solo dentro de la carta */
+        }
+
         .card-cita {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--acento);
-            margin-top: 25px;
+            margin-top: 15px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.8;
+        }
+
+        /* Estilos del Modal de Ofrenda */
+        .modal-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -36,45 +77,60 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="../mazos/">Mazos</a></li>
-                <li><a href="../profundiza.html">Profundizá</a></li>
-                <li><a href="https://capillasantaana.com.ar/ofrenda">Ofrenda</a></li>
+                <li><a href="#" onclick="toggleModal('modalOfrenda')">Ofrenda</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="toggleDarkMode()" aria-label="Modo Oscuro"><i class="fas fa-moon" id="darkIcon"></i></button>
-                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menú"><span></span><span></span><span></span></button>
+                <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
-    <main style="padding-top: 140px; text-align: center; min-height: 85vh;">
-        <h2 style="font-family: 'Playfair Display'; color: var(--acento);">Abrazo de Dios</h2>
-        <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase;">Consuelo y Esperanza</p>
+    <main>
+        <h2 style="font-family: 'Playfair Display'; color: var(--acento); margin: 0;">Abrazo de Dios</h2>
         
         <div class="card-scene">
             <div class="card-display" id="cardBox">
                 <i class="fas fa-hand-holding-heart card-icon" style="color: #80CBC4;"></i>
-                <div class="card-text" id="cardText" style="white-space: pre-wrap;">Cargando reflexión...</div>
+                <div class="card-text" id="cardText" style="white-space: pre-wrap;">Cargando...</div>
                 <div class="card-cita" id="cardCita"></div>
             </div>
         </div>
 
-        <div class="mazo-actions">
-            <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i> Compartir</button>
+        <div class="mazo-actions" style="margin-top: 20px;">
+            <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i></button>
             <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
         </div>
     </main>
 
     <div class="float-container">
-        <button class="f-btn" onclick="window.location.href='https://capillasantaana.com.ar/ofrenda'" title="Sumá tu Corazón">
+        <button class="f-btn" onclick="toggleModal('modalOfrenda')">
             <i class="fas fa-heart"></i>
         </button>
+    </div>
+
+    <div id="modalOfrenda" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleModal('modalOfrenda')">&times;</button>
+            <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--acento); margin-bottom: 10px;"></i>
+            <h3>Sumá tu Corazón</h3>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Copiá el alias para tu ofrenda:</p>
+            <div class="alias-box" style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-weight: bold; margin: 10px 0;">capillas.fatima.ag</div>
+            
+            <div class="modal-btn-group">
+                <button class="btn-card btn-next" style="width:100%; justify-content:center;" onclick="copiarAlias()">Copiar Alias</button>
+                <button class="btn-card btn-share" style="width:100%; justify-content:center; background:#25D366; color:white;" onclick="enviarComprobante()">
+                    <i class="fab fa-whatsapp"></i> Enviar Comprobante
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="data-abrazo.js"></script> 
     <script src="../config-global.js"></script>
     
     <script>
-        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [{ q: "Error de carga", a: "Soporte" }];
+        let mazoPreguntas = typeof CARTAS_ABRAZO !== 'undefined' ? CARTAS_ABRAZO : [{ q: "Error de datos", a: "Revisar JS" }];
         let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
 
         document.addEventListener('DOMContentLoaded', actualizarCartaDOM);
@@ -94,8 +150,18 @@
             }, 400);
         }
 
+        function copiarAlias() {
+            navigator.clipboard.writeText("capillas.fatima.ag");
+            alert("¡Alias copiado!");
+        }
+
+        function enviarComprobante() {
+            const msg = encodeURIComponent("¡Hola! Envío el comprobante de mi ofrenda para la Capilla Santa Ana.");
+            window.open(`https://wa.me/543512345678?text=${msg}`, '_blank'); // Cambiá el número por el real
+        }
+
         function compartirWA() {
-            const msg = `✨ Una reflexión de la Capilla Santa Ana:\n\n"${mazoPreguntas[currentIdx].q}"\n(${mazoPreguntas[currentIdx].a})\n\nLeé más acá: ${window.location.href}`;
+            const msg = `✨ "${mazoPreguntas[currentIdx].q}"\n(${mazoPreguntas[currentIdx].a})\n\nReflexioná en: ${window.location.href}`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
