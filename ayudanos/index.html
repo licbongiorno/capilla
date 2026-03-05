@@ -96,15 +96,52 @@
         }
 
         /* --- HERO --- */
-        .hero { position: relative; min-height: 70vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; }
-        @media (max-width: 900px) { .hero { margin-top: 85px; min-height: 60vh; } }
+        .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; }
+        @media (max-width: 900px) { .hero { margin-top: 85px; min-height: 80vh; } }
         picture { display: contents; }
         .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; }
-        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)); z-index: 1; }
+        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85)); z-index: 1; }
         .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
-        .hero-content h2 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 400; max-width: 800px; margin-bottom: 30px; color: rgba(255,255,255,0.9); }
-        .urgente-badge { background: var(--urgente); color: white; padding: 10px 25px; border-radius: 50px; margin-bottom: 25px; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); display: inline-block; }
+        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5rem); margin-bottom: 25px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .urgente-badge { background: var(--urgente); color: white; padding: 10px 25px; border-radius: 50px; margin-bottom: 20px; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); display: inline-block; }
+
+        /* --- CARTEL DEL HERO --- */
+        .hero-cartel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 25px;
+            padding: 40px 30px;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            margin-top: 10px;
+        }
+        .hero-cartel p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .hero-cartel p strong {
+            color: var(--acento);
+            font-size: 1.3rem;
+            display: block;
+            margin-top: 10px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+        .cartel-svg {
+            width: 75px;
+            height: 75px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .quick-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; cursor: pointer; }
+        .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
         section { padding: 90px 8%; scroll-margin-top: 120px; }
         .bg-white { background-color: var(--blanco); }
@@ -194,12 +231,27 @@
             <div class="hero-content">
                 <div class="urgente-badge fade-up"><i class="fas fa-hands-helping"></i> Manos a la obra</div>
                 <h1 class="fade-up" itemprop="name">La Capilla te necesita</h1>
-                <h2 class="fade-up">Nuestra casa se sostiene gracias al esfuerzo, el amor y el talento de toda la comunidad. Descubrí cómo podés aportar tu granito de arena hoy.</h2>
                 
-                <div class="quick-links fade-up">
-                    <a href="#necesidades" class="quick-btn" style="background: var(--primario); border-color: var(--primario);"><i class="fas fa-clipboard-list"></i> Ver Necesidades</a>
-                    <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart corazon-late"></i> Donación Económica</button>
+                <div class="hero-cartel fade-up">
+                    <svg class="cartel-svg corazon-late" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 58.6C32 58.6 8 42.6 8 22.6C8 12.6 18 7.3 25.3 12.6C28.8 15.2 32 19.3 32 19.3C32 19.3 35.2 15.2 38.7 12.6C46 7.3 56 12.6 56 22.6C56 42.6 32 58.6 32 58.6Z" fill="url(#grad-corazon)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                        <path d="M32 20V40M22 30H42" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="grad-corazon" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="var(--acento)" stop-opacity="0.9"/>
+                                <stop offset="1" stop-color="var(--primario)" stop-opacity="0.95"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    
+                    <p>Nuestra casa se sostiene gracias al esfuerzo, el amor y el talento de toda la comunidad. <strong>Descubrí cómo podés aportar tu granito de arena hoy.</strong></p>
+                    
+                    <div class="quick-links">
+                        <a href="#necesidades" class="quick-btn" style="background: white; color: var(--primario); border-color: white;"><i class="fas fa-clipboard-list"></i> Ver Necesidades</a>
+                        <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); color: white; border-color: var(--acento);"><i class="fas fa-hand-holding-heart"></i> Donación Económica</button>
+                    </div>
                 </div>
+
             </div>
         </header>
 
