@@ -9,42 +9,30 @@
     <meta name="theme-color" content="#F5F5F0">
     <meta name="color-scheme" content="light dark">
     <meta name="author" content="Capilla Santa Ana">
-    <meta name="description" content="Bienvenido a tu casa. Sumate a la Capilla Santa Ana en Villa Parque Santa Ana. Horarios de misa, Cáritas, ropero comunitario, sacramentos, casamientos, bautismos y vida comunitaria.">
-    <meta name="keywords" content="Misa, Iglesia Católica, Capilla Santa Ana, Villa Parque Santa Ana, Córdoba, Cáritas, Merendero, Ropero Comunitario, Bautismos, Casamientos, Comunión, Horarios de Misa">
+    <meta name="description" content="Ayudanos a sostener la Capilla Santa Ana. Necesitamos voluntarios para limpieza, elementos para el merendero, talentos artísticos y donaciones. Sumá tu granito de arena.">
+    <meta name="keywords" content="Ayuda, Donaciones, Voluntariado, Capilla Santa Ana, Merendero, Limpieza, Solidaridad, Córdoba">
     <meta name="robots" content="index, follow">
-    <meta name="geo.region" content="AR-X">
-    <meta name="geo.country" content="AR">
-    <meta name="geo.placename" content="Villa Parque Santa Ana">
-    <meta name="geo.position" content="-31.6826622;-64.4578168">
-    <meta name="ICBM" content="-31.6826622, -64.4578168">
     
-    <link rel="canonical" href="https://www.capillasantaana.com.ar/">
+    <link rel="canonical" href="https://www.capillasantaana.com.ar/ayudanos">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>Capilla Santa Ana | Tu Familia y Refugio en Córdoba</title>
+    <title>Ayudanos | Capilla Santa Ana</title>
     
     <meta property="og:locale" content="es_AR">
-    <meta property="og:title" content="Capilla Santa Ana | Vení a celebrar en familia">
-    <meta property="og:description" content="Horarios de misa, vida sacramental, ayuda social y un espacio de paz para vos en Villa Parque Santa Ana.">
+    <meta property="og:title" content="Ayudanos | Capilla Santa Ana">
+    <meta property="og:description" content="Nuestra casa se sostiene gracias al amor de la comunidad. Necesitamos voluntarios, elementos y donaciones. Sumate.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.capillasantaana.com.ar/">
+    
+    <meta property="og:url" content="https://www.capillasantaana.com.ar/ayudanos">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
-
+    
     <style>
         :root {
             --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
-            --texto: #2D2D2D; --verde-wa: #25D366; --google-maps: #4285F4;
+            --texto: #2D2D2D; --verde-wa: #25D366; --google-maps: #4285F4; --urgente: #e74c3c;
             --gold-light: rgba(193, 154, 107, 0.2); --sombra: 0 10px 30px rgba(0,0,0,0.08);
             --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
         }
@@ -70,15 +58,13 @@
         
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--primario); }
 
-        /* --- PRELOADER ANIMADO --- */
+        /* --- PRELOADER --- */
         #preloader { position: fixed; inset: 0; background-color: #1a1210; z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.8s ease-out, visibility 0.8s ease-out; }
         .preloader-content { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .cross-svg { width: 70px; height: 110px; margin-bottom: 30px; filter: drop-shadow(0 0 0 rgba(193, 154, 107, 0)); animation: glowCross 2s ease-in-out forwards 1s; }
         .cross-svg line { stroke-dasharray: 150; stroke-dashoffset: 150; animation: drawCross 1.2s ease-in-out forwards; }
         .preloader-text { opacity: 0; transform: translateY(15px); animation: fadeInText 1s ease-in-out forwards 1.3s; }
         .preloader-title { font-family: 'Playfair Display', serif; color: var(--acento); font-size: 2.2rem; margin-bottom: 10px; letter-spacing: 2px; }
-        .preloader-quote { color: rgba(255, 255, 255, 0.8); font-size: 1.05rem; font-style: italic; max-width: 350px; line-height: 1.6; }
-        .preloader-quote span { font-weight: 700; font-style: normal; color: var(--acento); font-size: 0.85rem; display: block; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
         @keyframes drawCross { to { stroke-dashoffset: 0; } }
         @keyframes glowCross { to { filter: drop-shadow(0 0 20px rgba(193, 154, 107, 0.7)); } }
         @keyframes fadeInText { to { opacity: 1; transform: translateY(0); } }
@@ -86,136 +72,112 @@
         .progress-container { width: 100%; height: 4px; background: transparent; position: fixed; top: 0; z-index: 2001; }
         .progress-bar { height: 100%; background: var(--acento); width: 0%; transition: width 0.1s ease; }
 
-        /* --- ANIMACIÓN DE SCROLL SUAVE (FADE UP) --- */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* --- FADE UP --- */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-        /* --- ANIMACIÓN DE CORAZÓN --- */
-        @keyframes latido {
-            0% { transform: scale(1); }
-            20% { transform: scale(1.15); }
-            40% { transform: scale(1); }
-            60% { transform: scale(1.15); }
-            80% { transform: scale(1); }
-            100% { transform: scale(1); }
-        }
-        .corazon-late {
-            animation: latido 1.5s infinite;
-            color: #e74c3c !important;
-            display: inline-block;
-        }
+        /* --- CORAZÓN --- */
+        @keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+        .corazon-late { animation: latido 1.5s infinite; color: var(--urgente) !important; display: inline-block; }
 
-        /* --- CABECERA (NAV) --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; height: 95px;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
-            z-index: 1000; display: flex; justify-content: space-between; 
-            align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); 
-            transition: 0.3s; 
-        }
+        /* --- NAV --- */
+        nav { position: fixed; top: 0; width: 100%; height: 95px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); transition: 0.3s; }
         body.dark-mode nav { background: rgba(18,18,18,0.95); }
-        
         .logo-container { display: flex; align-items: center; gap: 8px; text-decoration: none; }
         .nav-logo-img { height: 65px; width: auto; object-fit: contain; }
         .logo-texto { font-size: 1.25rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1px; line-height: 1; }
-
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-links { display: flex; list-style: none; gap: 15px; transition: 0.3s ease-in-out; }
         .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; cursor: pointer; }
-        .nav-links a i { display: none; }
         .nav-links a:hover { color: var(--acento); }
-        
         .nav-actions { display: flex; gap: 15px; align-items: center; }
         .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.2rem; transition: 0.3s; }
-        .icon-btn:hover { color: var(--acento); }
-        
         .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1001; }
         .menu-toggle span { display: block; width: 100%; height: 3px; background-color: var(--primario); border-radius: 3px; transition: all 0.3s ease-in-out; }
-        body.dark-mode .menu-toggle span { background-color: var(--acento); }
-        .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; }
-        .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
-
+        
         @media (max-width: 900px) {
-            nav { height: 85px; } 
-            .nav-logo-img { height: 55px; } 
-            .logo-texto { font-size: 1.1rem; }
-            .menu-toggle { display: flex; }
+            nav { height: 85px; } .nav-logo-img { height: 55px; } .logo-texto { font-size: 1.1rem; } .menu-toggle { display: flex; }
             .nav-links { position: absolute; top: 85px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
-            body.dark-mode .nav-links { background: #1a1a1a; border-top: 1px solid #333; }
+            body.dark-mode .nav-links { background: #1a1a1a; }
             .nav-links.active { max-height: calc(100vh - 85px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
             .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid var(--gold-light); }
-            body.dark-mode .nav-links li { border-bottom: 1px solid #333; }
-            .nav-links li:last-child { border-bottom: none; }
             .nav-links a { display: flex; align-items: center; gap: 15px; padding: 22px 8%; font-size: 1.1rem; font-weight: 700; text-transform: none; }
-            .nav-links a i { display: inline-block; font-size: 1.3rem; color: var(--acento); width: 25px; text-align: center; }
         }
 
         /* --- HERO --- */
         .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; }
-        @media (max-width: 900px) { .hero { margin-top: 85px; } }
-        
+        @media (max-width: 900px) { .hero { margin-top: 85px; min-height: 80vh; } }
         picture { display: contents; }
         .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; }
-        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8)); z-index: 1; }
-
+        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85)); z-index: 1; }
         .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
-        .hero-content h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
-        
-        .next-mass-banner { background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px; margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte); display: inline-block; }
-        
-        .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-        .quick-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; cursor: pointer; }
-        .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); }
+        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5rem); margin-bottom: 25px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .urgente-badge { background: var(--urgente); color: white; padding: 10px 25px; border-radius: 50px; margin-bottom: 20px; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); display: inline-block; }
 
-        section { padding: 100px 8%; scroll-margin-top: 120px; }
+        /* --- CARTEL DEL HERO --- */
+        .hero-cartel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 25px;
+            padding: 40px 30px;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            margin-top: 10px;
+        }
+        .hero-cartel p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .hero-cartel p strong {
+            color: var(--acento);
+            font-size: 1.3rem;
+            display: block;
+            margin-top: 10px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+        .cartel-svg {
+            width: 75px;
+            height: 75px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .quick-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; cursor: pointer; }
+        .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        section { padding: 90px 8%; scroll-margin-top: 120px; }
         .bg-white { background-color: var(--blanco); }
-
-        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header { text-align: center; margin-bottom: 50px; }
         .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
         .section-header p.subtitle { max-width: 700px; margin: 0 auto; font-size: 1.1rem; opacity: 0.9; }
         .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
         
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
-        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .card:hover { transform: translateY(-8px); box-shadow: var(--sombra-fuerte); }
         
+        .card-urgente { border-top: 6px solid var(--urgente); }
+        .etiqueta-urgente { position: absolute; top: 15px; right: -35px; background: var(--urgente); color: white; padding: 5px 40px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; transform: rotate(45deg); letter-spacing: 1px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
         .btn { padding: 18px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; border: none; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-primary { background: var(--acento); color: white; box-shadow: 0 10px 20px rgba(193, 154, 107, 0.3); }
         .btn-primary:hover { background: #ab855a; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(193, 154, 107, 0.4); }
 
-        #versiculo-diario { max-width: 800px; margin: 0 auto; background: var(--blanco); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); text-align: center; border-top: 5px solid var(--acento); position: relative; }
-        #versiculo-diario i.fa-quote-left { font-size: 3rem; color: var(--gold-light); position: absolute; top: 30px; left: 30px; }
-        .verso-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--primario); margin-bottom: 20px; line-height: 1.4; transition: opacity 0.5s; }
-        .verso-cita { font-weight: 700; color: var(--acento); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
-
-        .form-box { max-width: 600px; margin: 0 auto; background: var(--fondo); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); }
-        .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s; }
-        .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); }
-
+        .donar-container { background: var(--blanco); padding: 50px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light); }
         .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
-        .alias-box span { display: block; }
         body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
 
-        /* --- BOTÓN FLOTANTE ÚNICO --- */
         .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; pointer-events: auto; }
-        .f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid #e74c3c; }
+        .f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid var(--urgente); }
         .f-btn:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(231, 76, 60, 0.6); }
 
-        @media (max-width: 768px) {
-            .hero-bg { object-position: center center; } 
-            .float-container { right: 15px; bottom: 20px; }
-            .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
-        }
-        
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 99999; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; }
         .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
         .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
@@ -236,7 +198,7 @@
             </svg>
             <div class="preloader-text">
                 <h2 class="preloader-title">Capilla Santa Ana</h2>
-                <p class="preloader-quote">"Donde dos o tres se reúnen en mi nombre, allí estoy yo en medio de ellos."<br><span>— Mateo 18:20</span></p>
+                <p class="preloader-quote">"Hay mayor felicidad en dar que en recibir."<br><span>— Hechos 20:35</span></p>
             </div>
         </div>
     </div>
@@ -251,10 +213,10 @@
         
         <div class="nav-right">
             <ul class="nav-links" id="navLinks">
-                <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
-                <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
-                <li><a href="#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
-                <li><a href="/ayudanos" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
+                <li><a href="index.html#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
+                <li><a href="index.html#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
+                <li><a href="index.html#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
+                <li><a href="#" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
                 <li><a onclick="abrirModalDonar(); closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
             </ul>
             <div class="nav-actions">
@@ -272,185 +234,104 @@
         <header class="hero">
             <picture>
                 <source media="(max-width: 768px)" srcset="2.webp">
-                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
+                <img src="1.webp" class="hero-bg" alt="Interior de la Capilla Santa Ana">
             </picture>
             
             <div class="hero-content">
-                <div class="next-mass-banner fade-up"><i class="fas fa-hands-helping"></i> Un hogar de puertas abiertas</div>
-                <h1 class="fade-up" itemprop="name">Bienvenido a Casa</h1>
-                <h2 class="fade-up">Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
+                <div class="urgente-badge fade-up"><i class="fas fa-hands-helping"></i> Manos a la obra</div>
+                <h1 class="fade-up" itemprop="name">La Capilla te necesita</h1>
                 
-                <div class="quick-links fade-up">
-                    <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
-                    <a href="#contacto" class="quick-btn" style="background: var(--primario); border-color: var(--primario);"><i class="fas fa-address-book"></i> Contacto</a>
-                    <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</button>
+                <div class="hero-cartel fade-up">
+                    <svg class="cartel-svg corazon-late" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 58.6C32 58.6 8 42.6 8 22.6C8 12.6 18 7.3 25.3 12.6C28.8 15.2 32 19.3 32 19.3C32 19.3 35.2 15.2 38.7 12.6C46 7.3 56 12.6 56 22.6C56 42.6 32 58.6 32 58.6Z" fill="url(#grad-corazon)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                        <path d="M32 20V40M22 30H42" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="grad-corazon" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="var(--acento)" stop-opacity="0.9"/>
+                                <stop offset="1" stop-color="var(--primario)" stop-opacity="0.95"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    
+                    <p>Nuestra casa se sostiene gracias al esfuerzo, el amor y el talento de toda la comunidad. <strong>Descubrí cómo podés aportar tu granito de arena hoy.</strong></p>
+                    
+                    <div class="quick-links">
+                        <a href="#necesidades" class="quick-btn" style="background: white; color: var(--primario); border-color: white;"><i class="fas fa-clipboard-list"></i> Ver Necesidades</a>
+                        <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); color: white; border-color: var(--acento);"><i class="fas fa-hand-holding-heart"></i> Donación Económica</button>
+                    </div>
                 </div>
+
             </div>
         </header>
 
-        <section id="espiritual">
+        <section id="necesidades" class="bg-white">
             <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Un mensaje para tu corazón</p>
-                <h2>Alimento Espiritual</h2>
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Tu tiempo vale oro</p>
+                <h2>¿Cómo podés ayudarnos?</h2>
                 <div class="divider"></div>
-                <p class="subtitle">Tómate un minuto en Su presencia. Que esta Palabra calme tu espíritu, renueve tus fuerzas y te acompañe durante toda la semana.</p>
-            </div>
-            
-            <div id="versiculo-diario" class="fade-up">
-                <i class="fas fa-quote-left"></i>
-                <div class="verso-texto" id="v-texto">Cargando la Palabra...</div>
-                <div class="verso-cita" id="v-cita"></div>
-                <button onclick="cambiarVersiculo()" class="btn btn-outline" style="margin-top: 30px; color: var(--primario); border-color: var(--primario); padding: 10px 25px; font-size: 0.85rem; background: transparent;">
-                    <i class="fas fa-sync-alt"></i> Leer otro pasaje
-                </button>
-            </div>
-        </section>
-
-        <section id="comunidad" class="bg-white">
-            <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Tu Familia Espiritual</p>
-                <h2>Nuestra Vida en Comunidad</h2>
-                <div class="divider"></div>
-                <p class="subtitle">No caminamos solos. Acercate a descubrir los espacios donde crecemos en la fe, compartimos alegrías y ayudamos a los demás.</p>
+                <p class="subtitle">Ya sea donando tu tiempo, tus habilidades o materiales, toda ayuda es una bendición gigante para nosotros.</p>
             </div>
             
             <div class="grid-cards">
-                <div class="card fade-up">
-                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Grupos Juveniles</h3>
-                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="far fa-clock"></i> Sábados 16:30 hs</p>
-                    <p style="margin-bottom: 15px;">Sala de Catequesis</p>
-                    <ul style="text-align: left; list-style: none; padding-left: 0; font-size: 0.95rem; margin-bottom: 20px;">
-                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Pre-Juvenil:</strong> 12 a 14 años</li>
-                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Juvenil:</strong> 15+ años</li>
-                    </ul>
-                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento);">
-                        <strong>Requisitos de Confirmación:</strong><br>Fotocopia de DNI y Certificado de Bautismo.<br><br>
-                        <strong>Coordinadores (Escribinos):</strong><br>
-                        <a href="https://wa.me/5493547660037" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Gonza</a> | 
-                        <a href="https://wa.me/5493547652406" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Vero</a> | 
-                        <a href="https://wa.me/5493513012845" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Mari</a>
-                    </div>
+                <div class="card card-urgente fade-up">
+                    <div class="etiqueta-urgente">Urgente</div>
+                    <i class="fas fa-broom" style="font-size: 3.5rem; color: var(--urgente); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Limpieza y Orden</h3>
+                    <p style="margin-bottom: 20px; flex-grow: 1;"><strong>Es lo que más nos urge en este momento.</strong> Necesitamos personas dispuestas a regalar un ratito de su tiempo en la semana para barrer, limpiar, ordenar y mantener linda la Casa de Dios.</p>
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Quiero%20sumarme%20como%20voluntario%20para%20ayudar%20con%20la%20Limpieza%20y%20el%20Orden%20de%20la%20Capilla." target="_blank" class="btn" style="background: var(--urgente); color: white; margin-top: auto;">
+                        <i class="fab fa-whatsapp"></i> Ofrecer mis manos
+                    </a>
                 </div>
 
-                <div class="card fade-up">
-                    <i class="fas fa-pray" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Camino de Vida</h3>
-                    <p style="font-weight: 700; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Jubileo 2025 - Peregrinos de Esperanza</p>
-                    <p style="margin-bottom: 20px;">Encuentro profundo de La Palabra y Adoración Eucarística.</p>
-                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto;">
-                        <i class="far fa-calendar-alt"></i> Jueves 19:00 hs
-                    </p>
+                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
+                    <i class="fas fa-soup" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Merendero y Cocina</h3>
+                    <p style="margin-bottom: 20px; flex-grow: 1;">Para poder seguir alimentando a los que más lo necesitan, solicitamos: <strong>ollas grandes, utensilios de cocina, tuppers</strong>, e insumos como leche, cacao, azúcar y galletitas.</p>
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Tengo%20cosas%20para%20donar%20al%20Merendero%20y%20la%20Cocina%20de%20la%20Capilla." target="_blank" class="btn btn-primary" style="margin-top: auto;">
+                        <i class="fab fa-whatsapp"></i> Donar al Merendero
+                    </a>
                 </div>
 
-                <div class="card fade-up">
-                    <i class="fas fa-tshirt" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Ropero Comunitario</h3>
-                    <p style="font-style: italic; margin-bottom: 15px;">Modalidad "Lleve y Traiga"</p>
-                    <p style="margin-bottom: 20px;">Un espacio comunitario permanente preparado para intercambiar o retirar prendas con dignidad.</p>
-                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto; line-height: 1.8;">
-                        <i class="far fa-clock"></i> Martes 17:00 hs<br>
-                        <i class="far fa-clock"></i> Jueves 16:30 hs
-                    </p>
-                </div>
-
-                <div class="card fade-up">
-                    <i class="fas fa-cross" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Vida Sacramental</h3>
-                    <p>Acompañamos cada etapa de tu vida cristiana: <strong>Bautismos, Primera Comunión, Confirmación, Casamientos, Confesiones y Unción de los enfermos.</strong></p>
-                </div>
-
-                <div class="card fade-up">
-                    <i class="fas fa-hands-helping" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Talleres</h3>
-                    <p>Brindamos apoyo solidario a familias en vulnerabilidad y fomentamos el desarrollo a través de talleres de oficios y manualidades.</p>
+                <div class="card fade-up" style="border-top: 5px solid var(--primario);">
+                    <i class="fas fa-palette" style="font-size: 3.5rem; color: var(--primario); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Arte y Talentos</h3>
+                    <p style="margin-bottom: 20px; flex-grow: 1;">¿Te gusta <strong>cantar, tocar un instrumento, pintar, dibujar o arreglar cosas</strong>? Queremos llenar nuestra comunidad de música, arte y color. ¡Dios te dio un talento para compartirlo!</p>
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Me%20gustar%C3%ADa%20sumar%20mi%20talento%20y%20arte%20para%20ayudar%20en%20la%20Capilla." target="_blank" class="btn" style="background: var(--primario); color: white; margin-top: auto;">
+                        <i class="fab fa-whatsapp"></i> Sumar mi talento
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section id="horarios" class="bg-white">
+        <section id="donar">
             <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">El centro de nuestra fe</p>
-                <h2>Celebremos la Eucaristía</h2>
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Aporte Económico</p>
+                <h2>Sostenimiento de la Parroquia</h2>
                 <div class="divider"></div>
-                <p class="subtitle">La Misa es el momento central donde nos encontramos como comunidad para dar gracias y llenarnos de paz.</p>
-            </div>
-            <div class="grid-cards fade-up" style="max-width: 600px; margin: 0 auto;">
-                <div class="card">
-                    <i class="fas fa-calendar-alt" style="font-size: 3rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Nuevos Horarios</h3>
-                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--primario);">A partir de Marzo</p>
-                    <p style="margin-top: 15px;">Tendremos misa dos veces por mes. Los días y horarios exactos están por confirmarse.<br>¡Pronto compartiremos el nuevo cronograma!</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="intenciones">
-            <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Rezamos por vos y los tuyos</p>
-                <h2>Buzón de Intenciones</h2>
-                <div class="divider"></div>
-                <p class="subtitle">Escribí tu pedido por salud, trabajo, una acción de gracias o por un ser querido que partió. Lo llevaremos directamente al Altar en la próxima Misa.</p>
-            </div>
-            <div class="form-box fade-up">
-                <input type="text" id="nombreIntencion" placeholder="Tu nombre (Opcional, para saber quién pide)">
-                <textarea id="textoIntencion" rows="5" placeholder="Escribí aquí tu intención. Ejemplo: 'Pido por la salud de mi madre...' o 'Acción de gracias por el trabajo...'"></textarea>
-                <button onclick="enviarIntencion()" class="btn btn-primary" style="width: 100%;">
-                    <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Enviar Intención
-                </button>
-            </div>
-        </section>
-
-        <section id="contacto" class="bg-white">
-            <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Nuestras puertas están abiertas</p>
-                <h2>Contacto y Redes Sociales</h2>
-                <div class="divider"></div>
-                <p class="subtitle">Comunicate con nosotros, sumate a nuestros canales o acercate a la Capilla en <strong>Villa Parque Santa Ana, Córdoba</strong>.</p>
+                <p class="subtitle">Si no disponés de tiempo físico, tu aporte económico es igual de fundamental para pagar servicios, comprar materiales y sostener nuestras obras de caridad.</p>
             </div>
             
-            <div class="grid-cards fade-up" style="margin-bottom: 50px;">
-                <div class="card" style="border-top: 5px solid var(--verde-wa);">
-                    <i class="fab fa-whatsapp" style="font-size: 3.5rem; color: var(--verde-wa); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Hablá con Paola</h3>
-                    <p>Escribinos por WhatsApp para consultas generales, sacramentos o intenciones.</p>
-                    <a href="https://wa.me/5493517023789" class="btn" style="background: var(--verde-wa); color: white; margin-top: auto;" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Enviar Mensaje
+            <div class="donar-container fade-up">
+                <i class="fas fa-hand-holding-heart" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+                <h3 style="color: var(--primario); font-size: 1.8rem; margin-bottom: 15px;">Alias Bancario Oficial</h3>
+                <p style="opacity: 0.9; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo es administrado con total transparencia.</p>
+                
+                <div class="alias-box" style="margin: 25px 0;">
+                    <span id="alias-text">capillas.fatima.ag</span>
+                </div>
+                
+                <button class="btn btn-primary" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem; margin-bottom: 25px;">
+                    <i class="far fa-copy"></i> Copiar Alias
+                </button>
+
+                <div style="border-top: 1px solid var(--gold-light); padding-top: 20px; text-align: center;">
+                    <p style="font-size: 0.95rem; color: var(--texto); margin-bottom: 15px; font-weight: 600;">
+                        Una vez realizada la transferencia, te pedimos que nos compartas el comprobante:
+                    </p>
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20econ%C3%B3mica%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" rel="noopener" class="btn" style="background: var(--verde-wa); color: white; width: 100%;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Enviar Comprobante
                     </a>
                 </div>
-
-                <div class="card" style="border-top: 5px solid #0A5C36;">
-                    <i class="fas fa-broadcast-tower" style="font-size: 3.5rem; color: #0A5C36; margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Canal de Difusión</h3>
-                    <p>Sumate a nuestro canal de WhatsApp para enterarte de horarios y novedades al instante.</p>
-                    <a href="https://whatsapp.com/channel/0029VbBO1Ph0LKZApi4Rfq1L" class="btn" style="background: #0A5C36; color: white; margin-top: auto;" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Unirme al Canal
-                    </a>
-                </div>
-
-                <div class="card" style="border-top: 5px solid var(--primario);">
-                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Nuestras Redes</h3>
-                    <p>Seguinos en Facebook e Instagram, y sumate a nuestro Grupo para hacer comunidad digital.</p>
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                        <a href="https://www.facebook.com/share/1eNqdVNbnw/" class="btn" style="background: #1877F2; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fab fa-facebook-f"></i> Página de Facebook</a>
-                        <a href="https://www.facebook.com/groups/778166455638473/permalink/3439110639544028" class="btn" style="background: #0546A0; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fas fa-users"></i> Grupo de Facebook</a>
-                        <a href="https://www.instagram.com/capilla.santa.ana/" class="btn" style="background: #E1306C; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="fade-up" style="border-radius: 20px; overflow: hidden; height: 450px; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light);">
-                <iframe 
-                    src="https://www.google.com/maps?q=Capilla+Santa+Ana,+Villa+Parque+Santa+Ana,+C%C3%B3rdoba,+Argentina&output=embed&z=17&hl=es" 
-                    width="100%" 
-                    height="420" 
-                    style="border:0; display:block; filter:sepia(10%);" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade" 
-                    title="Capilla Santa Ana – Villa Parque Santa Ana, Córdoba">
-                </iframe>
             </div>
         </section>
     </main>
@@ -489,7 +370,7 @@
             <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
             
             <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
-                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas. <strong>¡Que Dios multiplique tu ayuda!</strong>
             </p>
             
             <div class="alias-box" style="margin-bottom: 20px;">
@@ -502,14 +383,8 @@
 
             <div style="border-top: 1px solid var(--gold-light); padding-top: 25px;">
                 <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
-                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" class="btn" style="background: var(--verde-wa); color: white; width: 100%; margin-bottom: 25px;">
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" class="btn" style="background: var(--verde-wa); color: white; width: 100%;">
                     <i class="fab fa-whatsapp"></i> Compartir Comprobante
-                </a>
-            </div>
-
-            <div style="border-top: 1px solid var(--gold-light); padding-top: 20px;">
-                <a href="/ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
                 </a>
             </div>
         </div>
@@ -537,35 +412,7 @@
         if(preloader) preloader.style.display = "none";
     }, 4000);
 
-    const versiculos = [
-        { t: "Vengan a mí todos los que están cansados y agobiados, y yo les daré descanso.", c: "Mateo 11:28" },
-        { t: "El Señor es mi pastor, nada me falta; en verdes pastos me hace descansar.", c: "Salmo 23:1-2" },
-        { t: "No se angustien por nada, y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones.", c: "Filipenses 4:6-7" },
-        { t: "Dejo la paz con ustedes; les doy mi paz. No se las doy como la da el mundo. No dejen que sus corazones se turben.", c: "Juan 14:27" },
-        { t: "El Señor tu Dios está en medio de ti, guerrero victorioso; se gozará en ti con alegría, te renovará con su amor.", c: "Sofonías 3:17" },
-        { t: "Todo lo puedo en Cristo que me fortalece.", c: "Filipenses 4:13" },
-        { t: "Confía en el Señor de todo corazón, y no en tu propia inteligencia.", c: "Proverbios 3:5" },
-        { t: "El Señor es mi luz y mi salvación, ¿a quién temeré? El Señor es el baluarte de mi vida.", c: "Salmo 27:1" },
-        { t: "Pero los que confían en el Señor renovarán sus fuerzas; volarán como las águilas.", c: "Isaías 40:31" },
-        { t: "Pongan todas sus preocupaciones y ansiedades en las manos de Dios, porque él cuida de ustedes.", c: "1 Pedro 5:7" }
-    ];
-
-    function cambiarVersiculo() {
-        const cajaTexto = document.getElementById('v-texto');
-        const cajaCita = document.getElementById('v-cita');
-        cajaTexto.style.opacity = 0;
-        
-        setTimeout(() => {
-            const random = Math.floor(Math.random() * versiculos.length);
-            cajaTexto.innerText = `"${versiculos[random].t}"`;
-            cajaCita.innerText = versiculos[random].c;
-            cajaTexto.style.opacity = 1;
-        }, 400);
-    }
-    
     document.addEventListener('DOMContentLoaded', () => {
-        cambiarVersiculo();
-        
         if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
         
         // INTERSECTION OBSERVER PARA LAS ANIMACIONES "FADE UP"
@@ -612,17 +459,21 @@
         localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     }
 
-    function enviarIntencion() {
-        const nombre = document.getElementById('nombreIntencion').value.trim();
-        const texto = document.getElementById('textoIntencion').value.trim();
-        if(!texto) { alert("Por favor escribí la intención que llevaremos al altar."); return; }
-        
-        const hora = new Date().getHours();
-        const saludo = hora < 12 ? "Buenos días" : hora < 20 ? "Buenas tardes" : "Buenas noches";
-        const emisor = nombre ? nombre : "un miembro de la comunidad";
-        
-        const msg = encodeURIComponent(`${saludo} Padre/Secretaría. Soy ${emisor}. Quisiera acercar la siguiente intención para la Misa: "${texto}". ¡Muchas gracias y bendiciones!`);
-        window.open(`https://wa.me/5493517023789?text=${msg}`, '_blank');
+    // Funciones de Copiar Alias
+    function copiarAlias(btn) {
+        const alias = document.getElementById('alias-text').innerText;
+        navigator.clipboard.writeText(alias);
+        const oldTxt = btn.innerHTML;
+        btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+        btn.style.backgroundColor = "var(--verde-wa)";
+        btn.style.borderColor = "var(--verde-wa)";
+        btn.style.color = "white";
+        setTimeout(() => { 
+            btn.innerHTML = oldTxt; 
+            btn.style.backgroundColor = "var(--acento)"; 
+            btn.style.borderColor = "var(--acento)";
+            btn.style.color = "white";
+        }, 3000);
     }
 
     // Funciones del Modal Donar
