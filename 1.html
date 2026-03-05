@@ -107,7 +107,7 @@
         }
         .corazon-late {
             animation: latido 1.5s infinite;
-            color: #e74c3c !important; /* Rojo vivo */
+            color: #e74c3c !important;
             display: inline-block;
         }
 
@@ -127,7 +127,7 @@
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-links { display: flex; list-style: none; gap: 15px; transition: 0.3s ease-in-out; }
-        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; cursor: pointer; }
         .nav-links a i { display: none; }
         .nav-links a:hover { color: var(--acento); }
         
@@ -172,7 +172,7 @@
         .next-mass-banner { background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px; margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte); display: inline-block; }
         
         .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-        .quick-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; }
+        .quick-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; cursor: pointer; }
         .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px); }
 
         section { padding: 100px 8%; scroll-margin-top: 120px; }
@@ -200,8 +200,7 @@
         .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s; }
         .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); }
 
-        .donar-container { background: var(--blanco); padding: 50px; border-radius: 20px; text-align: center; max-width: 600px; margin: 0 auto; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light); }
-        .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; margin: 25px 0; color: var(--primario); font-weight: 700; font-family: monospace; }
+        .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
         .alias-box span { display: block; }
         body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
 
@@ -215,6 +214,11 @@
             .float-container { right: 15px; bottom: 20px; }
             .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
         }
+        
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 99999; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; }
+        .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
+        .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+        .modal-close:hover { color: var(--acento); }
         
         footer { background: #111; color: #888; padding: 80px 5% 40px; text-align: center; }
         .social-links { display: flex; justify-content: center; gap: 30px; margin: 35px 0; }
@@ -247,12 +251,10 @@
         <div class="nav-right">
             <ul class="nav-links" id="navLinks">
                 <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
-                <li><a href="#espiritual" onclick="closeMenu()"><i class="fas fa-book-open"></i> Alimento</a></li>
                 <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
-                <li><a href="#participa" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Participá</a></li>
-                <li><a href="#contacto" onclick="closeMenu()"><i class="fas fa-address-book"></i> Contacto</a></li>
+                <li><a href="#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
                 <li><a href="/ayudanos" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
-                <li><a href="#donar" onclick="closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
+                <li><a onclick="abrirModalDonar(); closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
@@ -278,10 +280,9 @@
                 <h2 class="fade-up">Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
                 
                 <div class="quick-links fade-up">
-                    <a href="#contacto" class="quick-btn" style="background: var(--primario); border-color: var(--primario);"><i class="fas fa-address-book"></i> Contacto y Redes</a>
                     <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
-                    <a href="#intenciones" class="quick-btn"><i class="far fa-envelope"></i> Pedir Oración</a>
-                    <a href="#donar" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a>
+                    <a href="#contacto" class="quick-btn" style="background: var(--primario); border-color: var(--primario);"><i class="fas fa-address-book"></i> Contacto</a>
+                    <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</button>
                 </div>
             </div>
         </header>
@@ -366,32 +367,6 @@
             </div>
         </section>
 
-        <section id="participa">
-            <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">No seas un espectador</p>
-                <h2>Sumá tu Talento al Servicio</h2>
-                <div class="divider"></div>
-                <p class="subtitle">Dios te regaló dones únicos para compartirlos. ¡Animate a ser protagonista! Te invitamos a ser parte activa en nuestras áreas de servicio.</p>
-            </div>
-            <div class="grid-cards">
-                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
-                    <i class="fas fa-guitar" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Música y Coro</h3>
-                    <p>Si tocás un instrumento o te gusta cantar, sumá tu voz para animar las misas y acercar a otros a Dios mediante la alabanza.</p>
-                </div>
-                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
-                    <i class="fas fa-palette" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Arte y Redes</h3>
-                    <p>Ayudanos a evangelizar a través de la fotografía, el diseño gráfico y la gestión de nuestras redes sociales para llegar a más corazones.</p>
-                </div>
-                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
-                    <i class="fas fa-utensils" style="font-size: 3rem; color: var(--primario); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Logística y Cocina</h3>
-                    <p>El motor oculto de la parroquia. Vení a ayudarnos a cocinar y organizar los grandes eventos, locros y retiros comunitarios.</p>
-                </div>
-            </div>
-        </section>
-
         <section id="horarios" class="bg-white">
             <div class="section-header fade-up">
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">El centro de nuestra fe</p>
@@ -409,46 +384,7 @@
             </div>
         </section>
 
-        <section id="donar">
-            <div class="section-header fade-up">
-                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Sostenimiento Parroquial</p>
-                <h2>Tu generosidad es nuestro motor</h2>
-                <div class="divider"></div>
-                <p class="subtitle">Gracias a tu donación, la Capilla mantiene sus puertas abiertas, paga los servicios, sostiene los talleres y reúne fondos para nuestra labor.</p>
-            </div>
-            
-            <div class="donar-container fade-up">
-                <i class="fas fa-hand-holding-heart" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
-                <h3 style="color: var(--primario); font-size: 1.8rem; margin-bottom: 15px;">Alias Bancario Oficial</h3>
-                <p style="opacity: 0.9; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo suma y es administrado con total transparencia.</p>
-                
-                <div class="alias-box">
-                    <span id="alias-text">capillas.fatima.ag</span>
-                </div>
-                
-                <button class="btn btn-primary" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem; margin-bottom: 25px;">
-                    <i class="far fa-copy"></i> Copiar Alias para Transferir
-                </button>
-
-                <div style="border-top: 1px solid var(--gold-light); padding-top: 20px; text-align: center;">
-                    <p style="font-size: 0.95rem; color: var(--texto); margin-bottom: 15px; font-weight: 600;">
-                        Una vez realizada la transferencia, por favor envianos el comprobante para nuestro registro:
-                    </p>
-                    <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" rel="noopener" aria-label="Enviar comprobante por WhatsApp" class="btn" style="background: var(--verde-wa); color: white; width: 100%; margin-bottom: 25px;">
-                        <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Enviar Comprobante
-                    </a>
-                </div>
-
-                <div style="border-top: 1px solid var(--gold-light); padding-top: 25px; text-align: center;">
-                    <h4 style="color: var(--primario); margin-bottom: 15px; font-size: 1.2rem;">¿Querés colaborar de otra manera?</h4>
-                    <a href="/ayudanos" class="btn btn-primary" style="width: 100%; background: var(--primario); border-color: var(--primario);">
-                        <i class="fas fa-hands-helping"></i> Ver otras formas de ayudar
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section id="intenciones" class="bg-white">
+        <section id="intenciones">
             <div class="section-header fade-up">
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Rezamos por vos y los tuyos</p>
                 <h2>Buzón de Intenciones</h2>
@@ -464,12 +400,12 @@
             </div>
         </section>
 
-        <section id="contacto">
+        <section id="contacto" class="bg-white">
             <div class="section-header fade-up">
                 <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Nuestras puertas están abiertas</p>
                 <h2>Contacto y Redes Sociales</h2>
                 <div class="divider"></div>
-                <p class="subtitle">Comunicate con nosotros, sumate a nuestros canales o acercate a la Capilla.</p>
+                <p class="subtitle">Comunicate con nosotros, sumate a nuestros canales o acercate a la Capilla en <strong>Villa Parque Santa Ana, Córdoba</strong>.</p>
             </div>
             
             <div class="grid-cards fade-up" style="margin-bottom: 50px;">
@@ -537,9 +473,45 @@
     </footer>
 
     <div class="float-container">
-        <a href="#donar" aria-label="Ayudar a la Capilla" class="f-btn">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
             <i class="fas fa-heart corazon-late"></i>
-        </a>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+            </p>
+            
+            <div class="alias-box" style="margin-bottom: 20px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem;">
+                <i class="far fa-copy"></i> Copiar Alias
+            </button>
+
+            <div style="border-top: 1px solid var(--gold-light); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" class="btn" style="background: var(--verde-wa); color: white; width: 100%; margin-bottom: 25px;">
+                    <i class="fab fa-whatsapp"></i> Compartir Comprobante
+                </a>
+            </div>
+
+            <div style="border-top: 1px solid var(--gold-light); padding-top: 20px;">
+                <a href="/ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -600,8 +572,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Opcional: si querés que solo se anime la primera vez, dejá esta línea:
-                    // observer.unobserve(entry.target); 
                 }
             });
         }, { threshold: 0.15 });
@@ -615,6 +585,11 @@
             const bar = document.getElementById("myBar");
             if(bar) bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
         };
+
+        // Cerrar modal con la tecla ESC
+        document.addEventListener('keydown', (e) => { 
+            if(e.key === "Escape") cerrarModalDonar(); 
+        });
     });
     
     function toggleMenu() {
@@ -649,8 +624,17 @@
         window.open(`https://wa.me/5493517023789?text=${msg}`, '_blank');
     }
 
-    function copiarAlias(btn) {
-        const alias = document.getElementById('alias-text').innerText;
+    // Funciones del Modal Donar
+    function abrirModalDonar() {
+        document.getElementById('modalDonar').style.display = 'flex';
+    }
+
+    function cerrarModalDonar() {
+        document.getElementById('modalDonar').style.display = 'none';
+    }
+
+    function copiarAliasModal(btn) {
+        const alias = document.getElementById('alias-modal').innerText;
         navigator.clipboard.writeText(alias);
         const oldTxt = btn.innerHTML;
         btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
@@ -659,12 +643,11 @@
         btn.style.color = "white";
         setTimeout(() => { 
             btn.innerHTML = oldTxt; 
-            btn.style.backgroundColor = "transparent"; 
+            btn.style.backgroundColor = "var(--acento)"; 
             btn.style.borderColor = "var(--acento)";
-            btn.style.color = "var(--acento)";
+            btn.style.color = "white";
         }, 3000);
     }
     </script>
 </body>
 </html>
-<script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_5KiMX3ya8yrKf3T7BSV6VXEU4P4q" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
