@@ -218,8 +218,8 @@
         .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s, box-shadow 0.3s; }
         .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); box-shadow: 0 0 10px rgba(193, 154, 107, 0.2); }
 
-        .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
-        .alias-box span { display: block; }
+        /* Ajuste clave para el texto del ALIAS en celulares (Igual que en ayudanos.html) */
+        .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
         body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
 
         /* --- BOTÓN FLOTANTE ÚNICO --- */
@@ -516,9 +516,13 @@
                 Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
             </p>
             
-            <div class="alias-box" style="margin-bottom: 20px;">
+            <div class="alias-box" style="margin-bottom: 10px;">
                 <span id="alias-modal">capillas.fatima.ag</span>
             </div>
+
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
             
             <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem;">
                 <i class="far fa-copy"></i> Copiar Alias
@@ -530,7 +534,7 @@
                     <i class="fab fa-whatsapp"></i> Compartir Comprobante
                 </a>
             </div>
-
+            
             <div style="border-top: 1px solid var(--gold-light); padding-top: 20px;">
                 <a href="/ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
