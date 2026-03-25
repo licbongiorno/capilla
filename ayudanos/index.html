@@ -171,7 +171,9 @@
         .btn-primary:hover { background: #ab855a; transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px rgba(193, 154, 107, 0.4); }
 
         .donar-container { background: var(--blanco); padding: 50px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light); }
-        .alias-box { font-size: clamp(18px, 5vw, 26px); word-break: break-word; text-align: center; letter-spacing: 2px; padding: 20px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+        
+        /* Ajuste clave para el texto del ALIAS en celulares */
+        .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
         body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
 
         .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; pointer-events: auto; }
@@ -330,9 +332,13 @@
                 <h3 style="color: var(--primario); font-size: 1.8rem; margin-bottom: 15px;">Alias Bancario Oficial</h3>
                 <p style="opacity: 0.9; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo es administrado con total transparencia.</p>
                 
-                <div class="alias-box" style="margin: 25px 0;">
+                <div class="alias-box" style="margin: 25px 0 10px 0;">
                     <span id="alias-text">capillas.fatima.ag</span>
                 </div>
+                
+                <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                    Destinatario: Parroquia De Nuestra Señora De Fátima
+                </p>
                 
                 <button class="btn btn-primary" onclick="copiarAlias(this)" style="width: 100%; font-size: 1.1rem; margin-bottom: 25px;">
                     <i class="far fa-copy"></i> Copiar Alias
@@ -387,9 +393,13 @@
                 Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas. <strong>¡Que Dios multiplique tu ayuda!</strong>
             </p>
             
-            <div class="alias-box" style="margin-bottom: 20px;">
+            <div class="alias-box" style="margin-bottom: 10px;">
                 <span id="alias-modal">capillas.fatima.ag</span>
             </div>
+            
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
             
             <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem;">
                 <i class="far fa-copy"></i> Copiar Alias
@@ -490,7 +500,7 @@
         }, 3000);
     }
 
-    // Funciones del Modal Donar (Añadida animación smooth al abrir/cerrar)
+    // Funciones del Modal Donar
     function abrirModalDonar() {
         const modal = document.getElementById('modalDonar');
         modal.classList.add('show');
