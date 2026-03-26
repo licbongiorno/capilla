@@ -1,0 +1,41 @@
+// config-global.js - El Cerebro de la Capilla
+const CONFIG_CAPILLA = {
+    nombre: "Capilla Santa Ana",
+    logo: "icono.png",
+    whatsapp: "5493517023789", // Tu número real
+    donaciones: {
+        alias: "capillas.fatima.ag",
+        mensajeWA: "Hola! Les comparto el comprobante de mi ofrenda/ayuda a la Capilla. ¡Bendiciones!"
+    }
+};
+
+// --- FUNCIONES GLOBALES ---
+
+// Menú móvil
+function toggleMenu() { 
+    document.getElementById('navLinks').classList.toggle('active'); 
+}
+
+// Abrir y cerrar cualquier Modal
+function toggleModal(id) { 
+    const modal = document.getElementById(id);
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'flex';
+    }
+}
+
+// Modo Oscuro
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const icon = document.getElementById('darkIcon');
+    const isDark = document.body.classList.contains('dark-mode');
+    if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Cargar tema al iniciar
+if(localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+}
