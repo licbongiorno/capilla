@@ -1,589 +1,668 @@
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sabiduría del Alma | Inspiración Contemplativa</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="author" content="Capilla Santa Ana">
+    <meta name="description" content="Bienvenido a tu casa. Sumate a la Capilla Santa Ana en Villa Parque Santa Ana. Horarios de misa, Cáritas, ropero comunitario, sacramentos, casamientos, bautismos y vida comunitaria.">
+    <meta name="keywords" content="Misa, Iglesia Católica, Capilla Santa Ana, Villa Parque Santa Ana, Córdoba, Cáritas, Merendero, Ropero Comunitario, Bautismos, Casamientos, Comunión, Horarios de Misa">
+    <meta name="robots" content="index, follow">
+    <meta name="geo.region" content="AR-X">
+    <meta name="geo.country" content="AR">
+    <meta name="geo.placename" content="Villa Parque Santa Ana">
+    <meta name="geo.position" content="-31.6826622;-64.4578168">
+    <meta name="ICBM" content="-31.6826622, -64.4578168">
+    <link rel="canonical" href="https://www.capillasantaana.com.ar/">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Capilla Santa Ana | Tu Familia y Refugio en Córdoba</title>
     
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:title" content="Capilla Santa Ana | Vení a celebrar en familia">
+    <meta property="og:description" content="Horarios de misa, vida sacramental, ayuda social y un espacio de paz para vos en Villa Parque Santa Ana.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.capillasantaana.com.ar/">
+    <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <style>
         :root {
-            /* Paleta Litúrgica/Sacra */
-            --oro-viejo: #B8860B; 
-            --pargamino: #FDFCF0; 
-            --texto-sagrado: #2C2C2C; 
-            --blanco-puro: #FFFFFF;
-            --charcoal: #566573; 
-            --sombra-voto: 0 15px 35px rgba(184, 134, 11, 0.1);
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --google-maps: #4285F4;
+            --gold-light: rgba(193, 154, 107, 0.2); --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
         }
-
-        /* --- Reset y Estilo Global --- */
-        * { box-sizing: border-box; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--pargamino);
-            color: var(--texto-sagrado);
-            margin: 0;
-            overflow-x: hidden;
-            letter-spacing: 0.5px;
+        body.dark-mode {
+            --primario: #E0C097; --acento: #D4A373; --fondo: #121212;
+            --blanco: #1E1E1E; --texto: #E0E0E0; --sombra: 0 10px 30px rgba(0,0,0,0.5);
+            --sombra-fuerte: 0 15px 40px rgba(0, 0, 0, 0.8);
         }
-
-        /* --- Header: El llamado al Silencio --- */
-        header {
-            text-align: center;
-            padding: 120px 20px 60px;
-            background: linear-gradient(to bottom, var(--blanco-puro), var(--pargamino));
-            position: relative;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body { overflow-x: hidden; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            line-height: 1.8; 
+            transition: background 0.3s; 
+            padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
         }
+        body.no-scroll { overflow: hidden; }
+        
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--primario); }
 
-        header::after {
-            content: '';
-            position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 100px; height: 2px;
-            background: linear-gradient(to right, transparent, var(--oro-viejo), transparent);
-        }
+        /* --- PRELOADER ANIMADO --- */
+        #preloader { position: fixed; inset: 0; background-color: #1a1210; z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.8s ease-out, visibility 0.8s ease-out; }
+        .preloader-content { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .cross-svg { width: 70px; height: 110px; margin-bottom: 30px; filter: drop-shadow(0 0 0 rgba(193, 154, 107, 0)); animation: glowCross 2s ease-in-out forwards 1s; }
+        .cross-svg line { stroke-dasharray: 150; stroke-dashoffset: 150; animation: drawCross 1.2s ease-in-out forwards; }
+        .preloader-text { opacity: 0; transform: translateY(15px); animation: fadeInText 1s ease-in-out forwards 1.3s; }
+        .preloader-title { font-family: 'Playfair Display', serif; color: var(--acento); font-size: 2.2rem; margin-bottom: 10px; letter-spacing: 2px; }
+        .preloader-quote { color: rgba(255, 255, 255, 0.8); font-size: 1.05rem; font-style: italic; max-width: 350px; line-height: 1.6; }
+        .preloader-quote span { font-weight: 700; font-style: normal; color: var(--acento); font-size: 0.85rem; display: block; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes drawCross { to { stroke-dashoffset: 0; } }
+        @keyframes glowCross { to { filter: drop-shadow(0 0 20px rgba(193, 154, 107, 0.7)); } }
+        @keyframes fadeInText { to { opacity: 1; transform: translateY(0); } }
 
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            color: var(--oro-viejo);
-            margin: 0;
-            font-weight: 600;
-            letter-spacing: -1px;
-        }
+        .progress-container { width: 100%; height: 4px; background: transparent; position: fixed; top: 0; z-index: 2001; }
+        .progress-bar { height: 100%; background: var(--acento); width: 0%; transition: width 0.1s ease; }
 
-        .subtitle { font-weight: 300; font-style: italic; color: var(--charcoal); margin-top: 15px; font-size: 1.1rem; }
-
-        /* --- Sección de Herramientas --- */
-        .tools-sanctuary {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        /* Botón de Inspiración */
-        .inspiration-btn {
-            background: var(--oro-viejo);
-            color: white;
-            border: none;
-            padding: 22px 60px;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: var(--sombra-voto);
-            margin-bottom: 70px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .inspiration-btn:hover {
-            transform: translateY(-5px);
-            background: #D4AF37;
-            box-shadow: 0 20px 40px rgba(184, 134, 11, 0.3);
-        }
-
-        /* Buscador */
-        .search-shrine { position: relative; margin-bottom: 50px; }
-
-        .search-input {
-            width: 100%;
-            padding: 25px 30px 25px 70px;
-            border-radius: 15px;
-            border: 1px solid rgba(0,0,0,0.03);
-            font-size: 1.2rem;
-            background: var(--blanco-puro);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            outline: none;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 25px; top: 50%;
-            transform: translateY(-50%);
-            color: var(--oro-viejo);
-            font-size: 1.5rem;
-        }
-
-        /* Abecedario Navegable */
-        .alphabet-nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .letter-node {
-            width: 45px; height: 45px;
-            display: flex; align-items: center; justify-content: center;
-            background: var(--blanco-puro);
-            border: 1px solid #eee;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--oro-viejo);
-            font-size: 1rem;
-        }
-
-        .letter-node:hover, .letter-node.active {
-            background: var(--oro-viejo);
-            color: white;
-            border-color: var(--oro-viejo);
-        }
-
-        .letter-node.disabled { opacity: 0.1; cursor: default; }
-
-        /* Tags */
-        #tagList {
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 12px; margin-bottom: 60px; min-height: 45px;
-        }
-
-        .tag-pill {
-            background: var(--blanco-puro);
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            border: 1px solid transparent;
-        }
-
-        .tag-pill:hover { border-color: var(--oro-viejo); color: var(--oro-viejo); }
-
-        /* --- Grid de Resultados --- */
-        .frases-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 40px;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 40px 20px 100px;
-        }
-
-        .frase-card {
-            background: var(--blanco-puro);
-            padding: 60px 50px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
-            cursor: pointer;
-            position: relative;
+        /* --- ANIMACIÓN DE SCROLL SUAVE (FADE UP ESCALONADO) --- */
+        .fade-up {
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .frase-card.visible {
+        .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .frase-card::before {
-            content: "“";
-            position: absolute; top: 20px; left: 30px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 6rem; color: rgba(184, 134, 11, 0.05);
-            line-height: 1;
-        }
+        .grid-cards .fade-up:nth-child(1) { transition-delay: 0.1s; }
+        .grid-cards .fade-up:nth-child(2) { transition-delay: 0.2s; }
+        .grid-cards .fade-up:nth-child(3) { transition-delay: 0.3s; }
+        .grid-cards .fade-up:nth-child(4) { transition-delay: 0.4s; }
+        .grid-cards .fade-up:nth-child(5) { transition-delay: 0.5s; }
 
-        /* TEXTO DE LA CARTA: Tamaño adaptable */
-        .card-texto {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
-            font-style: italic;
-            margin-bottom: 30px;
-            line-height: 1.5;
-            color: var(--texto-sagrado);
-            position: relative; z-index: 1;
-            overflow-wrap: break-word; /* Evita que las palabras largas rompan el diseño */
+        /* --- ANIMACIONES GLOBALES --- */
+        @keyframes latido {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.15); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.15); }
+            80% { transform: scale(1); }
+            100% { transform: scale(1); }
         }
-
-        .card-autor {
-            font-weight: 600;
-            color: var(--oro-viejo);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-        }
-
-        /* --- Modal --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-            align-items: center; justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--pargamino);
-            padding: 80px 60px;
-            border-radius: 40px;
-            max-width: 800px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
-            max-height: 90vh; /* Permite scroll interno si la frase es gigante */
-            overflow-y: auto;
-        }
-
-        /* TEXTO DEL MODAL: Tamaño adaptable */
-        .frase-modal-texto {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 5vw, 2.5rem); /* Se achica en celulares, se agranda en PC */
-            font-style: italic;
-            line-height: 1.4;
-            margin-bottom: 30px;
-            color: var(--texto-sagrado);
-            overflow-wrap: break-word;
-        }
-        
-        .frase-modal-autor {
-            color: var(--oro-viejo);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1.1rem;
-        }
-
-        .frase-modal-ref {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #95a5a6;
-        }
-
-        .close-btn {
-            position: absolute; top: 30px; right: 35px;
-            font-size: 2.5rem; cursor: pointer; color: var(--charcoal);
-        }
-
-        footer {
-            text-align: center;
-            padding: 100px 20px;
-            color: var(--charcoal);
-            font-size: 0.9rem;
-            background: var(--blanco-puro);
-            letter-spacing: 1px;
-        }
-
-        /* Redes Sociales Grid */
-        .share-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
-        .social-share-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; text-decoration: none; cursor: pointer; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s, background 0.3s; }
-        .social-share-btn.fb { background: #1877F2; }
-        .social-share-btn.tw { background: #000000; }
-        .social-share-btn.wa { background: #25D366; }
-        .social-share-btn.cp { background: var(--charcoal); }
-        .social-share-btn:hover { transform: translateY(-3px); opacity: 0.9; }
-
-        /* --- Navbar Nuevo --- */
-        .navbar { position: sticky; top: 0; z-index: 3000; background: var(--pargamino); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
-        .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--oro-viejo); display: flex; align-items: center; gap: 10px; }
-        .nav-brand i { color: #D4AF37; }
-        .nav-menu { display: flex; align-items: center; gap: 30px; }
-        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: var(--texto-sagrado); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: #D4AF37; }
-        .hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--oro-viejo); cursor: pointer; }
-        @media (max-width: 768px) {
-            .hamburger { display: block; }
-            .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--pargamino); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
-            .nav-menu.active { left: 0; }
-            .nav-links { flex-direction: column; text-align: center; gap: 30px; }
-            .nav-links a { font-size: 1.2rem; color: var(--texto-sagrado); }
-        }
-
-        /* --- Botón Flotante y Modal Donaciones --- */
-        @keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
         .corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
-        .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
-        .f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+
+        @keyframes flotar {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- CABECERA (NAV) --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; height: 95px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+            z-index: 1000; display: flex; justify-content: space-between; 
+            align-items: center; padding: 0 5%; border-bottom: 1px solid var(--gold-light); 
+            transition: 0.3s; 
+        }
+        body.dark-mode nav { background: rgba(18,18,18,0.95); }
+        
+        .logo-container { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .nav-logo-img { height: 65px; width: auto; object-fit: contain; }
+        .logo-texto { font-size: 1.25rem; font-weight: 800; color: var(--primario); text-transform: uppercase; letter-spacing: 1px; line-height: 1; }
+
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; list-style: none; gap: 15px; transition: 0.3s ease-in-out; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; cursor: pointer; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; display: block; margin-top: 5px; right: 0; background: var(--acento); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; left: 0; background: var(--acento); }
+        .nav-links a i { display: none; }
+        .nav-links a:hover { color: var(--acento); }
+        
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--primario); font-size: 1.2rem; transition: 0.3s; }
+        .icon-btn:hover { color: var(--acento); transform: rotate(15deg); }
+        
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: none; border: none; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { display: block; width: 100%; height: 3px; background-color: var(--primario); border-radius: 3px; transition: all 0.3s ease-in-out; }
+        body.dark-mode .menu-toggle span { background-color: var(--acento); }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+        @media (max-width: 900px) {
+            nav { height: 85px; } 
+            .nav-logo-img { height: 55px; } 
+            .logo-texto { font-size: 1.1rem; }
+            .menu-toggle { display: flex; }
+            .nav-links { position: absolute; top: 85px; left: 0; width: 100%; background: var(--blanco); flex-direction: column; align-items: flex-start; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease; box-shadow: var(--sombra-fuerte); z-index: 999; gap: 0; }
+            body.dark-mode .nav-links { background: #1a1a1a; border-top: 1px solid #333; }
+            .nav-links.active { max-height: calc(100vh - 85px); opacity: 1; padding: 10px 0 30px 0; overflow-y: auto; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid var(--gold-light); }
+            body.dark-mode .nav-links li { border-bottom: 1px solid #333; }
+            .nav-links li:last-child { border-bottom: none; }
+            .nav-links a { display: flex; align-items: center; gap: 15px; padding: 22px 8%; font-size: 1.1rem; font-weight: 700; text-transform: none; }
+            .nav-links a::after { display: none; }
+            .nav-links a i { display: inline-block; font-size: 1.3rem; color: var(--acento); width: 25px; text-align: center; }
+        }
+
+        /* --- HERO --- */
+        .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; }
+        @media (max-width: 900px) { .hero { margin-top: 85px; } }
+        
+        picture { display: contents; }
+        .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0; transform: scale(1.05); animation: zoomSlow 20s infinite alternate linear; }
+        @keyframes zoomSlow { from { transform: scale(1); } to { transform: scale(1.08); } }
+        
+        .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.8)); z-index: 1; }
+
+        .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .hero-content h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); margin-bottom: 10px; line-height: 1.1; color: white; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .hero-content h2 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 400; max-width: 800px; margin-bottom: 40px; color: rgba(255,255,255,0.9); }
+        
+        .next-mass-banner { background: var(--acento); color: white; padding: 15px 35px; border-radius: 50px; margin-bottom: 30px; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: var(--sombra-fuerte); display: inline-block; animation: flotar 3s ease-in-out infinite; }
+        
+        .quick-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .quick-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.3s; cursor: pointer; }
+        .quick-btn:hover { background: white; color: var(--primario); transform: translateY(-3px) scale(1.05); }
+
+        section { padding: 100px 8%; scroll-margin-top: 120px; }
+        .bg-white { background-color: var(--blanco); }
+
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
+        .section-header p.subtitle { max-width: 700px; margin: 0 auto; font-size: 1.1rem; opacity: 0.9; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
+        
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        .card { background: var(--fondo); padding: 45px 35px; border-radius: 20px; text-align: center; border: 1px solid var(--gold-light); box-shadow: var(--sombra); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 20px 40px rgba(193, 154, 107, 0.2); }
+        body.dark-mode .card:hover { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9); }
+        
+        .btn { padding: 18px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; overflow: hidden; position: relative; z-index: 1;}
+        .btn-primary { background: var(--acento); color: white; box-shadow: 0 10px 20px rgba(193, 154, 107, 0.3); }
+        
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-20deg); transition: left 0.7s ease; z-index: -1; }
+        .btn-primary:hover::before { left: 150%; }
+        .btn-primary:hover { background: #ab855a; transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px rgba(193, 154, 107, 0.4); }
+
+        #versiculo-diario { max-width: 800px; margin: 0 auto; background: var(--blanco); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); text-align: center; border-top: 5px solid var(--acento); position: relative; transition: transform 0.3s; }
+        #versiculo-diario:hover { transform: translateY(-5px); }
+        #versiculo-diario i.fa-quote-left { font-size: 3rem; color: var(--gold-light); position: absolute; top: 30px; left: 30px; }
+        .verso-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--primario); margin-bottom: 20px; line-height: 1.4; transition: opacity 0.5s; }
+        .verso-cita { font-weight: 700; color: var(--acento); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        .form-box { max-width: 600px; margin: 0 auto; background: var(--fondo); padding: 50px; border-radius: 20px; box-shadow: var(--sombra-fuerte); }
+        .form-box input, .form-box textarea { width: 100%; padding: 20px; margin-bottom: 25px; border-radius: 12px; border: 1px solid #ddd; font-family: inherit; background: var(--blanco); color: var(--texto); font-size: 1.05rem; transition: border 0.3s, box-shadow 0.3s; }
+        .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--acento); box-shadow: 0 0 10px rgba(193, 154, 107, 0.2); }
+
+        /* Ajuste clave para el texto del ALIAS en celulares (Igual que en ayudanos.html) */
+        .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+        body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
+
+        /* --- BOTÓN FLOTANTE ÚNICO --- */
+        .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; pointer-events: auto; }
+        .f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid #e74c3c; }
         .f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
-        @media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+
+        @media (max-width: 768px) {
+            .hero-bg { object-position: center center; } 
+            .float-container { right: 15px; bottom: 20px; }
+            .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
+        }
         
-        #modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
-        #modalDonar.show { display: flex; opacity: 1; }
-        #modalDonar .modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
-        #modalDonar.show .modal-content { transform: scale(1); }
-        #modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
-        #modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
-        #modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--pargamino); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--oro-viejo); font-weight: 700; font-family: monospace; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 99999; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+        .modal.show { display: flex; opacity: 1; }
+        .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal.show .modal-content { transform: scale(1); }
         
-        #toast { visibility: hidden; background-color: var(--charcoal); color: #fff; text-align: center; padding: 15px 25px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); border-radius: 50px; font-weight: 600; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 11000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+        .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+        .modal-close:hover { color: var(--acento); transform: rotate(90deg); }
+        
+        footer { background: #111; color: #888; padding: 80px 5% 40px; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 30px; margin: 35px 0; }
+        .social-links a { color: #888; font-size: 2.2rem; transition: 0.3s; }
+        .social-links a:hover { color: white; transform: translateY(-8px) scale(1.1); }
     </style>
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="nav-brand">
-            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+    <div id="preloader">
+        <div class="preloader-content">
+            <svg class="cross-svg" viewBox="0 0 100 150">
+                <line x1="50" y1="10" x2="50" y2="140" stroke="var(--acento)" stroke-width="3" stroke-linecap="round" />
+                <line x1="20" y1="50" x2="80" y2="50" stroke="var(--acento)" stroke-width="3" stroke-linecap="round" />
+            </svg>
+            <div class="preloader-text">
+                <h2 class="preloader-title">Capilla Santa Ana</h2>
+                <p class="preloader-quote">"Donde dos o tres se reúnen en mi nombre, allí estoy yo en medio de ellos."<br><span>— Mateo 18:20</span></p>
+            </div>
         </div>
+    </div>
+    
+    <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
+    
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="icono.png" alt="Cruz de la Capilla" class="nav-logo-img">
+            <span class="logo-texto">Capilla Santa Ana</span>
+        </a>
         
-        <div class="nav-menu">
-            <ul class="nav-links">
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="index.html" class="active">Profundizar</a></li>
-                <li><a href="ayudanos.html">Ayudanos</a></li>
-                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+        <div class="nav-right">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
+                <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
+                <li><a href="#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
+                <li><a href="https://www.capillasantaana.com.ar/profundiza" onclick="closeMenu()"><i class="fas fa-book-open"></i> Profundiza</a></li>
+                <li><a href="/ayudanos" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
+                <li><a onclick="abrirModalDonar(); closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
             </ul>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Cambiar modo oscuro" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+                <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
-
-        <button class="hamburger" onclick="toggleMenu()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
     </nav>
 
-<header>
-    <h1>Sabiduría del Alma</h1>
-    <p class="subtitle">Reflexiones de Pensamiento Espiritual</p>
-</header>
+    <main>
+        <header class="hero">
+            <picture>
+                <source media="(max-width: 768px)" srcset="2.webp">
+                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
+            </picture>
+            
+            <div class="hero-content">
+                <div class="next-mass-banner fade-up"><i class="fas fa-hands-helping"></i> Un hogar de puertas abiertas</div>
+                <h1 class="fade-up" itemprop="name">Bienvenido a Casa</h1>
+                <h2 class="fade-up">Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
+                
+                <div class="quick-links fade-up">
+                    <a href="#horarios" class="quick-btn"><i class="far fa-calendar-alt"></i> Horarios de Misa</a>
+                    <a href="#contacto" class="quick-btn" style="background: var(--primario); border-color: var(--primario);"><i class="fas fa-address-book"></i> Contacto</a>
+                    <button onclick="abrirModalDonar()" class="quick-btn" style="background: var(--acento); border-color: var(--acento);"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</button>
+                </div>
+            </div>
+        </header>
 
-<main class="tools-sanctuary">
-    <button class="inspiration-btn" onclick="recibirInspiracion()">
-        <i class="fa-solid fa-dove"></i> RECIBIR INSPIRACIÓN
-    </button>
+        <section id="espiritual">
+            <div class="section-header fade-up">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Un mensaje para tu corazón</p>
+                <h2>Alimento Espiritual</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Tómate un minuto en Su presencia. Que esta Palabra calme tu espíritu, renueve tus fuerzas y te acompañe durante toda la semana.</p>
+            </div>
+            
+            <div id="versiculo-diario" class="fade-up">
+                <i class="fas fa-quote-left"></i>
+                <div class="verso-texto" id="v-texto">Cargando la Palabra...</div>
+                <div class="verso-cita" id="v-cita"></div>
+                <button onclick="cambiarVersiculo()" class="btn btn-outline" style="margin-top: 30px; color: var(--primario); border-color: var(--primario); padding: 10px 25px; font-size: 0.85rem; background: transparent;">
+                    <i class="fas fa-sync-alt"></i> Leer otro pasaje
+                </button>
+            </div>
+        </section>
 
-    <div class="search-shrine">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Buscá paz, dolor, perdón, fe..." onkeyup="busquedaDinamica()">
-    </div>
+        <section id="comunidad" class="bg-white">
+            <div class="section-header fade-up">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Tu Familia Espiritual</p>
+                <h2>Nuestra Vida en Comunidad</h2>
+                <div class="divider"></div>
+                <p class="subtitle">No caminamos solos. Acercate a descubrir los espacios donde crecemos en la fe, compartimos alegrías y ayudamos a los demás.</p>
+            </div>
+            
+            <div class="grid-cards">
+                <div class="card fade-up">
+                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Grupos Juveniles</h3>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem;"><i class="far fa-clock"></i> Sábados 16:30 hs</p>
+                    <p style="margin-bottom: 15px;">Sala de Catequesis</p>
+                    <ul style="text-align: left; list-style: none; padding-left: 0; font-size: 0.95rem; margin-bottom: 20px;">
+                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Pre-Juvenil:</strong> 12 a 14 años</li>
+                        <li><i class="fas fa-check" style="color:var(--acento); margin-right:8px;"></i> <strong>Juvenil:</strong> 15+ años</li>
+                    </ul>
+                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento);">
+                        <strong>Requisitos de Confirmación:</strong><br>Fotocopia de DNI y Certificado de Bautismo.<br><br>
+                        <strong>Coordinadores (Escribinos):</strong><br>
+                        <a href="https://wa.me/5493547660037" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Gonza</a> | 
+                        <a href="https://wa.me/5493547652406" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Vero</a> | 
+                        <a href="https://wa.me/5493513012845" target="_blank" style="color: var(--primario); text-decoration: none; font-weight:700;"><i class="fab fa-whatsapp"></i> Mari</a>
+                    </div>
+                </div>
 
-    <div class="alphabet-nav" id="alphabetBar"></div>
-    <div id="tagList"></div>
-</main>
+                <div class="card fade-up">
+                    <i class="fas fa-pray" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Camino de Vida</h3>
+                    <p style="font-weight: 700; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Jubileo 2025 - Peregrinos de Esperanza</p>
+                    <p style="margin-bottom: 20px;">Encuentro profundo de La Palabra y Adoración Eucarística.</p>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto;">
+                        <i class="far fa-calendar-alt"></i> Jueves 18:00 hs
+                    </p>
+                </div>
 
-<div class="frases-container" id="frasesGrid"></div>
+                <div class="card fade-up">
+                    <i class="fas fa-tshirt" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Ropero Comunitario</h3>
+                    <p style="font-style: italic; margin-bottom: 15px;">Modalidad "Lleve y Traiga"</p>
+                    <p style="margin-bottom: 20px;">Un espacio comunitario permanente preparado para intercambiar o retirar prendas con dignidad.</p>
+                    <p style="font-weight: 700; color: var(--primario); font-size: 1.1rem; margin-top: auto; line-height: 1.8;">
+                        <i class="far fa-clock"></i> Martes 17:00 hs<br>
+                        <i class="far fa-clock"></i> Jueves 16:30 hs
+                    </p>
+                </div>
 
-<div id="modal" class="modal" onclick="cerrarVista()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="cerrarVista()">&times;</span>
-        <div id="modalBody"></div>
+                <div class="card fade-up">
+                    <i class="fas fa-cross" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Vida Sacramental</h3>
+                    <p>Acompañamos cada etapa de tu vida cristiana: <strong>Bautismos, Primera Comunión, Confirmación, Casamientos, Confesiones y Unción de los enfermos.</strong></p>
+                </div>
+
+                <div class="card fade-up">
+                    <i class="fas fa-hands-helping" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Cáritas y Talleres</h3>
+                    <p>Brindamos apoyo solidario a familias en vulnerabilidad y fomentamos el desarrollo a través de talleres de oficios y manualidades.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="horarios" class="bg-white">
+            <div class="section-header fade-up">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">El centro de nuestra fe</p>
+                <h2>Celebremos la Eucaristía</h2>
+                <div class="divider"></div>
+                <p class="subtitle">La Misa es el momento central donde nos encontramos como comunidad para dar gracias y llenarnos de paz.</p>
+            </div>
+            <div class="grid-cards fade-up" style="max-width: 600px; margin: 0 auto;">
+                <div class="card">
+                    <i class="fas fa-calendar-alt" style="font-size: 3rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Horarios de Misa</h3>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--primario);">Segundos y cuartos domingos del mes</p>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--acento); margin-top: 5px; margin-bottom: 15px;">18:30 hs</p>
+                    
+                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.95rem; text-align: left; border-left: 4px solid var(--acento);">
+                        <i class="fas fa-pray" style="color:var(--acento); margin-right:8px;"></i> <strong>Confesiones:</strong> Antes de cada misa.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="intenciones">
+            <div class="section-header fade-up">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Rezamos por vos y los tuyos</p>
+                <h2>Buzón de Intenciones</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Escribí tu pedido por salud, trabajo, una acción de gracias o por un ser querido que partió. Lo llevaremos directamente al Altar en la próxima Misa.</p>
+            </div>
+            <div class="form-box fade-up">
+                <input type="text" id="nombreIntencion" placeholder="Tu nombre (Opcional, para saber quién pide)">
+                <textarea id="textoIntencion" rows="5" placeholder="Escribí aquí tu intención. Ejemplo: 'Pido por la salud de mi madre...' o 'Acción de gracias por el trabajo...'"></textarea>
+                <button onclick="enviarIntencion()" class="btn btn-primary" style="width: 100%;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Enviar Intención
+                </button>
+            </div>
+        </section>
+
+        <section id="contacto" class="bg-white">
+            <div class="section-header fade-up">
+                <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.9rem; color:var(--acento); font-weight: 700;">Nuestras puertas están abiertas</p>
+                <h2>Contacto y Redes Sociales</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Comunicate con nosotros, sumate a nuestros canales o acercate a la Capilla en <strong>Villa Parque Santa Ana, Córdoba</strong>.</p>
+            </div>
+            
+            <div class="grid-cards fade-up" style="margin-bottom: 50px;">
+                <div class="card" style="border-top: 5px solid var(--verde-wa);">
+                    <i class="fab fa-whatsapp" style="font-size: 3.5rem; color: var(--verde-wa); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Hablá con Paola</h3>
+                    <p>Escribinos por WhatsApp para consultas generales, sacramentos o intenciones.</p>
+                    <a href="https://wa.me/5493517023789" class="btn" style="background: var(--verde-wa); color: white; margin-top: auto;" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Enviar Mensaje
+                    </a>
+                </div>
+
+                <div class="card" style="border-top: 5px solid #0A5C36;">
+                    <i class="fas fa-broadcast-tower" style="font-size: 3.5rem; color: #0A5C36; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Canal de Difusión</h3>
+                    <p>Sumate a nuestro canal de WhatsApp para enterarte de horarios y novedades al instante.</p>
+                    <a href="https://whatsapp.com/channel/0029VbBO1Ph0LKZApi4Rfq1L" class="btn" style="background: #0A5C36; color: white; margin-top: auto;" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Unirme al Canal
+                    </a>
+                </div>
+
+                <div class="card" style="border-top: 5px solid var(--primario);">
+                    <i class="fas fa-users" style="font-size: 3.5rem; color: var(--primario); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 15px;">Nuestras Redes</h3>
+                    <p>Seguinos en Facebook e Instagram, y sumate a nuestro Grupo para hacer comunidad digital.</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
+                        <a href="https://www.facebook.com/share/1eNqdVNbnw/" class="btn" style="background: #1877F2; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fab fa-facebook-f"></i> Página de Facebook</a>
+                        <a href="https://www.facebook.com/groups/778166455638473/permalink/3439110639544028" class="btn" style="background: #0546A0; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fas fa-users"></i> Grupo de Facebook</a>
+                        <a href="https://www.instagram.com/capilla.santa.ana/" class="btn" style="background: #E1306C; color: white; padding: 12px; font-size: 0.9rem;" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fade-up" style="border-radius: 20px; overflow: hidden; height: 450px; box-shadow: var(--sombra-fuerte); border: 1px solid var(--gold-light);">
+                <iframe 
+                    src="https://www.google.com/maps?q=Capilla+Santa+Ana,+Villa+Parque+Santa+Ana,+C%C3%B3rdoba,+Argentina&output=embed&z=17&hl=es" 
+                    width="100%" 
+                    height="420" 
+                    style="border:0; display:block; filter:sepia(10%);" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade" 
+                    title="Capilla Santa Ana – Villa Parque Santa Ana, Córdoba">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer class="fade-up">
+        <h3 style="color: white; margin-bottom: 10px; font-size: 2rem;">Capilla Santa Ana</h3>
+        <p style="font-size: 1.1rem;">Dependiente de la Arquidiócesis de Córdoba.</p>
         
-        <div style="font-size:0.9rem; color:var(--charcoal); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-top:10px;">Compartir esta sabiduría</div>
-        <div class="share-buttons">
-            <a id="fbShare" class="social-share-btn fb" target="_blank" title="Compartir en Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a id="twShare" class="social-share-btn tw" target="_blank" title="Compartir en X"><i class="fab fa-twitter"></i></a>
-            <a id="waShare" class="social-share-btn wa" target="_blank" title="Compartir en WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <button id="copyShare" class="social-share-btn cp" onclick="copiarLinkFrase()" title="Copiar enlace"><i class="fas fa-link"></i></button>
+        <div class="social-links">
+            <a href="https://www.facebook.com/share/1eNqdVNbnw/" target="_blank" rel="noopener" aria-label="Seguinos en Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank" rel="noopener" aria-label="Seguinos en Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://whatsapp.com/channel/0029VbBO1Ph0LKZApi4Rfq1L" target="_blank" rel="noopener" aria-label="Canal oficial de WhatsApp"><i class="fab fa-whatsapp"></i></a>
         </div>
-    </div>
-</div>
+        
+        <p style="font-size: 0.9rem; border-top: 1px solid #333; padding-top: 30px; margin-top: 20px;">
+            © 2026 Todos los derechos reservados.
+        </p>
+        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
+            Arquitectura Digital por Nicolás Bongiorno
+        </p>
+    </footer>
 
-<div class="float-container">
-    <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
-        <i class="fas fa-heart corazon-late"></i>
-    </button>
-</div>
-
-<div id="modalDonar">
-    <div class="modal-content">
-        <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
-            <i class="fas fa-times"></i>
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
         </button>
-        <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: #D4AF37; margin-bottom: 20px;"></i>
-        <h3 style="margin-bottom:15px; color: var(--oro-viejo); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
-        <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
-        
-        <div class="alias-box" style="margin-bottom: 10px;">
-            <span id="alias-modal">capillas.fatima.ag</span>
-        </div>
-        <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
-        
-        <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--oro-viejo); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
-        
-        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
-            <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
-            <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
-        </div>
+    </div>
 
-        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
-            <a href="ayudanos.html" style="color: var(--oro-viejo); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+            </p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem;">
+                <i class="far fa-copy"></i> Copiar Alias
+            </button>
+
+            <div style="border-top: 1px solid var(--gold-light); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" class="btn" style="background: var(--verde-wa); color: white; width: 100%; margin-bottom: 25px;">
+                    <i class="fab fa-whatsapp"></i> Compartir Comprobante
+                </a>
+            </div>
+            
+            <div style="border-top: 1px solid var(--gold-light); padding-top: 20px;">
+                <a href="/ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="toast"><i class="fas fa-check-circle"></i> ¡Enlace copiado! Ya podés pegarlo en cualquier lado.</div>
+    <script>
+    // BLOQUEO INICIAL SEGURO POR JS
+    document.body.classList.add("no-scroll");
 
-<footer>
-    &copy; 2026 Sabiduría del Alma | <small>Villa Parque Santa Ana, Córdoba</small>
-</footer>
+    // LÓGICA PRELOADER
+    window.addEventListener("load", function () {
+        const preloader = document.getElementById("preloader");
+        document.body.classList.remove("no-scroll");
 
-<script src="frases.js"></script>
-
-<script>
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    window.onload = () => {
-        setupNav();
-        verificarCargaDirecta();
-    };
-
-    function setupNav() {
-        const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
-        const bar = document.getElementById('alphabetBar');
-        
-        const tagsUnicos = [...new Set(frases.flatMap(f => f.tags))];
-        const inicialesReales = [...new Set(tagsUnicos.map(t => t.charAt(0).toUpperCase()))];
-
-        letras.forEach(l => {
-            const btn = document.createElement('div');
-            btn.innerText = l;
-            btn.className = `letter-node ${inicialesReales.includes(l) ? '' : 'disabled'}`;
-            if(inicialesReales.includes(l)) btn.onclick = () => filtrarPorLetra(l);
-            bar.appendChild(btn);
-        });
-    }
-
-    function filtrarPorLetra(letra) {
-        document.querySelectorAll('.letter-node').forEach(b => b.classList.toggle('active', b.innerText === letra));
-        document.getElementById('searchInput').value = ""; 
-        
-        const subtemas = [...new Set(frases.flatMap(f => f.tags))]
-                        .filter(t => t.charAt(0).toUpperCase() === letra).sort();
-
-        const tagContainer = document.getElementById('tagList');
-        tagContainer.innerHTML = "";
-        subtemas.forEach(tag => {
-            const span = document.createElement('span');
-            span.className = 'tag-pill';
-            span.innerText = tag;
-            span.onclick = () => renderizar(frases.filter(f => f.tags.includes(tag)));
-            tagContainer.appendChild(span);
-        });
-
-        renderizar(frases.filter(f => f.tags.some(t => t.charAt(0).toUpperCase() === letra)));
-    }
-
-    function busquedaDinamica() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        if(query.length < 2) {
-            document.getElementById('frasesGrid').innerHTML = "";
-            return;
+        if (preloader) {
+            preloader.style.opacity = "0";
+            preloader.style.visibility = "hidden";
+            setTimeout(() => { preloader.remove(); }, 800);
         }
-        
-        document.querySelectorAll('.letter-node').forEach(b => b.classList.remove('active'));
-        document.getElementById('tagList').innerHTML = "";
-
-        const resultados = frases.filter(f => 
-            f.texto.toLowerCase().includes(query) || 
-            f.autor.toLowerCase().includes(query) ||
-            f.tags.some(t => t.toLowerCase().includes(query))
-        );
-        renderizar(resultados);
-    }
-
-    function renderizar(lista) {
-        const grid = document.getElementById('frasesGrid');
-        grid.innerHTML = "";
-        
-        lista.forEach(f => {
-            const card = document.createElement('div');
-            card.className = 'frase-card';
-            card.onclick = () => abrirVista(f);
-            card.innerHTML = `
-                <div class="card-texto">${f.texto}</div>
-                <div class="card-autor">${f.autor}</div>
-            `;
-            grid.appendChild(card);
-            revealObserver.observe(card);
-        });
-    }
-
-    function recibirInspiracion() {
-        const fRandom = frases[Math.floor(Math.random() * frases.length)];
-        abrirVista(fRandom);
-    }
-
-    function abrirVista(f) {
-        const body = document.getElementById('modalBody');
-        body.innerHTML = `
-            <div class="frase-modal-texto">“${f.texto}”</div>
-            <div class="frase-modal-autor">${f.autor}</div>
-            <div class="frase-modal-ref">Ref: ${f.referencia || 'Sabiduría Trascendental'}</div>
-        `;
-        
-        const linkDirecto = window.location.origin + window.location.pathname + "?frase=" + f.id;
-        const textoCompleto = `✨ *Sabiduría del Alma* ✨\n\n"${f.texto}"\n\n_${f.autor}_\n\nDescubrí más palabras aquí: ${linkDirecto}`;
-        const textoX = `"${f.texto}" - ${f.autor}`;
-        
-        document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(textoCompleto)}`;
-        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkDirecto)}`;
-        document.getElementById('twShare').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textoX)}&url=${encodeURIComponent(linkDirecto)}`;
-        
-        window.currentShareLink = textoCompleto;
-        
-        document.getElementById('modal').style.display = 'flex';
-        window.history.pushState({}, '', `?frase=${f.id}`);
-    }
-
-    function cerrarVista() {
-        document.getElementById('modal').style.display = 'none';
-        window.history.pushState({}, '', window.location.pathname);
-    }
-
-    function verificarCargaDirecta() {
-        const idParams = new URLSearchParams(window.location.search);
-        if(idParams.has('frase')) {
-            const f = frases.find(i => i.id === idParams.get('frase'));
-            if(f) abrirVista(f);
-        }
-    }
-
-    function copiarLinkFrase() {
-        navigator.clipboard.writeText(window.currentShareLink || window.location.href);
-        const toast = document.getElementById("toast");
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 3000);
-    }
-
-    function toggleMenu() {
-        const navMenu = document.querySelector('.nav-menu');
-        const hamburgerIcon = document.querySelector('.hamburger i');
-        navMenu.classList.toggle('active');
-        if (navMenu.classList.contains('active')) {
-            hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
-        } else {
-            hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
-        }
-    }
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            const navMenu = document.querySelector('.nav-menu');
-            const hamburgerIcon = document.querySelector('.hamburger i');
-            if(navMenu) navMenu.classList.remove('active');
-            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
-        });
     });
 
-    function abrirModalDonar() {
-        document.getElementById('modalDonar').classList.add('show');
-        const navMenu = document.querySelector('.nav-menu');
-        const hamburgerIcon = document.querySelector('.hamburger i');
-        if(navMenu && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+    setTimeout(function(){
+        const preloader = document.getElementById("preloader");
+        document.body.classList.remove("no-scroll");
+        if(preloader) preloader.style.display = "none";
+    }, 4000);
+
+    const versiculos = [
+        { t: "Vengan a mí todos los que están cansados y agobiados, y yo les daré descanso.", c: "Mateo 11:28" },
+        { t: "El Señor es mi pastor, nada me falta; en verdes pastos me hace descansar.", c: "Salmo 23:1-2" },
+        { t: "No se angustien por nada, y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones.", c: "Filipenses 4:6-7" },
+        { t: "Dejo la paz con ustedes; les doy mi paz. No se las doy como la da el mundo. No dejen que sus corazones se turben.", c: "Juan 14:27" },
+        { t: "El Señor tu Dios está en medio de ti, guerrero victorioso; se gozará en ti con alegría, te renovará con su amor.", c: "Sofonías 3:17" },
+        { t: "Todo lo puedo en Cristo que me fortalece.", c: "Filipenses 4:13" },
+        { t: "Confía en el Señor de todo corazón, y no en tu propia inteligencia.", c: "Proverbios 3:5" },
+        { t: "El Señor es mi luz y mi salvación, ¿a quién temeré? El Señor es el baluarte de mi vida.", c: "Salmo 27:1" },
+        { t: "Pero los que confían en el Señor renovarán sus fuerzas; volarán como las águilas.", c: "Isaías 40:31" },
+        { t: "Pongan todas sus preocupaciones y ansiedades en las manos de Dios, porque él cuida de ustedes.", c: "1 Pedro 5:7" }
+    ];
+
+    function cambiarVersiculo() {
+        const cajaTexto = document.getElementById('v-texto');
+        const cajaCita = document.getElementById('v-cita');
+        cajaTexto.style.opacity = 0;
+        
+        setTimeout(() => {
+            const random = Math.floor(Math.random() * versiculos.length);
+            cajaTexto.innerText = `"${versiculos[random].t}"`;
+            cajaCita.innerText = versiculos[random].c;
+            cajaTexto.style.opacity = 1;
+        }, 400);
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        cambiarVersiculo();
+        
+        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+        
+        // INTERSECTION OBSERVER PARA LAS ANIMACIONES "FADE UP"
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-up').forEach((el) => {
+            observer.observe(el);
+        });
+        
+        // BARRA DE PROGRESO DE LECTURA
+        window.onscroll = () => {
+            const bar = document.getElementById("myBar");
+            if(bar) bar.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
+        };
+
+        // Cerrar modal con la tecla ESC
+        document.addEventListener('keydown', (e) => {
+              if(e.key === "Escape") cerrarModalDonar();
+          });
+    });
+    
+    function toggleMenu() {
+        const nav = document.getElementById('navLinks');
+        const toggleBtn = document.querySelector('.menu-toggle');
+        nav.classList.toggle('active');
+        toggleBtn.classList.toggle('active');
+    }
+
+    function closeMenu() {
+        if(window.innerWidth <= 900) {
+            document.getElementById('navLinks').classList.remove('active');
+            document.querySelector('.menu-toggle').classList.remove('active');
         }
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    function enviarIntencion() {
+        const nombre = document.getElementById('nombreIntencion').value.trim();
+        const texto = document.getElementById('textoIntencion').value.trim();
+        if(!texto) { alert("Por favor escribí la intención que llevaremos al altar."); return; }
+        
+        const hora = new Date().getHours();
+        const saludo = hora < 12 ? "Buenos días" : hora < 20 ? "Buenas tardes" : "Buenas noches";
+        const emisor = nombre ? nombre : "un miembro de la comunidad";
+        
+        const msg = encodeURIComponent(`${saludo} Padre/Secretaría. Soy ${emisor}. Quisiera acercar la siguiente intención para la Misa: "${texto}". ¡Muchas gracias y bendiciones!`);
+        window.open(`https://wa.me/5493517023789?text=${msg}`, '_blank');
+    }
+
+    // Funciones del Modal Donar (Añadida animación smooth al abrir/cerrar)
+    function abrirModalDonar() {
+        const modal = document.getElementById('modalDonar');
+        modal.classList.add('show');
     }
 
     function cerrarModalDonar() {
-        document.getElementById('modalDonar').classList.remove('show');
+        const modal = document.getElementById('modalDonar');
+        modal.classList.remove('show');
     }
 
     function copiarAliasModal(btn) {
@@ -591,24 +670,16 @@
         navigator.clipboard.writeText(alias);
         const oldTxt = btn.innerHTML;
         btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
-        btn.style.backgroundColor = "#25D366";
+        btn.style.backgroundColor = "var(--verde-wa)";
+        btn.style.borderColor = "var(--verde-wa)";
         btn.style.color = "white";
         setTimeout(() => {
-            btn.innerHTML = oldTxt;
-            btn.style.backgroundColor = "var(--oro-viejo)";
+              btn.innerHTML = oldTxt;
+              btn.style.backgroundColor = "var(--acento)";
+              btn.style.borderColor = "var(--acento)";
+            btn.style.color = "white";
         }, 3000);
     }
-
-    document.addEventListener('keydown', (e) => {
-        if(e.key === "Escape") cerrarModalDonar();
-    });
-
-    document.getElementById('modalDonar').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('modalDonar')) {
-            cerrarModalDonar();
-        }
-    });
-</script>
-<script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_GFRsfcZ2K72Ps2grNW8mNBarWHog" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
+    </script>
 </body>
 </html>
