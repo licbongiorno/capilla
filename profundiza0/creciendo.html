@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Creciendo | Capilla Santa Ana</title>
+    <link rel="stylesheet" href="../../../master-estilos.css">
+    <link rel="stylesheet" href="app-cartas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-words" id="bg"></div>
+
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="../../../index.html" class="nav-logo">Santa Ana</a>
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../../../index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="mazos.html"><i class="fas fa-layer-group"></i> Mazos</a></li>
+                <li><a href="../profundiza.html"><i class="fas fa-book-open"></i> Profundizá</a></li>
+            </ul>
+            <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
+            <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    
+    <main class="deck-container">
+        <div class="deck-header">
+            <h2 class="deck-title">Creciendo</h2>
+            <p class="deck-subtitle">CRECIENDO</p>
+        </div>
+        
+        <div class="card-scene">
+            <div class="card-display" id="cardBox">
+                <i class="fa-solid fa-seedling card-icon"></i>
+                <div class="card-content">
+                    <div class="card-text" id="cardText">Cargando reflexión...</div>
+                    <div class="card-cita" id="cardCita"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mazo-actions">
+            <button class="btn-card btn-share" onclick="compartirWA()"><i class="fab fa-whatsapp"></i> Compartir</button>
+            <button class="btn-card btn-next" onclick="proximaCarta()">Siguiente <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </main>
+
+    <div class="float-container">
+        <a href="https://capillasantaana.com.ar/ofrenda" class="f-btn" title="Donar"><i class="fas fa-hand-holding-heart"></i></a>
+    </div>
+
+    <script src="../../../config-global.js"></script>
+    <script src="data-creciendo.js"></script>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkIcon');
+            if (document.body.classList.contains('dark-mode')) { icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark'); }
+            else { icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light'); }
+        }
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+        
+        let mazoPreguntas = typeof CARTAS_CRECIENDO !== 'undefined' ? CARTAS_CRECIENDO : [{ q: "Error: No se encontró la data de cartas.", a: "Soporte" }];
+        let palabrasFondo = typeof PALABRAS_FONDO !== 'undefined' ? PALABRAS_FONDO : ['AMOR', 'FE', 'VIDA', 'PAZ'];
+        let currentIdx = Math.floor(Math.random() * mazoPreguntas.length);
+        
+        function initBG() {
+            const bg = document.getElementById('bg');
+            if (!bg) return;
+            for (let i = 0; i < 15; i++) {
+                const s = document.createElement('span');
+                s.className = 'floating-word';
+                s.textContent = palabrasFondo[Math.floor(Math.random() * palabrasFondo.length)];
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.fontSize = (14 + Math.random() * 20) + 'px';
+                s.style.animation = `floatUp ${20 + Math.random() * 20}s linear infinite`;
+                bg.appendChild(s);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = document.getElementById('darkIcon');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            }
+            initBG();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+            if (idParam) {
+                const foundIdx = mazoPreguntas.findIndex(c => c.id === idParam);
+                if (foundIdx !== -1) currentIdx = foundIdx;
+            }
+            actualizarCartaDOM();
+        });
+        
+        function actualizarCartaDOM() { 
+            const cardBox = document.getElementById('cardBox');
+            if(mazoPreguntas[currentIdx].color) { cardBox.style.borderColor = mazoPreguntas[currentIdx].color; }
+            document.getElementById('cardText').innerText = mazoPreguntas[currentIdx].q; 
+            document.getElementById('cardCita').innerText = (mazoPreguntas[currentIdx].a && mazoPreguntas[currentIdx].a !== "") ? "— " + mazoPreguntas[currentIdx].a : ""; 
+            if(mazoPreguntas[currentIdx].id) { window.history.replaceState(null, '', `?id=${mazoPreguntas[currentIdx].id}`); }
+        }
+        
+        function proximaCarta() { 
+            const card = document.getElementById('cardBox'); 
+            card.classList.add('changing'); 
+            if(navigator.vibrate) navigator.vibrate(30);
+            setTimeout(() => { 
+                currentIdx = Math.floor(Math.random() * mazoPreguntas.length); 
+                actualizarCartaDOM(); 
+                card.classList.remove('changing'); 
+            }, 400); 
+        }
+        
+        function compartirWA() { 
+            if(navigator.vibrate) navigator.vibrate(20);
+            const msg = `✨ Mensaje - Capilla Santa Ana:\n\n"${mazoPreguntas[currentIdx].q}"\n${mazoPreguntas[currentIdx].a ? "(" + mazoPreguntas[currentIdx].a + ")\n\n" : "\n"}Sacá tu carta aquí: ${window.location.href}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank'); 
+        }
+    </script>
+</body>
+</html>

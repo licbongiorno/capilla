@@ -53,6 +53,34 @@ body.dark-mode nav.top-nav { background: rgba(18,18,18,0.95); box-shadow: 0 2px 
     .nav-links.active { right: 0; }
     .nav-links a { font-size: 1.1rem; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); width: 100%; }
     .menu-toggle { display: flex; }
+    
+    /* Responsive Adjustments for Mobile Cards */
+    main.deck-container { padding-top: 85px; padding-bottom: 80px; justify-content: flex-start; }
+    .deck-header { margin-bottom: 15px; }
+    .deck-title { font-size: 2rem; }
+    
+    .card-scene {
+        width: 100%; max-width: 380px; height: 50vh; min-height: 380px; max-height: 460px;
+        margin-bottom: 25px;
+    }
+    .card-display { padding: 20px 15px; }
+    .card-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .card-text { font-size: 1.05rem; max-height: calc(100% - 90px); }
+    
+    .mazo-actions { width: 95%; gap: 10px; }
+    .btn-card { padding: 12px 10px; font-size: 0.9rem; }
+    
+    .float-container { bottom: 15px; left: 15px; }
+    .f-btn { width: 45px; height: 45px; font-size: 1.1rem; }
+}
+
+@media (max-height: 650px) and (max-width: 768px) {
+    /* For smaller height mobile phones like iPhone SE */
+    main.deck-container { padding-top: 75px; padding-bottom: 60px; }
+    .card-scene { height: 45vh; min-height: 320px; margin-bottom: 15px; }
+    .card-icon { font-size: 2rem; margin-bottom: 10px; }
+    .card-text { font-size: 0.95rem; }
+    .card-cita { margin-top: 15px; padding-top: 10px; }
 }
 
 /* Contenedor Principal */
