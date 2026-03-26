@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Desafíos por Edades | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        /* PALETA DE COLORES ORIGINAL DE LA CAPILLA */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
+        }
+
+        body.dark-mode {
+            --primario: #E0C097; 
+            --acento: #D4A373; 
+            --fondo: #121212;
+            --blanco: #1E1E1E; 
+            --texto: #E0E0E0; 
+            --sombra: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--texto); 
+            transition: background 0.3s;
+        }
+
+        /* NAVBAR SUSTITUIDA POR NAVBAR UNIFICADA */
+
+        header.hero-mini { 
+            padding: 160px 5% 60px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('../assets/hero-bg.jpg'); 
+            background-size: cover; 
+            background-position: center;
+            color: white;
+        }
+
+        .section-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 10px; color: white; }
+        .divider { width: 60px; height: 4px; background: var(--acento); margin: 20px auto; border-radius: 2px; }
+
+        /* GRILLA DE CARTAS POR EDADES */
+        .grid-edades { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 25px; 
+            padding: 60px 8% 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .edad-card { 
+            background: var(--blanco); 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            border: 1px solid var(--gold-light); 
+            box-shadow: var(--sombra); 
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .edad-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: var(--sombra-fuerte);
+            border-color: var(--acento);
+        }
+
+        /* ETIQUETA DE EDAD EN LA TARJETA */
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.85rem; font-weight: 800;
+            padding: 8px 20px; border-radius: 30px; margin-bottom: 20px; letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .edad-card i.main-icon { font-size: 3.2rem; margin-bottom: 20px; color: var(--acento); transition: 0.3s; }
+        .edad-card:hover i.main-icon { transform: scale(1.1); }
+        
+        .edad-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primario); margin-bottom: 12px; }
+        .edad-card p { font-size: 0.95rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; line-height: 1.5; }
+        
+        .btn-abrir {
+            padding: 12px 28px; border-radius: 50px; background: transparent; color: var(--primario);
+            font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            border: 2px solid var(--acento); transition: 0.3s; margin-top: auto;
+        }
+        
+        .edad-card:hover .btn-abrir { background: var(--acento); color: white; border-color: var(--acento); }
+
+        /* SECCIÓN DE DONACIÓN UNIFICADA */
+        .donacion-banner {
+            background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px);
+            border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); 
+            display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3);
+        }
+        .donacion-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .donacion-text { font-size: 0.85rem; opacity: 0.8; max-width: 600px; line-height: 1.5;}
+        
+        .donacion-alias {
+            background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 15px 0;
+            border: 1px dashed var(--acento); width: 100%; max-width: 350px;
+        }
+        .alias-texto { font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px; }
+        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
+
+        .donacion-btn {
+            background: transparent; color: var(--acento); border: 2px solid var(--acento);
+            padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .donacion-btn:hover { background: var(--acento); color: var(--blanco); }
+
+        /* FOOTER */
+        footer { background: #111; color: #888; padding: 60px 5% 30px; text-align: center; margin-top: 40px; }
+        .social-links a { color: #888; font-size: 1.8rem; margin: 0 15px; transition: 0.3s; }
+        .social-links a:hover { color: white; }
+
+/* --- Navbar Nuevo --- */
+.navbar {
+    position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(184,134,11,0.1);
+}
+
+.nav-brand {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700;
+    color: var(--primario); display: flex; align-items: center; gap: 10px;
+}
+
+.nav-brand i { color: var(--acento); }
+
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+
+.theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); }
+.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu {
+        position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px);
+        background: var(--fondo); flex-direction: column; justify-content: center;
+        transition: 0.4s ease-in-out; box-shadow: var(--sombra); z-index: 2999;
+    }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; }
+}
+
+/* --- Animación de Corazón --- */
+@keyframes latido {
+    0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); }
+    60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); }
+}
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+
+@media (max-width: 768px) {
+    .float-container { right: 15px; bottom: 20px; }
+    .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
+}
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+.modal-close:hover { color: var(--acento); transform: rotate(90deg); }
+
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
+
+        @media (max-width: 768px) { .grid-edades { padding: 40px 5%; } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <header class="hero-mini">
+        <div class="section-header">
+            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.85rem; color:var(--acento); font-weight: 800; margin-bottom:10px;">Aprender jugando</p>
+            <h1>Preguntas y Desafíos</h1>
+            <div class="divider"></div>
+            <p style="max-width:700px; margin: 0 auto; opacity:0.9; line-height: 1.6;">Seleccioná la edad del participante para acceder a las preguntas pensadas especialmente para su etapa de crecimiento en la fe.</p>
+        </div>
+    </header>
+
+    <main class="grid-edades">
+        
+        <a href="quiz-6-7.html" class="edad-card">
+            <div class="etiqueta-edad">6 a 7 años</div>
+            <i class="fas fa-sun main-icon" style="color: #FFC107;"></i>
+            <h3>Descubriendo a Jesús</h3>
+            <p>Preguntas simples y narrativas sobre quién creó el mundo y las historias más lindas de Jesús.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+        <a href="quiz-8-9.html" class="edad-card">
+            <div class="etiqueta-edad">8 a 9 años</div>
+            <i class="fas fa-bread-slice main-icon" style="color: #8BC34A;"></i>
+            <h3>Camino a la Comunión</h3>
+            <p>Conocimientos sobre la Misa, el Bautismo y los grandes amigos de Dios en la Biblia.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+        <a href="quiz-10-11.html" class="edad-card">
+            <div class="etiqueta-edad">10 a 11 años</div>
+            <i class="fas fa-map-marked-alt main-icon" style="color: #03A9F4;"></i>
+            <h3>Aventura Bíblica</h3>
+            <p>La historia de la Salvación, los mandamientos, profetas y detalles más finos de la Iglesia.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+        <a href="quiz-12-15.html" class="edad-card">
+            <div class="etiqueta-edad">12 a 15 años</div>
+            <i class="fas fa-fire main-icon" style="color: #FF5722;"></i>
+            <h3>Confirmando la Fe</h3>
+            <p>Desafíos pensados para la pre-adolescencia. Dudas comunes, sacramentos y pertenencia.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+        <a href="quiz-16-18.html" class="edad-card">
+            <div class="etiqueta-edad">16 a 18 años</div>
+            <i class="fas fa-shield-alt main-icon" style="color: #9C27B0;"></i>
+            <h3>Pensamiento Joven</h3>
+            <p>Iniciación a la apologética, defensa de la fe, sentido de la vida y grandes preguntas.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+        <a href="quiz-18.html" class="edad-card">
+            <div class="etiqueta-edad">+18 Adultos</div>
+            <i class="fas fa-book-reader main-icon" style="color: #607D8B;"></i>
+            <h3>Alta Teología</h3>
+            <p>Doctrina, historia de la Iglesia, encíclicas, filosofía y un análisis maduro del catolicismo.</p>
+            <span class="btn-abrir">Ingresar</span>
+        </a>
+
+    </main>
+
+    <div class="donacion-banner">
+        <div class="donacion-title"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <div class="donacion-text">Si este contenido te ayudó a vivir mejor tu fe y querés colaborar para que sigamos evangelizando, podés hacer tu aporte voluntario a la Capilla.</div>
+        
+        <div class="donacion-alias">
+            <span class="alias-texto">Alias de la cuenta:</span>
+            <strong class="alias-valor">capillas.fatima.ag</strong>
+        </div>
+
+        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
+            <i class="fab fa-whatsapp"></i> Enviar Comprobante
+        </a>
+    </div>
+
+    <footer>
+        <h3 style="color: white; margin-bottom: 10px; font-family: 'Playfair Display', serif;">Capilla Santa Ana</h3>
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/778166455638473" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/capilla.santa.ana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 20px;">© 2026 Arquitectura Digital por Nicolás Bongiorno</p>
+    </footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+            </p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;">
+                <i class="far fa-copy"></i> Copiar Alias
+            </button>
+
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;">
+                    <i class="fab fa-whatsapp"></i> Compartir Comprobante
+                </a>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
+            } else {
+                if(icon) icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        function abrirModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.add('show');
+            
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+    </script>
+</body>
+</html>

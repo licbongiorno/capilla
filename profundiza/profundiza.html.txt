@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Profundiza tu Fe | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* PALETA DE COLORES Y MODO OSCURO */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --primario: #D7CCC8; 
+            --acento: #D4AF37; 
+            --fondo: #1A1A1A; 
+            --blanco: #2D2D2D;
+            --texto: #F5F5F0; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* NAVEGACIÓN SUPERIOR */
+        nav { 
+            position: sticky; top: 0; width: 100%; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: var(--fondo);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: background 0.3s;
+        }
+
+        .nav-btn {
+            background: var(--blanco); padding: 8px 16px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 700;
+            font-size: 0.9rem; display: flex; gap: 8px; align-items: center;
+            box-shadow: var(--sombra); transition: 0.3s;
+        }
+
+        .icon-btn { cursor: pointer; border: none; font-size: 1.2rem; color: var(--acento); }
+
+        /* CABECERA */
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primario); margin-bottom: 10px; }
+        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 500px; margin: 0 auto; line-height: 1.5; }
+
+        /* GRILLA DE HERRAMIENTAS */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; padding: 20px; max-width: 900px; margin: 0 auto 30px; width: 100%;
+        }
+
+        .tool-card {
+            background: var(--blanco); border-radius: 16px; padding: 25px 20px;
+            text-decoration: none; color: var(--texto);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: var(--sombra); transition: transform 0.3s, box-shadow 0.3s;
+            border-bottom: 5px solid var(--acento);
+        }
+
+        .tool-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
+        .tool-icon {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: rgba(193, 154, 107, 0.15); color: var(--acento);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; margin-bottom: 15px; transition: background 0.3s;
+        }
+
+        body.dark-mode .tool-icon { background: rgba(212, 175, 55, 0.1); }
+
+        .tool-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); margin-bottom: 8px; }
+        .tool-desc { font-size: 0.9rem; opacity: 0.75; line-height: 1.5; margin-bottom: 15px; }
+        .tool-btn { 
+            background: var(--primario); color: white; padding: 8px 20px; 
+            border-radius: 50px; font-weight: 600; font-size: 0.85rem; transition: 0.3s;
+        }
+
+        /* SECCIÓN DE DONACIÓN SUTIL */
+        .donacion-banner {
+            background: var(--blanco);
+            max-width: 900px; margin: 0 auto 50px; width: calc(100% - 40px);
+            border-radius: 16px; padding: 25px; text-align: center;
+            box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 10px;
+            border: 1px solid rgba(193, 154, 107, 0.3);
+        }
+        .donacion-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .donacion-text { font-size: 0.85rem; opacity: 0.8; max-width: 600px; line-height: 1.5;}
+        .donacion-btn {
+            background: transparent; color: var(--acento); border: 2px solid var(--acento);
+            padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-top: 5px;
+            transition: 0.3s;
+        }
+        .donacion-btn:hover { background: var(--acento); color: var(--blanco); }
+
+        /* FOOTER Y WHATSAPP */
+        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
+        .f-title { font-weight: 700; font-size: 1rem; }
+        .f-sub { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
+
+        .float-container { position: fixed; bottom: 25px; right: 25px; z-index: 100; }
+        .f-btn {
+            width: 55px; height: 55px; border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; font-size: 1.8rem;
+            color: white; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s;
+        }
+        .f-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-btn">
+            <i class="fas fa-home"></i> Inicio
+        </a>
+        <button class="nav-btn icon-btn" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header>
+        <h1>Profundiza tu Fe</h1>
+        <p class="subtitle">Descubrí herramientas interactivas diseñadas para aprender, jugar y reflexionar en familia o de manera personal.</p>
+    </header>
+
+    <div class="grid-container">
+        
+        <a href="sabiasque.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="tool-title">¿Sabías que...?</div>
+            <div class="tool-desc">Descubrí datos curiosos, historia y misterios ocultos de nuestra fe católica. Ideal para compartir.</div>
+            <div class="tool-btn">Explorar Datos</div>
+        </a>
+
+        <a href="mazos.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-layer-group"></i></div>
+            <div class="tool-title">Reflexión Interactiva</div>
+            <div class="tool-desc">Sacá una carta al azar para iluminar tu día con pasajes bíblicos, consejos de santos y reflexiones.</div>
+            <div class="tool-btn">Sacar una Carta</div>
+        </a>
+
+        <a href="quiz.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-clipboard-question"></i></div>
+            <div class="tool-title">Desafíos por Edades</div>
+            <div class="tool-desc">Poné a prueba lo que sabés con trivias diseñadas para niños, adolescentes y adultos.</div>
+            <div class="tool-btn">Jugar Ahora</div>
+        </a>
+
+    </div>
+
+    <div class="donacion-banner">
+        <div class="donacion-title"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <div class="donacion-text">Todo este material de formación es gratuito. Si estas herramientas te han sido de bendición y querés ayudarnos a seguir evangelizando y manteniendo la Capilla, podés hacer tu aporte voluntario.</div>
+        
+        <a href="index.html#donar" class="donacion-btn">
+            <i class="fas fa-hand-holding-dollar"></i> Quiero colaborar
+        </a>
+    </div>
+
+    <footer>
+        <div class="f-title">Capilla Santa Ana</div>
+        <div class="f-sub">Formación y Catequesis Permanente</div>
+    </footer>
+
+    <div class="float-container">
+        <a href="https://wa.me/5493517023789" class="f-btn" style="background: var(--verde-wa);" target="_blank" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        // Función para cambiar el Modo Oscuro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Cargar tema guardado al abrir la página
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            
+            // Chequea si el usuario ya tenía el modo oscuro activado
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+    </script>
+</body>
+</html>

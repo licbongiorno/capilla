@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sabías que... Nuevo Testamento | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* PALETA DE COLORES */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        /* NAVEGACIÓN COMPLETA (INCLUYE BOTÓN CAPILLA Y ETIQUETA) */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .nav-btn {
+            background: var(--fondo); padding: 8px 16px; border-radius: 50px;
+            text-decoration: none; color: var(--primario);
+            font-weight: 700; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+        .nav-btn:hover { background: var(--acento); color: #FFF; transform: scale(1.05); }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem; font-weight: 800; padding: 6px 15px; border-radius: 20px;
+            letter-spacing: 1px; box-shadow: 0 3px 10px rgba(93, 64, 55, 0.3); text-transform: uppercase;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        /* CONTADOR */
+        .counter {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-weight: 700; color: var(--acento);
+            margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        /* ESCENA 3D CORREGIDA */
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face {
+            background: var(--blanco);
+            border-top: 6px solid var(--acento);
+            transform: rotateY(0deg); 
+        }
+
+        .card-face-back {
+            background: var(--fondo);
+            border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario);
+            transform: rotateY(180deg);
+        }
+
+        /* TEXTOS FRENTE */
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; letter-spacing: 1px;}
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; color: var(--primario); line-height: 1.4; margin-bottom: 20px; }
+        .hook-text { font-size: 0.95rem; line-height: 1.5; opacity: 0.85; font-weight: 500; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.85rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% {opacity: 0.4;} 50% {opacity: 1;} 100% {opacity: 0.4;} }
+
+        /* TEXTOS DORSO */
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primario); margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 8px;}
+        .cite-box { background: var(--blanco); padding: 15px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 15px; font-size: 0.9rem; font-style: italic; font-weight: 600; line-height: 1.5; color: var(--texto); box-shadow: 0 4px 10px rgba(0,0,0,0.03);}
+        .recom-box { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9rem; line-height: 1.5; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.3rem; }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; box-shadow: 0 5px 15px rgba(93, 64, 55, 0.3); }
+        .btn-main:hover { background: var(--acento); transform: translateY(-2px); }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+        .btn-sec:hover { background: var(--fondo); transform: translateY(-2px); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    
+/* --- Navbar Nuevo --- */
+.navbar { position: fixed; top: 0; width: 100%; z-index: 3000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+.modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+
+    </style>
+</head>
+<body>
+
+        <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-lightbulb"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar la respuesta</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">La Verdad Revelada</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-book-open recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver a girar</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Nuevo Testamento</footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <!-- Modal Donaciones -->
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>\n<script>
+// EXACTAMENTE 72 DATOS CURIOSOS DEL NUEVO TESTAMENTO
+const DATOS = [
+    { id: "nt1", fact: "En los tiempos de Jesús, las personas no se sentaban en sillas para comer.", hook: "Comían 'recostados' sobre almohadones alrededor de una mesa muy bajita, apoyados en su brazo izquierdo. ¡Por eso en la Biblia se cuenta que una mujer pudo lavar los pies de Jesús mientras Él cenaba!", cite: "Lucas 7, 37-38: '...al saber que Jesús estaba a la mesa... se puso llorando a sus pies y comenzó a bañarlos con lágrimas'.", recom: "🏛️ Historia: Buscá cómo era un 'Triclinio' romano para entender las cenas antiguas." },
+    { id: "nt2", fact: "La noche se dividía en 'cuatro vigilias', no en horas.", hook: "Como no tenían relojes, los romanos marcaban la noche en cuatro turnos de guardia militar. Por eso la Biblia dice que Jesús caminó sobre el agua en la 'cuarta vigilia' (entre las 3 y las 6 de la mañana, ¡la hora más oscura!).", cite: "Mateo 14, 25: 'Mas a la cuarta vigilia de la noche, Jesús vino a ellos andando sobre el mar.'", recom: "⌚ Curiosidad: La primera vigilia era al atardecer, y la última al cantar el gallo." },
+    { id: "nt3", fact: "Un 'Denario' era exactamente la paga por un día entero de trabajo.", hook: "Cuando Jesús cuenta parábolas sobre el dinero, a menudo nombra el denario. Era una monedita de plata romana. ¡Ganar un denario significaba que esa noche tu familia iba a poder comer!", cite: "Mateo 20, 2: 'Y habiendo convenido con los obreros en un denario al día, los envió a su viña.'", recom: "🪙 Numismática: Los denarios tenían grabada la cara del Emperador César, por eso Jesús dijo 'Den al César lo que es del César'." },
+    { id: "nt4", fact: "La palabra 'Carpintero' para describir a San José y a Jesús era 'Tekton'.", hook: "En griego, Tekton no solo significa trabajar la madera, sino 'constructor' o 'artesano'. Como en Israel no había mucha madera pero sí muchísima piedra, ¡es muy probable que Jesús haya construido casas tallando rocas!", cite: "Marcos 6, 3: '¿No es este el carpintero (tekton), hijo de María...?'", recom: "🔨 Oficios: Imaginar a Jesús trabajando la piedra dura nos muestra su gran fortaleza física." },
+    { id: "nt5", fact: "Los pastores de Belén cuidaban ovejas de noche porque no eran ovejas comunes.", hook: "Cerca de Belén estaban los campos de 'Migdal Eder'. Las ovejas que se criaban ahí estaban destinadas para ser ofrendas puras en el Templo de Jerusalén. ¡Por eso fueron los primeros en ver al 'Cordero de Dios'!", cite: "Lucas 2, 8: 'Había pastores en la misma región, que velaban y guardaban las vigilias de la noche sobre su rebaño.'", recom: "🐑 Pesebre: Dios eligió a los trabajadores más humildes para darles la noticia más grande del mundo." },
+    { id: "nt6", fact: "El pesebre donde acostaron a Jesús probablemente era de piedra, no de madera.", hook: "En las cuevas donde se guardaban a los animales en la antigua Judea, los comederos (pesebres) se tallaban directamente en la roca maciza para que duraran para siempre.", cite: "Lucas 2, 7: '...y lo acostó en un pesebre, porque no había lugar para ellos en el mesón.'", recom: "🪨 Reflexión: Un comedero de piedra dura y fría, calentado por el amor infinito de María y José." },
+    { id: "nt7", fact: "Los Reyes Magos no eran reyes con coronas, sino grandes astrónomos.", hook: "La palabra 'mago' en esa época se usaba para los sabios estudiosos de las estrellas y los planetas que venían de Oriente (probablemente de Persia o Babilonia).", cite: "Mateo 2, 1: '...vinieron del oriente a Jerusalén unos magos, diciendo: ¿Dónde está el rey de los judíos, que ha nacido?'", recom: "✨ Ciencia y Fe: La ciencia antigua (astronomía) los guio directamente hacia el Creador del Universo." },
+    { id: "nt8", fact: "El incienso y la mirra que le regalaron al Niño Jesús tenían un significado oculto.", hook: "El oro significaba que era Rey; el incienso, que era Dios (se usa para rezar); pero la Mirra era un perfume que se usaba para curar heridas y preparar los cuerpos para la sepultura. ¡Anunciaba que daría su vida por nosotros!", cite: "Mateo 2, 11: '...y abriendo sus tesoros, le ofrecieron presentes: oro, incienso y mirra.'", recom: "🎁 Regalos: Cuando hacemos una obra buena, le estamos regalando oro, incienso y mirra a Jesús." },
+    { id: "nt9", fact: "En los tiempos de Jesús, los libros no tenían hojas como hoy, eran 'Rollos'.", hook: "Se escribían sobre papiro (una planta) o pergamino (piel de animal) y se enrollaban en dos varillas de madera. ¡Para buscar una frase tenías que desenrollar metros y metros de texto!", cite: "Lucas 4, 17: 'Y se le dio el libro del profeta Isaías; y habiendo desenrollado el libro, halló el lugar donde estaba escrito...'", recom: "📜 Curiosidad: Recién siglos después los cristianos popularizaron el 'códice', que es el libro con páginas que conocemos hoy." },
+    { id: "nt10", fact: "Los pescadores del Mar de Galilea trabajaban de noche.", hook: "Las redes que usaban estaban hechas de lino. Durante el día, el hilo de lino brillaba con el sol y los peces lo veían y escapaban. De noche, la red era invisible. ¡Por eso Pedro estaba tan cansado cuando Jesús le pidió pescar de día!", cite: "Lucas 5, 5: 'Maestro, toda la noche hemos estado trabajando, y nada hemos pescado; mas en tu palabra echaré la red.'", recom: "🐟 Confianza: Jesús nos pide a veces hacer cosas que parecen ilógicas para regalarnos grandes milagros." },
+    { id: "nt11", fact: "Las 'Sandalias' eran el único calzado, y los caminos eran de pura tierra.", hook: "Por eso los pies se ensuciaban muchísimo. Era costumbre que el sirviente de menor rango de una casa le lavara los pies a los invitados. ¡Por eso los apóstoles se asombraron tanto cuando Jesús se arrodilló a lavarles los pies!", cite: "Juan 13, 14: 'Pues si yo, el Señor y el Maestro, he lavado vuestros pies, vosotros también debéis lavaros los pies los unos a los otros.'", recom: "💦 Humildad: Jesús nos enseña que el verdadero líder es el que sirve a los demás con amor." },
+    { id: "nt12", fact: "En el Nuevo Testamento, un 'Talento' no era una habilidad, sino una fortuna inmensa.", hook: "Era una medida de peso en oro o plata. Un solo talento equivalía a ¡15 años de sueldo de un trabajador! Cuando Jesús cuenta la parábola de los talentos, habla de confiar una verdadera fortuna a sus siervos.", cite: "Mateo 25, 15: 'A uno dio cinco talentos, y a otro dos, y a otro uno, a cada uno conforme a su capacidad.'", recom: "💰 Valor: Dios nos dio 'fortunas' (nuestros dones, la vida, la familia) para que las hagamos multiplicar." },
+    { id: "nt13", fact: "La semilla de Mostaza que menciona Jesús es pequeñita como la cabeza de un alfiler.", hook: "Aunque la semilla es diminuta (mide entre 1 y 2 milímetros), la planta crece tan grande en la zona de Galilea que parece un árbol donde los pajaritos pueden hacer sus nidos.", cite: "Marcos 4, 31: 'Es como el grano de mostaza... que es la más pequeña de todas las semillas... pero crece y se hace la mayor de las hortalizas.'", recom: "🌱 Fe: Un poquito de fe verdadera puede generar resultados gigantes en nuestra vida." },
+    { id: "nt14", fact: "Las casas de esa época tenían techos planos de barro y ramas, a los que se subía por afuera.", hook: "El techo era como el 'patio' de hoy, donde se secaba la ropa o se descansaba. Por eso los amigos del paralítico pudieron subirlo por la escalera exterior, abrir un hueco en las ramas y bajarlo frente a Jesús.", cite: "Marcos 2, 4: '...descubrieron el techo de donde estaba, y haciendo una abertura, bajaron el lecho en que yacía el paralítico.'", recom: "🏠 Amistad: ¡Qué importante es tener amigos que te acerquen a Jesús cuando te sentís mal!" },
+    { id: "nt15", fact: "Jesús hablaba en Arameo, el idioma común de la gente de su tierra.", hook: "Aunque el Nuevo Testamento se escribió en griego para que lo leyera todo el mundo, los escritores dejaron algunas palabras originales de Jesús en arameo, como 'Talita cumi' (Niña, levántate) o 'Abba' (Papito).", cite: "Marcos 5, 41: 'Y tomando la mano de la niña, le dijo: Talita cumi; que traducido es: Niña, a ti te digo, levántate.'", recom: "🗣️ Cercanía: 'Abba' es la forma tierna en que los niños pequeños llamaban a sus papás." },
+    { id: "nt16", fact: "El Mar de Galilea no es realmente un mar, es un lago de agua dulce.", hook: "También se lo llama Lago de Tiberíades. Es muy famoso por tener tormentas que se forman súper rápido de la nada, porque está rodeado de montañas que encierran el viento. ¡Por eso los apóstoles se asustaron tanto aquella noche!", cite: "Marcos 4, 37: 'Pero se levantó una gran tempestad de viento, y echaba las olas en la barca, de tal manera que ya se anegaba.'", recom: "🌊 Geografía: En este lago Jesús caminó sobre las aguas y multiplicó los peces." },
+    { id: "nt17", fact: "Los pastores en Israel caminaban *adelante* de las ovejas, no detrás.", hook: "En otros países usan perros para arrear a las ovejas desde atrás. En tiempos de Jesús, el pastor caminaba adelante llamándolas, y las ovejas lo seguían porque reconocían su voz y confiaban en él.", cite: "Juan 10, 4: '...y cuando ha sacado fuera todas las propias, va delante de ellas; y las ovejas le siguen, porque conocen su voz.'", recom: "🐑 Guía: Jesús no nos empuja a la fuerza; camina adelante nuestro mostrándonos el camino seguro." },
+    { id: "nt18", fact: "Juan el Bautista comía 'langostas' del desierto y miel silvestre.", hook: "Y no nos referimos a los animales del mar, sino a los insectos parecidos a los saltamontes. En la antigua ley judía, las langostas eran de los pocos insectos permitidos para comer y tenían muchísima proteína.", cite: "Mateo 3, 4: 'Y Juan estaba vestido de pelo de camello... y su comida era langostas y miel silvestre.'", recom: "🦗 Naturaleza: Juan vivía una vida súper sencilla y humilde en la naturaleza preparándose para anunciar a Jesús." },
+    { id: "nt19", fact: "San Pedro era impulsivo pero fue el único apóstol que se animó a caminar sobre el agua.", hook: "Cuando vio a Jesús caminar sobre el lago, Pedro le pidió ir hacia Él. Mientras miró a Jesús, pudo caminar sobre el agua. ¡Pero cuando miró el viento y la tormenta, tuvo miedo y empezó a hundirse!", cite: "Mateo 14, 29: 'Y descendiendo Pedro de la barca, andaba sobre las aguas para ir a Jesús.'", recom: "🚶‍♂️ Valentía: A veces nos hundimos en los problemas cuando dejamos de mirar a Jesús y solo miramos la tormenta." },
+    { id: "nt20", fact: "Jesús le puso un apodo muy divertido a dos hermanos apóstoles: 'Los hijos del trueno'.", hook: "Santiago y Juan tenían un carácter súper fuerte y a veces querían resolver todo gritando. Jesús, con mucho cariño, los apodó 'Boanerges', que significa Hijos del Trueno.", cite: "Marcos 3, 17: '...a Jacobo hijo de Zebedeo, y a Juan hermano de Jacobo, a quienes apellidó Boanerges, esto es, Hijos del trueno.'", recom: "⚡ Humor Divino: Jesús nos conoce con nuestros defectos y nuestro genio, y nos ama igual." },
+    { id: "nt21", fact: "A Jesús también se lo conoce como el 'Nazareno', aunque no nació allí.", hook: "Nació en Belén, pero vivió toda su infancia y juventud en Nazaret, un pueblito tan chico y de campo que a veces la gente de la ciudad se burlaba diciendo: '¿Acaso puede salir algo bueno de Nazaret?'.", cite: "Juan 1, 46: 'Natanael le dijo: ¿De Nazaret puede salir algo de bueno? Le dijo Felipe: Ven y ve.'", recom: "🏡 Humildad: Dios eligió el pueblito más sencillo para que creciera el Salvador del mundo." },
+    { id: "nt22", fact: "En la pesca milagrosa, la Biblia cuenta exactamente la cantidad de peces: ¡153!", hook: "San Juan era pescador, ¡y los pescadores cuentan lo que atrapan! Pero muchos creen que en esa época se conocían 153 tipos de peces en el mundo, simbolizando que el Evangelio llegaría a todas las personas y naciones.", cite: "Juan 21, 11: 'Simón Pedro... sacó la red a tierra, llena de grandes peces, ciento cincuenta y tres.'", recom: "🐟 Detalles: En la Biblia, hasta los números esconden un mensaje hermoso de Dios." },
+    { id: "nt23", fact: "Mateo, antes de ser amigo de Jesús, era un cobrador de impuestos.", hook: "Trabajaba recaudando dinero para los romanos. La gente no lo quería nada porque a veces cobraban de más. Pero Jesús pasó por su mesa, lo miró con amor, le dijo 'Seguime', y Mateo dejó todo ese mismo día.", cite: "Mateo 9, 9: '...vio a un hombre llamado Mateo, que estaba sentado al banco de los tributos públicos, y le dijo: Sígueme.'", recom: "💰 Cambio de vida: Nadie está tan lejos de Dios como para no poder empezar una vida nueva de amor." },
+    { id: "nt24", fact: "Lucas, el escritor del tercer Evangelio, era médico.", hook: "Era un hombre muy estudiado. Por eso, cuando escribe su evangelio, usa palabras médicas precisas de la época para describir las enfermedades que Jesús curaba con tanto amor.", cite: "Colosenses 4, 14: 'Os saluda Lucas el médico amado...'", recom: "🩺 Salud: Lucas nos enseñó con sus escritos que Jesús vino a curar no solo el cuerpo, sino el alma." },
+    { id: "nt25", fact: "El apóstol Tomás no creyó que Jesús había resucitado hasta que lo vio.", hook: "Él dijo que necesitaba tocar las heridas de Jesús para creer. Cuando Jesús apareció, lo invitó a tocarlo. Tomás cayó de rodillas y dijo la oración de adoración más linda: '¡Señor mío y Dios mío!'", cite: "Juan 20, 28: 'Entonces Tomás respondió y le dijo: ¡Señor mío, y Dios mío!'", recom: "🙏 Oración de fe: Es hermoso repetir estas palabras de Tomás en el momento en que el cura levanta la Hostia en la Misa." },
+    { id: "nt26", fact: "San Pablo fue el gran viajero de la Iglesia primitiva, ¡y sobrevivió a 3 naufragios!", hook: "Antes de los aviones, viajaba por el Mar Mediterráneo en barcos de madera para hablarle a todos de Jesús. Aunque los barcos se hundieron y pasó peligros, nunca dejó de anunciar la alegría de Dios.", cite: "2 Corintios 11, 25: '...tres veces he padecido naufragio; una noche y un día he estado como náufrago en alta mar.'", recom: "⛵ Valentía: Pablo nos enseña que nada nos debe frenar cuando queremos hacer el bien." },
+    { id: "nt27", fact: "En Pentecostés, el Espíritu Santo sonó como 'un viento muy fuerte'.", hook: "Los amigos de Jesús estaban reunidos y asustados en una casa. De repente, sintieron una ráfaga de viento poderosa y vieron lenguas de fuego. ¡Se llenaron de tanta alegría y valor que salieron a predicar sin miedo!", cite: "Hechos 2, 2: 'Y de repente vino del cielo un estruendo como de un viento recio que soplaba...'", recom: "🔥 El cumple de la Iglesia: Así nació la Iglesia, impulsada por la fuerza del Espíritu Santo." },
+    { id: "nt28", fact: "Jesús lloró frente a todos cuando murió su amigo Lázaro.", hook: "Este es el versículo más cortito de toda la Biblia (en muchas traducciones solo dice 'Jesús lloró'). Nos demuestra que a Dios le duelen nuestras tristezas y que entiende perfectamente lo que es extrañar a un amigo.", cite: "Juan 11, 35: 'Jesús lloró.'", recom: "💧 Empatía: Llorar no es de débiles, es de corazones llenos de amor." },
+    { id: "nt29", fact: "El Padre Nuestro es la única oración que Jesús nos enseñó palabra por palabra.", hook: "Sus amigos le dijeron: 'Maestro, enseñanos a rezar'. Jesús les regaló esta oración que resume todo lo que necesitamos: pedir que venga su amor, pedir por el pan, y aprender a perdonar.", cite: "Lucas 11, 2: 'Cuando oren, digan: Padre nuestro que estás en los cielos...'", recom: "👨‍👧‍👦 Familia de Dios: Al decir 'Padre', Jesús nos hace hermanos de todos." },
+    { id: "nt30", fact: "La palabra 'Evangelio' significa 'Buena Noticia'.", hook: "En el imperio romano, esta palabra se usaba cuando llegaba un mensajero anunciando que habían ganado una guerra o había nacido un nuevo rey. Para los cristianos, ¡la gran Buena Noticia es Jesucristo!", cite: "Marcos 1, 1: 'Principio del evangelio (buena noticia) de Jesucristo, Hijo de Dios.'", recom: "📰 Alegría: ¡Los católicos somos portadores de las mejores noticias para el mundo!" },
+    { id: "nt31", fact: "María y José perdieron a Jesús durante tres días cuando Él tenía 12 años.", hook: "Habían viajado a Jerusalén. Al volver, se dieron cuenta que Jesús no venía en la caravana de familiares. Lo buscaron desesperados y lo encontraron en el Templo, hablando con los maestros que lo escuchaban asombrados.", cite: "Lucas 2, 46: 'Y aconteció que tres días después le hallaron en el templo, sentado en medio de los doctores...'", recom: "🏛️ Sabiduría: Desde muy chiquito, Jesús amaba pasar tiempo en la Casa de su Padre Dios." },
+    { id: "nt32", fact: "El primer milagro de Jesús fue en una fiesta de casamiento.", hook: "Faltaba el vino y los novios estaban preocupados. La Virgen María se dio cuenta y le pidió ayuda a Jesús. Él convirtió más de 600 litros de agua en el vino más rico y delicioso para que la fiesta siguiera con alegría.", cite: "Juan 2, 9: 'Cuando el maestresala probó el agua hecha vino... llamó al esposo.'", recom: "🍷 Alegría familiar: Jesús bendice las familias y quiere que vivamos la vida con alegría." },
+    { id: "nt33", fact: "La palabra 'Cristo' no es el apellido de Jesús.", hook: "Es un título en griego que significa 'El Ungido' (en hebreo se dice Mesías). En la antigüedad, a los reyes se los ungía con aceite perfumado. Jesús es el Rey definitivo prometido por Dios.", cite: "Mateo 16, 16: 'Respondiendo Simón Pedro, dijo: Tú eres el Cristo, el Hijo del Dios viviente.'", recom: "👑 Rey de Paz: Jesús es un rey que no usa corona de oro ni espadas, sino amor y servicio." },
+    { id: "nt34", fact: "La parábola del 'Buen Samaritano' rompió todos los prejuicios de la época.", hook: "Los judíos y los samaritanos se llevaban muy mal y no se hablaban. Pero en el cuento de Jesús, el único que ayuda al hombre herido en el camino es el samaritano. ¡Jesús nos enseñó que todos somos hermanos!", cite: "Lucas 10, 33: 'Pero un samaritano, que iba de camino, vino cerca de él, y viéndole, fue movido a misericordia.'", recom: "🤝 Solidaridad: Nuestro prójimo es cualquiera que necesite de nuestra ayuda, sin importar de dónde venga." },
+    { id: "nt35", fact: "Zaqueo era tan bajito que tuvo que subirse a un árbol para ver a Jesús.", hook: "Era un recaudador de impuestos muy rico pero no era querido. Se trepó a un árbol (un sicómoro) para ver a Jesús pasar. ¡Jesús lo vio, se invitó a cenar a su casa y la vida de Zaqueo cambió para siempre!", cite: "Lucas 19, 4: 'Y corriendo delante, subió a un árbol sicómoro para verle; porque había de pasar por allí.'", recom: "🌳 Entusiasmo: Cuando hacemos un esfuercito por buscar a Jesús, Él siempre se invita a nuestro corazón." },
+    { id: "nt36", fact: "El apóstol Felipe le hizo a Jesús la pregunta que todos queríamos hacer.", hook: "Le dijo: 'Señor, muestranos al Padre (a Dios)'. Jesús le respondió una de las frases más increíbles de la Biblia: 'El que me ha visto a mí, ha visto al Padre'. ¡Conociendo a Jesús, conocemos cómo es Dios!", cite: "Juan 14, 9: 'Jesús le dijo: ¿Tanto tiempo hace que estoy con vosotros, y no me has conocido, Felipe?'", recom: "👀 Dios visible: Jesús es el rostro amoroso y visible del Dios invisible." },
+    { id: "nt37", fact: "La 'Última Cena' de Jesús fue la celebración de la Pascua judía.", hook: "Durante esa cena especial, donde recordaban cómo Dios los liberó de Egipto, Jesús tomó el pan y el vino y nos regaló la primera Misa de la historia, prometiendo quedarse siempre con nosotros.", cite: "Lucas 22, 19: 'Y tomó el pan y dio gracias, y lo partió y les dio, diciendo: Esto es mi cuerpo, que por vosotros es dado...'", recom: "🍞 Comunión: ¡Cada vez que vamos a Misa el domingo, estamos participando de esa misma Cena!" },
+    { id: "nt38", fact: "Judas traicionó a Jesús por 30 monedas de plata.", hook: "En las leyes antiguas del Antiguo Testamento, 30 monedas de plata era exactamente el precio que se pagaba si un buey lastimaba a un esclavo. ¡Vendieron al Creador del mundo por el precio de un esclavo!", cite: "Mateo 26, 15: 'Y les dijo: ¿Qué me queréis dar, y yo os lo entregaré? Y ellos le asignaron treinta piezas de plata.'", recom: "😢 Fidelidad: Que nuestra vida sea siempre para cuidar a Jesús y a nuestros hermanos, no para traicionarlos." },
+    { id: "nt39", fact: "El Huerto de los Olivos se llama 'Getsemaní', que significa 'Prensa de aceite'.", hook: "En ese jardín se aplastaban las aceitunas para sacar aceite puro. Ahí mismo Jesús oró con tanta angustia antes de dar su vida, sintiendo cómo lo 'aplastaba' la tristeza, pero aceptando con amor la voluntad de Dios.", cite: "Mateo 26, 36: 'Entonces llegó Jesús con ellos a un lugar que se llama Getsemaní, y dijo a sus discípulos: Sentaos aquí, entre tanto que voy allí y oro.'", recom: "🫒 Oración sincera: Jesús nos enseñó a rezar diciendo: 'Que no se haga lo que yo quiero, sino lo que quieres Tú'." },
+    { id: "nt40", fact: "Cuando Jesús dio su último respiro en la cruz, el velo gigante del Templo se rasgó por la mitad.", hook: "Ese velo súper grueso separaba a la gente del lugar más sagrado (donde se creía que estaba Dios). Al romperse de arriba a abajo, Dios nos estaba diciendo: '¡Ya no hay distancia, mi amor los alcanza a todos!'", cite: "Marcos 15, 38: 'Entonces el velo del templo se rasgó en dos, de arriba abajo.'", recom: "🚪 Puertas abiertas: Jesús nos abrió el camino directo para ser amigos de Dios para siempre." },
+    { id: "nt41", fact: "La tumba de Jesús no era un hoyo en la tierra, era una cueva tallada en la roca.", hook: "Pertenecía a un hombre bueno llamado José de Arimatea. La cerraron rodando una piedra circular gigante que pesaba toneladas para que nadie pudiera entrar.", cite: "Mateo 27, 60: '...y la puso en su sepulcro nuevo, que había labrado en la peña; y después de hacer rodar una gran piedra a la entrada del sepulcro, se fue.'", recom: "🪨 Milagro: Ninguna piedra, por más grande que sea, pudo detener el poder de la Resurrección." },
+    { id: "nt42", fact: "A los seguidores de Jesús les dijeron 'Cristianos' por primera vez en Antioquía.", hook: "Antes se llamaban 'los del Camino'. Pero en esa ciudad, como hablaban todo el tiempo de 'Cristo', la gente empezó a decirles cristianos. ¡Hoy somos millones llevando ese hermoso nombre!", cite: "Hechos 11, 26: '...y a los discípulos se les llamó cristianos por primera vez en Antioquía.'", recom: "🌍 Identidad: Ser cristiano significa intentar vivir cada día como vivió Jesús." },
+    { id: "nt43", fact: "San Esteban fue la primera persona en dar su vida por creer en Jesús.", hook: "Fue el primer 'mártir'. Mientras le tiraban piedras porque no quería dejar de amar a Jesús, Esteban hizo lo mismo que su Maestro en la cruz: oró en voz alta perdonando a los que lo lastimaban.", cite: "Hechos 7, 60: 'Y puesto de rodillas, clamó a gran voz: Señor, no les tomes en cuenta este pecado.'", recom: "❤️ Perdón extremo: El amor que Jesús nos da nos hace capaces de perdonar cosas increíbles." },
+    { id: "nt44", fact: "Pablo (que antes se llamaba Saulo) se quedó ciego por una luz del cielo.", hook: "Saulo perseguía y metía presos a los cristianos. Un día, yendo a Damasco, una luz fuertísima lo tiró al piso y Jesús le habló. ¡Estuvo tres días sin ver hasta que entendió que debía cambiar de vida!", cite: "Hechos 9, 3-4: '...repentinamente le rodeó un resplandor de luz del cielo; y cayendo en tierra, oyó una voz que le decía: Saulo, Saulo, ¿por qué me persigues?'", recom: "💡 Luz interior: A veces necesitamos parar un momento para dejar que la luz de Dios nos cambie el corazón." },
+    { id: "nt45", fact: "En los tiempos bíblicos, comer pan juntos era un pacto de paz profunda.", hook: "No se comía con cualquiera. Compartir la mesa era señal de perdón y aceptación. ¡Por eso los líderes se enojaban tanto cuando Jesús se sentaba a comer con pecadores o personas que se equivocaban!", cite: "Marcos 2, 16: '...le dijeron a sus discípulos: ¿Qué es esto, que él come y bebe con los publicanos y pecadores?'", recom: "🍞 Mesa compartida: La Misa es ese momento donde Jesús nos invita a comer juntos, sin excluir a nadie." },
+    { id: "nt46", fact: "El último libro de la Biblia se llama 'Apocalipsis' y significa 'Revelación'.", hook: "Aunque muchos lo usan para hablar del fin del mundo, en realidad es un libro de esperanza. Fue escrito con muchos símbolos para animar a los primeros cristianos y decirles: '¡Al final, el bien y Jesús ganan!'", cite: "Apocalipsis 21, 4: 'Enjugará Dios toda lágrima de los ojos de ellos; y ya no habrá muerte, ni habrá más llanto, ni clamor, ni dolor...'", recom: "📖 Esperanza: El mensaje más grande de la Biblia es que el amor de Dios tiene la última palabra." },
+    { id: "nt47", fact: "Jesús dijo que es más fácil que un camello pase por el ojo de una aguja, a que un rico entre al reino.", hook: "Muchos dicen que en Jerusalén había una puerta chiquita llamada 'Ojo de aguja' por donde los camellos tenían que pasar arrodillados y sin equipaje. ¡Una gran lección de humildad y de no atarse a las cosas materiales!", cite: "Mateo 19, 24: 'Otra vez os digo, que es más fácil pasar un camello por el ojo de una aguja, que entrar un rico en el reino de Dios.'", recom: "🐪 Sencillez: Dios quiere que nuestro corazón no esté lleno de 'cosas', sino lleno de amor." },
+    { id: "nt48", fact: "Los 'Publicanos' eran cobradores de impuestos que trabajaban para los romanos.", hook: "Los judíos no los querían porque cobraban de más para hacerse ricos y ayudaban a los romanos que habían invadido su tierra. Zaqueo y Mateo eran publicanos, ¡pero Jesús los amó y los cambió por completo!", cite: "Lucas 18, 13: 'Mas el publicano, estando lejos... se golpeaba el pecho, diciendo: Dios, sé propicio a mí, pecador.'", recom: "❤️ Mirada de Jesús: Él no nos juzga por lo que fuimos ayer, sino que nos invita a ser mejores hoy." },
+    { id: "nt49", fact: "La oveja perdida de la parábola, al ser encontrada, es cargada sobre los hombros.", hook: "Jesús contó que el Buen Pastor no le pega a la oveja por haberse perdido ni la arrastra. Al contrario, la levanta con cariño, se la pone sobre los hombros y hace una fiesta por haberla encontrado.", cite: "Lucas 15, 5: 'Y cuando la encuentra, la pone sobre sus hombros gozoso.'", recom: "🐑 Ternura: Así es el sacramento de la Reconciliación (la Confesión): Jesús cargándonos en sus hombros con amor." },
+    { id: "nt50", fact: "Jesús calmó una gran tormenta ¡mientras Él dormía en el barco!", hook: "Las olas eran tan altas que los marineros estaban aterrorizados. Jesús, con una paz increíble, dormía sobre un almohadón en la parte de atrás del barco. ¡Sabía que estaban en las manos de Dios!", cite: "Marcos 4, 38: 'Y él estaba en la popa, durmiendo sobre un cabezal...'", recom: "😴 Paz interior: Con Jesús en nuestro 'barco' (nuestra vida), no tenemos por qué tener miedo a las tormentas." },
+    { id: "nt51", fact: "En la multiplicación de los panes, sobraron exactamente 12 canastas.", hook: "Jesús alimentó a más de 5000 personas con el almuerzo de un niño (5 panes y 2 peces). Las 12 canastas que sobraron simbolizan a las 12 tribus de Israel y nos enseñan que el alimento de Dios siempre sobreabunda para todos.", cite: "Juan 6, 13: 'Recogieron, pues, y llenaron doce cestas de pedazos...'", recom: "🥖 Abundancia: Lo que entregamos en las manos de Dios, Él lo multiplica maravillosamente." },
+    { id: "nt52", fact: "La mujer enferma que tocó el manto de Jesús se curó al instante.", hook: "Llevaba 12 años enferma y había gastado todo su dinero en médicos sin mejorar. Entre la multitud, solo estiró la mano para tocar el borde de la ropa de Jesús con mucha fe, ¡y se sanó!", cite: "Marcos 5, 28: 'Porque decía: Si tocare tan solamente su manto, seré salva.'", recom: "✨ Fe sencilla: No hacen falta grandes discursos; un pequeño gesto de confianza en Dios hace milagros." },
+    { id: "nt53", fact: "El ciego Bartimeo gritó tan fuerte que Jesús se detuvo a escucharlo.", hook: "Estaba sentado pidiendo limosna y la gente lo mandaba a callar. Pero él empezó a gritar más fuerte todavía: '¡Hijo de David, ten piedad de mí!'. Jesús se paró, lo mandó a llamar y le devolvió la vista.", cite: "Marcos 10, 48: 'Y muchos le reprendían para que callase, pero él clamaba mucho más...'", recom: "🗣️ Oración perseverante: Dios siempre escucha a los que no se rinden y le piden ayuda con el corazón." },
+    { id: "nt54", fact: "En el milagro de la pesca, Pedro y Juan atraparon tantos peces que las redes se rompían.", hook: "Habían trabajado toda la noche sin pescar nada. Jesús les dijo: 'Tiren la red del lado derecho'. Al obedecer, sacaron tanta cantidad que casi hunden dos barcos. ¡Así actúa Dios cuando le hacemos caso!", cite: "Lucas 5, 6: 'Y habiéndolo hecho, encerraron gran cantidad de peces, y su red se rompía.'", recom: "🐟 Obediencia: Las bendiciones más grandes vienen después de escuchar la palabra de Jesús." },
+    { id: "nt55", fact: "Jesús resucitó al hijo único de una viuda en el pueblo de Naín.", hook: "Jesús iba caminando y se cruzó con un entierro. Vio a la mamá llorando, sintió muchísima compasión, tocó el ataúd de madera y le dijo al joven: '¡Levántate!'. Y se lo entregó vivo a su mamá.", cite: "Lucas 7, 14-15: 'Y tocando el féretro... dijo: Joven, a ti te digo, levántate. Entonces se incorporó el que había muerto.'", recom: "❤️ Compasión: Jesús es el Señor de la Vida y siempre se conmueve frente a nuestro dolor." },
+    { id: "nt56", fact: "La parábola del Sembrador nos enseña a cuidar nuestro corazón como si fuera tierra fértil.", hook: "Jesús dijo que la Palabra de Dios es como una semilla. Si nuestro corazón está duro, no crece; si está lleno de preocupaciones (espinas), se ahoga. Pero si somos buenos y escuchamos, damos frutos hermosos.", cite: "Mateo 13, 23: 'Mas el que fue sembrado en buena tierra... es el que oye y entiende la palabra, y da fruto.'", recom: "🌱 Crecimiento: Cada vez que leemos la Biblia, estamos plantando semillas buenas en nuestro corazón." },
+    { id: "nt57", fact: "En la parábola del Hijo Pródigo, el padre sale corriendo a abrazar a su hijo.", hook: "En la antigüedad, un hombre mayor de respeto nunca corría. Pero Jesús cuenta que cuando el padre vio volver a su hijo arrepentido que había hecho todo mal, se olvidó del 'qué dirán', salió corriendo y lo llenó de besos.", cite: "Lucas 15, 20: 'Y cuando aún estaba lejos, lo vio su padre, y fue movido a misericordia, y corrió, y se echó sobre su cuello, y le besó.'", recom: "🫂 Perdón divino: ¡Así es Dios! No nos reta cuando volvemos arrepentidos, nos abraza con alegría." },
+    { id: "nt58", fact: "Jesús bendijo a unos niños a pesar de que sus apóstoles querían alejarlos.", hook: "Los amigos de Jesús pensaban que Él estaba muy ocupado para jugar con los chicos. Jesús se enojó un poquito con ellos, abrazó a los niños y dijo que el cielo es para los que tienen un corazón como ellos.", cite: "Marcos 10, 14: 'Dejad a los niños venir a mí, y no se lo impidáis; porque de los tales es el reino de Dios.'", recom: "👧👦 Inocencia: Dios nos pide que seamos puros, sencillos y confiados como un niño." },
+    { id: "nt59", fact: "María, la mamá de Jesús, estuvo al pie de la cruz hasta el último momento.", hook: "Cuando muchos amigos por miedo se escondieron, María se quedó firme junto a Jesús. Ahí, Jesús nos la regaló como Madre de todos nosotros diciendo a San Juan: 'Ahí tienes a tu madre'.", cite: "Juan 19, 27: 'Después dijo al discípulo: He ahí tu madre. Y desde aquella hora el discípulo la recibió en su casa.'", recom: "🌹 Amor de Madre: Podemos acudir a la Virgen María en cualquier momento, ella siempre nos cuida." },
+    { id: "nt60", fact: "María Magdalena fue la primera persona en ver a Jesús resucitado.", hook: "No fue a un rey ni al sumo sacerdote. Jesús eligió aparecerse primero a una mujer que había sufrido mucho pero que lo amaba inmensamente, y a ella le dio la misión de avisarles a los apóstoles.", cite: "Marcos 16, 9: 'Habiendo, pues, resucitado Jesús por la mañana... apareció primeramente a María Magdalena.'", recom: "🏃‍♀️ Mensajera de alegría: Dios elige corazones humildes para dar las noticias más importantes." },
+    { id: "nt61", fact: "Marta y María, dos hermanas amigas de Jesús, nos enseñan a equilibrar la vida.", hook: "Marta estaba súper ocupada cocinando y María solo se sentó a escuchar a Jesús. Él enseñó que trabajar y servir es muy bueno, pero pasar tiempo escuchando a Dios (rezando) es 'la mejor parte'.", cite: "Lucas 10, 41-42: 'Marta, Marta, afanada y turbada estás con muchas cosas... y María ha escogido la buena parte.'", recom: "⚖️ Equilibrio: Aprender a hacer pausas en el día para simplemente hablar con Jesús." },
+    { id: "nt62", fact: "En Pentecostés, los apóstoles hablaron en otros idiomas gracias al Espíritu Santo.", hook: "Había gente de todos los países en Jerusalén y los apóstoles (que eran pescadores sencillos) salieron y todos los entendían en su propio idioma. ¡El Espíritu Santo es la fuerza que nos une y nos hace entendernos!", cite: "Hechos 2, 4: 'Y fueron todos llenos del Espíritu Santo, y comenzaron a hablar en otras lenguas.'", recom: "🔥 Unidad: El amor de Dios es el idioma universal que todo el mundo puede entender." },
+    { id: "nt63", fact: "El joven Eutico se quedó dormido escuchando a San Pablo y se cayó por una ventana.", hook: "Pablo estaba dando un sermón muy largo de noche. Eutico se durmió en la ventana del tercer piso, se cayó y murió. ¡Pero Pablo bajó rápido, lo abrazó y Dios le devolvió la vida!", cite: "Hechos 20, 9: '...y un joven llamado Eutico... rendido de un sueño profundo, cayó del tercer piso abajo.'", recom: "😄 Anécdota: ¡Una historia curiosa que nos recuerda que hasta en las reuniones largas, Dios cuida la vida!" },
+    { id: "nt64", fact: "El apóstol San Juan fue el único de los doce amigos de Jesús que murió de viejito.", hook: "La mayoría de los apóstoles dieron su vida como mártires por creer en Jesús. San Juan cuidó a la Virgen María y vivió muchos años, escribiendo que 'Dios es amor'.", cite: "1 Juan 4, 8: 'El que no ama, no ha conocido a Dios; porque Dios es amor.'", recom: "📜 Sabiduría: Leer el Evangelio de Juan es conocer el corazón y los sentimientos más profundos de Jesús." },
+    { id: "nt65", fact: "Felipe le explicó la Biblia a un ministro de África en medio del desierto.", hook: "El ministro etíope iba leyendo un rollo pero no entendía nada. El Espíritu Santo le dijo a Felipe que corriera junto a su carruaje. Le explicó que el texto hablaba de Jesús y ¡ahí mismo lo bautizó en un charco de agua!", cite: "Hechos 8, 30: 'Acudiendo Felipe, le oyó que leía al profeta Isaías, y dijo: Pero ¿entiendes lo que lees?'", recom: "🌍 Misión: Ayudar a otros a entender la palabra de Dios es una obra hermosa de caridad." },
+    { id: "nt66", fact: "San Pedro curó a un paralítico en la puerta del Templo usando solo el Nombre de Jesús.", hook: "El hombre pedía monedas. Pedro le dijo: 'No tengo plata ni oro, pero lo que tengo te doy: ¡En el nombre de Jesucristo, levantate y caminá!'. El hombre saltó de alegría alabando a Dios.", cite: "Hechos 3, 6: 'Mas Pedro dijo: No tengo plata ni oro, pero lo que tengo te doy; en el nombre de Jesucristo... levántate y anda.'", recom: "✨ Poder divino: El Nombre de Jesús tiene el poder de sanar y levantar nuestras tristezas." },
+    { id: "nt67", fact: "El nombre 'Evangelista' se les da a los cuatro que escribieron la vida de Jesús.", hook: "Mateo, Marcos, Lucas y Juan. Se los representa con cuatro figuras asombrosas: el hombre (Mateo), el león (Marcos), el toro (Lucas) y el águila (Juan).", cite: "Apocalipsis 4, 7: 'El primer ser viviente era semejante a un león; el segundo... semejante a un becerro...'", recom: "🦅 Símbolos: Podés ver estos 4 símbolos en muchísimos altares e iglesias del mundo entero." },
+    { id: "nt68", fact: "Simón de Cirene fue obligado a ayudar a Jesús a llevar la pesada cruz.", hook: "Él venía del campo y los soldados romanos lo forzaron. Lo que empezó como una carga obligatoria terminó siendo la bendición más grande de su vida al ayudar físicamente al Salvador del mundo.", cite: "Lucas 23, 26: 'Y llevándole, tomaron a cierto Simón de Cirene, que venía del campo, y le pusieron encima la cruz.'", recom: "🤝 Ayuda: Cuando ayudamos a alguien que sufre, somos como el Cirineo, ayudando a llevar la cruz a Jesús." },
+    { id: "nt69", fact: "Jesús perdonó a uno de los ladrones que estaban crucificados a su lado.", hook: "El ladrón reconoció que él había hecho las cosas mal y que Jesús era inocente. Le dijo 'Acordate de mí cuando estés en tu Reino'. Jesús le prometió que ese mismo día estarían juntos en el cielo.", cite: "Lucas 23, 43: 'Entonces Jesús le dijo: De cierto te digo que hoy estarás conmigo en el paraíso.'", recom: "❤️ Misericordia: Hasta el último segundo de vida, la puerta del perdón de Dios está siempre abierta." },
+    { id: "nt70", fact: "La Sábana Santa guardó la imagen del cuerpo de Jesús resucitando.", hook: "Cuando Pedro y Juan corrieron a la tumba vacía, vieron las vendas y la sábana de lino (sudario) acomodadas y vacías. Muchos científicos creen que el flash de luz de la resurrección grabó la imagen de Jesús en esa tela que hoy está en Turín.", cite: "Juan 20, 6-7: '...y vio los lienzos puestos allí, y el sudario, que había estado sobre la cabeza de Jesús, no puesto con los lienzos, sino enrollado en un lugar aparte.'", recom: "🔬 Fe y Ciencia: Investigá 'La Sábana Santa de Turín', es el objeto arqueológico más estudiado del mundo." },
+    { id: "nt71", fact: "La palabra 'Iglesia' viene del griego 'Ekklesia', que significa 'Asamblea convocada'.", hook: "La Iglesia no es solo el edificio de ladrillos, ¡somos todas las personas llamadas y reunidas por Jesús para formar una gran familia mundial de amor!", cite: "Mateo 18, 20: 'Porque donde están dos o tres congregados en mi nombre, allí estoy yo en medio de ellos.'", recom: "⛪ Comunidad: Cada uno de nosotros es una piedrita viva importante para construir la Iglesia de Dios." },
+    { id: "nt72", fact: "Jesús prometió estar con nosotros 'todos los días, hasta el fin del mundo'.", hook: "Fueron las últimas palabras que dijo en el Evangelio de Mateo antes de subir al cielo. ¡Es la promesa más hermosa! No estamos solos nunca, porque su Espíritu y su presencia en la Eucaristía nos acompañan siempre.", cite: "Mateo 28, 20: '...y he aquí yo estoy con vosotros todos los días, hasta el fin del mundo. Amén.'", recom: "🌟 Confianza: Guardá esta frase en tu corazón para los días en que te sientas un poquito solo." }
+];
+
+// Variables y lógica
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+// Inicializar mezclando el array
+function init() {
+    // Vemos si hay un ID en la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+
+    // Mezclamos siempre para que el botón "Siguiente" sea aleatorio
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    
+    if (idParam) {
+        // Buscamos el elemento y lo ponemos primero
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+
+    document.getElementById('counter').innerText = `Misterio ${currentIndex + 1} de 72`;
+    
+    // Si la URL tiene un id pero avanzamos de tarjeta, limpiamos la URL sin recargar
+    try {
+        if(window.location.search && currentIndex > 0) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    } catch(e) {}
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    // Control para uso en archivos locales
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'Enlace_Web_Aquí';
+    }
+    
+    const shareUrl = baseUrl !== 'Enlace_Web_Aquí' ? `${baseUrl}?id=${item.id}` : 'Tu_Web';
+    const textShare = `📜 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí el porqué y más misterios del Nuevo Testamento entrando a este link de la Capilla Santa Ana: `;
+
+    if (navigator.share && baseUrl !== 'Enlace_Web_Aquí') {
+        try {
+            await navigator.share({
+                title: 'Dato Bíblico',
+                text: textShare,
+                url: shareUrl
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        // Copiar al portapapeles
+        navigator.clipboard.writeText(textShare + (baseUrl !== 'Enlace_Web_Aquí' ? shareUrl : '')).then(() => {
+            alert('¡Enlace copiado al portapapeles! Pasáselo a un amigo o a tu grupo.');
+        });
+    }
+}
+
+// Iniciar aplicación
+init();
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // Funciones del Modal
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            document.getElementById('modalDonar').classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+
+</script>
+</body>
+</html>

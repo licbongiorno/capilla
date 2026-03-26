@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Arte y Arquitectura | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    
+/* --- Navbar Nuevo --- */
+.navbar { position: fixed; top: 0; width: 100%; z-index: 3000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+.modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+
+    </style>
+</head>
+<body>
+
+        <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-paint-brush"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">Belleza Sacra</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-palette recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · El Esplendor de la Verdad</footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <!-- Modal Donaciones -->
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>\n<script>
+const DATOS = [
+    { id: "art1", fact: "Las catedrales se orientan hacia el Este, por donde sale el Sol.", hook: "Esto simboliza a Cristo como la 'Luz del Mundo' que disipa las tinieblas de la noche. Al entrar, caminás hacia el amanecer espiritual.", cite: "Tradición Arquitectónica: La fachada mira al Oeste y el altar al Este.", recom: "🌅 Orientación: Buscá siempre la luz de Dios cuando te sientas en la oscuridad." },
+    { id: "art2", fact: "Los vitrales eran llamados 'la Biblia de los pobres'.", hook: "En épocas donde pocos sabían leer, las ventanas de colores contaban las historias de Jesús y los santos a través de la luz y el arte.", cite: "Historia del Arte: La luz atravesando el vidrio representa la divinidad entrando en el mundo.", recom: "🎨 Visión: Dejá que la luz de Dios pinte de colores tus días más grises." },
+    { id: "art3", fact: "Las gárgolas tenían una función espiritual y otra práctica.", hook: "Servían como desagües para que la lluvia no dañara los muros, pero también simbolizaban que el mal se queda afuera de la iglesia.", cite: "Arquitectura Gótica: Guardianes de piedra que protegen el templo sagrado.", recom: "🛡️ Protección: No permitas que las malas ondas entren en el templo de tu alma." },
+    { id: "art4", fact: "La cúpula de San Pedro fue diseñada por Miguel Ángel.", hook: "Es tan grande que podría albergar un edificio entero. Representa el cielo que cubre a toda la cristiandad unida bajo una sola cabeza.", cite: "Basílica de San Pedro: Una obra maestra que une ingeniería y fe profunda.", recom: "🏗️ Altura: Mirá siempre hacia arriba; tus problemas son chicos comparados con el cielo." },
+    { id: "art5", fact: "La planta de las iglesias suele tener forma de cruz latina.", hook: "Desde el aire, se ve que el edificio mismo es una cruz. Recordamos que la Iglesia está fundada sobre el sacrificio de Jesús.", cite: "Simbolismo Geométrico: El crucero une el eje del mundo con el eje divino.", recom: "✝️ Cimiento: Construí tu vida sobre la cruz; es la estructura más sólida que existe." },
+    { id: "art6", fact: "El color azul en el arte sacro identifica casi siempre a María.", hook: "Simboliza el cielo y la pureza. El manto azul cubre nuestra humanidad con la protección del cielo.", cite: "Iconografía Mariana: El azul ultramar era el pigmento más caro y valioso de la antigüedad.", recom: "💙 Pureza: Pedile a María que te preste un poquito de su manto para proteger tu corazón." },
+    { id: "art7", fact: "El halo o aureola representa la luz del Espíritu Santo.", hook: "No es un círculo de oro físico, sino la irradiación de la santidad que sale de adentro de la persona unida a Dios.", cite: "Simbología de los Santos: Representa la 'nimbis' o nube de luz divina.", recom: "✨ Luz: Hacé el bien y vas a ver cómo tu cara empieza a iluminar a los demás." },
+    { id: "art8", fact: "Los arcos ojivales del gótico apuntan directo al cielo.", hook: "A diferencia de los arcos redondos, estos terminan en punta para obligar a tus ojos a mirar hacia arriba, hacia Dios.", cite: "Estilo Gótico: La búsqueda de la verticalidad y la luz absoluta.", recom: "🏹 Dirección: No te encierres en la tierra; apuntá tus deseos siempre hacia lo alto." },
+    { id: "art9", fact: "Los rosetones son mandalas cristianos de orden y paz.", hook: "La geometría perfecta de estos vitrales circulares representa a Dios como el centro del universo, donde todo encaja perfectamente.", cite: "Arte Catedralicio: El centro del rosetón suele tener a Cristo o a la Virgen.", recom: "🎡 Orden: Si sentís que tu vida es un caos, poné a Dios en el centro y todo se va a acomodar." },
+    { id: "art10", fact: "Las gárgolas no deben confundirse con las quimeras.", hook: "Las gárgolas expulsan agua; las quimeras son solo estatuas decorativas de monstruos que representan los vicios vencidos por la fe.", cite: "Escultura Medieval: El uso del miedo para enseñar la victoria del bien.", recom: "🗿 Victoria: Recordá que con fe, cualquier 'monstruo' o miedo puede ser convertido en piedra." },
+    { id: "art11", fact: "La Piedad de Miguel Ángel es la única obra que él firmó.", hook: "Muestra a María sosteniendo a Jesús muerto con una paz asombrosa. Representa el dolor aceptado con una fe inquebrantable.", cite: "Escultura del Renacimiento: María se ve joven para simbolizar su pureza eterna.", recom: "🤝 Consuelo: En tus momentos de dolor, dejate abrazar por la Virgen como ella abrazó a Jesús." },
+    { id: "art12", fact: "El color oro en los retablos representa la gloria eterna.", hook: "Se usaba pan de oro real porque es un metal que no se oxida ni cambia, igual que el amor de Dios que es para siempre.", cite: "Arte Barroco: El resplandor del oro busca anticipar la luz del cielo en la tierra.", recom: "🏆 Valor: Valés mucho para Dios; sos como el oro que Él pule con amor cada día." },
+    { id: "art13", fact: "La técnica del fresco requiere pintar sobre la pared húmeda.", hook: "Como el pigmento se mezcla con el revoque, la pintura pasa a ser parte del muro para siempre. ¡La fe debe ser igual de profunda!", cite: "Capilla Sixtina: Miguel Ángel pintó metros de techo luchando contra la humedad.", recom: "🧱 Profundidad: No seas un cristiano 'de superficie'; dejá que la fe se mezcle con tu vida real." },
+    { id: "art14", fact: "Los mosaicos bizantinos usaban cristales inclinados para brillar.", hook: "Se colocaban en distintos ángulos para que, al moverte, la luz de las velas hiciera que los santos parecieran estar vivos.", cite: "Arte de Constantinopla: El brillo representa la energía divina o 'Uncreated Light'.", recom: "💎 Reflejo: Según cómo te pares frente a Dios, vas a reflejar más o menos su luz. ¡Mové el corazón!" },
+    { id: "art15", fact: "El altar de la Capilla Santa Ana es el centro de toda la arquitectura.", hook: "Representa a Cristo, la Roca Viva. Todo en el edificio está diseñado para que tus ojos terminen ahí, en el banquete sagrado.", cite: "Arquitectura Litúrgica: El altar es la mesa del sacrificio y del banquete celestial.", recom: "⛪ Enfoque: No te distraigas con los detalles; lo importante siempre pasa en el altar." },
+    { id: "art16", fact: "El Cordero (Agnus Dei) es el símbolo más antiguo de Jesús.", hook: "Representa la mansedumbre y el sacrificio. En el arte, suele llevar una banderita de victoria porque Jesús venció a la muerte.", cite: "Simbología Paleocristiana: 'He aquí el Cordero de Dios que quita el pecado del mundo'.", recom: "🐑 Mansedumbre: Ser fuerte no es gritar; la verdadera fuerza es ser manso como el Cordero." },
+    { id: "art17", fact: "El pelícano es un símbolo de Jesús alimentando a sus hijos.", hook: "Se creía que el pelícano se hería el pecho para dar su sangre a sus crías. Por eso representa a Jesús dándonos la Eucaristía.", cite: "Bestiario Cristiano: Un símbolo de amor extremo y entrega total.", recom: "🩸 Entrega: Amá hasta que te duela; esa es la medida de la caridad cristiana." },
+    { id: "art18", fact: "El ancla es un símbolo oculto de la cruz en las catacumbas.", hook: "Los primeros cristianos la usaban para identificarse sin ser descubiertos. Representa la esperanza que nos mantiene firmes en la tormenta.", cite: "Arte de las Catacumbas: El ancla es la seguridad de llegar al puerto del cielo.", recom: "⚓ Esperanza: Cuando la vida se ponga brava, tirá el ancla de tu oración al cielo." },
+    { id: "art19", fact: "El pez (Ichthys) era la clave secreta de los cristianos.", hook: "En griego, las letras de la palabra pez forman la frase: 'Jesucristo, Hijo de Dios, Salvador'. ¡Era un código de seguridad!", cite: "Símbolos Secretos: Los cristianos dibujaban medio pez y el otro completaba el dibujo.", recom: "🐟 Identidad: No tengas miedo de mostrar tus códigos de fe; siempre hay otro hermano cerca." },
+    { id: "art20", fact: "Los campanarios sirven para 'marcar el tiempo de Dios'.", hook: "Sus campanas anuncian la alegría, el dolor o la oración. Son la voz de la iglesia llamando a sus hijos a levantar la vista del suelo.", cite: "Arquitectura Eclesial: El sonido de la campana santifica el aire del pueblo.", recom: "🔔 Atención: Escuchá los llamados de Dios en el ruido de tu día a día." },
+    { id: "art21", fact: "El púlpito se construía alto por una razón acústica.", hook: "Antes de los micrófonos, estar en lo alto permitía que la voz del cura rebotara en el techo y llegara a todos. ¡La palabra de Dios debe volar!", cite: "Mobiliario Litúrgico: Suele estar decorado con los cuatro evangelistas.", recom: "📢 Claridad: Cuando hables de Dios, hacelo claro y que se note tu alegría." },
+    { id: "art22", fact: "La técnica del claroscuro de Caravaggio buscaba el drama.", hook: "Usaba sombras muy negras y luces muy fuertes para mostrar que Dios (la luz) irrumpe en nuestra realidad oscura y pecadora.", cite: "Arte Barroco: El realismo extremo para conmover el alma del espectador.", recom: "🌓 Contraste: Dios brilla más cuando reconocemos nuestras propias sombras." },
+    { id: "art23", fact: "Los leones de piedra en las puertas representan la fuerza de Judá.", hook: "Jesús es el 'León de la Tribu de Judá'. Los leones cuidan la entrada del templo recordándonos que Dios es poderoso y protector.", cite: "Simbolismo Bíblico: El león representa la realeza y el valor de Cristo.", recom: "🦁 Valor: Tené la valentía de un león para defender lo que es justo." },
+    { id: "art24", fact: "La cúpula representa la bóveda del cielo bajando a la tierra.", hook: "Su forma circular simboliza la perfección de lo eterno, mientras que la base cuadrada representa la tierra. ¡Es el abrazo de Dios al mundo!", cite: "Teología de la Arquitectura: El domo es la corona de la casa de Dios.", recom: "☁️ Conexión: Recordá que cada vez que rezás, el cielo baja un poquito a tu corazón." },
+    { id: "art25", fact: "El Pantocrátor muestra a Jesús como el Juez y Rey del Universo.", hook: "Suele estar en los techos de las iglesias antiguas, con la mano derecha bendiciendo y la izquierda sosteniendo el libro de la vida.", cite: "Arte Bizantino: El nombre significa 'El que lo gobierna todo'.", recom: "👑 Confianza: No te estreses tanto; el Dueño del mundo tiene todo bajo control." },
+    { id: "art26", fact: "La 'Silla de Pedro' en el Vaticano es un monumento al servicio.", hook: "Bernini envolvió una antigua silla de madera en bronce y oro para enseñar que la autoridad del Papa es para sostener la fe de todos.", cite: "Cátedra de San Pedro: Representa el magisterio y la enseñanza apostólica.", recom: "🪑 Servicio: El que quiera ser el más importante, que aprenda a sentarse a servir a los demás." },
+    { id: "art27", fact: "El laberinto de la Catedral de Chartres es un camino de oración.", hook: "Los fieles lo recorrían de rodillas como una 'peregrinación miniatura'. No es para perderse, es para encontrarse con uno mismo y con Dios.", cite: "Espiritualidad Medieval: El centro del laberinto representa la Jerusalén Celestial.", recom: "🌀 Camino: Tu vida puede parecer un laberinto, pero si sigues el camino, vas a llegar al centro." },
+    { id: "art28", fact: "El uso de incienso crea una atmósfera de misterio sagrado.", hook: "El humo sube como nuestras oraciones y el aroma nos dice que estamos en un lugar diferente al mundo común. ¡Es el olor del cielo!", cite: "Liturgia y Sentidos: El incienso purifica el altar y los dones.", recom: "🌬️ Oración: Que tu oración de hoy suba tranquila y perfumada hasta Dios." },
+    { id: "art29", fact: "Los rosetones góticos suelen tener 12 pétalos.", hook: "Representan a los 12 apóstoles rodeando a Jesús, que es el centro. Es la Iglesia entera brillando con la luz del sol.", cite: "Geometría Sagrada: El número 12 simboliza la plenitud y la elección divina.", recom: "🧱 Plenitud: Vos sos uno de esos pétalos; sin tu color, el rosetón no está completo." },
+    { id: "art30", fact: "El color rojo en los mártires representa el fuego del amor.", hook: "Se pintan con túnicas rojas no por la sangre, sino porque su amor a Dios era un incendio que ni la muerte pudo apagar.", cite: "Iconografía Cristiana: El rojo es también el color del Espíritu Santo.", recom: "🔥 Pasión: Poné fuego en lo que hacés hoy; que el amor sea tu combustible." },
+    { id: "art31", fact: "Las iglesias románicas tenían muros anchos para dar seguridad.", hook: "En una época de guerras, entrar a la iglesia era entrar a una fortaleza de paz. Sus muros nos dicen: 'Acá estás seguro con Dios'.", cite: "Estilo Románico: La arquitectura de la solidez y el recogimiento silencioso.", recom: "🛡️ Refugio: Cuando el mundo te ataque, refugiate en el silencio de la capilla." },
+    { id: "art32", fact: "El águila del ambón representa a San Juan Evangelista.", hook: "Suele sostener el libro de la Biblia. Representa que la palabra de Dios vuela alto y ve las cosas desde la perspectiva del cielo.", cite: "Tetramorfos: Los cuatro seres vivientes que representan a los evangelistas.", recom: "🦅 Perspectiva: No te quedes mirando el barro; subí un poco y mirá tu vida con los ojos de Dios." },
+    { id: "art33", fact: "Las 'Estaciones de la Cruz' son un viaje físico de compasión.", hook: "Recorrer las 14 imágenes nos permite acompañar a Jesús paso a paso. Es arte hecho para caminar y sentir, no solo para mirar.", cite: "Vía Crucis: Una devoción que nació para quienes no podían viajar a Tierra Santa.", recom: "🚶‍♂️ Acompañar: No dejes solo a Jesús en su dolor; acompañalo hoy en el hermano que sufre." },
+    { id: "art34", fact: "Los retablos barrocos son como 'ventanas al cielo'.", hook: "Con tantas curvas, ángeles y dorados, buscaban marear los sentidos para que sintieras que ya no estabas en la tierra.", cite: "Horror Vacui: El miedo al vacío que llenaba cada rincón de belleza.", recom: "✨ Belleza: Llená tu vida de cosas lindas y buenas; el alma necesita belleza para respirar." },
+    { id: "art35", fact: "El bautisterio suele estar cerca de la entrada de la iglesia.", hook: "Arquitectónicamente nos dice que el Bautismo es la 'puerta' para entrar a la familia de Dios. ¡Es el primer paso!", cite: "Simbolismo del Espacio: Nadie llega al altar sin pasar primero por el agua.", recom: "🚿 Inicio: Agradecé hoy el día en que entraste por esa puerta espiritual." },
+    { id: "art36", fact: "La técnica de 'grisalla' usaba tonos grises para imitar estatuas.", hook: "Se pintaban figuras en las paredes que parecían de piedra para ahorrar dinero y espacio, pero demostrando que la fe es sólida como la roca.", cite: "Pintura Mural: El arte de la austeridad elegante.", recom: "🪨 Solidez: Aunque parezcas sencillo por fuera, que tu fe sea dura como el mármol." },
+    { id: "art37", fact: "El simbolismo de la palma representa la victoria del mártir.", hook: "En los cuadros, los santos que murieron por fe llevan una rama de palma. Es el trofeo de los que ganaron la vida eterna.", cite: "Iconografía de la Victoria: 'El justo florecerá como la palma'.", recom: "🌴 Triunfo: La verdadera victoria no es ganar una discusión, es mantener la paz." },
+    { id: "art38", fact: "Las llaves cruzadas son el escudo de San Pedro y los Papas.", hook: "Una llave es de oro (cielo) y otra de plata (tierra). Representan el poder de perdonar y unir a los hombres con Dios.", cite: "Heráldica Eclesial: Basado en las palabras de Jesús a Pedro en Mateo 16.", recom: "🔑 Abrir: Usá tus palabras para abrir puertas de esperanza, no para cerrarlas." },
+    { id: "art39", fact: "El color blanco se usa para las fiestas de luz y alegría.", hook: "Navidad, Pascua y fiestas de la Virgen. En el arte, el blanco no es falta de color, es la suma de toda la luz divina.", cite: "Liturgia de los Colores: Simboliza la pureza, la inocencia y la gloria.", recom: "⚪ Claridad: Tratá de que tus intenciones de hoy sean blancas y transparentes." },
+    { id: "art40", fact: "La fachada de una iglesia es el 'rostro' de la comunidad.", hook: "Suele estar decorada para invitar a pasar. Es la frontera entre el ruido de la calle y el silencio sagrado de Dios.", cite: "Arquitectura Sagrada: El nárthex es el espacio de transición antes de entrar.", recom: "🏠 Rostro: Que tu cara hoy sea una invitación para que otros quieran conocer a Jesús." },
+    { id: "art41", fact: "La paloma con la rama de olivo es el símbolo de la paz de Dios.", hook: "Viene de la historia de Noé, pero en el arte cristiano representa al Espíritu Santo que trae la paz definitiva al corazón.", cite: "Simbología Bíblica: La paz como fruto de la reconciliación con Dios.", recom: "🕊️ Paz: Llevá una 'ramita de olivo' a esa persona con la que estás distanciado." },
+    { id: "art42", fact: "Los ángeles en el arte no tienen alas porque vuelen físicamente.", hook: "Las alas representan la rapidez con la que cumplen los deseos de Dios y su naturaleza espiritual, que no pesa ni tiene límites.", cite: "Angelología Artística: Mensajeros que conectan dimensiones.", recom: "🚀 Prontitud: Cuando veas que alguien necesita ayuda, salí volando; no des vueltas." },
+    { id: "art43", fact: "El mosaico enseña que cada pequeña pieza es importante.", hook: "Si falta una piedrita (tesela), el dibujo se ve incompleto. La Iglesia es un mosaico vivo donde vos sos una pieza fundamental.", cite: "Arte Paleocristiano: La unidad en la diversidad de colores y formas.", recom: "🧱 Unidad: No te sientas menos; sin vos, el gran cuadro de Dios está incompleto." },
+    { id: "art44", fact: "El color morado en el arte invita a la reflexión y espera.", hook: "Se usa en Adviento y Cuaresma. Es un tono serio que nos ayuda a mirar hacia adentro y limpiar el alma.", cite: "Ciclo Litúrgico: El color de la penitencia y la preparación espiritual.", recom: "💜 Silencio: Tomate un momento morado hoy para pensar en qué podés mejorar." },
+    { id: "art45", fact: "El simbolismo del ancla incluye a veces un delfín.", hook: "El delfín representa a Cristo guiando a las almas hacia el puerto seguro. ¡Es el guía de los mares de la vida!", cite: "Arte de las Catacumbas: El delfín como el animal amigo del hombre.", recom: "🐬 Guía: Dejá que Jesús sea el capitán que maneje el barco de tu familia." },
+    { id: "art46", fact: "Las columnas representan a los apóstoles que sostienen la fe.", hook: "Así como una columna sostiene el techo, el testimonio de los apóstoles sostiene todo lo que creemos hoy.", cite: "Arquitectura Clásica: Los pilares de la Iglesia son personas reales.", recom: "🏛️ Sostén: Sé columna para alguien que esté por caerse hoy; dale tu apoyo." },
+    { id: "art47", fact: "El ábside es la parte curva donde está el altar.", hook: "Suele tener forma de semicírculo para 'abrazar' a la comunidad. Es el punto más sagrado del edificio.", cite: "Anatomía de la Iglesia: El lugar donde reside la presencia de Dios.", recom: "🫂 Abrazo: Sentite abrazado por Dios cada vez que entres a la capilla." },
+    { id: "art48", fact: "El uso de velas crea una jerarquía de luz.", hook: "La vela representa a Cristo que se consume por nosotros. Cuantas más velas hay, más importante es la fiesta que celebramos.", cite: "Simbolismo de la Luz: La cera pura de abejas representa la humanidad de Jesús.", recom: "🕯️ Consumo: Gastá tu vida haciendo el bien; es la mejor forma de iluminar." },
+    { id: "art49", fact: "Los frescos de Fra Angelico fueron pintados para los monjes.", hook: "Este monje pintor decía que para pintar a Cristo hay que vivir con Cristo. Pintó las celdas de sus hermanos para que pudieran rezar mejor.", cite: "Renacimiento Temprano: El arte como herramienta de meditación privada.", recom: "🎨 Oración: Rodeate de cosas que te ayuden a pensar en Dios, aunque sea una estampita." },
+    { id: "art50", fact: "La arquitectura de la Sagrada Familia de Gaudí imita la naturaleza.", hook: "Las columnas parecen árboles y el techo hojas. Gaudí decía que la naturaleza es el primer libro que Dios escribió.", cite: "Modernismo Catalán: La naturaleza como el diseño perfecto del Creador.", recom: "🌳 Observar: Mirá un árbol hoy; ahí también hay arte de Dios para disfrutar." },
+    { id: "art51", fact: "El simbolismo de la azucena o lirio representa la pureza.", hook: "Suele aparecer en manos del ángel Gabriel o de San José. Representa un corazón limpio de toda mancha.", cite: "Iconografía Floral: El lirio entre espinas es María.", recom: "🌸 Limpieza: Pedile a Dios un corazón limpio para ver la belleza en los demás." },
+    { id: "art52", fact: "El 'Mandylion' es la imagen de Jesús no pintada por manos humanas.", hook: "Representa el rostro real de Jesús que quedó impreso en una tela. Es el origen de todos los retratos de Cristo en el arte.", cite: "Tradición Oriental: La Santa Faz de Edesa.", recom: "📸 Imagen: Recordá que vos sos la 'foto' de Dios para los que no lo conocen. ¡Sonreí!" },
+    { id: "art53", fact: "El uso de la caligrafía en los libros antiguos era un acto de amor.", hook: "Los monjes pasaban años copiando la Biblia con letras adornadas con oro. Para ellos, cada letra era sagrada.", cite: "Códices Miniados: El arte de iluminar la palabra escrita.", recom: "✍️ Dedicación: Hacé tus tareas con cuidado y amor; hasta tu letra puede alabar a Dios." },
+    { id: "art54", fact: "Los 'Pasos' de Semana Santa son museos que caminan.", hook: "Esculturas de tamaño real que salen a la calle para que el mensaje de la Pasión llegue a quienes no entran a la iglesia.", cite: "Piedad Popular: El arte que sale al encuentro del pueblo.", recom: "🚶‍♂️ Salida: No esperes a que vengan; sacá tu fe a la vereda con tus acciones." },
+    { id: "art55", fact: "El simbolismo de la concha representa el bautismo y el camino.", hook: "Es el signo del apóstol Santiago y de los peregrinos. Representa que somos caminantes hacia la casa del Padre.", cite: "Caminos de Peregrinación: La concha protege y sirve para beber agua en el camino.", recom: "🐚 Caminante: No te estanques; seguí caminando siempre hacia algo mejor con Dios." },
+    { id: "art56", fact: "El baldaquino de bronce en San Pedro es un diseño de Bernini.", hook: "Sostiene un techo sobre el altar mayor para marcar el lugar exacto donde está enterrado San Pedro.", cite: "Arte Barroco: Columnas salomónicas que parecen estar en movimiento.", recom: "🏛️ Centro: Asegurate de marcar bien qué es lo más importante en tu vida." },
+    { id: "art57", fact: "El color verde representa la vida y la esperanza.", hook: "Se usa en el tiempo ordinario. Es el color de las hojas que crecen, recordándonos que nuestra fe siempre debe estar brotando.", cite: "Colores Litúrgicos: El verde es la esperanza de la cosecha espiritual.", recom: "🌿 Esperanza: No te rindas; aunque sea invierno, tu fe va a volver a brotar." },
+    { id: "art58", fact: "La arquitectura de la Capilla Santa Ana busca la sencillez noble.", hook: "No necesita lujos excesivos; su belleza está en el orden, la limpieza y la luz que invita a quedarse en silencio con Dios.", cite: "Teología de la Sencillez: Dios prefiere los corazones humildes antes que los palacios fríos.", recom: "🏚️ Humildad: Buscá la belleza en lo simple; ahí es donde Dios se siente más cómodo." },
+    { id: "art59", fact: "El simbolismo del pavo real representa la resurrección.", hook: "Antiguamente se creía que su carne no se pudría. Por eso se pintaba en las tumbas para decir que viviremos para siempre.", cite: "Bestiario Cristiano: Sus plumas con 'ojos' representan la omnisciencia de Dios.", recom: "🦚 Eternidad: Tu alma es eterna; cuidala más que a tu cuerpo físico." },
+    { id: "art60", fact: "Las cripas son iglesias subterráneas de oración profunda.", hook: "Están bajo el altar y suelen guardar restos de santos. Nos recuerdan que la fe tiene raíces profundas que no se ven a simple vista.", cite: "Arquitectura Funeraria: El lugar de la espera de la resurrección.", recom: "⚓ Raíces: Fortalecé tu vida interior; lo que no se ve es lo que sostiene lo que se ve." },
+    { id: "art61", fact: "El uso de mármoles de colores representa la variedad del mundo.", hook: "Piedras de todos los países unidas en un solo suelo para decir que todas las razas y culturas forman la única Iglesia.", cite: "Decoración Eclesial: La unidad en la diversidad de la materia creada.", recom: "🧱 Variedad: Valorá a las personas que son distintas a vos; ellas también son parte del suelo de Dios." },
+    { id: "art62", fact: "La 'Mandorla' es un óvalo de luz que rodea a Jesús.", hook: "Tiene forma de almendra. Simboliza la unión entre el mundo material y el espiritual, donde Jesús es el puente.", cite: "Iconografía Medieval: La luz que emana de la divinidad de Cristo.", recom: "🌉 Puente: Sé un puente entre las personas que están peleadas; traé un poco de luz." },
+    { id: "art63", fact: "El simbolismo de la nave central representa un barco.", hook: "De hecho, el techo de muchas iglesias antiguas parece el casco de un barco dado vuelta. La Iglesia es la barca que nos salva del mar del mundo.", cite: "Nave: Del latín 'navis' (barco).", recom: "🛶 Barca: No saltes de la barca cuando haya olas; Jesús está durmiendo pero está arriba tuyo." },
+    { id: "art64", fact: "El arte efímero (como las alfombras de flores) es un acto de desprendimiento.", hook: "Se hacen obras de arte hermosas solo para que pase la procesión y se destruyan. Nos enseñan que lo mejor que tenemos es para Dios.", cite: "Tradiciones Populares: El arte que dura solo un día pero se queda en el alma.", recom: "🌸 Desprendimiento: Hacé algo lindo por alguien hoy, aunque nadie se entere y se olvide pronto." },
+    { id: "art65", fact: "La estatua de Moisés de Miguel Ángel tiene 'cuernos' por un error.", hook: "En la traducción antigua, se decía que Moisés bajó con 'cuernos' de luz, pero el escultor entendió cuernos reales. ¡Aun así es una obra maestra!", cite: "Escultura del Renacimiento: Una mirada de fuego y una fuerza sobrehumana.", recom: "📖 Traducción: No te quedes con la primera impresión; buscá siempre el sentido profundo de las cosas." },
+    { id: "art66", fact: "Las coronas de los santos no son de rey, son de atletas.", hook: "En el arte, la corona representa el premio por haber corrido bien la carrera de la fe y haber ganado la batalla contra el egoísmo.", cite: "2 Timoteo 4, 8: 'Me está guardada la corona de justicia'.", recom: "🏃‍♂️ Carrera: No aflojes ahora; seguí corriendo que el premio vale la pena." },
+    { id: "art67", fact: "El uso de la simetría en las iglesias busca la paz visual.", hook: "Cuando todo está equilibrado, nuestra mente descansa. El arte sacro busca que el edificio mismo te dé la paz que el mundo te quita.", cite: "Estética Teológica: El orden es el reflejo de la sabiduría de Dios.", recom: "⚖️ Equilibrio: Buscá el equilibrio en tu día: tiempo para trabajar y tiempo para rezar." },
+    { id: "art68", fact: "El simbolismo de la granada representa la unidad de la Iglesia.", hook: "Muchos granos dulces protegidos por una sola cáscara dura. Así somos nosotros: muchos granitos unidos por el amor de Cristo.", cite: "Iconografía Renacentista: El Niño Jesús suele sostener una granada en los cuadros.", recom: "🍎 Unidad: No te apartes de la comunidad; juntos somos más dulces y estamos más protegidos." },
+    { id: "art69", fact: "Las cúpulas pintadas con nubes nos invitan a soñar.", hook: "Mirar hacia arriba y ver el cielo pintado nos recuerda que nuestra meta no es el piso, sino el encuentro final con Dios.", cite: "Pintura Ilusionista: El 'sotto in su' que abre el techo hacia el infinito.", recom: "☁️ Metas: Ponete metas altas; no te conformes con vivir 'a ras del suelo'." },
+    { id: "art70", fact: "El simbolismo del gallo representa la vigilancia.", hook: "Aparece en los campanarios para recordarnos que debemos estar despiertos para recibir al sol (Jesús) y no negarlo como hizo Pedro.", cite: "Arquitectura Rural: El gallo que anuncia el fin de la noche.", recom: "🐓 Despertar: Despertate cada mañana con ganas de ser un testigo fiel." },
+    { id: "art71", fact: "La arquitectura barroca usa líneas curvas para mostrar emoción.", hook: "Dios no es una idea fría, es un corazón que late. Las curvas del barroco intentan mostrar ese latido y ese movimiento de amor.", cite: "Dinámica del Espacio: El arte que busca conmover el sentimiento.", recom: "💓 Emoción: No tengas miedo de emocionarte con las cosas de Dios; la fe se siente en el pecho." },
+    { id: "art72", fact: "El mejor arte de la Capilla Santa Ana es su gente.", hook: "Ni los cuadros ni los muros valen tanto como las personas que rezan adentro. Los cristianos somos las 'piedras vivas' del verdadero templo de Dios.", cite: "1 Pedro 2, 5: 'Vosotros también, como piedras vivas, sed edificados como casa espiritual'.", recom: "🎯 Meta: Tu misión es ser la obra de arte más linda que Dios haya pintado jamás." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Dato de Arte ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-arte.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `🎨 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí los secretos del arte y la arquitectura cristiana aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Arte Sacro | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // Funciones del Modal
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            document.getElementById('modalDonar').classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+
+</script>
+</body>
+</html>

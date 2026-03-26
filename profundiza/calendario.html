@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Calendario Litúrgico Vivo | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* PALETA DE COLORES Y MODO OSCURO */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+            --borde: rgba(93, 64, 55, 0.1);
+        }
+
+        body.dark-mode {
+            --primario: #D7CCC8; 
+            --acento: #D4AF37; 
+            --fondo: #1A1A1A; 
+            --blanco: #2D2D2D;
+            --texto: #F5F5F0; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.5);
+            --borde: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* NAVEGACIÓN SUPERIOR SUSTITUIDA POR NAVBAR */
+        #toast-liturgico {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--primario); color: white; padding: 15px 25px;
+            border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2); z-index: 1000;
+            display: flex; align-items: center; gap: 10px; width: 90%; max-width: 500px;
+            transition: top 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 2px solid var(--acento);
+        }
+        #toast-liturgico.show { top: 80px; }
+        .toast-icon { font-size: 1.3rem; color: var(--acento); }
+        .toast-close { margin-left: auto; cursor: pointer; color: white; opacity: 0.7; }
+
+        /* TOAST DICCIONARIO */
+        #toast-diccionario {
+            position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%);
+            background: var(--primario); color: white; padding: 20px;
+            border-radius: 16px; font-weight: 500; font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000;
+            display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 400px;
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-top: 5px solid var(--acento); text-align: center;
+        }
+        #toast-diccionario.show { bottom: 30px; }
+        .dic-title { color: var(--acento); font-weight: 700; font-family: 'Playfair Display', serif; font-size: 1.2rem;}
+
+        /* PALABRAS SUBRAYADAS (DICCIONARIO SUTIL) */
+        .diccionario {
+            border-bottom: 2px dotted var(--acento);
+            color: var(--primario);
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        body.dark-mode .diccionario { color: var(--acento); }
+
+        /* CABECERA */
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
+        .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { max-width: 800px; margin: 0 auto 40px; width: 100%; padding: 0 20px; }
+
+        /* ACORDEÓN */
+        .accordion {
+            background: var(--blanco); border-radius: 16px; overflow: hidden;
+            box-shadow: var(--sombra); margin-bottom: 15px; border: 1px solid var(--borde);
+            transition: 0.3s;
+        }
+        .accordion-header {
+            width: 100%; text-align: left; padding: 20px; background: transparent;
+            border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            color: var(--primario); font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+            transition: 0.3s;
+        }
+        .icon-adviento { color: #800080; } .icon-navidad { color: #D4AF37; } .icon-cuaresma { color: #800080; }
+        .icon-pascua { color: #D4AF37; } .icon-ordinario { color: #228B22; }
+        .accordion-header i.icon-main { font-size: 1.5rem; margin-right: 15px; width: 30px; text-align: center; }
+        .accordion-header i.icon-arrow { font-size: 1rem; color: var(--texto); opacity: 0.5; transition: transform 0.3s; }
+        .accordion-header.active i.icon-arrow { transform: rotate(180deg); color: var(--acento); opacity: 1; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: var(--fondo); }
+        .accordion-body { padding: 20px; font-size: 0.95rem; line-height: 1.6; color: var(--texto); border-top: 1px solid var(--borde); }
+
+        /* ESTILOS INTERNOS DE CONTENIDO */
+        .meta-info { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+        .color-badge, .date-badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 50px; 
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: white;
+        }
+        .date-badge { background-color: var(--primario); border: 1px solid var(--acento); }
+        .bg-morado { background-color: #800080; } .bg-blanco { background-color: #D4AF37; color: #fff; } .bg-verde { background-color: #228B22; }
+
+        .time-box { background: var(--blanco); padding: 18px; border-radius: 10px; border-left: 4px solid var(--acento); margin: 15px 0; }
+        .step-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; border-bottom: 1px solid var(--borde); padding-bottom: 5px;}
+        .action-list { list-style: none; padding: 0; }
+        .action-list li { position: relative; padding-left: 25px; margin-bottom: 10px; font-size: 0.9rem; }
+        .action-list li i { position: absolute; left: 0; top: 4px; color: var(--acento); font-size: 0.9rem; }
+
+        /* SECCIÓN DE DONACIÓN SUTIL CON ALIAS Y WHATSAPP */
+        .donacion-banner {
+            background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px);
+            border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); 
+            display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3);
+        }
+        .donacion-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .donacion-text { font-size: 0.85rem; opacity: 0.8; max-width: 600px; line-height: 1.5;}
+        
+        .donacion-alias {
+            background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 15px 0;
+            border: 1px dashed var(--acento); width: 100%; max-width: 350px;
+        }
+        .alias-texto { font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px; }
+        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
+
+        .donacion-btn {
+            background: transparent; color: var(--acento); border: 2px solid var(--acento);
+            padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .donacion-btn:hover { background: var(--acento); color: var(--blanco); }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 20px; margin-top: auto; background: var(--blanco); color: var(--primario); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); }
+        .f-title { font-weight: 700; font-size: 1rem; }
+        .f-sub { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
+
+/* --- Navbar Nuevo --- */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 3000;
+    background: var(--fondo);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(184,134,11,0.1);
+}
+
+.nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primario);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-brand i { color: var(--acento); }
+
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+
+.nav-links a {
+    text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+
+.theme-toggle {
+    background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento);
+}
+
+.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    
+    .nav-menu {
+        position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px);
+        background: var(--fondo); flex-direction: column; justify-content: center;
+        transition: 0.4s ease-in-out; box-shadow: var(--sombra); z-index: 2999;
+    }
+
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; }
+}
+
+/* --- Animación de Corazón --- */
+@keyframes latido {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.15); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.15); }
+    80% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+
+@media (max-width: 768px) {
+    .float-container { right: 15px; bottom: 20px; }
+    .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
+}
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+.modal-close:hover { color: var(--acento); transform: rotate(90deg); }
+
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div id="toast-liturgico">
+        <i class="fas fa-church toast-icon"></i>
+        <div style="flex:1;" id="toast-text">Calculando tiempo litúrgico...</div>
+        <i class="fas fa-times toast-close" onclick="closeToast('toast-liturgico')"></i>
+    </div>
+
+    <div id="toast-diccionario">
+        <div class="dic-title" id="dic-word">Palabra</div>
+        <div id="dic-def">Definición de la palabra.</div>
+    </div>
+
+    <header>
+        <h1>El Tiempo de Dios</h1>
+        <p class="subtitle">Descubrí en qué tiempo estamos, por qué usamos esos colores y cómo prepararte espiritualmente para cada etapa. (Tocá las palabras subrayadas para aprender más).</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-hourglass-half icon-main icon-adviento"></i> Adviento</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <div class="meta-info">
+                        <span class="color-badge bg-morado"><i class="fas fa-palette"></i> Morado</span>
+                        <span class="date-badge" id="fecha-adviento"><i class="fas fa-calendar-alt"></i> Cargando fecha...</span>
+                    </div>
+                    <p>El Adviento significa "venida". Es el tiempo de <strong>espera y preparación</strong> alegre. Nos preparamos para recordar el nacimiento de Jesús, pero también preparamos el corazón para su venida definitiva.</p>
+                    
+                    <div class="time-box">
+                        <span class="step-title"><i class="fas fa-person-praying"></i> ¿Cómo vivirlo? Acciones concretas:</span>
+                        <ul class="action-list">
+                            <li><i></i> <strong>Armá tu pesebre de a poco:</strong> No lo pongas todo el primer día. Agregá personajes cada semana y poné a Jesús recién el 24 a la noche.</li>
+                            <li><i></i> <strong>La Corona de Adviento:</strong> Conseguí o armá una corona con 4 velas. Encendé una nueva cada domingo en familia rezando juntos.</li>
+                            <li><i></i> <strong>Lectura sugerida:</strong> Leé un capítulo diario del Evangelio de San Lucas desde el 1 de diciembre, para llegar a Navidad habiendo repasado toda la vida de Jesús.</li>
+                            <li><i></i> <strong>Limpieza interior:</strong> Así como limpiás tu casa para recibir visitas, hacé una buena confesión antes de las Fiestas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-star icon-main icon-navidad"></i> Navidad</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <div class="meta-info">
+                        <span class="color-badge bg-blanco"><i class="fas fa-palette"></i> Blanco / Dorado</span>
+                        <span class="date-badge" id="fecha-navidad"><i class="fas fa-calendar-alt"></i> Cargando fecha...</span>
+                    </div>
+                    <p>¡Llegó la luz! Celebramos el milagro de que Dios se hizo uno de nosotros. Este tiempo se extiende hasta la fiesta del Bautismo del Señor, e incluye la llegada de los Reyes Magos o <span class="diccionario" onclick="mostrarDefinicion('Epifanía', 'Viene del griego y significa manifestación. Es la fiesta donde Jesús se da a conocer al mundo entero, representado por los Reyes Magos.')">Epifanía</span>.</p>
+                    
+                    <div class="time-box">
+                        <span class="step-title"><i class="fas fa-person-praying"></i> ¿Cómo vivirlo? Acciones concretas:</span>
+                        <ul class="action-list">
+                            <li><i></i> <strong>No desarmes la alegría:</strong> Dejá el arbolito armado hasta el Bautismo del Señor. ¡Que se note que la fiesta sigue!</li>
+                            <li><i></i> <strong>El regalo del tiempo:</strong> Los regalos materiales se rompen. Este año regalá tu presencia. Visitá a ese familiar que sabes que está solo.</li>
+                            <li><i></i> <strong>Bendecir la mesa:</strong> En las cenas de las Fiestas, tomá la iniciativa de hacer una oración sencilla dando gracias por la comida y la familia.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-cross icon-main icon-cuaresma"></i> Cuaresma</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <div class="meta-info">
+                        <span class="color-badge bg-morado"><i class="fas fa-palette"></i> Morado</span>
+                        <span class="date-badge" id="fecha-cuaresma"><i class="fas fa-calendar-alt"></i> Cargando fecha...</span>
+                    </div>
+                    <p>Son los 40 días antes de la Pascua. Es un tiempo de <strong>entrenamiento espiritual y conversión</strong>. Acompañamos a Jesús al desierto para fortalecer nuestra voluntad.</p>
+                    
+                    <div class="time-box">
+                        <span class="step-title"><i class="fas fa-person-praying"></i> ¿Cómo vivirlo? Los 3 Pilares:</span>
+                        <ul class="action-list">
+                            <li><i></i> <strong>Oración profunda:</strong> Sumá una práctica nueva, como rezar el Vía Crucis los días viernes para meditar el sacrificio de Jesús.</li>
+                            <li><i></i> <strong>Ayuno moderno:</strong> No se trata solo de no comer carne. Ayuná de quejas, dejá de usar las redes sociales un día a la semana, o apaga Netflix para estar con tu familia.</li>
+                            <li><i></i> <strong>Limosna (Caridad):</strong> El dinero o el tiempo que te ahorraste con tu ayuno, usalo para ayudar a alguien que lo necesite en tu barrio.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-sun icon-main icon-pascua"></i> Pascua</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <div class="meta-info">
+                        <span class="color-badge bg-blanco"><i class="fas fa-palette"></i> Blanco / Dorado</span>
+                        <span class="date-badge" id="fecha-pascua"><i class="fas fa-calendar-alt"></i> Cargando fecha...</span>
+                    </div>
+                    <p>Es el corazón de nuestra fe. ¡Jesús venció a la muerte! Celebramos su Resurrección durante 50 días exactos, finalizando con el fuego de <span class="diccionario" onclick="mostrarDefinicion('Pentecostés', 'Significa cincuenta días. Es la fiesta donde celebramos la venida del Espíritu Santo como lenguas de fuego sobre los apóstoles.')">Pentecostés</span>.</p>
+                    
+                    <div class="time-box">
+                        <span class="step-title"><i class="fas fa-person-praying"></i> ¿Cómo vivirlo? Acciones concretas:</span>
+                        <ul class="action-list">
+                            <li><i></i> <strong>Domingos de fiesta:</strong> El domingo de Pascua no es uno solo. Celebrá cada domingo de estos 50 días con un postre lindo o comida especial.</li>
+                            <li><i></i> <strong>Agua bendita:</strong> Llevate agua bendecida en la Vigilia Pascual a tu casa y persignate con ella antes de salir a trabajar.</li>
+                            <li><i></i> <strong>Regina Coeli:</strong> En este tiempo, la Iglesia no reza el Ángelus al mediodía, sino el <span class="diccionario" onclick="mostrarDefinicion('Regina Coeli', 'Del latín Reina del Cielo. Es una oración mariana muy alegre para festejar con la Virgen que Jesús resucitó.')">Regina Coeli</span>. Aprendelo y rezalo en familia.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="accordion-header">
+                <span style="display:flex; align-items:center;"><i class="fas fa-leaf icon-main icon-ordinario"></i> Tiempo Ordinario</span>
+                <i class="fas fa-chevron-down icon-arrow"></i>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <div class="meta-info">
+                        <span class="color-badge bg-verde"><i class="fas fa-palette"></i> Verde</span>
+                        <span class="date-badge" id="fecha-ordinario"><i class="fas fa-calendar-alt"></i> Todo el año</span>
+                    </div>
+                    <p>El color verde representa la <strong>esperanza y el crecimiento</strong>. No hay grandes fiestas centralizadas, pero celebramos la vida pública de Jesús y aprendemos a ser santos en la rutina diaria.</p>
+                    
+                    <div class="time-box">
+                        <span class="step-title"><i class="fas fa-person-praying"></i> ¿Cómo vivirlo? Acciones concretas:</span>
+                        <ul class="action-list">
+                            <li><i></i> <strong>Santificar el trabajo:</strong> Ofrecele a Dios tu jornada apenas te levantes. Trabajar, estudiar o lavar los platos pueden ser una oración si se hacen con amor.</li>
+                            <li><i></i> <strong>Paciencia en lo cotidiano:</strong> El tráfico, las filas, los enojos... usalos como oportunidades diarias para entrenar la paciencia.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="donacion-banner">
+        <div class="donacion-title"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <div class="donacion-text">Si este contenido te ayudó a vivir mejor tu fe y querés colaborar para que sigamos evangelizando, podés hacer tu aporte voluntario a la Capilla.</div>
+        
+        <div class="donacion-alias">
+            <span class="alias-texto">Alias de la cuenta:</span>
+            <strong class="alias-valor">capillas.fatima.ag</strong>
+        </div>
+
+        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
+            <i class="fab fa-whatsapp"></i> Enviar Comprobante
+        </a>
+    </div>
+
+    <footer>
+        <div class="f-title">Capilla Santa Ana</div>
+        <div class="f-sub">Viviendo al ritmo de la Iglesia</div>
+    </footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+            </p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;">
+                <i class="far fa-copy"></i> Copiar Alias
+            </button>
+
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;">
+                    <i class="fab fa-whatsapp"></i> Compartir Comprobante
+                </a>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funciones del Diccionario de Fe (Toast)
+        let diccionarioTimeout;
+        function mostrarDefinicion(palabra, definicion) {
+            document.getElementById('dic-word').innerText = palabra;
+            document.getElementById('dic-def').innerText = definicion;
+            const toast = document.getElementById('toast-diccionario');
+            
+            clearTimeout(diccionarioTimeout);
+            toast.classList.add('show');
+            
+            // Ocultar a los 6 segundos automáticamente
+            diccionarioTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 6000);
+        }
+
+        function closeToast(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        /* ----------------------------------------------------
+           CÁLCULO DINÁMICO DEL CALENDARIO LITÚRGICO
+        ------------------------------------------------------ */
+        function calcularPascua(year) {
+            let f = Math.floor, G = year % 19, C = f(year / 100);
+            let H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30;
+            let I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11));
+            let J = (year + f(year / 4) + I + 2 - C + f(C / 4)) % 7;
+            let L = I - J, month = 3 + f((L + 40) / 44), day = L + 28 - 31 * f(month / 4);
+            return new Date(year, month - 1, day);
+        }
+
+        function formatDate(date) {
+            const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            return `${date.getDate()} de ${meses[date.getMonth()]}`;
+        }
+
+        function initCalendario() {
+            const now = new Date();
+            const y = now.getFullYear();
+
+            const pascua = calcularPascua(y);
+            const cuaresmaInicio = new Date(pascua); cuaresmaInicio.setDate(pascua.getDate() - 46);
+            const pentecostes = new Date(pascua); pentecostes.setDate(pascua.getDate() + 49);
+            const navidadEste = new Date(y, 11, 25);
+            
+            const epifania = new Date(y, 0, 6);
+            let diasParaBautismo = epifania.getDay() === 0 ? 1 : 7 - epifania.getDay();
+            const bautismo = new Date(y, 0, 6 + diasParaBautismo);
+
+            let diasAAdviento = navidadEste.getDay() === 0 ? 28 : 21 + navidadEste.getDay();
+            const advientoInicio = new Date(y, 11, 25);
+            advientoInicio.setDate(navidadEste.getDate() - diasAAdviento);
+
+            document.getElementById('fecha-adviento').innerHTML = `<i class="fas fa-calendar-alt"></i> ${formatDate(advientoInicio)} al 24 de Dic`;
+            document.getElementById('fecha-navidad').innerHTML = `<i class="fas fa-calendar-alt"></i> 25 de Dic al ${formatDate(bautismo)}`;
+            document.getElementById('fecha-cuaresma').innerHTML = `<i class="fas fa-calendar-alt"></i> ${formatDate(cuaresmaInicio)} al ${formatDate(new Date(pascua.getTime()-86400000))}`;
+            document.getElementById('fecha-pascua').innerHTML = `<i class="fas fa-calendar-alt"></i> ${formatDate(pascua)} al ${formatDate(pentecostes)}`;
+
+            let tiempoActual = "", proximoTiempo = "", fechaFin = null;
+
+            if (now < bautismo) {
+                tiempoActual = "Navidad"; proximoTiempo = "Tiempo Ordinario"; fechaFin = bautismo;
+            } else if (now < cuaresmaInicio) {
+                tiempoActual = "Tiempo Ordinario"; proximoTiempo = "Cuaresma"; fechaFin = cuaresmaInicio;
+            } else if (now < pascua) {
+                tiempoActual = "Cuaresma"; proximoTiempo = "Pascua"; fechaFin = pascua;
+            } else if (now < pentecostes) {
+                tiempoActual = "Pascua"; proximoTiempo = "Tiempo Ordinario"; fechaFin = pentecostes;
+            } else if (now < advientoInicio) {
+                tiempoActual = "Tiempo Ordinario"; proximoTiempo = "Adviento"; fechaFin = advientoInicio;
+            } else if (now < navidadEste) {
+                tiempoActual = "Adviento"; proximoTiempo = "Navidad"; fechaFin = navidadEste;
+            } else {
+                tiempoActual = "Navidad"; proximoTiempo = "Tiempo Ordinario";
+                const epifaniaNext = new Date(y+1, 0, 6);
+                fechaFin = new Date(y+1, 0, 6 + (epifaniaNext.getDay() === 0 ? 1 : 7 - epifaniaNext.getDay()));
+            }
+
+            const diffTime = Math.abs(fechaFin - now);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            document.getElementById('toast-text').innerHTML = `Estamos en <strong>${tiempoActual}</strong>. Faltan ${diffDays} días para ${proximoTiempo}.`;
+
+            setTimeout(() => { document.getElementById('toast-liturgico').classList.add('show'); }, 1000);
+        }
+
+        // Acordeón y Tema
+        const accordions = document.querySelectorAll(".accordion-header");
+        accordions.forEach(acc => {
+            acc.addEventListener("click", function() {
+                accordions.forEach(otherAcc => {
+                    if(otherAcc !== this && otherAcc.classList.contains("active")) {
+                        otherAcc.classList.remove("active");
+                        otherAcc.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) { content.style.maxHeight = null; } 
+                else { content.style.maxHeight = content.scrollHeight + "px"; }
+            });
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = () => {
+            initCalendario(); 
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        function abrirModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.add('show');
+            
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+    </script>
+</body>
+</html>

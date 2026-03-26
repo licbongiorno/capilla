@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Aventura Bíblica | 10 a 11 años</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Etapa 3: Azul Aventura y Naranja (Exploración e Historia) */
+            --bg-grad: linear-gradient(135deg, #E1F5FE 0%, #81D4FA 100%); 
+            --caja-bg: #FFFFFF;
+            --primario: #0288D1; /* Azul profundo */
+            --acento: #FF9800; /* Naranja aventura */
+            --texto: #01579B; /* Azul oscuro para lectura */
+            --correcto: #4CAF50;
+            --incorrecto: #F44336;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            color: rgba(2, 136, 209, 0.1); /* Azul transparente */
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .nav-btn {
+            background: #E1F5FE; padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; color: var(--primario);
+            font-weight: 800; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;
+            border: 2px solid #81D4FA; transition: 0.3s;
+        }
+        .nav-btn:hover { background: #B3E5FC; transform: scale(1.05); }
+        
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-family: 'Fredoka', sans-serif;
+            font-size: 1rem; padding: 6px 18px; border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(2,136,209,0.3);
+        }
+
+        /* CONTENEDOR */
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: flex-start; 
+            padding: 110px 20px 40px; z-index: 2; position: relative; width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%; max-width: 500px; background: var(--caja-bg);
+            border-radius: 35px; padding: 40px 25px;
+            box-shadow: 0 15px 30px rgba(2, 136, 209, 0.15);
+            border: 5px solid #81D4FA; margin-bottom: 20px;
+            transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(50px) rotateZ(3deg); opacity: 0; }
+
+        .question {
+            font-family: 'Fredoka', sans-serif; font-size: 1.45rem;
+            font-weight: 700; text-align: center; margin-bottom: 30px;
+            line-height: 1.35; color: var(--primario);
+        }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+        .opt-btn {
+            background: #FAFAFA; border: 3px solid #EEEEEE;
+            padding: 18px 20px; border-radius: 25px; color: #333333;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.05rem; 
+            cursor: pointer; transition: 0.2s; text-align: left;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) { background: #FFF3E0; border-color: var(--acento); transform: translateX(4px); }
+        .opt-btn.correct { background: #E8F5E9; color: #2E7D32; border-color: var(--correcto); }
+        .opt-btn.incorrect { background: #FFEBEE; color: #C62828; border-color: var(--incorrecto); }
+
+        /* FEEDBACK */
+        .feedback-box {
+            margin-top: 25px; padding: 20px; border-radius: 25px;
+            background: #FFF8E1; border: 3px solid #FFE082;
+            display: none; animation: fadeIn 0.4s ease;
+        }
+        .feedback-text { font-size: 1.05rem; line-height: 1.5; margin-bottom: 15px; font-weight: 600; color: #E65100; }
+        .feedback-cite { 
+            background: #FFFFFF; padding: 12px 15px; border-radius: 15px;
+            font-style: italic; font-weight: 800; color: #4E342E; 
+            font-size: 0.9rem; border-left: 4px solid var(--acento);
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 500px; display: flex; gap: 12px; }
+        .btn-action {
+            border: none; padding: 18px; border-radius: 25px;
+            font-family: 'Fredoka', sans-serif; font-weight: 600; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-main { 
+            flex: 1; background: var(--acento); color: white; font-size: 1.3rem; 
+            box-shadow: 0 6px 15px rgba(255, 152, 0, 0.3); display: none; 
+        }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { 
+            flex: 0 0 70px; background: #E1F5FE; color: var(--primario); 
+            border: 3px solid #81D4FA; font-size: 1.4rem; 
+        }
+        .btn-sec:hover { background: #B3E5FC; transform: scale(1.05); }
+
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 700; color: #4FC3F7; margin-top: auto; }
+    
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--caja-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--caja-bg); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+.modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+
+        <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            <div id="options-container" class="options-grid"></div>
+            <div id="feedback" class="feedback-box">
+                <div class="feedback-text" id="fb-main"></div>
+                <div class="feedback-cite">
+                    <i class="fas fa-book-open" style="color:var(--acento); margin-top: 3px;"></i>
+                    <span id="fb-cite"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">Siguiente <i class="fas fa-arrow-right"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir"><i class="fas fa-share-alt"></i></button>
+        </div>
+    </div>
+
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>
+
+<script>
+// BASE DE DATOS: 10 a 11 años (Aventura Bíblica, Historia de Salvación, Sacramentos) - 50 PREGUNTAS
+const CARTAS = [
+    { id: "a1", q: "¿Quién es considerado el 'Padre de la Fe' porque confió en Dios y dejó su tierra para ir a la Tierra Prometida?", opts: ["Moisés", "Abraham", "David", "Noé"], corr: 1, fb: "Abraham creyó en la promesa de Dios de que tendría una gran descendencia, aunque él y su esposa Sara ya eran muy ancianos.", cite: "Génesis 15, 6: 'Y creyó a Dios, y le fue contado por justicia'." },
+    { id: "a2", q: "¿Qué nombre le dijo Dios a Moisés desde la zarza ardiente cuando lo llamó a liberar a su pueblo?", opts: ["Yo soy el que soy (Yahvé)", "El gran Rey", "El poderoso gigante", "El creador del universo"], corr: 0, fb: "Dios se reveló a Moisés con el nombre sagrado de Yahvé ('Yo soy el que soy'), mostrando que Él es el único Dios verdadero y eterno.", cite: "Éxodo 3, 14: 'Y respondió Dios a Moisés: YO SOY EL QUE SOY'." },
+    { id: "a3", q: "La Biblia se divide en dos grandes partes. ¿Cuáles son?", opts: ["La Ley y los Profetas", "Antiguo y Nuevo Testamento", "Génesis y Apocalipsis", "Salmos y Evangelios"], corr: 1, fb: "El Antiguo Testamento cuenta la historia antes de Jesús. El Nuevo Testamento nos cuenta la vida de Jesús y los comienzos de la Iglesia.", cite: "Hebreos 1, 1-2: 'Dios, habiendo hablado muchas veces en otro tiempo... en estos últimos días nos ha hablado por el Hijo'." },
+    { id: "a4", q: "¿A quién eligió Dios como el gran rey de Israel que escribió muchos de los Salmos?", opts: ["Al rey Herodes", "Al rey David", "Al rey Saúl", "Al rey Salomón"], corr: 1, fb: "David fue un pastorcito que llegó a ser el rey más importante de Israel. De su familia, muchos años después, nacería Jesús.", cite: "2 Samuel 5, 4: 'Era David de treinta años cuando comenzó a reinar'." },
+    { id: "a5", q: "En el Antiguo Testamento, Dios enviaba hombres para advertir al pueblo y anunciar la llegada del Mesías. ¿Cómo se llamaban?", opts: ["Sacerdotes", "Los Profetas", "Los Apóstoles", "Los Reyes"], corr: 1, fb: "Los profetas, como Isaías o Jeremías, eran como 'megáfonos' de Dios que le recordaban a la gente cómo vivir y anunciaban al Salvador.", cite: "Jeremías 1, 9: 'Y extendió el Señor su mano y tocó mi boca... he puesto mis palabras en tu boca'." },
+    { id: "a6", q: "¿Qué ángel visitó a la Virgen María para anunciarle que sería la Madre del Salvador?", opts: ["El arcángel Miguel", "El ángel de la guarda", "El arcángel Gabriel", "El arcángel Rafael"], corr: 2, fb: "El arcángel Gabriel fue el mensajero de Dios para el momento más importante de la historia: la Encarnación de Jesús.", cite: "Lucas 1, 26: 'El ángel Gabriel fue enviado por Dios a una ciudad de Galilea, llamada Nazaret'." },
+    { id: "a7", q: "Antes de empezar a predicar, Jesús se fue al desierto a rezar y ayunar. ¿Cuántos días estuvo ahí?", opts: ["10 días", "7 días", "40 días", "1 año"], corr: 2, fb: "Jesús estuvo 40 días en el desierto preparándose para su misión, y allí venció las tentaciones del diablo usando la Palabra de Dios.", cite: "Mateo 4, 2: 'Y después de haber ayunado cuarenta días y cuarenta noches, tuvo hambre'." },
+    { id: "a8", q: "¿Cómo se llama el gran discurso donde Jesús enseñó el camino a la verdadera felicidad (Las Bienaventuranzas)?", opts: ["El Sermón del Monte", "La Última Cena", "El discurso del Templo", "Las leyes de Galilea"], corr: 0, fb: "En el Sermón del Monte, Jesús nos enseñó que los verdaderamente felices son los pobres de corazón, los pacíficos y los misericordiosos.", cite: "Mateo 5, 1-2: 'Viendo la multitud, subió al monte... y abriendo su boca les enseñaba'." },
+    { id: "a9", q: "En la parábola del Buen Samaritano, ¿quién fue el único que se detuvo a ayudar al hombre herido?", opts: ["Un sacerdote judío", "Un levita", "Un samaritano (que era extranjero y despreciado)", "Un soldado romano"], corr: 2, fb: "Jesús usó esta historia para enseñarnos que nuestro prójimo es cualquiera que necesite ayuda, sin importar de dónde venga.", cite: "Lucas 10, 33: 'Pero un samaritano, que iba de camino, vino cerca de él, y viéndole, fue movido a misericordia'." },
+    { id: "a10", q: "¿Qué hizo Jesús cuando caminaba sobre el agua y Pedro quiso ir hacia Él pero empezó a hundirse por dudar?", opts: ["Se enojó y se fue", "Extendió la mano y lo salvó", "Le dijo a los otros que lo ayuden", "Lo dejó nadar solo"], corr: 1, fb: "Pedro tuvo miedo por el fuerte viento y empezó a hundirse, pero Jesús siempre está ahí para darnos la mano cuando nuestra fe tambalea.", cite: "Mateo 14, 31: 'Al momento Jesús, extendiendo la mano, asió de él, y le dijo: ¡Hombre de poca fe! ¿Por qué dudaste?'" },
+    { id: "a11", q: "¿Qué sacramento nos convierte verdaderamente en 'Templos del Espíritu Santo'?", opts: ["El Orden Sagrado", "El Bautismo", "La Unción de los enfermos", "El Matrimonio"], corr: 1, fb: "El Bautismo borra el pecado original, nos hace hijos de Dios y hace que el Espíritu Santo viva dentro de nuestro corazón.", cite: "1 Corintios 6, 19: '¿O ignoran que su cuerpo es templo del Espíritu Santo, el cual está en ustedes?'" },
+    { id: "a12", q: "¿Cuántos son los Sacramentos que instituyó Jesús para darnos su gracia?", opts: ["Tres (3)", "Diez (10)", "Siete (7)", "Doce (12)"], corr: 2, fb: "Son 7: Bautismo, Confirmación, Eucaristía, Penitencia (Confesión), Unción de los enfermos, Orden Sagrado y Matrimonio.", cite: "Catecismo de la Iglesia Católica 1113: 'Toda la vida litúrgica de la Iglesia gravita en torno al sacrificio eucarístico y los sacramentos'." },
+    { id: "a13", q: "En la Última Cena, ¿qué hizo Jesús que sorprendió mucho a sus apóstoles y nos enseñó a ser humildes servidores?", opts: ["Hizo desaparecer el pan", "Les lavó los pies a los doce", "Les dio coronas de oro", "Los hizo ayunar"], corr: 1, fb: "Lavar los pies era el trabajo de los esclavos más bajos. Jesús lo hizo para enseñarnos que el más grande debe ser el servidor de todos.", cite: "Juan 13, 14: 'Pues si yo, el Señor y el Maestro, he lavado sus pies, ustedes también deben lavarse los pies los unos a los otros'." },
+    { id: "a14", q: "¿En qué lugar estaba rezando Jesús, con mucho miedo y angustia, la noche antes de morir?", opts: ["En el Templo de Jerusalén", "En el Huerto de los Olivos (Getsemaní)", "En el desierto", "En su casa de Nazaret"], corr: 1, fb: "En Getsemaní, Jesús sintió toda la tristeza y el peso de nuestros pecados, pero aceptó la voluntad de su Padre para salvarnos.", cite: "Lucas 22, 44: 'Y estando en agonía, oraba más intensamente; y era su sudor como grandes gotas de sangre'." },
+    { id: "a15", q: "¿Cómo se llama el apóstol que entregó a Jesús a los soldados por 30 monedas de plata?", opts: ["Pedro", "Tomás", "Judas Iscariote", "Mateo"], corr: 2, fb: "Judas traicionó a Jesús con un beso. A diferencia de Pedro, que también falló pero pidió perdón, Judas se desesperó y no confió en la misericordia de Dios.", cite: "Mateo 26, 15: '¿Qué me queréis dar, y yo os lo entregaré? Y ellos le asignaron treinta piezas de plata'." },
+    { id: "a16", q: "¿Quién fue el hombre que ayudó a Jesús a cargar la cruz cuando ya no tenía fuerzas camino al Calvario?", opts: ["Simón de Cirene (el Cirineo)", "Poncio Pilato", "Juan el Bautista", "El centurión romano"], corr: 0, fb: "Simón de Cirene venía del campo y los soldados lo obligaron a ayudar a Jesús. Él nos representa a nosotros cada vez que ayudamos a alguien que sufre.", cite: "Marcos 15, 21: 'Y obligaron a uno que pasaba, Simón de Cirene... a que le llevase la cruz'." },
+    { id: "a17", q: "Mientras Jesús estaba colgado en la cruz, ¿quiénes se quedaron a sus pies hasta el final?", opts: ["Todos los apóstoles", "La Virgen María y el apóstol San Juan", "Los fariseos arrepentidos", "Nadie, estaba completamente solo"], corr: 1, fb: "Casi todos sus amigos huyeron por miedo, pero su mamá María y el joven apóstol Juan demostraron un amor y valentía inquebrantables.", cite: "Juan 19, 25: 'Estaban junto a la cruz de Jesús su madre... y el discípulo a quien él amaba'." },
+    { id: "a18", q: "Antes de morir, Jesús miró a Juan y le dijo señalando a María: 'Ahí tienes a tu madre'. ¿Qué significa eso para nosotros?", opts: ["Que Juan debía cuidar la casa", "Que María se convertía en la madre espiritual de todos nosotros", "Que María ya no era madre de Jesús", "Nada especial"], corr: 1, fb: "En ese momento, Jesús nos entregó el regalo más tierno: hizo que su propia mamá fuera la madre del cielo de toda la humanidad.", cite: "Juan 19, 27: 'Después dijo al discípulo: He ahí tu madre. Y desde aquella hora el discípulo la recibió en su casa'." },
+    { id: "a19", q: "¿Qué apóstol no estaba el día que Jesús resucitó y dijo que no creería hasta tocar sus heridas?", opts: ["Pedro", "Tomás", "Andrés", "Santiago"], corr: 1, fb: "Por dudar, a Tomás le decimos 'el incrédulo'. Pero cuando Jesús se le apareció, Tomás hizo una hermosa declaración de fe: '¡Señor mío y Dios mío!'.", cite: "Juan 20, 27: 'Luego dijo a Tomás: Pon aquí tu dedo, y mira mis manos... y no seas incrédulo, sino creyente'." },
+    { id: "a20", q: "Cuarenta días después de resucitar, Jesús subió al cielo a la vista de sus discípulos. ¿Cómo llamamos a este evento?", opts: ["La Asunción", "La Ascensión", "La Transfiguración", "Pentecostés"], corr: 1, fb: "La Ascensión es cuando Jesús, por su propio poder divino, sube al cielo para prepararnos un lugar junto a Dios Padre.", cite: "Hechos 1, 9: 'Y habiendo dicho estas cosas, viéndolo ellos, fue alzado, y le recibió una nube que le ocultó de sus ojos'." },
+    { id: "a21", q: "¿Qué libro de la Biblia, escrito por San Lucas, cuenta las aventuras y milagros de los primeros cristianos y la Iglesia recién nacida?", opts: ["El libro del Apocalipsis", "El libro de los Hechos de los Apóstoles", "La Carta a los Romanos", "El libro de los Salmos"], corr: 1, fb: "Los Hechos de los Apóstoles es como el 'diario de viaje' de la Iglesia antigua, mostrando cómo el Espíritu Santo los guiaba a predicar sin miedo.", cite: "Hechos 1, 8: 'Pero recibirán poder, cuando haya venido sobre ustedes el Espíritu Santo, y me serán testigos'." },
+    { id: "a22", q: "¿Cómo se llamaba el hombre que al principio perseguía y metía presos a los cristianos, pero Jesús se le apareció y lo transformó en el apóstol más grande?", opts: ["San Esteban", "San Pablo (Saulo)", "San Felipe", "San Lucas"], corr: 1, fb: "Saulo de Tarso iba a la ciudad de Damasco cuando una luz lo derribó. Después de eso, cambió su nombre a Pablo y escribió gran parte del Nuevo Testamento.", cite: "Hechos 9, 4: 'Y cayendo en tierra, oyó una voz que le decía: Saulo, Saulo, ¿por qué me persigues?'." },
+    { id: "a23", q: "¿Cuál es el nombre del hombre vestido de blanco que vive en el Vaticano y es el sucesor del apóstol San Pedro?", opts: ["El Cardenal", "El Obispo principal", "El Papa (Santo Padre)", "El Rey de la Iglesia"], corr: 2, fb: "El Papa es el líder espiritual de todos los católicos del mundo y tiene la misión de mantenernos unidos en la verdad de Jesús.", cite: "Mateo 16, 19: 'Y a ti te daré las llaves del reino de los cielos'." },
+    { id: "a24", q: "¿Qué sacramento cura el alma (y a veces el cuerpo) de las personas que están muy enfermas o son muy ancianitas?", opts: ["La Confirmación", "La Unción de los Enfermos", "El Bautismo", "El Matrimonio"], corr: 1, fb: "El sacerdote unge con aceite bendito (óleo) al enfermo para darle la fuerza, el consuelo y la paz del Espíritu Santo en ese momento difícil.", cite: "Santiago 5, 14: '¿Está alguno enfermo entre ustedes? Llame a los presbíteros de la iglesia, y oren por él, ungiéndole con aceite'." },
+    { id: "a25", q: "El tercer mandamiento es 'Santificar las fiestas'. Además de descansar, ¿cuál es la obligación principal de un católico el domingo?", opts: ["Ir a almorzar afuera", "Mirar televisión en familia", "Asistir a la Santa Misa", "No hacer la tarea escolar"], corr: 2, fb: "Ir a Misa el domingo no es solo una regla, es la cita de amor semanal que tenemos para agradecerle a Dios por todo y recibir a Jesús Eucaristía.", cite: "Hebreos 10, 25: 'No dejemos de congregarnos, como algunos tienen por costumbre'." },
+    { id: "a26", q: "¿Qué tiempo litúrgico nos prepara durante 40 días antes de la Pascua, invitándonos a rezar más y ser mejores?", opts: ["Adviento", "Cuaresma", "Tiempo Ordinario", "Navidad"], corr: 1, fb: "La Cuaresma (que empieza el Miércoles de Ceniza) nos recuerda los 40 días de Jesús en el desierto. Es un tiempo para purificar el corazón.", cite: "Joel 2, 12: 'Conviértanse a mí con todo su corazón, con ayuno y lloro y lamento'." },
+    { id: "a27", q: "¿Qué tiempo litúrgico de 4 semanas nos prepara con alegría y esperanza para el nacimiento de Jesús?", opts: ["Pascua", "Cuaresma", "Adviento", "Pentecostés"], corr: 2, fb: "En Adviento solemos encender las velas de la corona semana a semana, preparándonos para recibir a Jesús en Navidad.", cite: "Isaías 40, 3: 'Voz que clama en el desierto: Preparen el camino del Señor'." },
+    { id: "a28", q: "El octavo mandamiento prohíbe mentir. Si le inventamos algo malo a alguien que no es cierto, estamos cometiendo un pecado llamado...", opts: ["Robo", "Calumnia o difamación", "Orgullo", "Gula"], corr: 1, fb: "Inventar cosas malas de otros destruye su fama y hace mucho daño. Jesús nos enseñó que la verdad nos hace libres.", cite: "Éxodo 20, 16: 'No hablarás contra tu prójimo falso testimonio'." },
+    { id: "a29", q: "¿Cuál es el 'mandamiento más grande' en el que se resumen todos los demás, según el mismo Jesús?", opts: ["No trabajar el domingo", "Amar a Dios sobre todas las cosas y al prójimo como a nosotros mismos", "Rezar muchas veces al día", "Ir a Tierra Santa una vez en la vida"], corr: 1, fb: "Si realmente amamos a Dios y cuidamos a los demás, nunca robaremos, ni mentiremos, ni haremos daño. ¡El amor cumple todas las leyes!", cite: "Mateo 22, 37-39: 'Amarás al Señor tu Dios... y a tu prójimo como a ti mismo'." },
+    { id: "a30", q: "¿Qué son los 'milagros' en la Biblia?", opts: ["Hechos extraordinarios que Dios hace para demostrar su amor y su poder", "Trucos de magia para entretener", "Mitos antiguos", "Cosas de la naturaleza que nadie entiende"], corr: 0, fb: "Jesús no hacía milagros para lucirse, los hacía por compasión (para curar enfermos o dar de comer) y para demostrar que el Reino de Dios ya había llegado.", cite: "Juan 14, 11: 'Créanme que yo soy en el Padre, y el Padre en mí; de otra manera, créanme por las mismas obras'." },
+    { id: "a31", q: "Cuando un joven o adulto decide consagrar toda su vida a Dios siendo sacerdote, ¿qué sacramento recibe?", opts: ["El Matrimonio", "La Unción", "El Orden Sagrado", "El Bautismo"], corr: 2, fb: "El Orden Sagrado le da al hombre la gracia especial del Espíritu Santo para actuar 'en la persona de Cristo' celebrando la Misa y perdonando pecados.", cite: "1 Timoteo 4, 14: 'No descuides el don que hay en ti, que te fue dado... con la imposición de las manos del presbiterio'." },
+    { id: "a32", q: "¿Qué significa la palabra 'Iglesia' (Ekklesía)?", opts: ["Edificio de ladrillos", "Asamblea o comunidad de personas convocadas por Dios", "Lugar de castigo", "Libro de reglas"], corr: 1, fb: "La Iglesia no es solo el edificio físico (la Capilla); la verdadera Iglesia somos todas las personas bautizadas unidas en el amor de Jesús.", cite: "1 Pedro 2, 9: 'Mas ustedes son linaje escogido, real sacerdocio, nación santa, pueblo adquirido por Dios'." },
+    { id: "a33", q: "En el Padrenuestro decimos 'Danos hoy nuestro pan de cada día'. Además de la comida física, ¿qué otro 'pan' esencial le pedimos a Dios?", opts: ["El pan dulce", "El Pan de la Eucaristía y la fuerza espiritual", "Dinero", "Muchos juguetes"], corr: 1, fb: "Le pedimos a Dios que no nos falte la comida en la mesa, pero sobre todo, que no nos falte Jesús en la comunión para alimentar nuestra alma.", cite: "Juan 6, 35: 'Jesús les dijo: Yo soy el pan de vida; el que a mí viene, nunca tendrá hambre'." },
+    { id: "a34", q: "¿Cómo se llama la luz o fuerza especial que Dios nos regala gratis para ser buenos y que recibimos en los sacramentos?", opts: ["La energía cósmica", "El Karma", "La Gracia de Dios", "La fuerza bruta"], corr: 2, fb: "La Gracia es un regalo gratuito de Dios que nos hace santos. Es como el 'combustible' espiritual que necesitamos para no pecar.", cite: "Efesios 2, 8: 'Porque por gracia ustedes han sido salvados por medio de la fe... es un regalo de Dios'." },
+    { id: "a35", q: "Cuando vamos a Misa, ¿qué actitud debemos tener adentro de la Capilla?", opts: ["Correr y hablar fuerte", "Estar en silencio, con respeto y participando con atención", "Dormir en los bancos", "Usar el celular"], corr: 1, fb: "La Capilla es la casa de Dios y Jesús está ahí en el Sagrario. El silencio y el respeto nos ayudan a escuchar lo que Dios nos quiere decir.", cite: "Habacuc 2, 20: 'Mas el Señor está en su santo templo; calle delante de él toda la tierra'." },
+    { id: "a36", q: "¿Qué significa que la Iglesia es 'Católica'?", opts: ["Que es muy antigua", "Que es solo para gente perfecta", "Que es 'Universal', es decir, abierta para todas las personas del mundo entero", "Que habla en latín"], corr: 2, fb: "La palabra católica significa universal. Jesús no fundó un grupo cerrado, sino una familia gigante donde todas las naciones están invitadas.", cite: "Mateo 28, 19: 'Por tanto, vayan y hagan discípulos a todas las naciones'." },
+    { id: "a37", q: "¿Qué dogma celebramos el 15 de agosto, recordando qué le pasó a la Virgen María al final de su vida?", opts: ["Que fundó una ciudad", "La Asunción (fue llevada en cuerpo y alma al cielo por Dios)", "Que escribió un Evangelio", "Que se hizo invisible"], corr: 1, fb: "Como María nunca cometió pecado, Dios no permitió que su cuerpo se corrompiera en la tierra, sino que la llevó directamente al cielo como Reina.", cite: "Apocalipsis 12, 1: 'Apareció en el cielo una gran señal: una mujer vestida del sol, con la luna debajo de sus pies'." },
+    { id: "a38", q: "¿Qué famoso profeta del Antiguo Testamento fue arrojado al foso de los leones por rezarle a Dios, pero salió ileso?", opts: ["Jonás", "Daniel", "Ezequiel", "Jeremías"], corr: 1, fb: "Daniel fue muy valiente y prefirió arriesgar su vida antes que dejar de adorar al único Dios. ¡Y Dios cerró la boca de los leones para protegerlo!", cite: "Daniel 6, 22: 'Mi Dios envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen daño'." },
+    { id: "a39", q: "¿A qué profeta se lo tragó un gran pez por desobedecer la orden de Dios de ir a predicar a Nínive?", opts: ["Moisés", "Isaías", "Jonás", "Samuel"], corr: 2, fb: "Jonás intentó huir de Dios en un barco. Tras tres días en el vientre del pez, se arrepintió, fue a Nínive, ¡y toda la ciudad se salvó!", cite: "Jonás 1, 17: 'Pero el Señor tenía preparado un gran pez que tragase a Jonás; y estuvo Jonás en el vientre del pez tres días y tres noches'." },
+    { id: "a40", q: "Jesús dijo: 'No juzguen, para que no sean juzgados'. ¿Qué nos está enseñando con esto?", opts: ["Que los jueces no deben trabajar", "Que no debemos criticar ni hablar mal de los demás porque todos tenemos defectos", "Que no miremos a la gente", "Que no importa si alguien roba"], corr: 1, fb: "Dios es el único que conoce el corazón de las personas. En lugar de criticar los errores de otros, debemos mirar primero los nuestros y corregirlos.", cite: "Mateo 7, 3: '¿Y por qué miras la paja que está en el ojo de tu hermano, y no echas de ver la viga que está en tu propio ojo?'" },
+    { id: "a41", q: "¿Cómo se llama la pequeña caja, a veces de madera o confesionario, donde hablamos a solas con el sacerdote para pedir perdón?", opts: ["El campanario", "El Sagrario", "El Confesionario", "La sacristía"], corr: 2, fb: "Allí, en secreto, le contamos nuestros pecados al cura. Él tiene la obligación estricta de nunca contarle a nadie lo que le dijimos (secreto de confesión).", cite: "Proverbios 28, 13: 'El que encubre sus pecados no prosperará; Mas el que los confiesa y se aparta alcanzará misericordia'." },
+    { id: "a42", q: "¿Qué le prometió Jesús al ladrón arrepentido que estaba crucificado al lado suyo (el 'Buen Ladrón')?", opts: ["Que lo iba a bajar de la cruz", "Que sería rico en la tierra", "Hoy estarás conmigo en el paraíso", "Que iba a sufrir mucho"], corr: 2, fb: "Dimas (el buen ladrón) reconoció a Jesús como Rey justo antes de morir. Esto nos demuestra que nunca es demasiado tarde para pedirle perdón a Dios.", cite: "Lucas 23, 43: 'Entonces Jesús le dijo: De cierto te digo que hoy estarás conmigo en el paraíso'." },
+    { id: "a43", q: "¿Qué debemos hacer cuando leemos la Biblia?", opts: ["Leerla rapidísimo", "Pedirle al Espíritu Santo que nos ayude a entender lo que Dios nos quiere enseñar", "Cerrarla rápido", "Aprenderla solo de memoria"], corr: 1, fb: "La Biblia no es un libro común de historia; está viva. Al leerla despacio y orando, Dios nos da consejos para nuestra propia vida.", cite: "Salmo 119, 18: 'Abre mis ojos, y miraré las maravillas de tu ley'." },
+    { id: "a44", q: "¿Por qué los católicos le rezamos a los Santos si Dios es el único que hace milagros?", opts: ["Porque los santos son dioses más pequeños", "No les rezamos como a Dios, sino que les pedimos que ellos, como amigos cercanos, recen por nosotros ante Jesús", "Porque los santos son magos", "Es una tradición de buena suerte"], corr: 1, fb: "Igual que le pedís a un amigo que rece por vos cuando tenés un problema, le pedimos a los Santos (que ya están en el cielo) que nos den una mano con sus oraciones.", cite: "Apocalipsis 8, 4: 'Y de la mano del ángel subió a la presencia de Dios el humo del incienso con las oraciones de los santos'." },
+    { id: "a45", q: "El décimo mandamiento dice: 'No codiciarás los bienes ajenos'. ¿Qué es la codicia o la envidia?", opts: ["Ahorrar dinero", "Ponerse triste o enojado porque otro tiene algo que yo quiero", "Trabajar mucho", "Regalar cosas"], corr: 1, fb: "La envidia nos envenena el corazón y no nos deja ser felices con lo que tenemos. Dios quiere que seamos agradecidos.", cite: "Éxodo 20, 17: 'No codiciarás la casa de tu prójimo... ni cosa alguna de tu prójimo'." },
+    { id: "a46", q: "Antes de comulgar en la Misa, el cura levanta la Hostia y dice: 'Este es el Cordero de Dios, que quita el pecado del mundo'. ¿Qué respondemos?", opts: ["¡Qué hambre tengo!", "Señor, no soy digno de que entres en mi casa, pero una palabra tuya bastará para sanarme", "Gracias, Padre", "Amén, ya voy"], corr: 1, fb: "Repetimos las mismas palabras de mucha fe que dijo un centurión romano en la Biblia, reconociendo que no somos perfectos, pero el amor de Jesús nos sana.", cite: "Mateo 8, 8: 'Señor, no soy digno de que entres bajo mi techo; solamente di la palabra, y mi criado sanará'." },
+    { id: "a47", q: "En el Antiguo Testamento, ¿qué joven fue vendido como esclavo por sus hermanos envidiosos, pero Dios lo ayudó a ser gobernador de Egipto?", opts: ["José (el soñador)", "Benjamín", "Isaac", "Jacob"], corr: 0, fb: "José sufrió mucho, pero nunca dejó de confiar en Dios. Al final, gracias a su puesto en Egipto, pudo perdonar y salvar del hambre a los mismos hermanos que lo habían vendido.", cite: "Génesis 45, 5: 'No se entristezcan, ni les pese de haberme vendido acá; porque para preservación de vida me envió Dios delante de ustedes'." },
+    { id: "a48", q: "¿Qué sucedió en el milagro de la 'Multiplicación de los panes' que nos enseña sobre la solidaridad?", opts: ["Cayeron panes del cielo", "Un niño compartió sus 5 panes y 2 peces, y Jesús hizo que alcanzaran para 5.000 hombres", "Apareció un horno mágico", "La gente fue a comprar comida"], corr: 1, fb: "Jesús hace grandes milagros con nuestra pequeña colaboración. Cuando compartimos lo poco que tenemos, Dios lo hace inmenso.", cite: "Juan 6, 9: 'Aquí está un muchacho, que tiene cinco panes de cebada y dos pececillos; mas ¿qué es esto para tantos?'." },
+    { id: "a49", q: "¿Cuál es la misión principal de la Iglesia en el mundo?", opts: ["Tener edificios bonitos", "Hacer fiestas gigantes", "Anunciar a Jesús, llevar su amor a todos y ayudar a los más pobres", "Hacer leyes políticas"], corr: 2, fb: "Todos los bautizados formamos la Iglesia y nuestra misión es ser 'luz del mundo', mostrando con buenas acciones cuánto nos ama Dios.", cite: "Marcos 16, 15: 'Y les dijo: Vayan por todo el mundo y prediquen el evangelio a toda criatura'." },
+    { id: "a50", q: "Al final de nuestra vida, ¿qué es lo único verdaderamente importante que nos llevaremos al cielo?", opts: ["Nuestros juguetes y dinero", "Las buenas notas de la escuela", "Todo el amor que hayamos dado a Dios y a los demás", "Nuestra ropa"], corr: 2, fb: "Como dijo San Juan de la Cruz: 'Al atardecer de nuestra vida, seremos juzgados en el amor'. El amor es el único tesoro eterno.", cite: "1 Corintios 13, 8: 'El amor nunca deja de ser; pero las profecías se acabarán, y cesarán las lenguas'." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+let synth;
+
+function initAudio() {
+    if (typeof Tone !== 'undefined' && !audioInit) {
+        Tone.start();
+        synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "square" }, // Sonido más aventurero (chiptune sutil)
+            envelope: { attack: 0.05, decay: 0.2, sustain: 0.2, release: 1 }
+        }).toDestination();
+        synth.volume.value = -12;
+        audioInit = true;
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudio();
+        if (!synth) return;
+        
+        if (type === 'correct') {
+            const now = Tone.now();
+            synth.triggerAttackRelease("C5", "8n", now);
+            synth.triggerAttackRelease("E5", "8n", now + 0.15);
+            synth.triggerAttackRelease("A5", "4n", now + 0.3); // Acorde distinto
+        } else {
+            synth.triggerAttackRelease("G4", "8n");
+        }
+    } catch (e) { console.log("Audio no soportado"); }
+}
+
+function initQuiz() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const qId = urlParams.get('id');
+        if (qId) {
+            const found = CARTAS.findIndex(c => c.id === qId);
+            currentIdx = found !== -1 ? found : Math.floor(Math.random() * CARTAS.length);
+        } else {
+            currentIdx = Math.floor(Math.random() * CARTAS.length);
+        }
+    } catch(e) { currentIdx = 0; }
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    const container = document.getElementById("options-container");
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    
+    container.innerHTML = "";
+    fbBox.style.display = "none";
+    btnNext.style.display = "none"; 
+    
+    c.opts.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<i class="far fa-circle" style="color:#CCC; font-size:1.3rem;"></i> <span>${opt}</span>`;
+        btn.onclick = () => checkAns(idx, btn);
+        container.appendChild(btn);
+    });
+}
+
+function checkAns(idx, btn) {
+    const c = CARTAS[currentIdx];
+    const buttons = document.querySelectorAll(".opt-btn");
+    buttons.forEach(b => b.disabled = true);
+    
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    fbBox.style.display = "block";
+    btnNext.style.display = "flex"; 
+    
+    if(idx === c.corr) {
+        btn.classList.add("correct");
+        btn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        document.getElementById("fb-main").innerHTML = `<strong>¡Excelente Aventurero!</strong><br>${c.fb}`;
+        playSound('correct');
+    } else {
+        btn.classList.add("incorrect");
+        btn.innerHTML = `<i class="fas fa-times-circle" style="color:#F44336; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        
+        const correctBtn = buttons[c.corr];
+        correctBtn.classList.add("correct");
+        correctBtn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[c.corr]}</span>`;
+        
+        document.getElementById("fb-main").innerHTML = `<strong>Para seguir explorando:</strong><br>${c.fb}`;
+        playSound('incorrect');
+    }
+    
+    document.getElementById("fb-cite").innerText = c.cite;
+}
+
+function nextQuestion() {
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+    setTimeout(() => {
+        let next;
+        do { next = Math.floor(Math.random() * CARTAS.length); } while (next === currentIdx);
+        currentIdx = next;
+        
+        try {
+            if (window.location.protocol !== 'file:') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } catch(e) {}
+        
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 400);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    let baseUrl = "Enlace";
+    try { baseUrl = window.location.protocol === 'file:' ? 'Archivo_Local' : window.location.origin + window.location.pathname; } catch(e) {}
+    
+    const urlConId = baseUrl !== 'Archivo_Local' ? `${baseUrl}?id=${c.id}` : window.location.href;
+    const text = `🗺️ Aventura Bíblica - Capilla Santa Ana\n\n"${c.q}"\n\n¿Aceptás el desafío? Entrá acá: `;
+
+    if (navigator.share && baseUrl !== 'Archivo_Local') {
+        try { await navigator.share({ title: 'Desafío Aventura Bíblica', text: text, url: urlConId }); } 
+        catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + (baseUrl !== 'Archivo_Local' ? urlConId : '')).then(() => {
+            // Reemplazo del toast por un alert nativo para evitar errores
+            alert('¡Enlace copiado! Listo para compartir con tus amigos.');
+        });
+    }
+}
+
+function initBG() {
+    const words = ['AVENTURA', 'PROFETA', 'HISTORIA', 'SALVACIÓN', 'MANDAMIENTOS', 'IGLESIA', 'APÓSTOLES', 'PENTECOSTÉS', 'BIBLIA'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (20 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) { hamburgerIcon.classList.replace('fa-bars', 'fa-xmark'); } else { hamburgerIcon.classList.replace('fa-xmark', 'fa-bars'); }
+        }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+        function cerrarModalDonar() { document.getElementById('modalDonar').classList.remove('show'); }
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366"; btn.style.color = "white";
+            setTimeout(() => { btn.innerHTML = oldTxt; btn.style.backgroundColor = "var(--acento)"; }, 3000);
+        }
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") cerrarModalDonar(); });
+        document.getElementById('modalDonar').addEventListener('click', (e) => { if (e.target === document.getElementById('modalDonar')) { cerrarModalDonar(); } });
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Confirmando la Fe | 12 a 15 años</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            /* Paleta Etapa 4: Fuego, Espíritu Santo y Energía Joven */
+            --bg-grad: linear-gradient(135deg, #FBE9E7 0%, #FFCCBC 100%); 
+            --caja-bg: #FFFFFF;
+            --primario: #D84315; /* Naranja oscuro / Rojo ladrillo */
+            --acento: #FF5722; /* Naranja fuego vibrante */
+            --texto: #BF360C; /* Texto oscuro cálido */
+            --correcto: #4CAF50;
+            --incorrecto: #E53935;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto);
+        }
+
+        /* FONDO PALABRAS FLOTANTES */
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: rgba(216, 67, 21, 0.08); /* Rojo transparente */
+            user-select: none;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        /* NAVEGACIÓN */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .nav-btn {
+            background: #FBE9E7; padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; color: var(--primario);
+            font-weight: 800; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;
+            border: 2px solid #FFAB91; transition: 0.3s;
+        }
+        .nav-btn:hover { background: #FFCCBC; transform: scale(1.05); }
+        
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-family: 'Fredoka', sans-serif;
+            font-size: 1rem; padding: 6px 18px; border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(216,67,21,0.3);
+        }
+
+        /* CONTENEDOR */
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: flex-start; 
+            padding: 110px 20px 40px; z-index: 2; position: relative; width: 100%;
+        }
+
+        /* PANEL DEL QUIZ */
+        .quiz-box {
+            width: 100%; max-width: 550px; background: var(--caja-bg);
+            border-radius: 30px; padding: 40px 25px;
+            box-shadow: 0 15px 35px rgba(216, 67, 21, 0.15);
+            border: 4px solid #FFAB91; margin-bottom: 20px;
+            transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(60px) rotateZ(2deg); opacity: 0; }
+
+        .question {
+            font-family: 'Montserrat', sans-serif; font-size: 1.4rem;
+            font-weight: 800; text-align: center; margin-bottom: 30px;
+            line-height: 1.4; color: var(--primario);
+        }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+        .opt-btn {
+            background: #FAFAFA; border: 2px solid #EEEEEE;
+            padding: 16px 20px; border-radius: 20px; color: #333333;
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; 
+            cursor: pointer; transition: 0.2s; text-align: left;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) { background: #FBE9E7; border-color: var(--acento); transform: translateX(5px); }
+        .opt-btn.correct { background: #E8F5E9; color: #2E7D32; border-color: var(--correcto); font-weight: 700; }
+        .opt-btn.incorrect { background: #FFEBEE; color: #C62828; border-color: var(--incorrecto); }
+
+        /* FEEDBACK */
+        .feedback-box {
+            margin-top: 25px; padding: 20px; border-radius: 20px;
+            background: #FFF3E0; border: 3px solid #FFB74D;
+            display: none; animation: fadeIn 0.4s ease;
+        }
+        .feedback-text { font-size: 1rem; line-height: 1.5; margin-bottom: 15px; font-weight: 600; color: #E65100; }
+        .feedback-cite { 
+            background: #FFFFFF; padding: 12px 15px; border-radius: 12px;
+            font-style: italic; font-weight: 800; color: #5D4037; 
+            font-size: 0.9rem; border-left: 4px solid var(--acento);
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { width: 100%; max-width: 550px; display: flex; gap: 12px; }
+        .btn-action {
+            border: none; padding: 18px; border-radius: 20px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-main { 
+            flex: 1; background: var(--acento); color: white; font-size: 1.1rem; 
+            box-shadow: 0 6px 15px rgba(255, 87, 34, 0.3); display: none; 
+        }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { 
+            flex: 0 0 70px; background: #FBE9E7; color: var(--primario); 
+            border: 3px solid #FFAB91; font-size: 1.4rem; 
+        }
+        .btn-sec:hover { background: #FFCCBC; transform: scale(1.05); }
+
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 700; color: #FF8A65; margin-top: auto; }
+    
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--caja-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--caja-bg); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+.modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+
+        <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            <div id="options-container" class="options-grid"></div>
+            <div id="feedback" class="feedback-box">
+                <div class="feedback-text" id="fb-main"></div>
+                <div class="feedback-cite">
+                    <i class="fas fa-fire" style="color:var(--acento); margin-top: 3px;"></i>
+                    <span id="fb-cite"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">Siguiente Reto <i class="fas fa-arrow-right"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir"><i class="fas fa-share-alt"></i></button>
+        </div>
+    </div>
+
+    <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>
+
+<script>
+// BASE DE DATOS: 12 a 15 años (Confirmando la Fe, Dudas Jóvenes, Espíritu Santo) - 50 PREGUNTAS
+const CARTAS = [
+    { id: "f1", q: "¿Cuál es el propósito principal del sacramento de la Confirmación?", opts: ["Dar por terminada la catequesis para siempre", "Recibir la plenitud del Espíritu Santo para ser testigos valientes de Cristo", "Cambiarte el nombre legalmente", "Recibir un certificado de la Iglesia"], corr: 1, fb: "La Confirmación no es una 'graduación' donde te despedís de Dios. Es recibir el 'motor' (el Espíritu Santo) para salir a vivir y defender tu fe en el mundo adulto.", cite: "Catecismo 1303: 'La Confirmación confiere crecimiento y profundidad a la gracia bautismal... nos concede una fuerza especial del Espíritu Santo'." },
+    { id: "f2", q: "¿Con qué elemento físico y visible (la 'materia') te unge el obispo durante la Confirmación?", opts: ["Con agua bendita", "Con el Santo Crisma (aceite de oliva perfumado)", "Con ceniza", "Con sal"], corr: 1, fb: "El Crisma es aceite consagrado que huele muy rico (bálsamo). Simboliza que el cristiano debe dejar el 'buen olor de Cristo' (alegría y bondad) por donde camine.", cite: "Catecismo 1294: 'La unción con el santo crisma es el signo del sacramento de la Confirmación'." },
+    { id: "f3", q: "¿Quién es el ministro ordinario (el que habitualmente celebra) el sacramento de la Confirmación?", opts: ["Cualquier catequista", "El sacerdote de tu parroquia", "El Obispo", "El padrino o madrina"], corr: 2, fb: "El Obispo es el sucesor directo de los apóstoles. Que él te confirme demuestra tu unión profunda con toda la Iglesia que viene desde Pentecostés.", cite: "Catecismo 1312: 'El ministro originario de la Confirmación es el obispo'." },
+    { id: "f4", q: "¿Qué evento bíblico es como la 'Primera Confirmación' de la historia de la Iglesia?", opts: ["La Última Cena", "La multiplicación de los panes", "Pentecostés", "El Bautismo de Jesús"], corr: 2, fb: "En Pentecostés, los apóstoles estaban encerrados por miedo, pero el Espíritu Santo bajó como fuego y viento, dándoles el valor para salir a cambiar el mundo.", cite: "Hechos 2, 4: 'Y fueron todos llenos del Espíritu Santo, y comenzaron a hablar en otras lenguas'." },
+    { id: "f5", q: "Existen 7 Dones del Espíritu Santo. ¿Cuál de estos NO es uno de ellos?", opts: ["Sabiduría", "Fortaleza", "Telepatía", "Piedad"], corr: 2, fb: "Los dones no son superpoderes de películas, son ayudas espirituales reales: Sabiduría, Inteligencia, Consejo, Fortaleza, Ciencia, Piedad y Temor de Dios.", cite: "Isaías 11, 2: 'Y reposará sobre él el Espíritu del Señor: espíritu de sabiduría y de inteligencia, espíritu de consejo y de poder'." },
+    { id: "f6", q: "Si alguien te dice 'Yo creo en la ciencia, por eso no creo en Dios', ¿qué enseña la Iglesia al respecto?", opts: ["Que tiene razón, son incompatibles", "Que la fe y la ciencia real nunca se contradicen, porque ambas buscan la verdad que viene del mismo Creador", "Que hay que prohibir estudiar ciencia", "Que la Biblia es un libro de física cuántica"], corr: 1, fb: "La ciencia explica el 'cómo' funciona el universo (ej. el Big Bang), y la fe explica el 'por qué' y 'para qué' existe (por amor). ¡Muchos grandes científicos fueron sacerdotes católicos!", cite: "Catecismo 159: 'A pesar de que la fe esté por encima de la razón, jamás puede haber desacuerdo entre ellas'." },
+    { id: "f7", q: "Si Dios es todopoderoso y bueno, ¿por qué existe el mal en el mundo?", opts: ["Porque Dios creó el mal para aburrirse menos", "Porque Dios tiene un gemelo malvado", "Porque Dios nos dio el inmenso riesgo del 'Libre Albedrío' (la libertad de elegir amarlo o rechazarlo)", "Porque Dios perdió el control del planeta"], corr: 2, fb: "El amor obligado no es amor. Dios nos hizo tan libres que podemos elegir hacer el mal. El mal moral en el mundo no es culpa de Dios, es el resultado de nuestras malas decisiones.", cite: "Catecismo 311: 'Dios no es de ninguna manera, ni directa ni indirectamente, la causa del mal moral. Permite el mal respetando la libertad'." },
+    { id: "f8", q: "¿Qué significa que la Iglesia sea 'Apostólica'?", opts: ["Que solo pueden ir los apóstoles", "Que fue fundada sobre los Apóstoles y mantiene su enseñanza ininterrumpida hasta los obispos de hoy", "Que usa libros muy antiguos", "Que está en contra de lo moderno"], corr: 1, fb: "La Iglesia no es un invento del siglo XVI. Existe una línea directa de imposición de manos desde tu Obispo actual hasta los 12 amigos que Jesús eligió.", cite: "Catecismo 857: 'La Iglesia es apostólica porque está fundada sobre los apóstoles'." },
+    { id: "f9", q: "¿Qué es la 'Conciencia' en la teología moral cristiana?", opts: ["Una vocecita que te dice qué comprar", "El núcleo más secreto del hombre, donde resuena la voz de Dios indicando qué está bien y qué está mal", "El miedo a que te rete la policía", "Un invento psicológico"], corr: 1, fb: "La conciencia es nuestro 'radar moral'. Pero cuidado: hay que educarla formando nuestra mente con la Palabra de Dios para que el radar no se rompa.", cite: "Catecismo 1776: 'En lo más profundo de su conciencia el hombre descubre una ley que él no se da a sí mismo, sino a la que debe obedecer'." },
+    { id: "f10", q: "Para que un pecado sea 'Mortal' (que destruye la gracia en el alma), debe cumplir TRES condiciones. ¿Cuáles son?", opts: ["Hacerlo de noche, solo y llorando", "Materia grave, pleno conocimiento y consentimiento deliberado (elegir hacerlo libremente)", "Robar, matar y mentir", "Que alguien te vea, que sea ilegal y que cueste dinero"], corr: 1, fb: "No podés cometer un pecado mortal 'sin querer'. Tenés que saber que es algo muy grave y, aún así, decidir libremente hacerlo, rechazando el amor de Dios.", cite: "Catecismo 1857: 'Para que un pecado sea mortal se requieren tres condiciones: materia grave, pleno conocimiento y entero consentimiento'." },
+    { id: "f11", q: "¿Qué pasa si cometo un pecado venial (leve)? ¿Tengo que confesarme inmediatamente para no ir al infierno?", opts: ["Sí, perdés la gracia enseguida", "No, el pecado venial debilita la caridad pero no rompe la amistad con Dios. Se perdona al comulgar o rezar con arrepentimiento", "Quedás excomulgado", "Tenés que pagar una multa"], corr: 1, fb: "El pecado venial es como un raspón en tu amistad con Dios; no te mata, pero si no lo cuidás (y acumulás muchos), te puede llevar al pecado mortal. ¡La confesión frecuente es genial para fortalecerte!", cite: "Catecismo 1863: 'El pecado venial no priva de la gracia santificante... es humanamente reparable con la gracia de Dios'." },
+    { id: "f12", q: "La Iglesia enseña que la Biblia no tiene errores (Inerrancia). ¿Significa esto que si la Biblia dice que el mundo se creó en 6 días fue exactamente en 144 horas?", opts: ["Sí, literalmente", "No, la Biblia no tiene errores en lo que respecta a nuestra salvación. Usa géneros literarios y metáforas (Génesis no es un libro de biología)", "La Biblia miente a veces", "Depende del idioma en que la leas"], corr: 1, fb: "Los autores bíblicos usaron poemas, parábolas y lenguaje de su época. El mensaje divino es: 'Dios creó todo por amor y con orden', sin importar si usó la evolución durante millones de años para hacerlo.", cite: "Dei Verbum 11: 'Los libros de la Escritura enseñan firmemente, con fidelidad y sin error, la verdad que Dios quiso consignar para nuestra salvación'." },
+    { id: "f13", q: "¿Qué diferencia hay entre la 'Sola Scriptura' de los protestantes y la visión Católica?", opts: ["Nosotros no leemos la Biblia", "Los católicos creemos que la Revelación nos llega por la Biblia (Escritura) Y la Tradición oral (enseñanza de los Apóstoles)", "Los protestantes tienen Biblias más largas", "No hay ninguna diferencia"], corr: 1, fb: "La Biblia no cayó del cielo encuadernada. Fue la 'Tradición' (la Iglesia guiada por el Espíritu) la que decidió qué libros eran inspirados y cuáles no. ¡Ambas son pilares de nuestra fe!", cite: "2 Tesalonicenses 2, 15: 'Estén firmes y retengan la tradición que han aprendido, sea por palabra o por carta nuestra'." },
+    { id: "f14", q: "¿Qué significa el dogma de la 'Trinidad'?", opts: ["Que hay tres dioses que trabajan juntos", "Que Dios Padre se disfraza a veces de Hijo y a veces de Espíritu Santo", "Que hay un solo y único Dios, pero son tres Personas distintas e inseparables", "Que Jesús tuvo tres nombres"], corr: 2, fb: "Es un misterio profundo. No son tres dioses. Es una sola naturaleza divina, pero el Padre ama al Hijo, el Hijo ama al Padre, y ese Amor tan infinito es el Espíritu Santo.", cite: "Catecismo 253: 'La Trinidad es una. No confesamos tres dioses sino un solo Dios en tres personas'." },
+    { id: "f15", q: "Cuando decimos que Jesús es el 'Cristo', ¿qué estamos diciendo?", opts: ["Es su apellido paterno", "Significa 'El Ungido', el Mesías prometido que venía a salvar al mundo", "Que nació en un país llamado Cristia", "Que era carpintero"], corr: 1, fb: "En el Antiguo Testamento se ungía (manchaba con aceite) a los reyes y profetas. Jesús es el Ungido definitivo por el Espíritu Santo para salvarnos.", cite: "Hechos 10, 38: 'Cómo Dios ungió con el Espíritu Santo y con poder a Jesús de Nazaret'." },
+    { id: "f16", q: "¿Jesús era mitad Dios y mitad humano (como un semidiós tipo Hércules)?", opts: ["Sí, 50% y 50%", "No, era 100% Dios y 100% hombre al mismo tiempo (Unión Hipostática)", "Era solo humano pero muy bueno", "Era solo Dios disfrazado con un traje humano"], corr: 1, fb: "Jesús sentía hambre, sed y miedo porque era verdadero hombre. Pero perdonaba pecados y resucitó porque era verdadero Dios. ¡Todo en la misma Persona!", cite: "Colosenses 2, 9: 'Porque en él habita corporalmente toda la plenitud de la Deidad'." },
+    { id: "f17", q: "¿Qué enseñamos los católicos sobre el Purgatorio?", opts: ["Es un infierno temporal con fuego y demonios", "Es un estado de purificación final para los que mueren en gracia de Dios, pero aún necesitan 'limpiarse' antes de ver el cielo", "Es una segunda oportunidad para los que murieron odiando a Dios", "Es un invento de la Edad Media"], corr: 1, fb: "Al cielo no puede entrar nada manchado por el egoísmo. El Purgatorio es como una 'ducha del alma' llena del amor sanador de Dios para prepararte para el banquete eterno.", cite: "Catecismo 1030: 'Los que mueren en la gracia de Dios... aunque estén seguros de su salvación eterna, sufren una purificación'." },
+    { id: "f18", q: "¿Qué dice la Iglesia sobre las personas homosexuales?", opts: ["Que Dios no las ama", "Las expulsa de la parroquia", "Que deben ser acogidas con profundo respeto, compasión y delicadeza, evitando toda discriminación, aunque llama a todos a vivir la castidad", "Que su orientación es un pecado mortal automático"], corr: 2, fb: "La Iglesia es madre y abraza a todos. Sentir atracción no es pecado. El pecado (para héteros u homosexuales) está en usar el sexo fuera del matrimonio sacramental diseñado por Dios.", cite: "Catecismo 2358: 'Deben ser acogidos con respeto, compasión y delicadeza. Se evitará, respecto a ellos, todo signo de discriminación injusta'." },
+    { id: "f19", q: "El 5to Mandamiento es 'No Matarás'. ¿Qué incluye esto hoy en día?", opts: ["Solo prohíbe usar armas de fuego", "Prohíbe el homicidio, el aborto, la eutanasia y hasta destruir la fama de alguien con bullying", "Solo aplica a los adultos", "Permite la violencia si estás enojado"], corr: 1, fb: "La vida humana es sagrada desde la concepción en la panza hasta la muerte natural. Incluso insultar gravemente o golpear a alguien atenta contra este mandamiento.", cite: "Mateo 5, 21-22: 'Oyeron que fue dicho... No matarás... Pero yo les digo que cualquiera que se enoje contra su hermano, será culpable'." },
+    { id: "f20", q: "¿Qué es la Eucaristía para la fe católica?", opts: ["Un pan que simboliza a Jesús, como un recordatorio", "Verdaderamente el Cuerpo, Sangre, Alma y Divinidad de Jesucristo", "Una galleta bendecida", "Un acto social para juntar a la gente"], corr: 1, fb: "No es un símbolo. En la Misa, la 'sustancia' del pan cambia para ser Cristo vivo, aunque nuestros sentidos sigan viendo y saboreando pan.", cite: "Juan 6, 55: 'Porque mi carne es verdadera comida, y mi sangre es verdadera bebida'." },
+    { id: "f21", q: "¿Por qué los sacerdotes no revelan los pecados que escuchan en la Confesión, incluso si es un delito grave?", opts: ["Porque no les importa", "Por el Sigilo Sacramental: están obligados bajo pena de excomunión a guardar el secreto absoluto, porque quien perdona es Dios", "Porque cobran por el secreto", "Solo guardan los pecados pequeños"], corr: 1, fb: "El sacerdote no puede romper el secreto de confesión ni para salvar su propia vida o si la policía se lo exige. Es el espacio más seguro del mundo: tu intimidad directa con Dios.", cite: "Catecismo 1467: 'El sacerdote está obligado a guardar un secreto absoluto sobre los pecados... No puede hacer uso del conocimiento que la confesión le da'." },
+    { id: "f22", q: "¿Es obligatorio para un católico ir a Misa todos los domingos?", opts: ["No, solo en Navidad y Pascua", "Sí, es el 3er mandamiento (santificar las fiestas). Faltar por pereza es pecado grave porque rechazás la invitación de amor de Dios", "Depende de si tenés ganas o sentís algo", "Solo si sos sacerdote o monja"], corr: 1, fb: "No vamos a Misa 'para sentir algo lindo' siempre, sino para ser fieles, recibir fuerza espiritual y agradecer a Dios, incluso cuando estamos cansados.", cite: "Catecismo 2181: 'Los que deliberadamente faltan a esta obligación cometen un pecado grave'." },
+    { id: "f23", q: "Frente a otras religiones, ¿la Iglesia Católica cree que todos los demás se van al infierno?", opts: ["Sí, sin excepción", "No, la Iglesia cree que quienes buscan a Dios con un corazón sincero y viven según su conciencia pueden salvarse, aunque la plenitud de la verdad está en Cristo", "Cree que todas las religiones son idénticas y da lo mismo", "No opina sobre eso"], corr: 1, fb: "Dios es infinitamente justo. Quien nunca escuchó de Jesús pero amó a su prójimo, se salva por los méritos de la cruz de Cristo, aunque él no lo sepa. Pero nosotros que sí lo conocemos, tenemos la responsabilidad de anunciarlo.", cite: "Lumen Gentium 16: 'Los que sin culpa suya no conocen el Evangelio... pero buscan a Dios con sincero corazón... pueden conseguir la salvación eterna'." },
+    { id: "f24", q: "¿Qué defiende la 'Castidad' que nos pide el 6to Mandamiento?", opts: ["Odiar el cuerpo humano", "No enamorarse nunca", "La integración exitosa de la sexualidad en la persona, usándola para el amor verdadero y no para usar al otro como un objeto", "Es una regla solo para los curas"], corr: 2, fb: "La castidad no es un 'no' al sexo; es un gran 'SÍ' al amor auténtico. Nos enseña a ser dueños de nosotros mismos para poder entregarnos totalmente en el matrimonio.", cite: "Catecismo 2337: 'La castidad significa la integración lograda de la sexualidad en la persona... y en el amor'." },
+    { id: "f25", q: "¿Qué diferencia hay entre venerar y adorar (Latría y Dulía)?", opts: ["Ninguna, son lo mismo", "A Dios lo adoramos (Latría) reconociéndolo como creador; a María y los Santos los veneramos (Dulía) respetando su ejemplo de amor a Dios", "Adoramos a los santos y veneramos a Dios", "Odiamos a las estatuas"], corr: 1, fb: "Adorar es reconocer que alguien es el Dueño de tu vida (solo Dios). Venerar a un Santo es como aplaudir al mejor jugador del equipo: celebrás lo que Dios hizo a través de él.", cite: "Catecismo 2132: 'El culto cristiano a las imágenes no es contrario al primer mandamiento... el honor tributado a la imagen se dirige al original'." },
+    { id: "f26", q: "¿Qué es el Dogma de la Inmaculada Concepción?", opts: ["Que Jesús nació de María", "Que María fue concebida en el vientre de Santa Ana sin la mancha del Pecado Original", "Que Jesús no cometió pecados", "Que María nunca se enfermó"], corr: 1, fb: "Mucha gente lo confunde con la concepción de Jesús. Significa que María, desde el instante cero de su existencia, estuvo llena de gracia para poder ser la morada de Dios.", cite: "Pío IX (Ineffabilis Deus): 'La bienaventurada Virgen María fue preservada inmune de toda mancha de la culpa original'." },
+    { id: "f27", q: "La Biblia dice: 'La fe sin obras está muerta'. ¿Qué significa esto?", opts: ["Que hay que trabajar en la construcción", "Que no alcanza con decir 'creo en Dios', sino que esa fe tiene que notarse en cómo tratás y ayudás a los demás", "Que creer no sirve para nada", "Que las obras de arte salvan el alma"], corr: 1, fb: "Creer en Jesús no es solo aceptar una teoría mental; es un estilo de vida. Si no perdonás ni sos solidario, tu fe es solo un adorno.", cite: "Santiago 2, 17: 'Así también la fe, si no tiene obras, es muerta en sí misma'." },
+    { id: "f28", q: "¿Qué enseñó el Concilio Vaticano II sobre el rol de los Laicos (los cristianos que no son curas ni monjas)?", opts: ["Que solo deben ir a Misa y callarse", "Que tienen la vocación de ser 'santos en medio del mundo', llevando a Jesús a sus colegios, trabajos y familias", "Que deben vivir en los monasterios", "Que tienen menos importancia que los sacerdotes"], corr: 1, fb: "No hace falta usar sotana para ser santo. Un joven estudiante, un médico o un trabajador que hace sus tareas con amor está construyendo el Reino de Dios.", cite: "Lumen Gentium 31: 'A los laicos corresponde... buscar el reino de Dios ocupándose de las realidades temporales y ordenándolas según Dios'." },
+    { id: "f29", q: "¿Qué es la 'Infalibilidad Papal'?", opts: ["Que el Papa nunca peca ni se confiesa", "Que el Papa sabe todo, hasta de matemáticas", "Que el Espíritu Santo protege al Papa de enseñar el error cuando define solemnemente un dogma de fe o moral (Ex Cathedra)", "Que el Papa puede predecir el futuro"], corr: 2, fb: "El Papa es un hombre pecador (¡por eso se confiesa!). Pero cuando ejerce su autoridad suprema para definir una verdad cristiana para toda la Iglesia, Dios garantiza que no nos va a engañar.", cite: "Catecismo 891: 'El Romano Pontífice goza de esta infalibilidad en virtud de su ministerio, cuando... proclama por un acto definitivo la doctrina en cuestiones de fe'." },
+    { id: "f30", q: "¿Qué son las 'Obras de Misericordia Espirituales'?", opts: ["Dar de comer al hambriento", "Enseñar al que no sabe, consolar al triste, perdonar las ofensas y rezar por vivos y difuntos", "Construir capillas de ladrillo", "Lavar la ropa de los pobres"], corr: 1, fb: "Las obras corporales ayudan al cuerpo (comida, ropa). Las espirituales curan el alma: tener paciencia con el que molesta, dar un buen consejo o perdonar al que te lastimó.", cite: "Catecismo 2447: 'Las obras de misericordia son acciones caritativas mediante las cuales socorremos a nuestro prójimo en sus necesidades espirituales y corporales'." },
+    { id: "f31", q: "¿Qué enseña la Iglesia Católica sobre el 'Infierno'?", opts: ["Que Dios manda a la gente ahí para vengarse", "Que es una tortura medieval que ya no existe", "Que es el estado de autoexclusión definitiva de Dios, elegido libremente por quien muere en pecado mortal sin arrepentirse", "Que es un lugar subterráneo con lava"], corr: 2, fb: "Dios no quiere que nadie vaya al infierno. Pero como respeta nuestra libertad, acepta la triste decisión de quien dice: 'No te quiero en mi vida' hasta el último segundo.", cite: "Catecismo 1033: 'Morir en pecado mortal sin estar arrepentido... significa permanecer separados de Él para siempre por nuestra propia y libre elección'." },
+    { id: "f32", q: "¿Cómo se defiende la historicidad de la Resurrección de Jesús?", opts: ["Es solo un cuento simbólico para darnos esperanza", "Nadie sabe, es pura fe ciega", "Por el sepulcro vacío, el testimonio de cientos de testigos dispuestos a morir por esa verdad, y el origen explosivo de la Iglesia", "Los apóstoles robaron el cuerpo para mentir"], corr: 2, fb: "Los apóstoles eran cobardes y huyeron. De repente, salieron a dejarse torturar y matar defendiendo que lo vieron vivo. ¡Nadie da su vida por una mentira que él mismo inventó!", cite: "1 Corintios 15, 6: 'Después apareció a más de quinientos hermanos a la vez, de los cuales muchos viven aún'." },
+    { id: "f33", q: "¿Por qué los sacerdotes católicos latinos no se casan (Celibato)?", opts: ["Porque el sexo es malo según la Iglesia", "Porque odian tener familia", "Es una disciplina (no dogma) para entregar su corazón indiviso a Cristo y a la comunidad, como lo hizo Jesús", "Porque está en los 10 Mandamientos"], corr: 2, fb: "El celibato es un regalo enorme. Al no tener una esposa física, el cura tiene todo su tiempo y energía para ser 'padre' de miles de personas en su parroquia.", cite: "Catecismo 1579: 'Llamados a consagrarse totalmente al Señor y a sus 'cosas', se entregan enteramente a Dios y a los hombres'." },
+    { id: "f34", q: "¿Qué actitud debe tener un joven cristiano ante las redes sociales y el mundo digital?", opts: ["Borrar todas sus cuentas y aislarse", "Usarlas para insultar a los que piensan distinto", "Ser 'sal y luz' también ahí, compartiendo la verdad con respeto, evitando la pornografía y no dejando que el celular lo domine", "Usar cuentas falsas"], corr: 2, fb: "Las redes son herramientas. Podés usarlas para hundir a alguien con un chisme o para dar ánimo y mostrar la alegría de ser cristiano. ¡El desafío es ser auténtico online y offline!", cite: "Mateo 5, 14: 'Ustedes son la luz del mundo. Una ciudad asentada sobre un monte no se puede esconder'." },
+    { id: "f35", q: "La confirmación te da 'Valentía' (Fortaleza). ¿Para qué?", opts: ["Para pelear a los golpes en la calle", "Para no tener vergüenza de persignarte, defender la vida, o decir 'no' a cosas que te dañan aunque todos lo hagan", "Para saltar en paracaídas", "Para faltar al respeto a los mayores"], corr: 1, fb: "Ir contra la corriente exige coraje. Decir 'no quiero drogarme', 'no quiero burlarme de ese chico', o 'voy a Misa' requiere la fuerza brutal del Espíritu Santo.", cite: "2 Timoteo 1, 7: 'Porque no nos ha dado Dios espíritu de cobardía, sino de poder, de amor y de dominio propio'." },
+    { id: "f36", q: "¿Es necesario tener 'Padrino o Madrina' en la Confirmación?", opts: ["No, es solo para sacarse la foto", "Sí, es un guía espiritual mayor que te acompaña, reza por vos y te da testimonio de vida cristiana", "Sí, pero solo para que te compre regalos", "Solo si sos menor de edad"], corr: 1, fb: "El padrino es como un hermano mayor en la fe. Debería ser alguien que admiremos por cómo vive su amor a Dios, para que nos ayude cuando tengamos dudas.", cite: "Código de Derecho Canónico 892: 'En la medida de lo posible, asista al confirmando un padrino, a quien corresponde ocuparse de que se porte como verdadero testigo de Cristo'." },
+    { id: "f37", q: "Si tenés una duda fuerte sobre un tema de fe (ej. ¿por qué la Iglesia piensa así sobre X tema?), ¿qué deberías hacer?", opts: ["Dejar la Iglesia inmediatamente", "Guardarte la duda y hacer de cuenta que creés", "Investigar en el Catecismo Joven (Youcat), preguntarle a un cura o a alguien formado para entender el 'por qué'", "Inventar tu propia religión"], corr: 2, fb: "¡Tener dudas es normal a esta edad! Significa que tu cerebro está creciendo. La fe católica es inteligente; tiene 2000 años de filosofía y siempre hay respuestas si buscás bien.", cite: "1 Pedro 3, 15: 'Estén siempre preparados para presentar defensa con mansedumbre y reverencia ante todo el que les demande razón de la esperanza que hay en ustedes'." },
+    { id: "f38", q: "¿Qué pasa con el 'Matrimonio' católico, se puede romper si ya no se sienten 'mariposas'?", opts: ["Sí, el Papa lo anula fácil", "No, el sacramento es indisoluble porque representa el amor inquebrantable de Cristo por la Iglesia, en las buenas y en las malas", "Dura 10 años y se renueva", "Sí, si firman un papel civil"], corr: 1, fb: "El amor matrimonial no es solo una emoción pasajera, es una decisión diaria de amar al otro, incluso cuando cuesta. Por eso Dios da una gracia especial para sostenerlo.", cite: "Marcos 10, 9: 'Por tanto, lo que Dios juntó, no lo separe el hombre'." },
+    { id: "f39", q: "¿A quién llamamos 'el primer Papa' en la historia de la Iglesia?", opts: ["San Pablo", "San Juan", "San Pedro", "San Constantino"], corr: 2, fb: "Jesús cambió el nombre de Simón a 'Pedro' (piedra) y le dio las llaves del Reino. Hoy el Papa Francisco es el sucesor número 266 de ese primer Papa pescador.", cite: "Mateo 16, 18: 'Y yo también te digo, que tú eres Pedro, y sobre esta roca edificaré mi iglesia'." },
+    { id: "f40", q: "¿Qué dice el séptimo mandamiento 'No robarás' además de no quitar cosas físicas?", opts: ["Nada más", "Que debemos pagar salarios justos, cuidar la creación (ecología) y no hacer trampa en la escuela o en el trabajo", "Que no podemos tener cosas lindas", "Que hay que regalar todo a los pobres obligatoriamente"], corr: 1, fb: "Robar tiempo haciendo mal tu tarea, destruir la naturaleza que es de todos, o copiarte en un examen también son faltas a la justicia de este mandamiento.", cite: "Catecismo 2409: 'Toda forma de retener injustamente el bien del prójimo es contraria al séptimo mandamiento'." },
+    { id: "f41", q: "¿Qué significa la palabra 'Amén' que decimos siempre al final de rezar?", opts: ["Adiós, Dios", "Así sea / Es verdad / Creo en esto firmemente", "Ojalá pase", "Fin del comunicado"], corr: 1, fb: "Venida del hebreo, decir 'Amén' es poner tu firma a la oración. Es como decirle a Dios: 'Sí, me juego la vida por lo que acabo de decir'.", cite: "Catecismo 1062: 'El Amén final del Credo recoge y confirma su primera palabra: Creo'." },
+    { id: "f42", q: "¿Es pecado sentir tentaciones (ganas de hacer algo malo)?", opts: ["Sí, ya pecaste con solo sentirlo", "No, la tentación no es pecado. El pecado está en consentirla y decirle 'sí' libremente a esa mala idea", "Sí, significa que sos mala persona", "No, podés hacer lo que quieras"], corr: 1, fb: "¡Hasta Jesús fue tentado en el desierto! Sentir envidia o impureza en la mente no es pecado si apenas te das cuenta lo rechazás y mirás hacia otro lado.", cite: "Hebreos 4, 15: 'Porque no tenemos un sumo sacerdote que no pueda compadecerse de nuestras debilidades, sino uno que fue tentado en todo según nuestra semejanza, pero sin pecado'." },
+    { id: "f43", q: "¿A qué llamamos 'Vocación'?", opts: ["A conseguir un buen trabajo que pague bien", "Al llamado único que Dios le hace a cada persona para ser feliz (matrimonio, sacerdocio, consagración o soltería dedicada a Dios)", "A cantar en el coro de la iglesia", "A tener muchos amigos"], corr: 1, fb: "Dios pensó un plan espectacular para vos antes de que nacieras. Descubrir tu vocación es encontrar el lugar donde vas a amar más y a hacer más felices a los demás.", cite: "Jeremías 1, 5: 'Antes que te formase en el vientre te conocí, y antes que nacieses te santifiqué'." },
+    { id: "f44", q: "¿Cuáles son las Tres Virtudes Teologales (las más importantes)?", opts: ["Paciencia, Humildad y Respeto", "Fe, Esperanza y Caridad (Amor)", "Estudio, Trabajo y Descanso", "Alegría, Paz y Diversión"], corr: 1, fb: "Se llaman teologales porque nos las da Dios directamente. La mayor de todas es la Caridad, porque en el cielo ya no necesitaremos fe (porque lo veremos) ni esperanza (porque lo tendremos), solo amaremos.", cite: "1 Corintios 13, 13: 'Y ahora permanecen la fe, la esperanza y el amor, estos tres; pero el mayor de ellos es el amor'." },
+    { id: "f45", q: "¿Puede un joven llegar a ser un 'Santo' reconocido por la Iglesia?", opts: ["No, tenés que ser viejo y sacerdote", "Sí, la santidad es para todos. Jóvenes como Carlo Acutis o Domingo Savio demostraron que se puede ser adolescente y vivir para Cristo", "No, porque los jóvenes se equivocan mucho", "Solo si mueren como mártires luchando contra leones"], corr: 1, fb: "Carlo Acutis jugaba a la PlayStation y programaba páginas web, y es beato. Ser santo no es ser aburrido, es vivir tu juventud con la alegría y el estilo de Jesús.", cite: "Papa Francisco (Christus Vivit 50): 'Hay jóvenes que dieron su vida por Cristo... Ellos son reflejo de la juventud de Jesús'." },
+    { id: "f46", q: "¿Qué celebramos en la fiesta del 'Corpus Christi'?", opts: ["La invención del pan", "La presencia real y maravillosa de Jesucristo en la Eucaristía, paseándolo por las calles", "El día del Papa", "La última cena de los apóstoles antes de viajar"], corr: 1, fb: "Es el día en que salimos del templo con la Hostia Consagrada para gritarle al mundo que Jesús está vivo entre nosotros y camina por nuestras ciudades.", cite: "Juan 6, 51: 'El pan que yo daré es mi carne, la cual yo daré por la vida del mundo'." },
+    { id: "f47", q: "La Iglesia rechaza el 'Relativismo Moral'. ¿Qué es eso?", opts: ["La teoría de la relatividad de Einstein", "La idea de que no existe una verdad absoluta y que 'lo que está bien para mí, puede estar mal para vos' (Todo vale)", "La relación entre familiares", "Que todos somos parientes"], corr: 1, fb: "El relativismo te dice: 'tu verdad es tuya, la mía es mía'. Pero la Iglesia sostiene que hay cosas objetivamente malas (como matar o robar) y verdades absolutas (como el amor de Dios), independientemente de lo que uno opine.", cite: "Juan 8, 32: 'Y conocerán la verdad, y la verdad los hará libres'." },
+    { id: "f48", q: "¿Qué significado tienen los 40 días de Cuaresma para un joven?", opts: ["Hacer dieta obligatoria", "Es un tiempo de entrenamiento espiritual (rezar, ayudar, privarse de algo que gusta mucho) para preparar el corazón para la Pascua", "Son vacaciones de invierno", "Estar triste y no reírse"], corr: 1, fb: "Es como el 'gimnasio del alma'. Cuando dejás de comer chocolates o usar tanto TikTok por amor a Dios, demostrás que tu voluntad es más fuerte que tus caprichos.", cite: "Mateo 6, 17-18: 'Pero tú, cuando ayunes, unge tu cabeza y lava tu rostro, para no mostrar a los hombres que ayunas, sino a tu Padre que está en secreto'." },
+    { id: "f49", q: "¿Por qué los católicos adoramos la Cruz, si es un instrumento de tortura?", opts: ["Porque nos gusta el dolor", "NO adoramos el dolor, adoramos el AMOR inmenso de Jesús que estuvo dispuesto a sufrir eso para salvarnos", "Porque era de madera buena", "Para asustar a los demonios"], corr: 1, fb: "Mirar la cruz es el antídoto contra el desánimo. Cuando pienses 'nadie me ama', mirá a Jesús crucificado; esos brazos abiertos te están gritando '¡Así de grande es mi amor por vos!'.", cite: "Gálatas 6, 14: 'Pero lejos esté de mí gloriarme, sino en la cruz de nuestro Señor Jesucristo'." },
+    { id: "f50", q: "¿Qué espera el Espíritu Santo de vos después de la Confirmación?", opts: ["Que te olvides de la Iglesia", "Que seas un 'Soldado de Cristo', defendiendo la fe, amando a los marginados y cambiando tu entorno con el ejemplo", "Que critiques a los curas", "Que te encierres a rezar todo el día"], corr: 1, fb: "La Confirmación te saca de las tribunas y te pone en la cancha. Jesús te dice: 'Ahora te toca a vos, necesito tus manos, tus palabras y tu valentía para construir mi Reino'.", cite: "Hechos 1, 8: 'Pero recibirán poder, cuando haya venido sobre ustedes el Espíritu Santo, y me serán testigos... hasta lo último de la tierra'." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+let synth;
+
+function initAudio() {
+    if (typeof Tone !== 'undefined' && !audioInit) {
+        Tone.start();
+        // Sonido enérgico (sawtooth) adecuado para pre-adolescentes
+        synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "sawtooth" }, 
+            envelope: { attack: 0.05, decay: 0.2, sustain: 0.1, release: 0.8 }
+        }).toDestination();
+        synth.volume.value = -15; // Volumen moderado para no molestar
+        audioInit = true;
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudio();
+        if (!synth) return;
+        
+        if (type === 'correct') {
+            const now = Tone.now();
+            synth.triggerAttackRelease("C5", "8n", now);
+            synth.triggerAttackRelease("E5", "8n", now + 0.1);
+            synth.triggerAttackRelease("G5", "8n", now + 0.2);
+            synth.triggerAttackRelease("C6", "4n", now + 0.3); // Acorde triunfal joven
+        } else {
+            synth.triggerAttackRelease("E4", "8n");
+            synth.triggerAttackRelease("C4", "8n", Tone.now() + 0.15);
+        }
+    } catch (e) { console.log("Audio no soportado o silenciado"); }
+}
+
+function initQuiz() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const qId = urlParams.get('id');
+        if (qId) {
+            const found = CARTAS.findIndex(c => c.id === qId);
+            currentIdx = found !== -1 ? found : Math.floor(Math.random() * CARTAS.length);
+        } else {
+            currentIdx = Math.floor(Math.random() * CARTAS.length);
+        }
+    } catch(e) { currentIdx = 0; }
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    const container = document.getElementById("options-container");
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    
+    container.innerHTML = "";
+    fbBox.style.display = "none";
+    btnNext.style.display = "none"; 
+    
+    c.opts.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<i class="far fa-circle" style="color:#CCC; font-size:1.3rem;"></i> <span>${opt}</span>`;
+        btn.onclick = () => checkAns(idx, btn);
+        container.appendChild(btn);
+    });
+}
+
+function checkAns(idx, btn) {
+    const c = CARTAS[currentIdx];
+    const buttons = document.querySelectorAll(".opt-btn");
+    buttons.forEach(b => b.disabled = true);
+    
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    fbBox.style.display = "block";
+    btnNext.style.display = "flex"; 
+    
+    if(idx === c.corr) {
+        btn.classList.add("correct");
+        btn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        document.getElementById("fb-main").innerHTML = `<strong>¡Exacto! Tenés la idea clara:</strong><br>${c.fb}`;
+        playSound('correct');
+    } else {
+        btn.classList.add("incorrect");
+        btn.innerHTML = `<i class="fas fa-times-circle" style="color:#E53935; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        
+        const correctBtn = buttons[c.corr];
+        correctBtn.classList.add("correct");
+        correctBtn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[c.corr]}</span>`;
+        
+        document.getElementById("fb-main").innerHTML = `<strong>Ojo con esta duda. La verdad es que:</strong><br>${c.fb}`;
+        playSound('incorrect');
+    }
+    
+    document.getElementById("fb-cite").innerText = c.cite;
+}
+
+function nextQuestion() {
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+    setTimeout(() => {
+        let next;
+        do { next = Math.floor(Math.random() * CARTAS.length); } while (next === currentIdx);
+        currentIdx = next;
+        
+        try {
+            if (window.location.protocol !== 'file:') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } catch(e) {}
+        
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 400);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    let baseUrl = "Enlace";
+    try { baseUrl = window.location.protocol === 'file:' ? 'Archivo_Local' : window.location.origin + window.location.pathname; } catch(e) {}
+    
+    const urlConId = baseUrl !== 'Archivo_Local' ? `${baseUrl}?id=${c.id}` : window.location.href;
+    const text = `🔥 Confirmando la Fe - Capilla Santa Ana\n\n"${c.q}"\n\n¿Tenés clara la respuesta? Ponete a prueba acá: `;
+
+    if (navigator.share && baseUrl !== 'Archivo_Local') {
+        try { await navigator.share({ title: 'Desafío Confirmación', text: text, url: urlConId }); } 
+        catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + (baseUrl !== 'Archivo_Local' ? urlConId : '')).then(() => {
+            alert('¡Enlace copiado! Pasáselo a tu grupo de amigos o confirmación.');
+        });
+    }
+}
+
+function initBG() {
+    const words = ['ESPÍRITU SANTO', 'DONES', 'VALENTÍA', 'CONCIENCIA', 'LIBERTAD', 'VERDAD', 'CAPILLA SANTA ANA', 'VOCACIÓN', 'CONFIRMACIÓN'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (16 + Math.random() * 35) + "px";
+        const duration = 12 + Math.random() * 15; // Movimiento un poco más dinámico
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) { hamburgerIcon.classList.replace('fa-bars', 'fa-xmark'); } else { hamburgerIcon.classList.replace('fa-xmark', 'fa-bars'); }
+        }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+        function cerrarModalDonar() { document.getElementById('modalDonar').classList.remove('show'); }
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366"; btn.style.color = "white";
+            setTimeout(() => { btn.innerHTML = oldTxt; btn.style.backgroundColor = "var(--acento)"; }, 3000);
+        }
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") cerrarModalDonar(); });
+        document.getElementById('modalDonar').addEventListener('click', (e) => { if (e.target === document.getElementById('modalDonar')) { cerrarModalDonar(); } });
+
+initBG();
+initQuiz();
+</script>
+</body>
+</html>

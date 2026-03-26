@@ -1,0 +1,181 @@
+/* =========================================
+   UX PASTORAL: FONDO Y COLORES LITÚRGICOS
+   ========================================= */
+/* Usamos HSL para manejar opacidades y brillos dinámicos sin romper el código */
+body.tiempo-morado { --acento-h: 262; --acento-s: 46%; --acento-l: 55%; }
+body.tiempo-verde { --acento-h: 122; --acento-s: 39%; --acento-l: 49%; }
+body.tiempo-blanco { --acento-h: 43; --acento-s: 96%; --acento-l: 58%; }
+body.tiempo-rojo { --acento-h: 2; --acento-s: 76%; --acento-l: 56%; }
+
+:root {
+    --acento: hsl(var(--acento-h), var(--acento-s), var(--acento-l));
+    --header-height: 80px;
+}
+
+html { 
+    background-color: var(--fondo); 
+    overscroll-behavior-y: none; 
+}
+
+/* Un gradiente radial muy sutil que "baña" la pantalla desde arriba con el color litúrgico */
+body { 
+    height: 100%; 
+    margin: 0; 
+    background-color: var(--fondo); 
+    background-image: radial-gradient(circle at 50% 0%, hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.08) 0%, transparent 60%);
+    transition: background-color 0.8s ease, background-image 0.8s ease;
+    position: relative; 
+}
+
+.dark-mode body {
+    background-image: radial-gradient(circle at 50% 0%, hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.15) 0%, transparent 70%);
+}
+
+main { 
+    display: flex; flex-direction: column; min-height: 100dvh; 
+    padding: 120px 20px 100px; box-sizing: border-box; max-width: 600px; 
+    margin: 0 auto; text-align: left; position: relative; z-index: 2; 
+}
+
+/* =========================================
+   BUSCADOR (Sticky Seguro)
+   ========================================= */
+.search-container { 
+    position: sticky; top: var(--header-height); z-index: 100; 
+    padding: 10px 0; background: transparent; margin-bottom: 10px; 
+}
+.search-box-wrapper { position: relative; }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--acento); opacity: 0.8; font-size: 1.1rem; }
+.search-box {
+    width: 100%; padding: 16px 20px 16px 50px; border-radius: 30px;
+    border: 1px solid rgba(0,0,0,0.05); font-family: inherit; font-size: 1rem;
+    outline: none; transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    background: rgba(255,255,255,0.9); color: var(--texto);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04); box-sizing: border-box;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.search-box:focus { border-color: var(--acento); box-shadow: 0 8px 25px hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.2); }
+.dark-mode .search-box { background: rgba(30,30,30,0.8); border-color: rgba(255,255,255,0.05); color: #fff; }
+
+/* =========================================
+   ALFABETO
+   ========================================= */
+.alphabet { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; margin-bottom: 15px; scrollbar-width: none; scroll-behavior: smooth; }
+.alphabet::-webkit-scrollbar { display: none; }
+.letter-btn {
+    background: var(--blanco); border: 1px solid rgba(0,0,0,0.05); color: var(--texto);
+    padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 0.9rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; flex-shrink: 0; 
+}
+.letter-btn:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+.letter-btn.active { background: var(--acento); color: #fff; border-color: var(--acento); }
+.letter-btn.disabled { opacity: 0.3; cursor: not-allowed; background: transparent; }
+.dark-mode .letter-btn:not(.active) { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.05); color: #fff; }
+
+.letter-header {
+    font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--acento);
+    font-weight: 800; margin: 30px 0 10px 10px; line-height: 1;
+    transform: translateY(20px); opacity: 0; transition: transform 0.8s ease, opacity 0.8s ease;
+}
+.letter-header.visible { transform: translateY(0); opacity: 0.3; }
+
+/* =========================================
+   TARJETAS (Acordeón Accesible y Suave)
+   ========================================= */
+.glosario-grid { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
+
+.term-card {
+    background: var(--blanco); border-radius: 16px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02); 
+    border: 1px solid rgba(0,0,0,0.02);
+    opacity: 0; transform: translateY(20px);
+    /* Transiciones pastorales: lentas y que "respiran", sin usar SCALE */
+    transition: box-shadow 0.6s ease, border-color 0.6s ease, background-color 0.6s ease, opacity 0.6s ease, transform 0.6s ease;
+    position: relative; overflow: hidden;
+}
+.term-card.visible { opacity: 1; transform: translateY(0); }
+
+/* Efecto Glow (Resplandor) sin forzar reflow visual (Scale) */
+.term-card.expanded {
+    box-shadow: 0 15px 40px hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.12);
+    border-color: hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.3);
+    background: var(--blanco);
+}
+.dark-mode .term-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
+.dark-mode .term-card.expanded { background: rgba(255,255,255,0.06); }
+
+.term-card::before {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px;
+    background: var(--acento); transform: scaleY(0); transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.term-card.expanded::before { transform: scaleY(1); }
+
+/* El botón real accesible */
+.term-header-btn {
+    appearance: none; background: transparent; border: none; width: 100%; text-align: left;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 20px; cursor: pointer; color: inherit; font-family: inherit; outline: none;
+}
+.term-header-btn:focus-visible { background: hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.05); border-radius: 16px; }
+
+.term-info { display: flex; flex-direction: column; gap: 5px; flex-grow: 1; padding-right: 15px; }
+
+.term-badge { 
+    align-self: flex-start; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; 
+    background: hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.1); 
+    color: var(--acento); padding: 4px 10px; border-radius: 12px; font-weight: 800; 
+}
+.term-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--primario); transition: color 0.4s ease; line-height: 1.2; }
+.term-icon { color: var(--acento); transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); font-size: 1.2rem; opacity: 0.5; margin-top: 5px; }
+.term-card.expanded .term-icon { transform: rotate(180deg); opacity: 1; }
+
+/* Contenido oculto accesible */
+.term-body { 
+    display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+.term-card.expanded .term-body { grid-template-rows: 1fr; }
+.term-body-inner { overflow: hidden; padding: 0 20px; }
+
+.term-desc { font-size: 0.95rem; line-height: 1.7; color: var(--texto); opacity: 0.85; margin: 0 0 20px 0; }
+
+.share-actions { display: flex; justify-content: flex-end; border-top: 1px solid rgba(0,0,0,0.05); padding: 15px 0; }
+.dark-mode .share-actions { border-top: 1px solid rgba(255,255,255,0.05); }
+
+.btn-share-term {
+    background: transparent; color: var(--primario); border: 2px solid rgba(0,0,0,0.1);
+    padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.btn-share-term:hover, .btn-share-term:focus-visible { background: var(--acento); color: #fff; border-color: var(--acento); outline: none; }
+.dark-mode .btn-share-term { border-color: rgba(255,255,255,0.2); color: #fff; }
+.dark-mode .btn-share-term:hover { background: var(--acento); border-color: var(--acento); }
+
+.exact-match { animation: flashMatch 2s ease; }
+@keyframes flashMatch { 0% { box-shadow: 0 0 0 transparent; } 20% { box-shadow: 0 0 20px hsla(var(--acento-h), var(--acento-s), var(--acento-l), 0.5); } 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.02); } }
+.no-results { text-align: center; color: var(--texto); opacity: 0.6; padding: 40px 20px; font-style: italic; }
+
+/* =========================================
+   PERFORMANCE: PALABRAS FLOTANTES
+   ========================================= */
+.floating-words-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+.floating-word { 
+    position: absolute; font-family: 'Playfair Display', serif; color: var(--acento); 
+    font-weight: 600; opacity: 0; animation: floatUp 18s linear infinite; 
+    will-change: transform, opacity; /* Optimiza uso de GPU */
+}
+@keyframes floatUp { 0% { transform: translateY(110vh); opacity: 0; } 10% { opacity: 0.08; } 50% { opacity: 0.15; } 90% { opacity: 0.08; } 100% { transform: translateY(-10vh); opacity: 0; } }
+
+/* Respetar reducción de movimiento en celulares */
+@media (prefers-reduced-motion: reduce) {
+    .floating-word { animation: none; display: none; }
+    .term-card { transition: none; transform: none; opacity: 1; }
+    .term-body { transition: none; }
+}
+
+/* GLOBALES */
+.creador-firma { margin-top: 50px; padding-bottom: 20px; font-size: 0.8rem; color: var(--texto); opacity: 0.4; text-align: center; letter-spacing: 0.5px; }
+.float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+.f-btn { text-decoration: none !important; border: none !important; outline: none !important; cursor: pointer; background: transparent; }
+.f-btn i { color: var(--acento); font-size: 1.6rem; transition: color 0.5s ease; }
+.btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }

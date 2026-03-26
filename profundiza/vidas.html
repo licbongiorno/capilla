@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Vidas que Inspiran | Santuario de Testimonios</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --oro-viejo: #B8860B;
+            --oro-brillante: #D4AF37;
+            --pergamino: #FDFCF0;
+            --texto-sagrado: #2C2C2C;
+            --blanco-puro: #FFFFFF;
+            --charcoal: #4A5568;
+            --sombra-sacra: 0 10px 30px rgba(184, 134, 11, 0.08);
+            --sombra-fuerte: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* --- Scrollbar Personalizado (Elegancia) --- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--pergamino); }
+        ::-webkit-scrollbar-thumb { background: var(--oro-viejo); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--oro-brillante); }
+
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--pergamino);
+            /* Gradiente sutil simulando luz divina */
+            background-image: radial-gradient(circle at 50% 0%, #ffffff 0%, #FDFCF0 60%);
+            color: var(--texto-sagrado);
+            margin: 0;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            position: relative;
+        }
+
+        header::after {
+            content: '☩'; /* Símbolo sutil de cruz */
+            position: absolute; 
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--oro-viejo);
+            opacity: 0.5;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.8rem;
+            color: var(--oro-viejo);
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .subtitle { 
+            font-weight: 300; 
+            font-style: italic; 
+            color: var(--charcoal); 
+            margin-top: 10px; 
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* --- Buscador y Controles --- */
+        .controls-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 10px;
+            text-align: center;
+        }
+
+        .search-box { position: relative; margin-bottom: 25px; }
+        .search-input {
+            width: 100%;
+            padding: 20px 30px 20px 60px;
+            border-radius: 50px;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            font-size: 1.05rem;
+            background: rgba(255,255,255,0.9);
+            box-shadow: var(--sombra-sacra);
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .search-input:focus { border-color: var(--oro-viejo); box-shadow: 0 0 15px rgba(184, 134, 11, 0.2); }
+        .search-icon {
+            position: absolute; left: 25px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--oro-viejo);
+            font-size: 1.2rem;
+        }
+
+        .btn-accion {
+            background: var(--oro-viejo);
+            color: var(--blanco-puro);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--sombra-sacra);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-accion:hover { background: var(--oro-brillante); transform: translateY(-3px); box-shadow: var(--sombra-fuerte); }
+
+        /* --- Grid de Vidas --- */
+        .vidas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 20px 50px;
+        }
+
+        .vida-card {
+            background: var(--blanco-puro);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: var(--sombra-sacra);
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 4px solid transparent;
+            opacity: 0; transform: translateY(30px);
+        }
+        .vida-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--sombra-fuerte); 
+            border-top: 4px solid var(--oro-viejo); 
+        }
+        .vida-card.visible { opacity: 1; transform: translateY(0); }
+
+        .vida-nombre {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--oro-viejo);
+            margin-bottom: 5px;
+            line-height: 1.1;
+            font-weight: 600;
+        }
+
+        .vida-meta-card {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .vida-titulo {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--charcoal);
+            margin-bottom: 20px;
+        }
+
+        .vida-resumen {
+            font-size: 0.95rem;
+            color: var(--texto-sagrado);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .leer-mas {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--oro-viejo);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: auto;
+        }
+
+        /* --- Paginación --- */
+        .contenedor-cargar-mas {
+            text-align: center;
+            padding-bottom: 60px;
+            display: none; /* Se muestra por JS si hay más vidas */
+        }
+
+        /* --- Modal Expandido (Aspecto de Retablo) --- */
+        .modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(8px); /* Efecto vidrio esmerilado elegante */
+            z-index: 2000; align-items: center; justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .modal.mostrar { display: flex; opacity: 1; }
+
+        .modal-content {
+            background: var(--pergamino);
+            padding: 60px 50px;
+            border-radius: 20px;
+            max-width: 800px; width: 92%;
+            max-height: 85vh; overflow-y: auto;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+        }
+        .modal.mostrar .modal-content { transform: scale(1); }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 30px;
+            font-size: 2.5rem; cursor: pointer; color: var(--charcoal);
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--oro-viejo); transform: rotate(90deg); }
+
+        .modal-body-header { text-align: center; margin-bottom: 35px; }
+        
+        .modal-meta {
+            display: flex; justify-content: center; gap: 20px;
+            font-size: 0.9rem; color: var(--charcoal); margin-top: 15px;
+            font-style: italic; flex-wrap: wrap;
+        }
+
+        .bio-historia {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: var(--texto-sagrado);
+            text-align: justify;
+        }
+
+        .frase-celebre {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-style: italic; text-align: center;
+            color: var(--oro-viejo); padding: 30px;
+            border-top: 1px solid rgba(184, 134, 11, 0.2);
+            line-height: 1.3;
+        }
+
+        .wa-share {
+            background: #25D366; color: white; padding: 16px;
+            border-radius: 50px; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin-top: 30px;
+            letter-spacing: 1px;
+        }
+        .wa-share:hover { background: #1ebe50; transform: translateY(-2px); }
+
+        /* --- Botón Volver Arriba --- */
+        #btnVolverArriba {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
+            background: var(--oro-viejo);
+            color: white;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            box-shadow: var(--sombra-fuerte);
+            width: 60px; height: 60px;
+        }
+        #btnVolverArriba:hover { background: var(--oro-brillante); transform: translateY(-5px); }
+
+        footer { text-align: center; padding: 40px 20px; color: var(--charcoal); font-size: 0.85rem; border-top: 1px solid rgba(0,0,0,0.05); }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            .modal-content { padding: 40px 25px; }
+            .frase-celebre { font-size: 1.8rem; }
+            #btnVolverArriba { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.2rem; }
+        }
+
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--pergamino); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--oro-viejo); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--oro-brillante); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--charcoal); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--oro-brillante); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--oro-viejo); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--pergamino); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--charcoal); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+#modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+#modalDonar.show { display: flex; opacity: 1; }
+#modalDonar .modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
+#modalDonar.show .modal-content { transform: scale(1); }
+#modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+#modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+#modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--pergamino); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--oro-viejo); font-weight: 700; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+<header id="inicio">
+    <h1>Vidas que Inspiran</h1>
+    <p class="subtitle">Encuentros con quienes dejaron huella en la eternidad.</p>
+</header>
+
+<main class="controls-section">
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, origen, profesión o historia..." onkeyup="busquedaInteligente()">
+    </div>
+    <button onclick="vidaAlAzar()" class="btn-accion">
+        <i class="fa-solid fa-dove"></i> Descubrir una Vida al Azar
+    </button>
+</main>
+
+<div class="vidas-grid" id="vidasGrid"></div>
+
+<div class="contenedor-cargar-mas" id="contenedorCargarMas">
+    <button onclick="cargarMasVidas()" class="btn-accion" style="background: var(--charcoal);">
+        <i class="fa-solid fa-plus"></i> Cargar más historias
+    </button>
+</div>
+
+<div class="float-container">
+    <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+        <i class="fas fa-heart corazon-late"></i>
+    </button>
+</div>
+
+<!-- Modal Donaciones -->
+<div id="modalDonar">
+    <div class="modal-content">
+        <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--oro-brillante); margin-bottom: 20px;"></i>
+        <h3 style="margin-bottom:15px; color: var(--oro-viejo); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+        <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+        
+        <div class="alias-box" style="margin-bottom: 10px;">
+            <span id="alias-modal">capillas.fatima.ag</span>
+        </div>
+        <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+        
+        <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--oro-brillante); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+        
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+            <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+            <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+        </div>
+
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+            <a href="ayudanos.html" style="color: var(--oro-viejo); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+        </div>
+    </div>
+</div>
+
+<div id="modal" class="modal" onclick="cerrarVista()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="cerrarVista()">&times;</span>
+        <div id="modalData"></div>
+        <a id="waLink" class="wa-share" target="_blank">
+            <i class="fab fa-whatsapp"></i> COMPARTIR TESTIMONIO
+        </a>
+    </div>
+</div>
+
+<button onclick="volverArriba()" id="btnVolverArriba" title="Volver arriba">
+    <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<footer>
+    &copy; 2026 Vidas que Inspiran | Santuario Digital
+</footer>
+
+<script src="vidas-data.js"></script>
+
+<script>
+    // --- LÓGICA DE PAGINACIÓN ---
+    let vidasFiltradas = [];
+    let indiceActual = 0;
+    const VIDAS_POR_PAGINA = 12; // Muestra 12 por vez para no cansar al usuario
+
+    // Motor de animaciones al hacer scroll (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Dejar de observar una vez que ya apareció
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Cuando carga la página
+    window.onload = () => {
+        vidasFiltradas = [...biografias]; // Iniciar con todas las biografías
+        renderizarLote(true); // true = limpiar el grid
+        verificarDeepLink();
+    };
+
+    // --- FUNCIONES DE RENDERIZADO Y BÚSQUEDA ---
+    function busquedaInteligente() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        
+        if(q.length === 0) {
+            vidasFiltradas = [...biografias];
+        } else {
+            vidasFiltradas = biografias.filter(b => 
+                (b.nombre && b.nombre.toLowerCase().includes(q)) || 
+                (b.titulo && b.titulo.toLowerCase().includes(q)) || 
+                (b.resumen && b.resumen.toLowerCase().includes(q)) ||
+                (b.historia && b.historia.toLowerCase().includes(q)) ||
+                (b.origen && b.origen.toLowerCase().includes(q))
+            );
+        }
+        renderizarLote(true); // true = reiniciar y limpiar el grid
+    }
+
+    function renderizarLote(reiniciar = false) {
+        const grid = document.getElementById('vidasGrid');
+        const btnCargarMas = document.getElementById('contenedorCargarMas');
+        
+        if (reiniciar) {
+            grid.innerHTML = "";
+            indiceActual = 0;
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Subir al buscar
+        }
+
+        if (vidasFiltradas.length === 0) {
+            grid.innerHTML = "<p style='text-align:center; grid-column: 1 / -1; color: #888; font-style:italic;'>No se encontraron testimonios. Intenta con otra palabra.</p>";
+            btnCargarMas.style.display = 'none';
+            return;
+        }
+
+        const lote = vidasFiltradas.slice(indiceActual, indiceActual + VIDAS_POR_PAGINA);
+        
+        lote.forEach(b => {
+            const card = document.createElement('div');
+            card.className = 'vida-card';
+            card.onclick = () => abrirVista(b);
+            
+            const fechasHTML = b.fechas ? `<div class="vida-meta-card"><i class="fa-regular fa-calendar"></i> ${b.fechas}</div>` : '';
+
+            card.innerHTML = `
+                <div>
+                    <div class="vida-nombre">${b.nombre}</div>
+                    ${fechasHTML}
+                    <div class="vida-titulo">${b.titulo}</div>
+                    <div class="vida-resumen">${b.resumen}</div>
+                </div>
+                <div class="leer-mas">Leer historia completa ➔</div>
+            `;
+            grid.appendChild(card);
+            observer.observe(card); // Activar animación al scrollear
+        });
+
+        indiceActual += VIDAS_POR_PAGINA;
+
+        // Mostrar u ocultar el botón de "Cargar más"
+        if (indiceActual >= vidasFiltradas.length) {
+            btnCargarMas.style.display = 'none';
+        } else {
+            btnCargarMas.style.display = 'block';
+        }
+    }
+
+    function cargarMasVidas() {
+        renderizarLote(false); // false = agregar al final sin limpiar
+    }
+
+    // --- FUNCIÓN AL AZAR ---
+    function vidaAlAzar() {
+        if(!biografias || biografias.length === 0) return;
+        const indiceAleatorio = Math.floor(Math.random() * biografias.length);
+        const vidaElegida = biografias[indiceAleatorio];
+        abrirVista(vidaElegida);
+    }
+
+    // --- CONTROL DEL MODAL ---
+    function abrirVista(b) {
+        const modal = document.getElementById('modal');
+        const modalData = document.getElementById('modalData');
+        
+        const origenHTML = b.origen ? `<span><i class="fa-solid fa-location-dot"></i> ${b.origen}</span>` : '';
+        const fechasHTML = b.fechas ? `<span><i class="fa-regular fa-calendar"></i> ${b.fechas}</span>` : '';
+
+        modalData.innerHTML = `
+            <div class="modal-body-header">
+                <div class="vida-nombre" style="font-size:3.5rem;">${b.nombre}</div>
+                <div class="vida-titulo" style="font-size:1rem;">${b.titulo}</div>
+                <div class="modal-meta">
+                    ${origenHTML}
+                    ${fechasHTML}
+                </div>
+            </div>
+            <div class="bio-historia">${b.historia}</div>
+            <div class="frase-celebre">“${b.frase}”</div>
+        `;
+        
+        // Deep Linking y WhatsApp
+        const personaId = b.id ? b.id : encodeURIComponent(b.nombre);
+        const shareUrl = window.location.origin + window.location.pathname + "?persona=" + personaId;
+        const msg = `✨ *Vidas que Inspiran* ✨\n\n*${b.nombre}*\n"${b.resumen}"\n\nLeé su historia completa ingresando aquí: ${shareUrl}`;
+        document.getElementById('waLink').href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+        
+        modal.classList.add('mostrar');
+        document.body.style.overflow = 'hidden'; // Evita scrollear el fondo mientras el modal está abierto
+        window.history.pushState({}, '', "?persona=" + personaId);
+    }
+
+    function cerrarVista() {
+        const modal = document.getElementById('modal');
+        modal.classList.remove('mostrar');
+        document.body.style.overflow = 'auto'; // Devuelve el scroll
+        window.history.pushState({}, '', window.location.pathname);
+    }
+
+    function verificarDeepLink() {
+        const params = new URLSearchParams(window.location.search);
+        if(params.has('persona')) {
+            const idO_Nombre = params.get('persona');
+            const b = biografias.find(item => item.id === idO_Nombre || item.nombre === decodeURIComponent(idO_Nombre));
+            if(b) abrirVista(b);
+        }
+    }
+
+    // --- BOTÓN VOLVER ARRIBA ---
+    window.onscroll = function() {
+        const btn = document.getElementById("btnVolverArriba");
+        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    function volverArriba() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Nuevas Funciones Navbar y Modales ---
+    function toggleMenu() {
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        navMenu.classList.toggle('active');
+        if (navMenu.classList.contains('active')) {
+            hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+        } else {
+            hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    // Cerrar menú al hacer clic en un enlace (móvil)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu) navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        });
+    });
+
+    // Funciones del Modal Donar
+    function abrirModalDonar() {
+        document.getElementById('modalDonar').classList.add('show');
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        if(navMenu && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    function cerrarModalDonar() {
+        document.getElementById('modalDonar').classList.remove('show');
+    }
+
+    function copiarAliasModal(btn) {
+        const alias = document.getElementById('alias-modal').innerText;
+        navigator.clipboard.writeText(alias);
+        const oldTxt = btn.innerHTML;
+        btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+        btn.style.backgroundColor = "#25D366";
+        btn.style.color = "white";
+        setTimeout(() => {
+            btn.innerHTML = oldTxt;
+            btn.style.backgroundColor = "var(--oro-brillante)";
+        }, 3000);
+    }
+
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', (e) => {
+        if(e.key === "Escape") cerrarModalDonar();
+    });
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.getElementById('modalDonar').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalDonar')) {
+            cerrarModalDonar();
+        }
+    });
+
+</script>
+</body>
+</html>

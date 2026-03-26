@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Descubriendo a Jesús | 6 a 7 años</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            --bg-grad: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%); 
+            --caja-bg: #FFFFFF;
+            --primario: #FF8F00;
+            --acento: #4CAF50;
+            --texto: #4E342E;
+            --correcto: #4CAF50;
+            --incorrecto: #F44336;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto);
+        }
+
+        .bg-words { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .floating-word {
+            position: absolute;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            color: rgba(255, 143, 0, 0.15);
+            user-select: none;
+            white-space: nowrap;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            to { transform: translateY(-20vh) rotate(5deg); opacity: 0; }
+        }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .nav-btn {
+            background: #FFF8E1; padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; color: var(--primario);
+            font-weight: 800; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;
+            border: 2px solid #FFE082; transition: 0.3s;
+        }
+        .nav-btn:hover { background: #FFE082; transform: scale(1.05); }
+        
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-family: 'Fredoka', sans-serif;
+            font-size: 1rem; padding: 6px 18px; border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(255,143,0,0.3);
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: flex-start; 
+            padding: 110px 20px 40px; z-index: 2; position: relative; width: 100%;
+        }
+
+        .quiz-box {
+            width: 100%; max-width: 500px; background: var(--caja-bg);
+            border-radius: 35px; padding: 40px 25px;
+            box-shadow: 0 15px 30px rgba(255, 143, 0, 0.15);
+            border: 5px solid #FFE082; margin-bottom: 20px;
+            transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .quiz-box.slide-out { transform: translateX(50px) rotateZ(3deg); opacity: 0; }
+
+        .question {
+            font-family: 'Fredoka', sans-serif; font-size: 1.6rem;
+            font-weight: 700; text-align: center; margin-bottom: 30px;
+            line-height: 1.3; color: var(--primario);
+        }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+        .opt-btn {
+            background: #FAFAFA; border: 3px solid #EEEEEE;
+            padding: 18px 20px; border-radius: 25px; color: var(--texto);
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.05rem; 
+            cursor: pointer; transition: 0.2s; text-align: left;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .opt-btn:hover:not(:disabled) { background: #FFF3E0; border-color: var(--primario); transform: translateX(4px); }
+        .opt-btn.correct { background: #E8F5E9; color: #2E7D32; border-color: var(--correcto); }
+        .opt-btn.incorrect { background: #FFEBEE; color: #C62828; border-color: var(--incorrecto); }
+
+        .feedback-box {
+            margin-top: 25px; padding: 20px; border-radius: 25px;
+            background: #E3F2FD; border: 3px solid #90CAF9;
+            display: none; animation: fadeIn 0.4s ease;
+        }
+        .feedback-text { font-size: 1.05rem; line-height: 1.5; margin-bottom: 15px; font-weight: 600; color: #1565C0; }
+        .feedback-cite { 
+            background: #FFFFFF; padding: 12px 15px; border-radius: 15px;
+            font-style: italic; font-weight: 800; color: #4E342E; 
+            font-size: 0.9rem; border-left: 4px solid var(--primario);
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        .actions { width: 100%; max-width: 500px; display: flex; gap: 12px; }
+        .btn-action {
+            border: none; padding: 18px; border-radius: 25px;
+            font-family: 'Fredoka', sans-serif; font-weight: 600; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-main { 
+            flex: 1; background: var(--acento); color: white; font-size: 1.3rem; 
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3); display: none; 
+        }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-sec { 
+            flex: 0 0 70px; background: #FFF9C4; color: var(--primario); 
+            border: 3px solid #FFE082; font-size: 1.4rem; 
+        }
+        .btn-sec:hover { background: #FFECB3; transform: scale(1.05); }
+
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--acento); color: #FFF; padding: 15px 25px; border-radius: 50px;
+            font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1rem; 
+            transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+        .mazo-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 700; color: #A1887F; margin-top: auto; }
+    
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--caja-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--caja-bg); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+.modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-words" id="bg"></div>
+
+        <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-box" class="quiz-box">
+            <p id="q-text" class="question">Cargando desafío...</p>
+            <div id="options-container" class="options-grid"></div>
+            <div id="feedback" class="feedback-box">
+                <div class="feedback-text" id="fb-main"></div>
+                <div class="feedback-cite">
+                    <i class="fas fa-book-open" style="color:var(--primario); margin-top: 3px;"></i>
+                    <span id="fb-cite"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-next" class="btn-action btn-main">¡Siguiente! <i class="fas fa-arrow-right"></i></button>
+            <button id="btn-share" class="btn-action btn-sec" aria-label="Compartir"><i class="fas fa-share-alt"></i></button>
+        </div>
+    </div>
+
+       <footer class="mazo-footer">Capilla Santa Ana</footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>
+
+<script>
+// BASE DE DATOS: 6 a 7 años - 50 PREGUNTAS
+const CARTAS = [
+    { id: "q1", q: "¿Quién hizo el cielo, el sol y las estrellas?", opts: ["Los astronautas", "Dios", "Un mago", "Las nubes"], corr: 1, fb: "Dios creó todo lo que vemos en el cielo porque nos ama y quería regalarnos un mundo hermoso y lleno de luz.", cite: "Génesis 1, 1: 'En el principio creó Dios los cielos y la tierra'." },
+    { id: "q2", q: "¿Quién hizo a los perritos, los gatos y todos los animales?", opts: ["El veterinario", "Dios", "Los abuelos", "La naturaleza sola"], corr: 1, fb: "Dios creó a todos los animales para que sean nuestros amigos y para que cuidemos de ellos con mucho amor.", cite: "Génesis 1, 25: 'Dios hizo los animales de la tierra según su especie'." },
+    { id: "q3", q: "¿Cómo se llama la mamá de Jesús?", opts: ["María", "Marta", "Ana", "Sara"], corr: 0, fb: "María es la mamá de Jesús, y también es nuestra mamá del cielo que nos cuida todos los días.", cite: "Lucas 1, 31: 'Concebirás en tu vientre y darás a luz un hijo, y le pondrás por nombre Jesús'." },
+    { id: "q4", q: "¿Cómo se llama el papá de la tierra que cuidó a Jesús cuando era niño?", opts: ["Pedro", "José", "Juan", "David"], corr: 1, fb: "San José era carpintero y le enseñó a Jesús a trabajar con la madera y a rezar a Dios.", cite: "Mateo 1, 24: 'José hizo como el ángel del Señor le había mandado'." },
+    { id: "q5", q: "¿Dónde nació el Niño Jesús?", opts: ["En un castillo enorme", "En un hospital", "En un pesebre en Belén", "En una iglesia"], corr: 2, fb: "Jesús nació en un lugar muy humilde rodeado de animalitos, demostrando que el amor de Dios es muy sencillo.", cite: "Lucas 2, 7: 'Y dio a luz a su hijo... y lo acostó en un pesebre'." },
+    { id: "q6", q: "¿Quiénes fueron a visitar a Jesús cuando era bebé y le llevaron regalitos?", opts: ["Policías y bomberos", "Los pastores y Reyes Magos", "Sus tíos y primos", "Unos vendedores"], corr: 1, fb: "Los pastores fueron los primeros, y luego llegaron los Reyes Magos trayendo oro, incienso y mirra para adorarlo.", cite: "Mateo 2, 11: 'Al entrar en la casa, vieron al niño con María, su madre, y postrándose lo adoraron'." },
+    { id: "q7", q: "¿Qué siguieron los Reyes Magos en el cielo para poder encontrar a Jesús?", opts: ["Un mapa pirata", "Una estrella muy brillante", "Un pajarito", "Un camino de luces"], corr: 1, fb: "Dios puso una estrella hermosa y muy brillante en el cielo para guiar a los Reyes hasta el Niño Jesús.", cite: "Mateo 2, 2: 'Vimos su estrella en el oriente y hemos venido a adorarle'." },
+    { id: "q8", q: "¿Qué fiesta tan linda celebramos en Navidad?", opts: ["El cumpleaños de la Iglesia", "El nacimiento de Jesús", "La llegada del invierno", "El día de los juguetes"], corr: 1, fb: "En Navidad celebramos el cumpleaños de Jesús. ¡Él es el mejor regalo que Dios nos dio a todos!", cite: "Lucas 2, 11: 'Hoy les ha nacido en la ciudad de David un Salvador, que es Cristo el Señor'." },
+    { id: "q9", q: "¿A Jesús le gustaba estar con los niños?", opts: ["Sí, los abrazaba y bendecía", "No, le molestaba el ruido", "Solo si se portaban perfecto", "Solo le gustaban los grandes"], corr: 0, fb: "Jesús siempre tenía tiempo para los niños. Le encantaba abrazarlos y decirles cuánto los ama Dios.", cite: "Marcos 10, 16: 'Y tomándolos en los brazos, los bendecía poniendo las manos sobre ellos'." },
+    { id: "q10", q: "¿Qué dijo Jesús cuando los grandes no dejaban que los niños se acercaran?", opts: ["Váyanse a jugar lejos", "Dejen que los niños vengan a mí", "No hagan ruido", "Vengan mañana"], corr: 1, fb: "Jesús pidió que nadie impida a los niños acercarse, porque el Reino de Dios es de los que tienen el corazón puro como ustedes.", cite: "Marcos 10, 14: 'Dejen que los niños vengan a mí, y no se lo impidan'." },
+    { id: "q11", q: "¿Cómo se llama el gran libro donde leemos las historias de Dios y de Jesús?", opts: ["El diccionario", "Un cuento de hadas", "La Biblia", "El libro de cantos"], corr: 2, fb: "La Biblia es la Palabra de Dios. Es como una carta de amor que Él nos escribió para que lo conozcamos.", cite: "Salmo 119, 105: 'Lámpara es a mis pies tu palabra, y luz para mi camino'." },
+    { id: "q12", q: "¿Cómo se llama la casa donde nos juntamos todos a rezar, cantar y celebrar?", opts: ["La escuela", "La Iglesia o Capilla", "La plaza", "El supermercado"], corr: 1, fb: "La Iglesia es la casa de Dios y de todos nosotros, su familia. Allí nos reunimos para estar cerquita de Él.", cite: "Salmo 122, 1: 'Yo me alegré con los que me decían: A la casa del Señor iremos'." },
+    { id: "q13", q: "¿Qué hacemos cuando queremos hablar con Dios de forma especial?", opts: ["Gritar", "Rezar u Orar", "Cantar muy fuerte", "Estudiar"], corr: 1, fb: "Rezar es hablar con Dios como lo hacemos con nuestro mejor amigo. A Él le encanta escucharte.", cite: "Filipenses 4, 6: 'En todo, mediante oración y ruego, presenten sus peticiones a Dios'." },
+    { id: "q14", q: "¿Podemos rezar y hablar con Dios en cualquier lugar, como en casa o en el parque?", opts: ["Sí, en todos lados", "No, solo adentro de la capilla", "Solo cuando estamos durmiendo", "Solo si hablamos muy fuerte"], corr: 0, fb: "Dios está siempre con nosotros. Podemos hablarle en el corazón en el auto, en la escuela o jugando.", cite: "Mateo 6, 6: 'Cuando ores, entra en tu cuarto... y tu Padre que ve en lo secreto te recompensará'." },
+    { id: "q15", q: "¿Dios nos ama cuando nos portamos bien y ayudamos en casa?", opts: ["Sí, se pone muy feliz", "No le importa", "Se enoja", "Solo si nos dan un premio"], corr: 0, fb: "A Dios le encanta cuando somos buenos y ayudamos a los demás, porque nos parecemos más a Jesús.", cite: "Proverbios 15, 9: 'El Señor ama al que sigue la justicia'." },
+    { id: "q16", q: "¿Dios nos sigue amando aunque a veces nos equivoquemos?", opts: ["Sí, su amor no termina nunca", "No, ya no nos quiere", "Se va lejos de nosotros", "Nos castiga para siempre"], corr: 0, fb: "¡El amor de Dios es infinito! Incluso si nos equivocamos, Él nos sigue amando muchísimo y nos espera con los brazos abiertos.", cite: "Romanos 8, 38-39: 'Ni la muerte ni la vida... podrá separarnos del amor de Dios'." },
+    { id: "q17", q: "¿Qué debemos decir siempre que nos equivocamos o hacemos algo malo?", opts: ["No fui yo", "Perdón", "No me importa", "Es culpa de otro"], corr: 1, fb: "Pedir perdón nos hace libres y felices. A Dios y a nuestros papás les alegra mucho cuando decimos la verdad.", cite: "Mateo 6, 14: 'Porque si perdonan a los hombres sus ofensas, también los perdonará su Padre'." },
+    { id: "q18", q: "¿Jesús perdonaba a las personas que hacían cosas malas pero después pedían perdón?", opts: ["Nunca las perdonaba", "Sí, siempre las perdonaba", "Solo si le daban regalos", "Se enojaba mucho con ellas"], corr: 1, fb: "El corazón de Jesús está lleno de bondad. Él siempre nos perdona si queremos mejorar y hacer las cosas bien.", cite: "Lucas 7, 48: 'Y a ella le dijo: Tus pecados te son perdonados'." },
+    { id: "q19", q: "¿Quién hizo el gran milagro de calmar una tormenta muy fuerte en el medio del mar?", opts: ["Un marinero", "Moisés", "Jesús", "San Pedro"], corr: 2, fb: "Los amigos de Jesús tenían mucho miedo, pero Jesús le dijo al viento y a las olas que se callaran, ¡y todo quedó en paz!", cite: "Marcos 4, 39: 'Y levantándose, reprendió al viento, y dijo al mar: ¡Calla, enmudece!'." },
+    { id: "q20", q: "¿Quién multiplicó unos poquitos panes y peces para darle de comer a muchísima gente?", opts: ["El Rey David", "Moisés", "Jesús", "San José"], corr: 2, fb: "Un niño compartió su pequeño almuerzo con Jesús, y Él hizo el milagro de que alcanzara para miles de personas.", cite: "Juan 6, 11: 'Y tomó Jesús aquellos panes... y los repartió entre los que estaban sentados'." },
+    { id: "q21", q: "¿Cuántos amigos muy especiales, llamados Apóstoles, eligió Jesús para que lo acompañaran siempre?", opts: ["Cien amigos", "Doce (12)", "Tres (3)", "Cincuenta"], corr: 1, fb: "Jesús eligió a doce amigos muy cercanos para enseñarles todo sobre el amor de Dios y para que ellos nos lo enseñaran a nosotros.", cite: "Lucas 6, 13: 'Llamó a sus discípulos y escogió a doce de ellos, a los cuales también llamó apóstoles'." },
+    { id: "q22", q: "¿Cómo se llama el apóstol que fue el primer Papa, a quien Jesús le dio las 'llaves' del cielo?", opts: ["San Pablo", "San Juan", "San Pedro", "San Judas"], corr: 2, fb: "San Pedro era un pescador, pero Jesús lo eligió para cuidar a toda la Iglesia como si fuera un pastor cuidando a sus ovejitas.", cite: "Mateo 16, 18: 'Tú eres Pedro, y sobre esta roca edificaré mi iglesia'." },
+    { id: "q23", q: "¿Quién es nuestro gran amigo que siempre nos cuida, nos escucha y nos ama desde el cielo?", opts: ["Un superhéroe", "Jesús", "Un mago", "Un gigante"], corr: 1, fb: "Jesús es el mejor amigo que podemos tener. Nunca nos abandona y siempre nos escucha cuando le hablamos con cariño.", cite: "Juan 15, 15: 'Ya no los llamo siervos... los he llamado amigos'." },
+    { id: "q24", q: "¿De qué color es la ropa que usa el cura en las fiestas más felices, como Pascua o Navidad?", opts: ["Negra", "Roja", "Blanca", "Violeta"], corr: 2, fb: "El color blanco significa alegría, luz y fiesta, ¡por eso se usa en los días más lindos y felices de la Iglesia!", cite: "Apocalipsis 7, 9: 'Vestidos de ropas blancas y con palmas en las manos'." },
+    { id: "q25", q: "¿Cómo nos enseñó Jesús a llamar a Dios cuando rezamos?", opts: ["Señor lejano", "Padre Nuestro", "Rey enojado", "Jefe del cielo"], corr: 1, fb: "Jesús nos enseñó que Dios es nuestro Papá bueno, por eso cuando rezamos decimos 'Padre Nuestro que estás en el cielo'.", cite: "Mateo 6, 9: 'Ustedes oren así: Padre nuestro que estás en los cielos'." },
+    { id: "q26", q: "¿Qué animalito nos recuerda al Espíritu Santo bajando sobre Jesús cuando se bautizó en el río?", opts: ["Un león", "Una paloma blanca", "Un cordero", "Un pececito"], corr: 1, fb: "Cuando Jesús salió del agua, el Espíritu Santo bajó del cielo como si fuera una palomita blanca, llena de paz.", cite: "Mateo 3, 16: 'Vio al Espíritu de Dios que bajaba como una paloma'." },
+    { id: "q27", q: "¿Qué joven y buena mujer dijo 'SÍ' cuando el Ángel le preguntó si quería ser la mamá de Jesús?", opts: ["María Magdalena", "Santa Ana", "La Virgen María", "Santa Rosa"], corr: 2, fb: "María fue súper valiente y obediente. Ella dijo que sí al plan de Dios con todo su corazón lleno de amor.", cite: "Lucas 1, 38: 'Entonces María dijo: He aquí la esclava del Señor; hágase en mí según tu palabra'." },
+    { id: "q28", q: "¿Qué hizo Jesús cuando vio que su querido amigo Lázaro había fallecido y su familia estaba triste?", opts: ["Se fue rápido", "Lloró y luego lo resucitó", "No le importó", "Se enojó con él"], corr: 1, fb: "A Jesús le da mucha tristeza vernos llorar. Lloró por su amigo, pero como es Dios, ¡le devolvió la vida!", cite: "Juan 11, 43: 'Habiendo dicho esto, clamó a gran voz: ¡Lázaro, ven fuera!'." },
+    { id: "q29", q: "¿Qué día de la semana vamos a la Misa a saludar a Jesús y compartir con los demás?", opts: ["El Lunes", "El Jueves", "El Domingo", "El Martes"], corr: 2, fb: "El domingo es el día de Jesús porque ese día Él resucitó. ¡Es el día de la familia y de la Iglesia!", cite: "Hechos 20, 7: 'El primer día de la semana (domingo), reunidos los discípulos para partir el pan...'." },
+    { id: "q30", q: "Cuando entramos a la Capilla, ¿con qué nos hacemos la señal de la cruz en la frente?", opts: ["Con aceite", "Con tierra", "Con agua bendita", "Con perfume"], corr: 2, fb: "El agua bendita nos recuerda el día de nuestro bautismo, cuando nos hicimos amigos y familia de Dios.", cite: "Ezequiel 36, 25: 'Esparciré sobre ustedes agua limpia, y serán limpiados'." },
+    { id: "q31", q: "¿Qué hermoso regalo nos da Dios todos los días al despertarnos?", opts: ["Mucho dinero", "Un juguete nuevo", "Un nuevo día para jugar y amar", "Ropa de colores"], corr: 2, fb: "Cada mañana que abrimos los ojos es un regalo enorme que Dios nos hace para ser felices y ayudar a alguien más.", cite: "Salmo 118, 24: 'Este es el día que hizo el Señor; nos gozaremos y alegraremos en él'." },
+    { id: "q32", q: "Si vemos a un amiguito que está triste o llorando, ¿qué quiere Jesús que hagamos?", opts: ["Dejarlo solo", "Reírnos de él", "Abrazarlo y acompañarlo", "No mirarlo"], corr: 2, fb: "Jesús quiere que tengamos un corazón bondadoso, que cuidemos a nuestros amigos cuando no se sienten bien.", cite: "Juan 15, 12: 'Este es mi mandamiento: Que se amen unos a otros, como yo los he amado'." },
+    { id: "q33", q: "¿Qué gran obstáculo cruzó Moisés, que Dios abrió por el medio para que el pueblo escapara?", opts: ["Un río chiquito", "Un mar abierto (el Mar Rojo)", "Un bosque lleno de espinas", "Una montaña de fuego"], corr: 1, fb: "Moisés confió en Dios, y Dios sopló tan fuerte que separó el agua para que todos cruzaran caminando sin mojarse.", cite: "Éxodo 14, 21: 'El Señor retiró el mar... y las aguas se dividieron'." },
+    { id: "q34", q: "¿Qué debemos hacer con la comida antes de empezar a almorzar o cenar en familia?", opts: ["Comerla muy rápido", "Esconderla", "Darle las gracias a Dios", "Tirarla al piso"], corr: 2, fb: "Siempre debemos juntar las manitos y darle las gracias a Papá Dios por el pan de cada día que tenemos en la mesa.", cite: "Mateo 15, 36: 'Y tomando los siete panes y los peces, dio gracias, los partió y dio a sus discípulos'." },
+    { id: "q35", q: "Cuando nos peleamos por un juguete con un hermano o amiguito, ¿cómo volvemos a estar felices?", opts: ["No hablándole más", "Pidiendo perdón y dándonos un abrazo", "Escondiendo el juguete", "Llorando mucho rato"], corr: 1, fb: "El abrazo del perdón borra las tristezas y nos hace sentir cerquita de Jesús de nuevo.", cite: "Colosenses 3, 13: 'Soportándose unos a otros, y perdonándose unos a otros... así también háganlo ustedes'." },
+    { id: "q36", q: "¿Quién creó las flores de colores, los árboles altos y la naturaleza tan linda que vemos?", opts: ["El jardinero", "Dios", "El viento", "Los pajaritos"], corr: 1, fb: "Dios creó todo este mundo hermoso como si fuera un jardín gigante para que nosotros lo cuidemos y disfrutemos.", cite: "Génesis 1, 11: 'Produzca la tierra hierba verde, hierba que dé semilla; árbol de fruto'." },
+    { id: "q37", q: "¿A quién le cantan alabanzas los angelitos felices en el cielo?", opts: ["A los pájaros", "Al sol", "A Dios", "A las nubes"], corr: 2, fb: "Los ángeles cantan llenos de alegría porque ven la luz y el amor gigante que tiene Dios todo el tiempo.", cite: "Lucas 2, 13: 'De repente apareció con el ángel una multitud de las huestes celestiales, que alababan a Dios'." },
+    { id: "q38", q: "¿Cuál es el mandamiento o la regla más importante que Jesús nos enseñó?", opts: ["Dormir temprano", "Comer muchas verduras", "Amar a Dios y amar a los demás", "Aprender a leer rápido"], corr: 2, fb: "¡El amor es lo más importante! Si amamos a Dios con todo el corazón y somos buenos con los otros, estamos cumpliendo todo.", cite: "Mateo 22, 37: 'Amarás al Señor tu Dios con todo tu corazón... y amarás a tu prójimo como a ti mismo'." },
+    { id: "q39", q: "Jesús contó la historia de un pastorcito que tenía 100 ovejas y perdió a 1. ¿Qué hizo el pastor?", opts: ["Se fue a dormir", "La fue a buscar hasta encontrarla", "Se compró otra oveja nueva", "Dejó que se perdiera sola"], corr: 1, fb: "Ese Buen Pastor es Jesús. Él nunca nos abandona; si nos perdemos por hacer algo malo, Él sale corriendo a buscarnos y a cuidarnos.", cite: "Lucas 15, 4: '¿No deja las noventa y nueve en el desierto, y va tras la que se perdió, hasta encontrarla?'" },
+    { id: "q40", q: "¿Qué debemos hacer cuando mamá o papá nos piden que ordenemos los juguetes?", opts: ["Hacerles caso con alegría", "Llorar fuerte", "Esconderme debajo de la cama", "Decirles que lo hagan ellos"], corr: 0, fb: "Cuando obedecemos a papá y mamá con una sonrisa, estamos demostrando cuánto los amamos. ¡A Jesús también le gusta que ayudemos!", cite: "Efesios 6, 1: 'Hijos, obedezcan en el Señor a sus padres, porque esto es justo'." },
+    { id: "q41", q: "¿Qué pajarito cantó cuando el apóstol San Pedro tuvo miedo y dijo tres veces que no conocía a Jesús?", opts: ["Un lorito", "Un gallo", "Una paloma", "Un picaflor"], corr: 1, fb: "El canto del gallo le recordó a Pedro que se había equivocado. Pero Jesús igual lo perdonó porque Pedro era su gran amigo.", cite: "Lucas 22, 60: 'Pedro dijo: Hombre, no sé lo que dices. Y enseguida, mientras él todavía hablaba, el gallo cantó'." },
+    { id: "q42", q: "¿Qué buena mujer fue muy tempranito a la tumba de Jesús y se puso feliz al ver que estaba vivo?", opts: ["María Magdalena", "Santa Ana", "Marta", "Isabel"], corr: 0, fb: "María Magdalena estaba muy triste llorando, pero de repente escuchó a Jesús llamarla por su nombre y su corazón saltó de alegría.", cite: "Juan 20, 16: 'Jesús le dijo: ¡María! Volviéndose ella, le dijo: ¡Raboni! (que quiere decir, Maestro)'." },
+    { id: "q43", q: "Tres días después de morir en la cruz por nosotros, ¿qué le pasó a Jesús?", opts: ["Se quedó dormido", "¡Resucitó y está vivo!", "Se fue lejos", "Se escondió en una cueva"], corr: 1, fb: "¡El amor le ganó a la muerte! Jesús resucitó y eso significa que Él está vivo hoy y siempre con nosotros.", cite: "Lucas 24, 6: 'No está aquí, sino que ha resucitado'." },
+    { id: "q44", q: "¿Qué fiesta muy alegre y llena de luz celebramos cuando recordamos que Jesús resucitó?", opts: ["La Navidad", "La Pascua", "El carnaval", "El día del niño"], corr: 1, fb: "La Pascua es la fiesta más grande y feliz de todas, ¡porque festejamos que Jesús venció a la muerte para llevarnos al cielo!", cite: "1 Corintios 15, 20: 'Mas ahora Cristo ha resucitado de los muertos; primicias de los que durmieron es hecho'." },
+    { id: "q45", q: "¿Con qué cosa fresquita nos limpia y bendice el curita cuando nos bautizan de bebés?", opts: ["Con jugo dulce", "Con agua pura y bendita", "Con tierra suave", "Con hojitas de árboles"], corr: 1, fb: "El agua del Bautismo nos lava el corazón, nos hace muy puros y brillantes por dentro, y nos convierte en hijos de Dios.", cite: "Juan 3, 5: 'El que no naciere de agua y del Espíritu, no puede entrar en el reino de Dios'." },
+    { id: "q46", q: "Cuando alguien de la familia o un amigo está enfermito, ¿a quién le podemos pedir que lo cure?", opts: ["A Jesús", "Al viento del sur", "A una varita mágica", "A las estrellas lejanas"], corr: 0, fb: "Jesús es el gran doctor del cuerpo y del alma. Siempre podemos rezarle para que le dé fuerzas y sane a los que amamos.", cite: "Marcos 1, 41: 'Y Jesús, teniendo misericordia... le tocó, y le dijo: Quiero, sé limpio'." },
+    { id: "q47", q: "¿Quiénes son las primeras personas en casa que nos enseñan a rezar y a conocer el amor de Dios?", opts: ["Los vecinos", "Nuestros papás y abuelos", "Los policías de la calle", "Los vendedores"], corr: 1, fb: "Nuestros papás y abuelos son los encargados de darnos el mejor regalo del mundo: enseñarnos a ser amigos de Jesús.", cite: "Proverbios 22, 6: 'Instruye al niño en su camino, Y aun cuando fuere viejo no se apartará de él'." },
+    { id: "q48", q: "Cuando vemos una cruz en la iglesia o en nuestra casa, ¿de quién nos acordamos?", opts: ["De un pirata escondido", "De cuánto nos amó Jesús", "De una marca en el suelo", "De un árbol cortado"], corr: 1, fb: "La cruz no es algo triste; es el recuerdo más grande de que Jesús dio su vida porque nos ama a todos con todo su corazón.", cite: "Juan 3, 16: 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito'." },
+    { id: "q49", q: "¿Dios escucha nuestros rezos aunque se los digamos muy despacito en la mente y sin hacer ruido?", opts: ["Sí, Él escucha todo", "No, solo si gritamos fuerte", "Solo si usamos un micrófono", "No, Dios no tiene tiempo"], corr: 0, fb: "Dios puede escuchar los pensamientos más suavecitos de tu mente y las palabras secretas de tu corazón, porque está adentro tuyo.", cite: "Salmo 139, 4: 'Pues aún no está la palabra en mi lengua, y he aquí, oh Señor, tú la sabes toda'." },
+    { id: "q50", q: "Al final de todo... ¿Para qué nos creó Dios tan hermosos y perfectos?", opts: ["Para estar solos y aburridos", "Para pelearnos todos los días", "Para ser felices y vivir con Él para siempre", "Para escondernos en un pozo"], corr: 2, fb: "Dios te hizo especial y único porque quiere verte muy feliz en esta vida y después estar abrazadito con vos en el cielo.", cite: "1 Juan 4, 9: 'En esto se mostró el amor de Dios... en que Dios envió a su Hijo unigénito... para que vivamos por él'." }
+];
+
+let currentIdx = 0;
+let audioInit = false;
+let synth;
+
+function initAudio() {
+    if (typeof Tone !== 'undefined' && !audioInit) {
+        Tone.start();
+        synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "triangle" },
+            envelope: { attack: 0.05, decay: 0.2, sustain: 0.2, release: 1 }
+        }).toDestination();
+        synth.volume.value = -10;
+        audioInit = true;
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudio();
+        if (!synth) return;
+        
+        if (type === 'correct') {
+            const now = Tone.now();
+            synth.triggerAttackRelease("C5", "8n", now);
+            synth.triggerAttackRelease("E5", "8n", now + 0.15);
+            synth.triggerAttackRelease("G5", "4n", now + 0.3);
+        } else {
+            synth.triggerAttackRelease("G4", "8n");
+        }
+    } catch (e) {
+        console.log("Audio desactivado o no soportado");
+    }
+}
+
+function initQuiz() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const qId = urlParams.get('id');
+        
+        if (qId) {
+            const found = CARTAS.findIndex(c => c.id === qId);
+            currentIdx = found !== -1 ? found : Math.floor(Math.random() * CARTAS.length);
+        } else {
+            currentIdx = Math.floor(Math.random() * CARTAS.length);
+        }
+    } catch(e) {
+        currentIdx = 0;
+    }
+    
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const c = CARTAS[currentIdx];
+    document.getElementById("q-text").innerText = c.q;
+    const container = document.getElementById("options-container");
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    
+    container.innerHTML = "";
+    fbBox.style.display = "none";
+    btnNext.style.display = "none"; 
+    
+    c.opts.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.innerHTML = `<i class="far fa-circle" style="color:#CCC; font-size:1.3rem;"></i> <span>${opt}</span>`;
+        btn.onclick = () => checkAns(idx, btn);
+        container.appendChild(btn);
+    });
+}
+
+function checkAns(idx, btn) {
+    const c = CARTAS[currentIdx];
+    const buttons = document.querySelectorAll(".opt-btn");
+    buttons.forEach(b => b.disabled = true);
+    
+    const fbBox = document.getElementById("feedback");
+    const btnNext = document.getElementById("btn-next");
+    fbBox.style.display = "block";
+    btnNext.style.display = "flex"; 
+    
+    if(idx === c.corr) {
+        btn.classList.add("correct");
+        btn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        document.getElementById("fb-main").innerHTML = `<strong>¡Muy bien!</strong><br>${c.fb}`;
+        playSound('correct');
+    } else {
+        btn.classList.add("incorrect");
+        btn.innerHTML = `<i class="fas fa-times-circle" style="color:#F44336; font-size:1.3rem;"></i> <span>${c.opts[idx]}</span>`;
+        
+        const correctBtn = buttons[c.corr];
+        correctBtn.classList.add("correct");
+        correctBtn.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50; font-size:1.3rem;"></i> <span>${c.opts[c.corr]}</span>`;
+        
+        document.getElementById("fb-main").innerHTML = `<strong>¡Casi! Aprendamos algo lindo:</strong><br>${c.fb}`;
+        playSound('incorrect');
+    }
+    
+    document.getElementById("fb-cite").innerText = c.cite;
+}
+
+function nextQuestion() {
+    const box = document.getElementById("quiz-box");
+    box.classList.add("slide-out");
+    setTimeout(() => {
+        let next;
+        do { next = Math.floor(Math.random() * CARTAS.length); } while (next === currentIdx);
+        currentIdx = next;
+        
+        try {
+            if (window.location.protocol !== 'file:') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } catch(e) {}
+        
+        renderQuestion();
+        box.classList.remove("slide-out");
+    }, 400);
+}
+
+async function shareQuestion() {
+    const c = CARTAS[currentIdx];
+    let baseUrl = "";
+    try {
+        baseUrl = window.location.protocol === 'file:' ? 'Archivo_Local' : window.location.origin + window.location.pathname;
+    } catch(e) {
+        baseUrl = "Enlace";
+    }
+    
+    const urlConId = baseUrl !== 'Archivo_Local' ? `${baseUrl}?id=${c.id}` : window.location.href;
+    const text = `🌟 ¡Mirá este jueguito bíblico para los más chicos!\n\n"${c.q}"\n\nJugá con ellos acá: `;
+
+    if (navigator.share && baseUrl !== 'Archivo_Local') {
+        try { await navigator.share({ title: 'Desafío Niños', text: text, url: urlConId }); } 
+        catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        navigator.clipboard.writeText(text + (baseUrl !== 'Archivo_Local' ? urlConId : '')).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        });
+    }
+}
+
+function initBG() {
+    const words = ['JESÚS', 'DIOS', 'AMOR', 'MARÍA', 'PAZ', 'ALEGRÍA', 'LUZ', 'VIDA', 'AMIGOS'];
+    const bg = document.getElementById("bg");
+    for(let i=0; i<15; i++) {
+        const s = document.createElement("span");
+        s.className = "floating-word";
+        s.innerText = words[Math.floor(Math.random()*words.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.fontSize = (20 + Math.random() * 30) + "px";
+        const duration = 15 + Math.random() * 20;
+        s.style.animation = `floatUp ${duration}s linear infinite`;
+        s.style.animationDelay = `-${Math.random() * duration}s`;
+        bg.appendChild(s);
+    }
+}
+
+document.getElementById("btn-next").onclick = nextQuestion;
+document.getElementById("btn-share").onclick = shareQuestion;
+
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) { hamburgerIcon.classList.replace('fa-bars', 'fa-xmark'); } else { hamburgerIcon.classList.replace('fa-xmark', 'fa-bars'); }
+        }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+        function cerrarModalDonar() { document.getElementById('modalDonar').classList.remove('show'); }
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366"; btn.style.color = "white";
+            setTimeout(() => { btn.innerHTML = oldTxt; btn.style.backgroundColor = "var(--acento)"; }, 3000);
+        }
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") cerrarModalDonar(); });
+        document.getElementById('modalDonar').addEventListener('click', (e) => { if (e.target === document.getElementById('modalDonar')) { cerrarModalDonar(); } });
+
+initBG();
+// El quiz se inicializa directamente sin forzar audio al instante
+initQuiz();
+</script>
+</body>
+</html>

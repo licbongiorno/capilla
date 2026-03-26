@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Botiquín Espiritual | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           VARIABLES DE COLOR Y DISEÑO
+           ========================================== */
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --verde-wa: #25D366; 
+            --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --primario: #D7CCC8; 
+            --acento: #D4AF37; 
+            --fondo: #1A1A1A; 
+            --blanco: #2D2D2D;
+            --texto: #F5F5F0; 
+            --sombra: 0 10px 25px rgba(0,0,0,0.5);
+            --gold-light: rgba(212, 175, 55, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--fondo); 
+            color: var(--texto); 
+            line-height: 1.6; 
+            transition: background 0.3s, color 0.3s; 
+        }
+        
+        /* ==========================================
+           BARRA DE NAVEGACIÓN Y ENCABEZADO
+           ========================================== */
+
+        
+        header { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primario); margin-bottom: 10px; transition: color 0.3s; }
+        header p { max-width: 600px; margin: 0 auto; opacity: 0.8; font-size: 0.95rem; }
+        
+        /* ==========================================
+           SECCIÓN DEL BUSCADOR
+           ========================================== */
+        .search-container { max-width: 800px; margin: 0 auto 30px; padding: 0 20px; text-align: center; }
+        
+        .search-box { position: relative; width: 100%; margin-bottom: 15px; }
+        .search-box input { 
+            width: 100%; padding: 18px 20px 18px 55px; border-radius: 50px; 
+            border: 2px solid var(--gold-light); background: var(--blanco); 
+            color: var(--texto); font-size: 1rem; outline: none; box-shadow: var(--sombra); 
+            transition: border-color 0.3s, background 0.3s; font-family: inherit; 
+        }
+        .search-box input:focus { border-color: var(--acento); }
+        .search-box i { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: var(--acento); font-size: 1.2rem; }
+        
+        .search-hint { font-size: 0.8rem; opacity: 0.6; margin-bottom: 25px; display: block; }
+        
+        /* ==========================================
+           ETIQUETAS Y BOTONES
+           ========================================== */
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px; }
+        .tag-btn { 
+            background: var(--fondo); border: 1px solid var(--acento); color: var(--primario); 
+            padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; 
+            cursor: pointer; transition: background 0.3s, color 0.3s; 
+        }
+        .tag-btn:hover { background: var(--gold-light); }
+        .tag-btn.active { background: var(--acento); color: var(--blanco); border-color: var(--acento); }
+        
+        .btn-random { 
+            background: var(--primario); color: var(--blanco); border: none; padding: 12px 25px; 
+            border-radius: 50px; font-weight: 600; cursor: pointer; transition: transform 0.3s, background 0.3s; 
+            box-shadow: var(--sombra); display: inline-flex; align-items: center; gap: 8px; font-family: inherit; 
+        }
+        .btn-random:hover { background: var(--acento); transform: translateY(-2px); }
+
+        /* ==========================================
+           GRILLA DE RESULTADOS
+           ========================================== */
+        .santos-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; max-width: 1000px; margin: 0 auto 50px; padding: 0 20px; 
+        }
+        .santo-card { 
+            background: var(--blanco); padding: 30px 20px; border-radius: 15px; 
+            box-shadow: var(--sombra); border-top: 5px solid var(--acento); cursor: pointer; 
+            text-align: center; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; 
+            position: relative; overflow: hidden; 
+        }
+        .santo-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        
+        .santo-icon { 
+            width: 70px; height: 70px; background: var(--gold-light); border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 2rem; 
+            color: var(--acento); margin: 0 auto 15px; transition: transform 0.3s, background 0.3s; 
+        }
+        .santo-card:hover .santo-icon { background: var(--acento); color: var(--blanco); transform: scale(1.1); }
+        
+        .santo-nombre { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 5px; color: var(--primario); }
+        .santo-patronazgo { display: block; font-size: 0.85rem; opacity: 0.8; margin-bottom: 10px; line-height: 1.4; }
+        .santo-fecha { font-size: 0.75rem; color: var(--acento); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: var(--blanco); border-radius: 15px; box-shadow: var(--sombra); }
+
+        /* ==========================================
+           VENTANA FLOTANTE (MODAL)
+           ========================================== */
+        .modal-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; 
+            justify-content: center; align-items: center; padding: 20px; opacity: 0; 
+            transition: opacity 0.3s ease; 
+        }
+        .modal-overlay.show { opacity: 1; }
+        
+        .modal-content { 
+            background: var(--blanco); width: 100%; max-width: 500px; padding: 40px 30px; 
+            border-radius: 20px; position: relative; text-align: center; transform: translateY(20px); 
+            transition: transform 0.3s ease, background 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            max-height: 90vh; overflow-y: auto; 
+        }
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        
+        .modal-close { 
+            position: absolute; top: 15px; right: 20px; background: none; border: none; 
+            font-size: 2rem; color: var(--texto); opacity: 0.5; cursor: pointer; transition: opacity 0.3s, color 0.3s; 
+        }
+        .modal-close:hover { opacity: 1; color: var(--primario); }
+        
+        .modal-header { margin-bottom: 25px; }
+        .modal-nombre { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primario); margin-bottom: 5px; }
+        .modal-patronazgo { font-size: 0.95rem; opacity: 0.8; }
+        
+        .oracion-box { 
+            background: var(--fondo); padding: 25px; border-radius: 12px; font-style: italic; 
+            margin-bottom: 25px; text-align: left; border-left: 4px solid var(--acento); 
+            font-size: 1.05rem; line-height: 1.7; color: var(--texto); transition: background 0.3s; 
+        }
+        
+        .btn-share { 
+            background: var(--verde-wa); color: white; border: none; padding: 15px 25px; 
+            border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; 
+            display: flex; justify-content: center; align-items: center; gap: 10px; 
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: transform 0.3s, background 0.3s; 
+        }
+        .btn-share:hover { background: #20BA56; transform: translateY(-2px); }
+        
+        /* ==========================================
+           TOAST (MENSAJE DE COPIADO)
+           ========================================== */
+        #toast { 
+            visibility: hidden; background-color: var(--primario); color: #fff; text-align: center; 
+            padding: 15px 25px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); 
+            border-radius: 50px; font-weight: 600; opacity: 0; transition: opacity 0.3s, transform 0.3s; 
+            z-index: 1100; box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+        }
+        #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ==========================================
+           ADAPTACIÓN MÓVIL
+           ========================================== */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .modal-content { padding: 30px 20px; }
+            .santos-grid { grid-template-columns: 1fr; }
+        }
+
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); }
+.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+#modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+#modalDonar.show { display: flex; opacity: 1; }
+#modalDonar .modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+#modalDonar.show .modal-content { transform: scale(1); }
+#modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+#modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+#modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: #F5F5F0; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: #5D4037; font-weight: 700; font-family: monospace; }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+
+        <button class="theme-toggle" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <header>
+        <h1>Botiquín Espiritual</h1>
+        <p>Buscá por tu necesidad específica y encontrá el intercesor y la oración indicada para este momento.</p>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Ej: ansiedad, trabajo, hijos, campo, duelo..." onkeyup="filtrarSantos()">
+        </div>
+        <span class="search-hint">💡 <b>Sugerencias:</b> probá buscar "psicología", "cabalgatas", "imposible" o "Córdoba".</span>
+        
+        <div class="tags-container">
+            <button class="tag-btn active" onclick="setTag('')">Todos</button>
+            <button class="tag-btn" onclick="setTag('sabiduria')">🧠 Sabiduría e Interioridad</button>
+            <button class="tag-btn" onclick="setTag('salud')">🩺 Salud Física y Mental</button>
+            <button class="tag-btn" onclick="setTag('campo')">🐎 Campo y Tradición</button>
+            <button class="tag-btn" onclick="setTag('trabajo')">💼 Trabajo y Causas</button>
+            <button class="tag-btn" onclick="setTag('familia')">👨‍👩‍👧‍👦 Familia y Maternidad</button>
+            <button class="tag-btn" onclick="setTag('duelo')">🕊️ Duelo y Consuelo</button>
+        </div>
+
+        <button class="btn-random" onclick="santoAlAzar()">
+            <i class="fas fa-dice"></i> ¿Quién me acompaña hoy?
+        </button>
+    </div>
+
+    <main class="santos-grid" id="santosGrid">
+        </main>
+
+    <div id="santoModal" class="modal-overlay" onclick="cerrarModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="cerrarModal()" title="Cerrar">&times;</button>
+            <div id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <div id="toast"><i class="fas fa-check-circle"></i> ¡Enlace copiado! Ya podés pegarlo.</div>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <!-- Modal Donaciones -->
+    <div id="modalDonar">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('themeIcon');
+            
+            if(document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // Funciones del Modal Donar
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            document.getElementById('modalDonar').classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+    </script>
+
+    <script src="santos.js"></script>
+</body>
+</html>

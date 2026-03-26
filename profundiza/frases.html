@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabiduría del Alma | Oráculo Contemplativo</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Paleta Litúrgica/Sacra */
+            --oro-viejo: #B8860B; /* Gloria de Dios, Tradición */
+            --pargamino: #FDFCF0; /* Pureza, Humanidad, Calma */
+            --texto-sagrado: #2C2C2C; /* Tinta, Verdad, Firmeza */
+            --blanco-puro: #FFFFFF;
+            --charcoal: #566573; /* Humildad, Ceniza */
+            --sombra-voto: 0 15px 35px rgba(184, 134, 11, 0.1);
+        }
+
+        /* --- Reset y Estilo Global --- */
+        * { box-sizing: border-box; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--pargamino);
+            color: var(--texto-sagrado);
+            margin: 0;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Header: El llamado al Silencio --- */
+        header {
+            text-align: center;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, var(--blanco-puro), var(--pargamino));
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--oro-viejo), transparent);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            color: var(--oro-viejo);
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: -1px;
+        }
+
+        .subtitle { font-weight: 300; font-style: italic; color: var(--charcoal); margin-top: 15px; font-size: 1.1rem; }
+
+        /* --- Sección de Herramientas (Controles) --- */
+        .tools-sanctuary {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* Botón del Oráculo con Brillo Suave (Luz del Espíritu) */
+        .oracle-btn {
+            background: var(--oro-viejo);
+            color: white;
+            border: none;
+            padding: 22px 60px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--sombra-voto);
+            margin-bottom: 70px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .oracle-btn:hover {
+            transform: translateY(-5px);
+            background: #D4AF37;
+            box-shadow: 0 20px 40px rgba(184, 134, 11, 0.3);
+        }
+
+        /* Buscador (La búsqueda de la Verdad) */
+        .search-shrine { position: relative; margin-bottom: 50px; }
+
+        .search-input {
+            width: 100%;
+            padding: 25px 30px 25px 70px;
+            border-radius: 15px;
+            border: 1px solid rgba(0,0,0,0.03);
+            font-size: 1.2rem;
+            background: var(--blanco-puro);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 25px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--oro-viejo);
+            font-size: 1.5rem;
+        }
+
+        /* Abecedario Navegable (Orden y Sabiduría) */
+        .alphabet-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .letter-node {
+            width: 45px; height: 45px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--blanco-puro);
+            border: 1px solid #eee;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--oro-viejo);
+            font-size: 1rem;
+        }
+
+        .letter-node:hover, .letter-node.active {
+            background: var(--oro-viejo);
+            color: white;
+            border-color: var(--oro-viejo);
+        }
+
+        .letter-node.disabled { opacity: 0.1; cursor: default; }
+
+        /* Tags / Subtemas */
+        #tagList {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 12px; margin-bottom: 60px; min-height: 45px;
+        }
+
+        .tag-pill {
+            background: var(--blanco-puro);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border: 1px solid transparent;
+        }
+
+        .tag-pill:hover { border-color: var(--oro-viejo); color: var(--oro-viejo); }
+
+        /* --- Grid de Resultados: El efecto "Revelar" --- */
+        .frases-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        .frase-card {
+            background: var(--blanco-puro);
+            padding: 60px 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
+            cursor: pointer;
+            position: relative;
+            
+            /* --- EL EFECTO: Empieza invisible y abajo --- */
+            opacity: 0;
+            transform: translateY(40px);
+            /* Transición lenta y elegante */
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        /* Clase que activa el JS al scrollear */
+        .frase-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .frase-card::before {
+            content: "“";
+            position: absolute; top: 20px; left: 30px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem; color: rgba(184, 134, 11, 0.05);
+            line-height: 1;
+        }
+
+        .card-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--texto-sagrado);
+            position: relative; z-index: 1;
+        }
+
+        .card-autor {
+            font-weight: 600;
+            color: var(--oro-viejo);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        /* --- Modal: El Encuentro Profundo --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--pargamino);
+            padding: 80px 60px;
+            border-radius: 40px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+        }
+
+        #modalBody {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 40px;
+        }
+
+        .close-btn {
+            position: absolute; top: 30px; right: 35px;
+            font-size: 2.5rem; cursor: pointer; color: var(--charcoal);
+        }
+
+        .wa-share-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            gap: 15px; width: 100%;
+            font-size: 1.1rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--charcoal);
+            font-size: 0.9rem;
+            background: var(--blanco-puro);
+            letter-spacing: 1px;
+        }
+
+        /* --- Animaciones de Carga --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Redes Sociales Grid */
+        .share-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        .social-share-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; text-decoration: none; cursor: pointer; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s, background 0.3s; }
+        .social-share-btn.fb { background: #1877F2; }
+        .social-share-btn.tw { background: #000000; }
+        .social-share-btn.wa { background: #25D366; }
+        .social-share-btn.cp { background: var(--charcoal); }
+        .social-share-btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+/* --- Navbar Nuevo --- */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--pargamino); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--oro-viejo); display: flex; align-items: center; gap: 10px; }
+.nav-brand i { color: #D4AF37; }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto-sagrado); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: #D4AF37; }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--oro-viejo); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--pargamino); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto-sagrado); }
+}
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+#modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+#modalDonar.show { display: flex; opacity: 1; }
+#modalDonar .modal-content { background: #FFF; padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
+#modalDonar.show .modal-content { transform: scale(1); }
+#modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #333; transition: 0.3s; }
+#modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+#modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--pargamino); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--oro-viejo); font-weight: 700; font-family: monospace; }
+        
+        #toast { visibility: hidden; background-color: var(--charcoal); color: #fff; text-align: center; padding: 15px 25px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); border-radius: 50px; font-weight: 600; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 11000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+<header>
+    <h1>Sabiduría del Alma</h1>
+    <p class="subtitle">Lic. Nico Bongiorno | Oráculo de Pensamiento Clínico y Espiritual</p>
+</header>
+
+<main class="tools-sanctuary">
+    <button class="oracle-btn" onclick="lanzarOraculo()">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> CONSULTAR AL ORÁCULO
+    </button>
+
+    <div class="search-shrine">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscá paz, dolor, perdón, fe..." onkeyup="busquedaDinamica()">
+    </div>
+
+    <div class="alphabet-nav" id="alphabetBar"></div>
+    <div id="tagList"></div>
+</main>
+
+<div class="frases-container" id="frasesGrid"></div>
+
+<div id="modal" class="modal" onclick="cerrarVista()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="cerrarVista()">&times;</span>
+        <div id="modalBody"></div>
+        
+        <div style="font-size:0.9rem; color:var(--charcoal); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-top:10px;">Compartir esta sabiduría</div>
+        <div class="share-buttons">
+            <a id="fbShare" class="social-share-btn fb" target="_blank" title="Compartir en Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a id="twShare" class="social-share-btn tw" target="_blank" title="Compartir en X"><i class="fab fa-twitter"></i></a>
+            <a id="waShare" class="social-share-btn wa" target="_blank" title="Compartir en WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <button id="copyShare" class="social-share-btn cp" onclick="copiarLinkFrase()" title="Copiar enlace"><i class="fas fa-link"></i></button>
+        </div>
+    </div>
+</div>
+
+<div class="float-container">
+    <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+        <i class="fas fa-heart corazon-late"></i>
+    </button>
+</div>
+
+<!-- Modal Donaciones -->
+<div id="modalDonar">
+    <div class="modal-content">
+        <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: #D4AF37; margin-bottom: 20px;"></i>
+        <h3 style="margin-bottom:15px; color: var(--oro-viejo); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+        <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: #333;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+        
+        <div class="alias-box" style="margin-bottom: 10px;">
+            <span id="alias-modal">capillas.fatima.ag</span>
+        </div>
+        <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+        
+        <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--oro-viejo); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+        
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+            <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: #333;">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+            <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+        </div>
+
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+            <a href="ayudanos.html" style="color: var(--oro-viejo); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+        </div>
+    </div>
+</div>
+
+<div id="toast"><i class="fas fa-check-circle"></i> ¡Enlace copiado! Ya podés pegarlo en cualquier lado.</div>
+
+<footer>
+    &copy; 2026 Sabiduría del Alma | <small>Villa Parque Santa Ana, Córdoba</small>
+</footer>
+
+<script src="frases.js"></script>
+
+<script>
+    // --- Motor de Revelación (Lazy Loading Visual) ---
+    // Esta función detecta cuando una tarjeta entra en la pantalla y le agrega la clase 'visible'
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 }); // Se activa cuando el 10% de la tarjeta es visible
+
+    window.onload = () => {
+        setupNav();
+        verificarCargaDirecta();
+    };
+
+    function setupNav() {
+        const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+        const bar = document.getElementById('alphabetBar');
+        
+        // Tags únicos y sus iniciales
+        const tagsUnicos = [...new Set(frases.flatMap(f => f.tags))];
+        const inicialesReales = [...new Set(tagsUnicos.map(t => t.charAt(0).toUpperCase()))];
+
+        letras.forEach(l => {
+            const btn = document.createElement('div');
+            btn.innerText = l;
+            btn.className = `letter-node ${inicialesReales.includes(l) ? '' : 'disabled'}`;
+            if(inicialesReales.includes(l)) btn.onclick = () => filtrarPorLetra(l);
+            bar.appendChild(btn);
+        });
+    }
+
+    function filtrarPorLetra(letra) {
+        // Estética de botones
+        document.querySelectorAll('.letter-node').forEach(b => b.classList.toggle('active', b.innerText === letra));
+        document.getElementById('searchInput').value = ""; // Limpiar busqueda
+        
+        // Subtags
+        const subtemas = [...new Set(frases.flatMap(f => f.tags))]
+                        .filter(t => t.charAt(0).toUpperCase() === letra).sort();
+
+        const tagContainer = document.getElementById('tagList');
+        tagContainer.innerHTML = "";
+        subtemas.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'tag-pill';
+            span.innerText = tag;
+            span.onclick = () => renderizar(frases.filter(f => f.tags.includes(tag)));
+            tagContainer.appendChild(span);
+        });
+
+        renderizar(frases.filter(f => f.tags.some(t => t.charAt(0).toUpperCase() === letra)));
+    }
+
+    function busquedaDinamica() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        if(query.length < 2) {
+            document.getElementById('frasesGrid').innerHTML = "";
+            return;
+        }
+        
+        // Desactivar alfabetos
+        document.querySelectorAll('.letter-node').forEach(b => b.classList.remove('active'));
+        document.getElementById('tagList').innerHTML = "";
+
+        const resultados = frases.filter(f => 
+            f.texto.toLowerCase().includes(query) || 
+            f.autor.toLowerCase().includes(query) ||
+            f.tags.some(t => t.toLowerCase().includes(query))
+        );
+        renderizar(resultados);
+    }
+
+    function renderizar(lista) {
+        const grid = document.getElementById('frasesGrid');
+        grid.innerHTML = "";
+        
+        lista.forEach(f => {
+            const card = document.createElement('div');
+            card.className = 'frase-card';
+            card.onclick = () => abrirVista(f);
+            card.innerHTML = `
+                <div class="card-texto">${f.texto}</div>
+                <div class="card-autor">${f.autor}</div>
+            `;
+            grid.appendChild(card);
+            // ACTIVAMOS EL OBSERVADOR PARA ESTA NUEVA TARJETA
+            revealObserver.observe(card);
+        });
+    }
+
+    function lanzarOraculo() {
+        const fRandom = frases[Math.floor(Math.random() * frases.length)];
+        abrirVista(fRandom);
+    }
+
+    function abrirVista(f) {
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div style="font-family:'Cormorant Garamond', serif; font-size:2.8rem; font-style:italic; margin-bottom:30px; line-height:1.4;">“${f.texto}”</div>
+            <div style="color:var(--oro-viejo); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:1.1rem;">${f.autor}</div>
+            <div style="margin-top:20px; font-size:0.9rem; color:#95a5a6;">Ref: ${f.referencia || 'Sabiduría Trascendental'}</div>
+        `;
+        
+        // Preparar Redes Sociales
+        const linkDirecto = window.location.origin + window.location.pathname + "?frase=" + f.id;
+        const textoCompleto = `✨ *Sabiduría del Alma* ✨\n\n"${f.texto}"\n\n_${f.autor}_\n\nDescubrí más palabras aquí: ${linkDirecto}`;
+        const textoX = `"${f.texto}" - ${f.autor}`;
+        
+        document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(textoCompleto)}`;
+        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkDirecto)}`;
+        document.getElementById('twShare').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textoX)}&url=${encodeURIComponent(linkDirecto)}`;
+        
+        window.currentShareLink = textoCompleto;
+        
+        document.getElementById('modal').style.display = 'flex';
+        // Deep Linking
+        window.history.pushState({}, '', `?frase=${f.id}`);
+    }
+
+    function cerrarVista() {
+        document.getElementById('modal').style.display = 'none';
+        window.history.pushState({}, '', window.location.pathname);
+    }
+
+    function verificarCargaDirecta() {
+        const idParams = new URLSearchParams(window.location.search);
+        if(idParams.has('frase')) {
+            const f = frases.find(i => i.id === idParams.get('frase'));
+            if(f) abrirVista(f);
+        }
+    }
+
+    function copiarLinkFrase() {
+        navigator.clipboard.writeText(window.currentShareLink || window.location.href);
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // --- Nuevas Funciones Navbar y Modales ---
+    function toggleMenu() {
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        navMenu.classList.toggle('active');
+        if (navMenu.classList.contains('active')) {
+            hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+        } else {
+            hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    // Cerrar menú al hacer clic en un enlace (móvil)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu) navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        });
+    });
+
+    // Funciones del Modal Donar
+    function abrirModalDonar() {
+        document.getElementById('modalDonar').classList.add('show');
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        if(navMenu && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    function cerrarModalDonar() {
+        document.getElementById('modalDonar').classList.remove('show');
+    }
+
+    function copiarAliasModal(btn) {
+        const alias = document.getElementById('alias-modal').innerText;
+        navigator.clipboard.writeText(alias);
+        const oldTxt = btn.innerHTML;
+        btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+        btn.style.backgroundColor = "#25D366";
+        btn.style.color = "white";
+        setTimeout(() => {
+            btn.innerHTML = oldTxt;
+            btn.style.backgroundColor = "var(--oro-viejo)";
+        }, 3000);
+    }
+
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', (e) => {
+        if(e.key === "Escape") cerrarModalDonar();
+    });
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.getElementById('modalDonar').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalDonar')) {
+            cerrarModalDonar();
+        }
+    });
+
+</script>
+</body>
+</html>

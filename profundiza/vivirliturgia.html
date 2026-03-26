@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Vivir la Liturgia | Sacramentos | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #4A332D; /* Marrón profundo */
+            --acento: #B8860B;   /* Oro viejo */
+            --fondo: #FDFCF0;    /* Pergamino claro */
+            --blanco: #FFFFFF;
+            --texto: #2C2C2C; 
+            --sombra: 0 15px 35px rgba(184, 134, 11, 0.08);
+            --linea-tiempo: #E0D8C3;
+        }
+
+        body.dark-mode {
+            --primario: #E2E2E2;
+            --acento: #D4AF37;
+            --fondo: #1A1A1A;
+            --blanco: #242424;
+            --texto: #EAEAEA;
+            --sombra: 0 15px 35px rgba(0, 0, 0, 0.4);
+            --linea-tiempo: #444;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--fondo); }
+        ::-webkit-scrollbar-thumb { background: var(--acento); border-radius: 10px; }
+
+        * { box-sizing: border-box; transition: background-color 0.4s, color 0.4s; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--fondo);
+            color: var(--texto);
+            margin: 0;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 50px;
+            position: relative;
+        }
+        header::after {
+            content: '☩';
+            position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem; color: var(--acento); opacity: 0.6;
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem; color: var(--acento); margin: 0; font-weight: 700;
+        }
+        .subtitle {
+            font-weight: 300; font-style: italic; color: var(--primario);
+            margin-top: 15px; font-size: 1.15rem; max-width: 600px; margin-inline: auto;
+        }
+
+        /* --- Controles --- */
+        .controls {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+        }
+        .icon-btn {
+            background: var(--blanco); border: 1px solid rgba(184,134,11,0.2);
+            color: var(--acento); width: 45px; height: 45px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; box-shadow: var(--sombra);
+            transition: all 0.3s;
+        }
+        .icon-btn:hover { transform: translateY(-3px); background: var(--acento); color: var(--blanco); }
+
+        /* --- Timeline (Línea de Vida) --- */
+        .timeline-container {
+            max-width: 1000px; margin: 60px auto; padding: 0 20px;
+            position: relative;
+        }
+        .timeline-container::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            width: 2px; height: 100%; background: var(--linea-tiempo);
+            transform: translateX(-50%);
+        }
+
+        .sacramento-item {
+            display: flex; justify-content: flex-end; padding-right: 30px;
+            position: relative; margin-bottom: 60px; width: 50%;
+            opacity: 0; transform: translateY(40px) translateX(-20px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .sacramento-item:nth-child(even) {
+            align-self: flex-end; justify-content: flex-start;
+            padding-right: 0; padding-left: 30px; margin-left: 50%;
+            transform: translateY(40px) translateX(20px);
+        }
+        .sacramento-item.visible { opacity: 1; transform: translate(0, 0); }
+
+        /* El punto central en la línea */
+        .sacramento-item::before {
+            content: ''; position: absolute; top: 20px; right: -10px;
+            width: 20px; height: 20px; background: var(--acento);
+            border-radius: 50%; border: 4px solid var(--fondo);
+            z-index: 2; box-shadow: 0 0 10px rgba(184,134,11,0.4);
+        }
+        .sacramento-item:nth-child(even)::before { right: auto; left: -10px; }
+
+        .card {
+            background: var(--blanco); padding: 35px; border-radius: 20px;
+            box-shadow: var(--sombra); width: 100%; position: relative;
+            border-top: 3px solid transparent; transition: all 0.3s;
+        }
+        .card:hover { border-top: 3px solid var(--acento); transform: translateY(-5px); }
+
+        .card-icon {
+            font-size: 2.2rem; color: var(--acento); margin-bottom: 15px;
+        }
+        .card h2 {
+            font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+            color: var(--primario); margin: 0 0 10px; line-height: 1.1;
+        }
+        .card p { font-size: 0.95rem; color: var(--texto); margin-bottom: 20px; }
+        
+        .btn-leer {
+            background: transparent; border: none; color: var(--acento);
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;
+            text-transform: uppercase; cursor: pointer; padding: 0;
+            display: inline-flex; align-items: center; gap: 8px; letter-spacing: 1px;
+        }
+        .btn-leer:hover { color: var(--primario); }
+
+        /* --- Modal Expandido --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            z-index: 2000; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .modal.show { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background: var(--fondo); padding: 50px; border-radius: 20px;
+            max-width: 650px; width: 90%; position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform: scale(0.9); transition: transform 0.4s;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .modal.show .modal-content { transform: scale(1); }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 25px; font-size: 2rem;
+            color: var(--primario); cursor: pointer; line-height: 1;
+        }
+        .close-btn:hover { color: var(--acento); }
+
+        .modal-icon { text-align: center; font-size: 3rem; color: var(--acento); margin-bottom: 10px; }
+        .modal h2 {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
+            text-align: center; color: var(--primario); margin: 0 0 20px;
+        }
+        .modal-text {
+            font-size: 1.05rem; line-height: 1.8; color: var(--texto); text-align: justify;
+        }
+        .frase-modal {
+            font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;
+            color: var(--acento); text-align: center; font-style: italic;
+            margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(184,134,11,0.2);
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--primario); font-size: 0.85rem; }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .timeline-container::before { left: 30px; }
+            .sacramento-item, .sacramento-item:nth-child(even) {
+                width: 100%; padding-left: 70px; padding-right: 0; margin-left: 0;
+                justify-content: flex-start; transform: translateY(30px);
+            }
+            .sacramento-item::before, .sacramento-item:nth-child(even):::before {
+                left: 20px; right: auto;
+            }
+            .modal-content { padding: 40px 25px; }
+            .modal h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Día / Noche">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+</div>
+
+<header>
+    <h1>Vivir la Liturgia</h1>
+    <p class="subtitle">Los 7 Sacramentos: Encuentros reales y tangibles con el amor de Dios en cada etapa de nuestra vida.</p>
+</header>
+
+<main class="timeline-container" id="timeline">
+    </main>
+
+<div id="liturgiaModal" class="modal" onclick="cerrarModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="cerrarModal()">&times;</span>
+        <div class="modal-icon" id="mIcon"></div>
+        <h2 id="mTitle"></h2>
+        <div class="modal-text" id="mText"></div>
+        <div class="frase-modal" id="mFrase"></div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Capilla Santa Ana | El camino de la gracia
+</footer>
+
+<script>
+    // --- LOS DATOS COMPLETAMENTE REESCRITOS (COPY MEJORADO) ---
+    const sacramentos = [
+        {
+            titulo: "Bautismo",
+            icono: "fa-water",
+            resumen: "La puerta de la vida. El agua que nos limpia y nos da la bienvenida a la gran familia de la Iglesia.",
+            historia: "El Bautismo no es solo un rito de tradición; es un nacimiento espiritual. A través del agua, somos limpiados y recibimos nuestra identidad más profunda: hijos e hijas amados de Dios. Aquí es donde se enciende la <strong>vela bautismal</strong>, tomando la luz del Cirio Pascual, simbolizando que la luz de Cristo ha disipado nuestras oscuridades y que somos llamados a ser faros de esa luz en el mundo.",
+            frase: "Tú eres mi hijo amado, en ti me complazco."
+        },
+        {
+            titulo: "Reconciliación",
+            icono: "fa-hands-holding-circle",
+            resumen: "El hospital del alma. Un espacio seguro para soltar las cargas y recibir el abrazo sanador de la misericordia.",
+            historia: "También conocido como Confesión, este sacramento es una obra maestra de la psicología espiritual. Todos cometemos errores, nos lastimamos y lastimamos a otros. La Reconciliación es detenerse, mirar nuestras fragilidades de frente y depositarlas en manos de Dios. No es un tribunal para ser juzgados, sino el abrazo de un Padre que corre a recibir a su hijo para devolverle la paz mental y la dignidad que el peso de la culpa le había robado.",
+            frase: "Sus pecados son perdonados; vete en paz."
+        },
+        {
+            titulo: "Eucaristía",
+            icono: "fa-wine-glass", /* O fa-bread-slice */
+            resumen: "El alimento del alma y el corazón de nuestra fe. La presencia real de Jesús para sostenernos en el camino.",
+            historia: "La Primera Comunión marca el inicio de una participación plena en el banquete de la vida. La Eucaristía no es una simple representación o un símbolo bonito; creemos firmemente que es la presencia real, viva y latente de Jesucristo. Así como el cuerpo necesita pan material para no desfallecer, el alma necesita este alimento para tener la fuerza de amar, perdonar y mantener la esperanza en medio de un mundo ruidoso.",
+            frase: "El que come mi carne y bebe mi sangre, tiene vida eterna."
+        },
+        {
+            titulo: "Confirmación",
+            icono: "fa-fire-flame-curved",
+            resumen: "El sello del Espíritu Santo. El paso de la infancia espiritual a la madurez y el compromiso valiente.",
+            historia: "Si en el Bautismo nuestros padres eligieron por nosotros, en la Confirmación somos nosotros quienes decimos 'Sí'. A través de la unción con el santo crisma, recibimos la plenitud del Espíritu Santo y sus siete dones. Es el sacramento que nos saca de las gradas como meros espectadores y nos envía a la cancha de la vida para ser testigos valientes, defendiendo la justicia, la verdad y nuestra fe con palabras y acciones.",
+            frase: "Recibe por esta señal el don del Espíritu Santo."
+        },
+        {
+            titulo: "Matrimonio",
+            icono: "fa-ring",
+            resumen: "El amor hecho sacramento. Dos personas que deciden ser un 'nosotros' para siempre, siendo reflejo del amor de Dios.",
+            historia: "En el Sacramento del Matrimonio, el amor humano se eleva a la categoría de lo sagrado. No se trata solo de un contrato legal o una fiesta; es el compromiso libre de dos personas de cuidarse mutuamente en las buenas y en las malas. Los esposos se convierten en ministros de su propio sacramento, y su hogar se transforma en una pequeña 'Iglesia doméstica', un refugio seguro donde los hijos aprenden a amar y a perdonar.",
+            frase: "Lo que Dios ha unido, que no lo separe el hombre."
+        },
+        {
+            titulo: "Orden Sagrado",
+            icono: "fa-cross",
+            resumen: "Una vida entregada al servicio. El llamado a guiar, perdonar y alimentar al pueblo de Dios como pastor.",
+            historia: "Algunos hombres reciben un llamado profundo a renunciar a formar su propia familia biológica para abrazar a la Iglesia entera como su familia. A través del Orden Sagrado (diáconos, sacerdotes y obispos), entregan su vida, sus manos y su voz para que Cristo siga actuando en el mundo. Son ellos quienes consagran la Eucaristía, perdonan los pecados y acompañan a la comunidad en sus mayores alegrías y sus más oscuras penas.",
+            frase: "Yo soy el buen pastor. El buen pastor da la vida por sus ovejas."
+        },
+        {
+            titulo: "Unción de los Enfermos",
+            icono: "fa-kit-medical",
+            resumen: "El consuelo de Dios en la fragilidad. Fuerza, paz y sanación para el cuerpo y el espíritu que sufre.",
+            historia: "Antes conocido erróneamente solo como la 'extremaunción', este sacramento es una caricia de Dios para cualquier persona que enfrente una enfermedad grave, una cirugía delicada o la fragilidad de la vejez. A través de la unción con el óleo bendecido, se pide no solo la sanación del cuerpo, sino fundamentalmente la paz de la mente y la fortaleza del espíritu, recordando que en el sufrimiento nunca estamos abandonados.",
+            frase: "Vengan a mí todos los que están cansados y agobiados, y yo los aliviaré."
+        }
+    ];
+
+    // --- RENDERIZADO DEL TIMELINE ---
+    const timeline = document.getElementById('timeline');
+    
+    sacramentos.forEach((sac, index) => {
+        const item = document.createElement('div');
+        item.className = 'sacramento-item';
+        
+        item.innerHTML = `
+            <div class="card">
+                <i class="fa-solid ${sac.icono} card-icon"></i>
+                <h2>${sac.titulo}</h2>
+                <p>${sac.resumen}</p>
+                <button class="btn-leer" onclick="abrirModal(${index})">Profundizar <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        `;
+        timeline.appendChild(item);
+    });
+
+    // --- ANIMACIÓN AL SCROLLEAR ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.sacramento-item').forEach(el => observer.observe(el));
+
+    // --- LÓGICA DEL MODAL ---
+    function abrirModal(index) {
+        const sac = sacramentos[index];
+        document.getElementById('mIcon').innerHTML = `<i class="fa-solid ${sac.icono}"></i>`;
+        document.getElementById('mTitle').innerText = sac.titulo;
+        document.getElementById('mText').innerHTML = sac.historia;
+        document.getElementById('mFrase').innerText = `"${sac.frase}"`;
+        
+        const modal = document.getElementById('liturgiaModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+        document.body.style.overflow = 'hidden'; // Bloquea el scroll de fondo
+    }
+
+    function cerrarModal() {
+        const modal = document.getElementById('liturgiaModal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Devuelve el scroll
+        }, 400);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") cerrarModal();
+    });
+
+    // --- MODO OSCURO ---
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.querySelector('.icon-btn i');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Muro de la Gratitud | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
+            --sombra: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --primario: #D7CCC8; --acento: #D4AF37; --fondo: #1A1A1A; --blanco: #2D2D2D;
+            --texto: #F5F5F0; --sombra: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--fondo); color: var(--texto); min-height: 100vh; transition: 0.3s; }
+
+        /* NAVEGACIÓN SUPERIOR SUSTITUIDA POR NAVBAR */
+
+        header { text-align: center; padding: 40px 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primario); margin-bottom: 10px; }
+
+        /* FORMULARIO */
+        .form-container { max-width: 600px; margin: 0 auto 40px; background: var(--blanco); padding: 30px; border-radius: 20px; box-shadow: var(--sombra); border: 1px solid var(--gold-light); }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: var(--primario); }
+        input, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--gold-light); background: var(--fondo); color: var(--texto); font-family: inherit; font-size: 0.95rem; outline: none; }
+        input:focus, textarea:focus { border-color: var(--acento); }
+        .submit-btn { background: var(--acento); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .submit-btn:hover { transform: scale(1.02); background: var(--primario); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* MURO */
+        .muro-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
+        .gratitud-card { background: var(--blanco); padding: 25px; border-radius: 15px; box-shadow: var(--sombra); border-left: 5px solid var(--acento); animation: fadeIn 0.5s ease; display: flex; flex-direction: column; }
+        .gratitud-card .nombre { font-weight: 700; font-size: 0.75rem; color: var(--acento); text-transform: uppercase; letter-spacing: 1px; }
+        .gratitud-card .agradezco-a { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primario); margin: 5px 0 15px; line-height: 1.2; word-break: break-word; }
+        .gratitud-card .mensaje { font-size: 0.95rem; line-height: 1.6; opacity: 0.9; flex-grow: 1; }
+        .gratitud-card .fecha { font-size: 0.7rem; opacity: 0.4; margin-top: 15px; display: block; text-align: right; }
+
+        .text-clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: 4; 
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word; 
+        }
+
+        .btn-leer-mas {
+            background: none;
+            border: none;
+            color: var(--acento);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 8px;
+            text-decoration: underline;
+            transition: 0.3s;
+            align-self: flex-start;
+        }
+        .btn-leer-mas:hover { color: var(--primario); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LOADER */
+        #loader { text-align: center; padding: 40px; font-weight: 600; color: var(--acento); }
+
+        /* SECCIÓN DE DONACIÓN UNIFICADA */
+        .donacion-banner { background: var(--blanco); max-width: 800px; margin: 0 auto 50px; width: calc(100% - 40px); border-radius: 16px; padding: 25px; text-align: center; box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid rgba(193, 154, 107, 0.3); }
+        .donacion-title { font-weight: 700; color: var(--primario); font-size: 1.1rem; }
+        .donacion-alias { background: var(--fondo); padding: 12px 25px; border-radius: 10px; margin: 10px 0; border: 1px dashed var(--acento); width: 100%; max-width: 350px; }
+        .alias-texto { font-size: 0.8rem; opacity: 0.8; display: block; margin-bottom: 5px; }
+        .alias-valor { font-size: 1.2rem; color: var(--primario); letter-spacing: 1px; font-weight: 800; user-select: all; }
+        .donacion-btn { background: transparent; color: var(--acento); border: 2px solid var(--acento); padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .donacion-btn:hover { background: var(--acento); color: var(--blanco); }
+
+        footer { text-align: center; padding: 40px 20px; background: var(--blanco); color: var(--primario); }
+
+/* --- Navbar Nuevo --- */
+.navbar {
+    position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(184,134,11,0.1);
+}
+
+.nav-brand {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700;
+    color: var(--primario); display: flex; align-items: center; gap: 10px;
+}
+
+.nav-brand i { color: var(--acento); }
+
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+
+.theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); }
+.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu {
+        position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px);
+        background: var(--fondo); flex-direction: column; justify-content: center;
+        transition: 0.4s ease-in-out; box-shadow: var(--sombra); z-index: 2999;
+    }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; }
+}
+
+/* --- Animación de Corazón --- */
+@keyframes latido {
+    0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); }
+    60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); }
+}
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: var(--blanco); border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+
+@media (max-width: 768px) {
+    .float-container { right: 15px; bottom: 20px; }
+    .f-btn { width: 60px; height: 60px; font-size: 1.6rem; }
+}
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal.show .modal-content { transform: scale(1); }
+
+.modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+.modal-close:hover { color: var(--acento); transform: rotate(90deg); }
+
+.alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+body.dark-mode .alias-box { background-color: #222; border-color: #333; color: var(--acento); }
+
+        /* --- ESTILOS DEL MODAL (VENTANA FLOTANTE) --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px); 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--blanco);
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh; 
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            position: relative;
+            border-top: 5px solid var(--acento);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--primario);
+            cursor: pointer;
+            line-height: 1;
+            transition: 0.3s;
+            padding: 5px;
+        }
+
+        .modal-close:hover { color: var(--acento); }
+
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--fondo); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--acento); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="profundiza.html" class="active">Profundizar</a></li>
+                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+            </ul>
+            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <header>
+        <h1>Muro de la Gratitud</h1>
+        <p style="max-width: 600px; margin: 0 auto; opacity: 0.8; line-height: 1.5;">"Den gracias al Señor porque es bueno, porque es eterna su misericordia." Dejá tu mensaje y compartí las bendiciones de tu vida.</p>
+    </header>
+
+    <div class="form-container">
+        <form id="gratitudForm">
+            <div class="input-group">
+                <label>Tu Nombre</label>
+                <input type="text" id="nombre" placeholder="Escribe tu nombre">
+            </div>
+            <div class="input-group">
+                <label>¿A quién agradecés hoy?</label>
+                <input type="text" id="agradezcoA" placeholder="Escribe a quién diriges tu agradecimiento" maxlength="60" required>
+            </div>
+            <div class="input-group">
+                <label>Tu mensaje de gratitud</label>
+                <textarea id="mensaje" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="btnEnviar">Publicar en el Muro</button>
+        </form>
+    </div>
+
+    <div id="loader"><i class="fas fa-spinner fa-spin"></i> Cargando mensajes...</div>
+    <main class="muro-grid" id="muroGrid"></main>
+
+    <div class="donacion-banner">
+        <div class="donacion-title"><i class="fas fa-heart" style="color:var(--acento); margin-right:5px;"></i> Sosteniendo nuestra Misión</div>
+        <p style="font-size: 0.85rem; opacity: 0.8; max-width: 600px;">Tu generosidad permite que nuestra Capilla siga siendo un lugar de encuentro y fe para todos.</p>
+        <div class="donacion-alias">
+            <span class="alias-texto">Alias de la cuenta:</span>
+            <strong class="alias-valor">capillas.fatima.ag</strong>
+        </div>
+        <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20Bendiciones!" target="_blank" class="donacion-btn">
+            <i class="fab fa-whatsapp"></i> Enviar Comprobante
+        </a>
+    </div>
+
+    <footer>
+        <div style="font-weight: 700;">Capilla Santa Ana</div>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Villa Parque Santa Ana, Córdoba</p>
+    </footer>
+
+    <div class="float-container">
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+            <i class="fas fa-heart corazon-late"></i>
+        </button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong>
+            </p>
+            
+            <div class="alias-box" style="margin-bottom: 10px;">
+                <span id="alias-modal">capillas.fatima.ag</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
+                Destinatario: Parroquia De Nuestra Señora De Fátima
+            </p>
+            
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;">
+                <i class="far fa-copy"></i> Copiar Alias
+            </button>
+
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;">
+                    <i class="fab fa-whatsapp"></i> Compartir Comprobante
+                </a>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(193, 154, 107, 0.2); padding-top: 20px;">
+                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-hands-helping"></i> Ver otras formas de colaborar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalGratitud" class="modal-overlay" onclick="cerrarModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <div id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY9RqyqxL168ZLJCtCPJZ2RQ443y0vOwdjNhNHXC0bgAvqadurARV387-f4L9FTNHjFg/exec';
+        
+        // Variable global para guardar los mensajes y poder pasarlos al modal
+        let mensajesCargados = [];
+
+        async function cargarMensajes() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                const grid = document.getElementById('muroGrid');
+                document.getElementById('loader').style.display = 'none';
+                
+                if (data.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; opacity:0.5;">Aún no hay mensajes. ¡Sé el primero en agradecer!</p>';
+                    return;
+                }
+
+                // Guardamos los mensajes en orden (más nuevos primero)
+                mensajesCargados = data.reverse();
+
+                grid.innerHTML = mensajesCargados.map((m, index) => {
+                    const esLargo = m.mensaje && m.mensaje.length > 120;
+                    
+                    const mensajeHtml = esLargo 
+                        ? `<p class="mensaje text-clamp">${m.mensaje}</p>
+                           <button class="btn-leer-mas" onclick="abrirModal(${index})">Leer más</button>`
+                        : `<p class="mensaje">${m.mensaje}</p>`;
+
+                    return `
+                        <div class="gratitud-card">
+                            <div class="nombre">${m.nombre || 'Anónimo'}</div>
+                            <div class="agradezco-a">Agradezco a ${m.agradezcoA}</div>
+                            ${mensajeHtml}
+                            <span class="fecha">${new Date(m.fecha).toLocaleDateString('es-AR')}</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loader').innerText = 'Hubo un problema al cargar el muro. Por favor, recargá la página.';
+            }
+        }
+
+        // FUNCIONES DEL MODAL
+        function abrirModal(index) {
+            const m = mensajesCargados[index];
+            const modalBody = document.getElementById('modalBody');
+            
+            // Inyectamos el contenido en la ventana flotante
+            modalBody.innerHTML = `
+                <div class="nombre" style="font-weight:700; font-size:0.85rem; color:var(--acento); text-transform:uppercase; letter-spacing:1px;">
+                    ${m.nombre || 'Anónimo'}
+                </div>
+                <div class="agradezco-a" style="font-family:'Playfair Display', serif; font-size:1.5rem; color:var(--primario); margin:10px 0 20px; line-height:1.2; word-break:break-word;">
+                    Agradezco a ${m.agradezcoA}
+                </div>
+                <p class="mensaje" style="font-size:1.05rem; line-height:1.7; opacity:0.9; word-break:break-word; white-space:pre-wrap;">
+                    ${m.mensaje}
+                </p>
+                <span class="fecha" style="font-size:0.8rem; opacity:0.5; margin-top:25px; display:block; text-align:right;">
+                    ${new Date(m.fecha).toLocaleDateString('es-AR')}
+                </span>
+            `;
+            
+            document.getElementById('modalGratitud').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Bloquea el scroll de la página de fondo
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalGratitud').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Devuelve el scroll a la página
+        }
+
+        document.getElementById('gratitudForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnEnviar');
+            btn.innerText = 'Publicando...';
+            btn.disabled = true;
+
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                agradezcoA: document.getElementById('agradezcoA').value,
+                mensaje: document.getElementById('mensaje').value
+            };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                
+                document.getElementById('gratitudForm').reset();
+                setTimeout(() => {
+                    btn.innerText = 'Publicar en el Muro';
+                    btn.disabled = false;
+                    cargarMensajes();
+                }, 1500);
+
+            } catch (error) {
+                alert('No pudimos publicar tu mensaje ahora. Intentá de nuevo en unos minutos.');
+                btn.innerText = 'Publicar en el Muro';
+                btn.disabled = false;
+            }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.icon-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark');
+            } else {
+                if(icon) icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.querySelector('.icon-btn i');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            }
+            cargarMensajes();
+        };
+
+        // --- Nuevas Funciones Navbar y Modales ---
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        function abrirModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.add('show');
+            
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+
+        function cerrarModalDonar() {
+            const modal = document.getElementById('modalDonar');
+            modal.classList.remove('show');
+        }
+
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            
+            setTimeout(() => {
+                btn.innerHTML = oldTxt;
+                btn.style.backgroundColor = "var(--acento)";
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") cerrarModalDonar();
+        });
+
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) {
+                cerrarModalDonar();
+            }
+        });
+    </script>
+</body>
+</html>

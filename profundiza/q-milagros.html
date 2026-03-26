@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Milagros y Signos | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primario: #5D4037; 
+            --acento: #C19A6B; 
+            --fondo: #F5F5F0; 
+            --blanco: #FFFFFF;
+            --texto: #2D2D2D; 
+            --sombra: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--fondo); color: var(--texto);
+            min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 12px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background: var(--fondo); padding: 8px 14px; border-radius: 50px;
+            text-decoration: none; color: var(--primario); font-weight: 800;
+            font-size: 0.85rem; display: flex; gap: 6px; align-items: center;
+            border: 1px solid var(--acento); transition: 0.3s;
+        }
+
+        .etiqueta-edad {
+            background: var(--primario); color: white; font-size: 0.9rem;
+            font-weight: 800; padding: 6px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 90px 20px 30px; width: 100%; max-width: 600px; margin: 0 auto;
+        }
+
+        .counter {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; 
+            color: var(--acento); margin-bottom: 15px; letter-spacing: 2px;
+        }
+
+        .scene { width: 100%; height: 460px; perspective: 1000px; margin-bottom: 25px; }
+        
+        .card {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        
+        .card.is-flipped { transform: rotateY(180deg); }
+
+        .card-face, .card-face-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 20px; padding: 35px 25px;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .card-face { background: var(--blanco); border-top: 6px solid var(--acento); }
+
+        .card-face-back {
+            background: var(--fondo); border: 2px solid var(--acento);
+            border-top: 6px solid var(--primario); transform: rotateY(180deg);
+        }
+
+        .tag-sq { font-weight: 800; color: var(--acento); text-transform: uppercase; font-size: 0.85rem; margin-bottom: 15px; }
+        .fact-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primario); line-height: 1.3; margin-bottom: 15px; }
+        .hook-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.85; font-weight: 500; margin-bottom: 10px; }
+        .flip-hint { margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--acento); font-weight: 700; opacity: 0.7; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% {opacity: 0.4;} 50% {opacity: 1;} }
+
+        .back-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--primario); margin-bottom: 10px; font-weight: 700; border-bottom: 2px solid var(--acento); padding-bottom: 5px;}
+        .cite-box { background: var(--blanco); padding: 12px; border-radius: 10px; border-left: 4px solid var(--acento); margin-bottom: 12px; font-size: 0.85rem; font-style: italic; font-weight: 600; line-height: 1.4; color: var(--texto); }
+        .recom-box { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; line-height: 1.4; font-weight: 500; }
+        .recom-icon { color: var(--acento); font-size: 1.2rem; }
+
+        .actions { display: flex; gap: 15px; width: 100%; flex-wrap: wrap; }
+        .btn-action { 
+            flex: 1; border: none; padding: 16px; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-main { background: var(--primario); color: white; }
+        .btn-sec { background: var(--blanco); color: var(--primario); border: 2px solid var(--primario); }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--primario); margin-top: auto; font-weight: 600; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="sabiasque.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
+        <span class="etiqueta-edad">Milagros y Signos</span>
+        <a href="../index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Capilla</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="counter" id="counter">Cargando...</div>
+
+        <div class="scene">
+            <div class="card" id="sq-card" onclick="flipCard()">
+                <div class="card-face">
+                    <div class="tag-sq"><i class="fas fa-sparkles"></i> ¿Sabías que...?</div>
+                    <div class="fact-text" id="fact">...</div>
+                    <div class="hook-text" id="hook">...</div>
+                    <div class="flip-hint"><i class="fas fa-sync-alt"></i> Tocá para revelar</div>
+                </div>
+                <div class="card-face-back">
+                    <div class="back-title">Signos del Cielo</div>
+                    <div class="cite-box"><i class="fas fa-quote-left" style="color:var(--acento); margin-right:5px;"></i> <span id="cite"></span></div>
+                    <div class="recom-box">
+                        <i class="fas fa-wand-magic-sparkles recom-icon"></i>
+                        <span id="recom"></span>
+                    </div>
+                    <div class="flip-hint" style="margin-top:auto;"><i class="fas fa-undo"></i> Volver</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-sec" onclick="shareFact()"><i class="fas fa-share-alt"></i> Compartir</button>
+            <button class="btn-action btn-main" onclick="nextFact()"><i class="fas fa-random"></i> Siguiente</button>
+        </div>
+    </div>
+
+    <footer>Capilla Santa Ana · Los Signos de Dios</footer>
+
+<script>
+const DATOS = [
+    { id: "mil1", fact: "El Milagro de Lanciano ha sido estudiado por científicos modernos.", hook: "En el siglo VIII, una hostia se convirtió en carne y el vino en sangre. Mil años después, la ciencia confirmó que es tejido de corazón humano real.", cite: "Estudios de 1970: El Dr. Linoli confirmó que la sangre es tipo AB, la misma que en la Sábana Santa.", recom: "🍞 Presencia: Cuando comulgues, recordá que recibís un Corazón que late por vos." },
+    { id: "mil2", fact: "La Sábana Santa de Turín es un 'negativo fotográfico' natural.", hook: "Muestra la imagen de un hombre crucificado con detalles anatómicos perfectos. La ciencia todavía no puede explicar cómo se grabó la imagen en la tela.", cite: "Proyecto STURP: La imagen no contiene pigmentos, tintas ni pinturas.", recom: "🩸 Huella: Jesús dejó su 'foto' grabada para que en tiempos de duda, tuviéramos una prueba física." },
+    { id: "mil3", fact: "En Fátima, 70.000 personas vieron 'bailar' al sol.", hook: "Fue el 13 de octubre de 1917. El sol giró, cambió de colores y pareció caer sobre la tierra, secando instantáneamente la ropa de la gente que estaba bajo la lluvia.", cite: "Milagro del Sol: Incluso periodistas ateos de la época documentaron el fenómeno.", recom: "☀️ Confianza: Dios tiene el poder de manejar toda la creación para darte una señal." },
+    { id: "mil4", fact: "El cuerpo de Santa Bernadette de Lourdes está incorrupto.", hook: "Murió en 1879. Después de más de 140 años, su cuerpo se mantiene flexible y con la piel intacta, sin haber sido embalsamado.", cite: "Exhumaciones Médicas: Un signo de santidad que desafía las leyes de la biología.", recom: "🤍 Pureza: Una vida entregada a Dios deja una marca que ni la muerte puede borrar." },
+    { id: "mil5", fact: "La Virgen de Guadalupe tiene un milagro en sus ojos.", hook: "En las córneas de la imagen original se descubrieron, mediante microscopios, las figuras de 13 personas: la escena exacta de cuando Juan Diego mostró el manto.", cite: "Estudios Oftalmológicos: Los ojos de la Virgen actúan como ojos humanos vivos.", recom: "👁️ Mirada: Sentite siempre bajo la mirada atenta y amorosa de nuestra Madre María." },
+    { id: "mil6", fact: "La sangre de San Jenaro se vuelve líquida todos los años.", hook: "Se guarda en una ampolla desde el año 305. Tres veces al año, la sangre seca se licúa frente a miles de fieles en Nápoles.", cite: "Milagro de San Jenaro: Un fenómeno físico que la ciencia no ha podido replicar artificialmente.", recom: "🩸 Vida: La fe no es algo estático; es una sangre viva que corre por la historia." },
+    { id: "mil7", fact: "El Padre Pío tuvo las llagas de Cristo durante 50 años.", hook: "Perdía mucha sangre cada día, pero las heridas nunca se infectaban ni supuraban. Tenían un perfume a flores, no a sangre.", cite: "Estigmas del Padre Pío: Un milagro de participación en el dolor de la Redención.", recom: "🙏 Sacrificio: Uní tus pequeños dolores a los de Jesús; Él los convierte en bendiciones." },
+    { id: "mil8", fact: "Jesús multiplicó los panes y peces para 5.000 hombres.", hook: "Y esto sin contar a las mujeres y niños. Sobraron 12 canastas llenas. ¡Dios siempre da mucho más de lo que necesitamos!", cite: "Mateo 14, 20: 'Comieron todos y se saciaron'.", recom: "🍞 Abundancia: No tengas miedo de compartir lo poco que tenés; en manos de Dios, eso se multiplica." },
+    { id: "mil9", fact: "La Virgen de Lourdes pidió cavar en el barro y brotó un manantial.", hook: "Ese agua ha producido miles de curaciones inexplicables para la medicina. Hay una oficina médica oficial que estudia cada milagro.", cite: "Santuario de Lourdes: Solo 70 milagros han sido declarados 'oficiales', pero hay miles de testimonios.", recom: "💧 Salud: Si estás enfermo, confiá en el poder de Dios, pero también en la ciencia que Él nos dio." },
+    { id: "mil10", fact: "San Juan Bosco tenía sueños proféticos sobre el futuro.", hook: "Soñaba con batallas navales y el futuro de sus jóvenes con una precisión asombrosa. Dios le hablaba mientras dormía.", cite: "Memorias Biográficas: Sus sueños guiaron la fundación de la obra Salesiana.", recom: "😴 Descanso: Antes de dormir, entregale tus planes a Dios; Él puede hablarte al corazón en el silencio." },
+    { id: "mil11", fact: "En las Bodas de Caná, el agua se convirtió en el mejor vino.", hook: "Fue el primer milagro de Jesús, hecho por pedido de su Madre. ¡Jesús se preocupa por tu alegría, no solo por tus problemas!", cite: "Juan 2, 10: 'Tú has guardado el buen vino hasta ahora'.", recom: "🍷 Alegría: Invitá a María a tus fiestas; ella siempre se asegura de que no falte la alegría de Jesús." },
+    { id: "mil12", fact: "La tumba de Jesús fue encontrada vacía al tercer día.", hook: "Es el milagro base de nuestra fe. Sin la Resurrección, el cristianismo sería solo una filosofía bonita. ¡Pero Él está vivo!", cite: "Lucas 24, 6: 'No está aquí, sino que ha resucitado'.", recom: "☀️ Victoria: No te quedes llorando frente a tus 'tumbas' (fracasos); Dios tiene poder para resucitarte." },
+    { id: "mil13", fact: "El Padre Pío tenía el don de la 'Bilocación'.", hook: "Se lo vio en dos lugares distintos al mismo tiempo: estaba en su convento rezando y, a la vez, confesando o ayudando a alguien a kilómetros de distancia.", cite: "Testimonios Jurados: Un don extraordinario que Dios da a algunos santos.", recom: "🌍 Ubicuidad: Dios está en todos lados. ¡Hablale en cualquier momento!" },
+    { id: "mil14", fact: "En un milagro eucarístico en Argentina, la hostia se hizo tejido de corazón.", hook: "Ocurrió en Buenos Aires en 1996. El análisis genético demostró que el tejido estaba vivo y sufriendo en el momento del estudio.", cite: "Milagro de Buenos Aires: Investigado por el entonces Cardenal Bergoglio (Papa Francisco).", recom: "❤️ Latido: La hostia que recibís no es un trozo de pan; es el Corazón de Dios latiendo por vos." },
+    { id: "mil15", fact: "Santa Rosa de Lima hacía brotar flores en pleno invierno.", hook: "Su jardín era un milagro constante de belleza. Dios premiaba su amor por la naturaleza y su pureza.", cite: "Vida de Santa Rosa: La primera santa de América y su conexión con la creación.", recom: "🌸 Belleza: Tu vida puede florecer incluso en los 'inviernos' más duros de tu alma." },
+    { id: "mil16", fact: "Jesús caminó sobre el agua en medio de una tormenta.", hook: "Demostró que Él es el Señor de la naturaleza. Cuando Pedro tuvo miedo y se hundió, Jesús lo agarró de la mano.", cite: "Mateo 14, 31: 'Hombre de poca fe, ¿por qué dudaste?'.", recom: "🛶 Seguridad: Si sentís que te hundís en tus problemas, gritá: '¡Señor, sálvame!', y Él te va a agarrar." },
+    { id: "mil17", fact: "San Antonio de Padua hizo que una mula se arrodillara ante la Eucaristía.", hook: "Para demostrarle a un hombre que no creía, la mula dejó de comer y se arrodilló frente a la hostia consagrada.", cite: "Milagro de la Mula: Un animal reconociendo a su Creador.", recom: "🙇‍♂️ Respeto: Si hasta los animales se arrodillan ante Dios, ¿cómo no vamos a hacerlo nosotros con amor?" },
+    { id: "mil18", fact: "La imagen de la Virgen de Luján se hizo 'pesada' para no irse.", hook: "En 1630, los bueyes no podían mover la carreta. Solo cuando bajaron la pequeña imagen de María, la carreta avanzó. ¡Se quiso quedar!", cite: "Origen de Luján: La Virgen eligió su hogar en nuestra tierra argentina.", recom: "🇦🇷 Elección: María te eligió a vos para ser su hijo. No te alejes de ella." },
+    { id: "mil19", fact: "Moisés abrió el Mar Rojo con su vara por orden de Dios.", hook: "Un muro de agua se levantó a cada lado para que el pueblo cruzara. Es el milagro de la libertad absoluta.", cite: "Éxodo 14, 21: 'Jehová hizo que el mar se retirase por medio de un recio viento oriental'.", recom: "🌊 Caminos: Dios puede abrir caminos donde vos solo ves muros imposibles." },
+    { id: "mil20", fact: "San Francisco de Asís amansó a un lobo feroz.", hook: "El lobo de Gubbio aterrorizaba al pueblo. Francisco le habló como a un hermano y el lobo se volvió manso como un perro.", cite: "Las Florecillas: Un milagro de paz a través del trato fraternal con la creación.", recom: "🐺 Paz: No ataques la violencia con más violencia; probá con el trato amable y la paz de Dios." },
+    { id: "mil21", fact: "El profeta Elías hizo caer fuego del cielo sobre el altar.", hook: "Para demostrar quién era el Dios verdadero, Elías rezó y el fuego bajó del cielo seco y quemó hasta las piedras empapadas de agua.", cite: "1 Reyes 18: El desafío en el Monte Carmelo.", recom: "🔥 Verdad: Dios no se queda callado cuando su pueblo lo llama de verdad." },
+    { id: "mil22", fact: "San José de Cupertino volaba durante la Misa.", hook: "Se elevaba del suelo de pura alegría al pensar en Dios. Lo llamaban 'El Santo Volador'.", cite: "Proceso de Canonización: Testigos vieron sus levitaciones en público.", recom: "🦅 Elevación: No te quedes pegado al suelo de tus preocupaciones; elevá tu alma con la oración." },
+    { id: "mil23", fact: "Lázaro resucitó después de cuatro días de estar muerto.", hook: "Jesús gritó: '¡Lázaro, ven fuera!', y el hombre salió caminando envuelto en vendas. ¡Nada es imposible para el Dueño de la vida!", cite: "Juan 11: Jesús lloró por su amigo antes de hacer el milagro.", recom: "🤝 Amistad: Jesús te ama tanto como a Lázaro; Él quiere sacarte de tus 'muertes' hoy." },
+    { id: "mil24", fact: "La Virgen de Guadalupe dejó flores frescas en un cerro seco.", hook: "Juan Diego encontró rosas de Castilla en el cerro del Tepeyac en pleno invierno, un lugar donde solo crecían cactus.", cite: "Apariciones de 1531: La señal que pidió el obispo.", recom: "🌹 Signos: Pedile a Dios una 'flor' (un consuelo) cuando sientas que tu vida está seca." },
+    { id: "mil25", fact: "San Charbel sigue obrando milagros de curación masivos.", hook: "Desde su tumba en el Líbano, este monje ermitaño ha concedido miles de favores médicos documentados en todo el mundo.", cite: "Santuario de Annaya: Un imán de fe en Oriente Medio.", recom: "🩹 Sanación: Si tenés un dolor físico o del alma, pedile a San Charbel que interceda por vos." },
+    { id: "mil26", fact: "El Maná caía del cielo todas las mañanas en el desierto.", hook: "Era un alimento con sabor a miel que Dios mandaba para que su pueblo no tuviera hambre durante 40 años.", cite: "Éxodo 16: El pan del cielo que prefiguraba la Eucaristía.", recom: "🥪 Provisión diaria: Confiá en que Dios te va a dar lo que necesitás para pasar el día de hoy." },
+    { id: "mil27", fact: "Santa Teresa de Ávila tenía 'transverberaciones' en su corazón.", hook: "Sentía que un ángel le atravesaba el corazón con un dardo de fuego. Después de morir, se encontró una cicatriz real en su corazón físico.", cite: "Libro de la Vida: Una experiencia mística de amor extremo.", recom: "🔥 Amor ardiente: Pedile a Dios que te dé un poquito de ese fuego para amar más a los demás." },
+    { id: "mil28", fact: "San Juan Macías multiplicaba la comida para los pobres.", hook: "Cocinaba en una olla chica y servía a cientos de personas, y la comida nunca se acababa. ¡La caridad agranda las cosas!", cite: "Vida del santo dominico: Amigo de San Martín de Porres.", recom: "🥣 Generosidad: Cuando das con amor, Dios se encarga de que a vos nunca te falte nada." },
+    { id: "mil29", fact: "La Virgen de Fátima predijo la Segunda Guerra Mundial.", hook: "Les dijo a los niños que si la gente no dejaba de ofender a Dios, vendría una guerra peor. ¡Un signo de que el cielo se preocupa por nuestra paz!", cite: "Segundo Secreto de Fátima: Una advertencia para la humanidad.", recom: "🕊️ Oración por la paz: Tu oración de hoy puede evitar que el mal siga creciendo en el mundo." },
+    { id: "mil30", fact: "Jesús curó a un hombre que era ciego de nacimiento.", hook: "Le puso barro en los ojos y le dijo que se lavara. El hombre empezó a ver por primera vez. ¡Dios puede abrirte los ojos a una realidad nueva!", cite: "Juan 9: El milagro que causó un gran debate entre los sabios.", recom: "👀 Nueva vista: Pedile a Jesús que te ayude a ver lo bueno donde hoy solo ves oscuridad." },
+    { id: "mil31", fact: "El Milagro de Guadalupe en la tilma no tiene explicación científica.", hook: "La tela es de fibra de maguey, que se pudre en 20 años. ¡Pero la tilma de Juan Diego tiene casi 500 años y está perfecta!", cite: "Análisis de la fibra: No tiene ningún tipo de barniz protector.", recom: "🧥 Protección: El manto de María es eterno; refugiate en él cuando te sientas frágil." },
+    { id: "mil32", fact: "San Nicolás de Bari resucitó a tres niños que habían sido asesinados.", hook: "Es uno de sus milagros más famosos. Dios le dio el poder de devolver la vida y la alegría a esas familias destrozadas.", cite: "Tradición de San Nicolás: Patrono de los niños y la generosidad.", recom: "🎁 Esperanza: Dios puede arreglar incluso lo que parece roto para siempre." },
+    { id: "mil33", fact: "Jesús calmó una tempestad gigante solo con su palabra.", hook: "Los apóstoles tenían terror. Jesús se levantó y dijo: '¡Calla, enmudece!', y al instante hubo una gran calma en el mar.", cite: "Marcos 4, 39: '¿Quién es este, que aun el viento y el mar le obedecen?'.", recom: "⛈️ Calma interna: Cuando tus emociones sean una tormenta, pedile a Jesús que traiga paz." },
+    { id: "mil34", fact: "En el milagro de Bolsena, la sangre de la hostia manchó el altar.", hook: "Un cura dudaba de la presencia de Jesús. Al consagrar, la hostia sangró tanto que manchó el mantel (corporal), que hoy se guarda en Orvieto.", cite: "Origen de la fiesta de Corpus Christi: Un milagro para confirmar la fe de los sacerdotes.", recom: "🍞 Fe real: Jesús está en la hostia aunque tus ojos solo vean pan. ¡Creé!" },
+    { id: "mil35", fact: "Santa Gema Galgani recibía cartas de su Ángel de la Guarda.", hook: "Tenía una relación tan cercana con el cielo que su ángel le traía recados y la consolaba en sus dolores.", cite: "Diarios de Santa Gema: Una mística moderna con amigos celestiales.", recom: "👼 Compañía: Tu Ángel de la Guarda está al lado tuyo ahora mismo. ¡Saludalo!" },
+    { id: "mil36", fact: "Elías subió al cielo en un carro de fuego.", hook: "Fue un signo de que Dios premia la fidelidad extrema. Elías no murió de forma común, sino que fue arrebatado por la gloria de Dios.", cite: "2 Reyes 2, 11: 'Y Elías subió al cielo en un torbellino'.", recom: "🚀 Meta alta: Apuntá siempre al cielo en todo lo que hagas; esa es nuestra verdadera casa." },
+    { id: "mil37", fact: "San Pedro curó a un paralítico a la entrada del templo.", hook: "Le dijo: 'No tengo oro ni plata, pero lo que tengo te doy: en nombre de Jesucristo, ¡levántate y anda!'.", cite: "Hechos 3, 6: El primer milagro de los apóstoles después de Pentecostés.", recom: "💪 Poder del nombre: Hay poder en el nombre de Jesús. Usalo para bendecir a los demás." },
+    { id: "mil38", fact: "La Virgen del Rosario de San Nicolás pidió rezar por la paz de Argentina.", hook: "Gladys Motta recibió mensajes de María que hoy son seguidos por millones. Es un milagro de nuestra tierra.", cite: "Apariciones aprobadas por la Iglesia: Un faro de fe a orillas del Paraná.", recom: "🇦🇷 Fe nacional: Valorá que la Virgen nos visita y nos habla en nuestro propio idioma." },
+    { id: "mil39", fact: "San Francisco de Asís recibió los estigmas en el Monte Alvernia.", hook: "Fue el primer santo documentado en tener las heridas de Jesús. Su cuerpo se transformó en una copia viva de la pasión.", cite: "Fiesta de los Estigmas: 17 de septiembre.", recom: "🩸 Unión: Si sufrís, recordá que Jesús sufrió antes y que tu dolor tiene un sentido." },
+    { id: "mil40", fact: "Jesús multiplicó los panes por segunda vez para 4.000 personas.", hook: "A veces nos olvidamos de que lo hizo dos veces. Dios nunca se cansa de darnos de comer y cuidarnos.", cite: "Mateo 15, 32: 'Tengo compasión de la gente, porque ya hace tres días que están conmigo'.", recom: "🥪 Compasión: Dios conoce tus necesidades básicas; Él se preocupa por tu hambre y tu cansancio." },
+    { id: "mil41", fact: "El Milagro de Calanda es uno de los más impresionantes de la historia.", hook: "A un hombre le amputaron una pierna. Dos años después, después de rezar a la Virgen del Pilar, se despertó con su pierna original pegada de nuevo.", cite: "Documentación Notarial de 1640: Cientos de testigos confirmaron el hecho.", recom: "🦵 Restauración: Dios puede devolverte lo que creías perdido para siempre. ¡Tené fe!" },
+    { id: "mil42", fact: "San Juan Evangelista salió ileso de una olla de aceite hirviendo.", hook: "Intentaron matarlo en Roma, pero Dios lo protegió y salió del aceite más joven y fuerte que antes.", cite: "Tradición Apostólica: Por eso a San Juan se lo representa a veces con un caldero.", recom: "🛡️ Invencibilidad: Si Dios está con vos, nada ni nadie puede destruirte." },
+    { id: "mil43", fact: "El Arca de la Alianza hacía caer los muros de Jericó.", hook: "El pueblo dio siete vueltas gritando y tocando trompetas, y los muros gigantes cayeron solos. ¡El poder de la oración comunitaria!", cite: "Josué 6: El milagro de la conquista de la Tierra Prometida.", recom: "🎺 Grito de fe: Juntate con otros para rezar; los muros de tus problemas van a caer más fácil." },
+    { id: "mil44", fact: "San Martín de Porres hablaba con los ratones.", hook: "Les pedía que no molestaran en el convento y les daba de comer en el jardín. ¡Un milagro de armonía con toda la creación!", cite: "Tradición Dominicana: 'Fray Escoba' y su amor por los más chiquitos.", recom: "🐭 Respeto: Tratá bien a todas las criaturas de Dios; todas tienen un lugar en su corazón." },
+    { id: "mil45", fact: "La Virgen de Fátima mostró el Infierno a los pastorcitos.", hook: "No para asustarlos, sino para pedirles que rezaran por los pecadores. Fue un signo de la importancia de nuestras acciones.", cite: "Primer Secreto de Fátima: Una visión que cambió la vida de los niños.", recom: "⚖️ Responsabilidad: Tus acciones tienen consecuencias eternas. ¡Elegí siempre el amor!" },
+    { id: "mil46", fact: "Jesús curó a diez leprosos, pero solo uno volvió a agradecer.", hook: "El agradecimiento completó el milagro en su alma. Dios ama que reconozcamos sus regalos.", cite: "Lucas 17, 15: 'Entonces uno de ellos, viendo que había sido sanado, volvió glorificando a Dios'.", recom: "🙏 Gracias: No te olvides de decir 'gracias' hoy por las mil cosas que Dios te dio gratis." },
+    { id: "mil47", fact: "San Lorenzo Justiniano multiplicó el pan para su monasterio.", hook: "En una época de gran hambre, los sacos de harina se llenaban solos mientras él rezaba. ¡Dios es el mejor administrador!", cite: "Vida del Patriarca de Venecia: Ejemplo de confianza total en la providencia.", recom: "🍞 Confianza: Si te falta algo básico, pedilo con fe y ponete a trabajar; Dios hace el resto." },
+    { id: "mil48", fact: "La imagen de la Virgen de Itatí salvó al pueblo de un ataque.", hook: "Se dice que la Virgen se apareció sobre el río Paraná y los atacantes huyeron al ver su resplandor divino.", cite: "Historia de Itatí: La 'Punta de Piedra' protegida por María.", recom: "🌊 Escudo: María es tu mejor defensa contra las tentaciones y los ataques del mal." },
+    { id: "mil49", fact: "El profeta Jonás sobrevivió tres días dentro de un gran pez.", hook: "Fue un signo de que Dios nos da una segunda oportunidad aunque hayamos huido de nuestra misión.", cite: "Jonás 2: Una oración de arrepentimiento desde lo profundo del mar.", recom: "🐳 Segundas oportunidades: Si te alejaste de Dios, hoy es el día de volver. ¡Él te está esperando!" },
+    { id: "mil50", fact: "San Benito sobrevivió a dos intentos de envenenamiento.", hook: "Una vez bendijo la copa y se rompió; otra vez un cuervo se llevó el pan envenenado. ¡Dios cuida a sus amigos!", cite: "Vida de San Benito por San Gregorio Magno: El poder de la bendición.", recom: "🍷 Bendición: Bendecí siempre tu comida y tu día; la bendición es un escudo real." },
+    { id: "mil51", fact: "Jesús resucitó a la hija de Jairo que acababa de morir.", hook: "Le dijo: 'Talitha kumi' (Niña, a ti te digo, levántate). Dios tiene poder sobre la vida y la muerte.", cite: "Marcos 5, 41: 'Y luego la niña se levantó y andaba'.", recom: "🧒 Despertar: Dios puede 'despertar' esas partes de tu alma que hoy sentís muertas." },
+    { id: "mil52", fact: "La Virgen de Guadalupe dejó su aroma a flores en el cerro.", hook: "Incluso antes de que Juan Diego viera las rosas, el aire olía a paraíso. Los milagros de Dios perfuman la vida.", cite: "Relato del Nican Mopohua: La belleza que precede al signo físico.", recom: "🌬️ Aroma de fe: Que tu trato con los demás deje un aroma a paz y a Dios." },
+    { id: "mil53", fact: "San Felipe Neri tenía el corazón tan grande que le rompió dos costillas.", hook: "Sentía tanto amor por el Espíritu Santo que su corazón físico creció y arqueó su pecho. ¡Un milagro de amor físico!", cite: "Autopsia de San Felipe Neri: Los médicos confirmaron la anomalía física después de su muerte.", recom: "❤️ Corazón grande: No seas tacaño con tu amor; dejá que tu corazón se agrande ayudando a otros." },
+    { id: "mil54", fact: "Jesús multiplicó el aceite de una viuda pobre.", hook: "A través del profeta Eliseo, un frasquito de aceite llenó todas las vasijas del barrio hasta que no hubo más lugar.", cite: "2 Reyes 4: Un milagro de providencia económica.", recom: "🏺 Espacio: Dios quiere llenarte de bendiciones, pero necesitás hacerle espacio en tu vida." },
+    { id: "mil55", fact: "La Sábana Santa tiene rastros de polen de plantas que solo crecen en Jerusalén.", hook: "Esto demuestra geográficamente que la tela estuvo en el lugar de la crucifixión hace 2000 años.", cite: "Análisis Botánico de Max Frei: Una prueba científica de la autenticidad del lienzo.", recom: "🧱 Evidencia: La fe es razonable; Dios nos deja pistas para que nuestra inteligencia lo encuentre." },
+    { id: "mil56", fact: "San Pío de Pietrelcina confesaba en idiomas que no conocía.", hook: "Gente de todo el mundo iba a verlo y él les hablaba en su propia lengua o los entendía perfectamente sin traductor.", cite: "Don de Lenguas: Un milagro para que la misericordia de Dios no tenga fronteras.", recom: "🗣️ Comunicación: Pedile al Espíritu que te ayude a entender a los que piensan distinto a vos." },
+    { id: "mil57", fact: "El Milagro del Tepeyac convirtió a 9 millones de indígenas en 10 años.", hook: "Sin discursos difíciles, solo con la imagen de la Virgen, todo un continente abrazó la fe. ¡El milagro de la evangelización!", cite: "Historia de México: El signo que unió a dos culturas enfrentadas.", recom: "🤝 Unión: Un gesto de amor vale más que mil palabras para convencer a alguien." },
+    { id: "mil58", fact: "Jesús curó a un paralítico que bajaron por el techo.", hook: "Vio la fe de sus amigos y le dijo: 'Tus pecados te son perdonados... ¡Levántate!'. El perdón es el milagro más grande.", cite: "Marcos 2: La sanación del cuerpo que empieza por la sanación del alma.", recom: "🧼 Perdón: Buscá primero estar bien con Dios; la salud del cuerpo suele seguir a la paz del alma." },
+    { id: "mil59", fact: "San Estanislao de Kostka recibió la comunión de manos de un ángel.", hook: "Estaba enfermo y no podía ir a la iglesia. Dios mandó a un ángel para que no se quedara sin el Pan de Vida.", cite: "Vida del santo jesuita: Patrono de los novicios.", recom: "🍞 Deseo: Si tenés muchas ganas de comulgar y no podés, hacé una 'comunión espiritual'; Dios la escucha." },
+    { id: "mil60", fact: "El Sol se detuvo por orden de Josué durante una batalla.", hook: "Dios escuchó el grito de un hombre y permitió que el día durara más para que el bien venciera al mal. ¡Dios te da el tiempo que necesitás!", cite: "Josué 10, 13: 'Y el sol se detuvo y la luna se paró'.", recom: "📅 Tiempo: Si sentís que no llegás con tus tareas, pedile a Dios que te ayude a organizar el tiempo." },
+    { id: "mil61", fact: "San Juan Bosco multiplicó las hostias en una Misa.", hook: "Había mucha gente y pocas hostias en el copón. Mientras las repartía, el copón seguía lleno hasta que todos comulgaron.", cite: "Testimonio de los jóvenes del Oratorio: Un milagro eucarístico de cercanía.", recom: "🍞 Nunca falta: Dios nunca se queda corto; siempre hay suficiente amor para todos en la capilla." },
+    { id: "mil62", fact: "La Virgen de Salta atrae a miles por sus mensajes de conversión.", hook: "En el cerro de Salta, muchas personas dicen haber sentido la presencia de María y cambiado sus vidas para siempre.", cite: "Fenómeno de fe en el norte argentino: 'La Inmaculada Madre del Divino Corazón Eucarístico de Jesús'.", recom: "⛰️ Subida: A veces hay que hacer el esfuerzo de 'subir al cerro' (esforzarse) para encontrarse con Dios." },
+    { id: "mil63", fact: "Jesús curó a la mujer que le tocó el manto en medio de la multitud.", hook: "Ella pensó: 'Con solo tocar su ropa, sanaré'. Jesús sintió que salía poder de Él. ¡La fe activa el poder de Dios!", cite: "Lucas 8, 48: 'Hija, tu fe te ha salvado; ve en paz'.", recom: "👗 Tocar a Jesús: Acercate hoy a la Eucaristía o a la Biblia con esa misma confianza." },
+    { id: "mil64", fact: "San Raimundo de Peñafort cruzó el mar sobre su propia capa.", hook: "La usó como una balsa y su bastón como mástil para escapar de un rey que no lo dejaba seguir a Dios. ¡La fe te hace flotar!", cite: "Vida del santo dominico: Patrono de los abogados canonistas.", recom: "🧥 Recursos: Usá lo que tengas a mano para hacer el bien; Dios va a hacer que funcione." },
+    { id: "mil65", fact: "La vara de Aarón floreció en una noche como signo de elección.", hook: "Era una madera seca, pero a la mañana siguiente tenía hojas, flores y almendras maduras. ¡Dios da vida a lo que está muerto!", cite: "Números 17, 8: Un milagro para confirmar quién debía guiar al pueblo.", recom: "🌿 Elección: Dios te eligió a vos; dejá que tu vida florezca con buenas obras." },
+    { id: "mil66", fact: "Jesús expulsó legiones de demonios con una sola palabra.", hook: "Demostró que el mal no tiene ninguna oportunidad frente a Dios. El miedo se va cuando llega la luz de Cristo.", cite: "Marcos 5: El milagro en la región de los gerasenos.", recom: "🛡️ Protección: No le tengas miedo al mal; decí el nombre de Jesús y el miedo se va." },
+    { id: "mil67", fact: "San Jerónimo le sacó una espina de la pata a un león.", hook: "El animal se volvió su amigo fiel y cuidaba el convento. Es un milagro de autoridad espiritual sobre el miedo.", cite: "Tradición de San Jerónimo: El león de Belén.", recom: "🦁 Amistad: Sé valiente para ayudar a los que parecen peligrosos; quizás solo necesitan que les saques un dolor." },
+    { id: "mil68", fact: "En el milagro de la Santa Cruz de los Milagros, la madera no se quemaba.", hook: "Ocurrió en Corrientes. Intentaron quemar la cruz para asustar a los cristianos, pero las llamas no le hacían nada.", cite: "Historia de la ciudad de Corrientes: Un signo de la protección divina sobre la fe.", recom: "🔥 Resistencia: Aunque pases por el 'fuego' de las pruebas, si estás con Dios, no te vas a quemar." },
+    { id: "mil69", fact: "La Virgen de San Nicolás pidió que se hiciera una medalla especial.", hook: "Es la medalla de María del Rosario. Miles de personas han sentido su protección al llevarla con fe.", cite: "Mensajes de la Virgen a Gladys Motta: Una guía para los tiempos actuales.", recom: "🏅 Signo: Llevá una medalla o una cruz; es un recordatorio de que no caminás solo." },
+    { id: "mil70", fact: "Jesús multiplicó los peces para Pedro después de una noche sin pesca.", hook: "Pedro estaba cansado y desanimado. Jesús le dijo: 'Navega mar adentro'. Las redes casi se rompían de tantos peces.", cite: "Lucas 5, 6: 'Y habiéndolo hecho, encerraron gran cantidad de peces'.", recom: "🛶 Intentalo de nuevo: Si ayer te fue mal, hoy intentá de nuevo con la bendición de Dios." },
+    { id: "mil71", fact: "El Milagro de Fátima fue anunciado con tres meses de anticipación.", hook: "La Virgen dio la fecha y la hora exacta del milagro del sol para que todos pudieran creer. ¡Dios no juega a las escondidas!", cite: "Apariciones de 1917: 'En octubre haré un milagro que todos verán'.", recom: "🎯 Precisión: Confiá en los tiempos de Dios; Él sabe exactamente cuándo darte la señal que necesitás." },
+    { id: "mil72", fact: "El milagro más grande ocurre todos los días en el altar.", hook: "Que un trozo de pan se convierta en el Cuerpo de Dios es el milagro de los milagros. ¡Y ocurre en nuestra Capilla Santa Ana!", cite: "Transustanciación: La verdad central de la fe católica.", recom: "🎯 El Milagro: No busques cosas raras; el milagro más grande te está esperando en la próxima Misa." }
+];
+
+let dataMix = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    dataMix = [...DATOS].sort(() => Math.random() - 0.5);
+    if (idParam) {
+        const indexInMix = dataMix.findIndex(d => d.id === idParam);
+        if (indexInMix !== -1) {
+            const item = dataMix.splice(indexInMix, 1)[0];
+            dataMix.unshift(item);
+        }
+    }
+    currentIndex = 0;
+    renderCard();
+}
+
+function renderCard() {
+    if (currentIndex >= dataMix.length) {
+        currentIndex = 0; 
+        dataMix.sort(() => Math.random() - 0.5); 
+    }
+    const card = document.getElementById('sq-card');
+    const item = dataMix[currentIndex];
+    if (isFlipped) {
+        card.classList.remove('is-flipped');
+        isFlipped = false;
+        setTimeout(() => { fillData(item); }, 400); 
+    } else {
+        fillData(item);
+    }
+    document.getElementById('counter').innerText = `Signo ${currentIndex + 1} de ${DATOS.length}`;
+}
+
+function fillData(item) {
+    document.getElementById('fact').innerText = item.fact;
+    document.getElementById('hook').innerText = item.hook;
+    document.getElementById('cite').innerText = item.cite;
+    document.getElementById('recom').innerText = item.recom;
+}
+
+function flipCard() {
+    const card = document.getElementById('sq-card');
+    card.classList.toggle('is-flipped');
+    isFlipped = !isFlipped;
+}
+
+function nextFact() {
+    currentIndex++;
+    renderCard();
+}
+
+async function shareFact() {
+    const item = dataMix[currentIndex];
+    let baseUrl = window.location.href.split('?')[0];
+    
+    if (window.location.protocol === 'file:') {
+        baseUrl = 'https://capillasantaana.com.ar/sabiasque/sq-milagros.html'; 
+    }
+    
+    const shareUrl = `${baseUrl}?id=${item.id}`;
+    const textShare = `✨ ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí los milagros más asombrosos de la fe entrando aquí: ${shareUrl}`;
+
+    if (navigator.share && window.location.protocol !== 'file:') {
+        try {
+            await navigator.share({
+                title: 'Milagros y Signos | Capilla Santa Ana',
+                text: textShare
+            });
+        } catch (e) { console.log("Compartir cancelado"); }
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = textShare;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert('¡Enlace y dato copiados! Ya podés pegarlo en WhatsApp.');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>La Santa Misa Tradicional | Paso a Paso | Capilla Santa Ana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* Paleta solemne para la Misa Tradicional (Rojo Carmesí, Oro Oscuro y Pergamino) */
+        :root {
+            --primario: #5E2129; /* Rojo muy oscuro/Vino */
+            --acento: #B8860B;   /* Oro viejo */
+            --fondo: #FDFCF0;    /* Pergamino claro */
+            --blanco: #FFFFFF;
+            --texto: #2C2C2C; 
+            --sombra: 0 15px 35px rgba(94, 33, 41, 0.1);
+            --linea-tiempo: #D8C3C6;
+        }
+
+        body.dark-mode {
+            --primario: #E2E2E2;
+            --acento: #D4AF37;
+            --fondo: #161213; /* Fondo casi negro con un toque cálido */
+            --blanco: #241D1E;
+            --texto: #EAEAEA;
+            --sombra: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --linea-tiempo: #443;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--fondo); }
+        ::-webkit-scrollbar-thumb { background: var(--acento); border-radius: 10px; }
+
+        * { box-sizing: border-box; transition: background-color 0.4s, color 0.4s; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--fondo);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.8) 0%, transparent 60%);
+            color: var(--texto);
+            margin: 0;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        body.dark-mode {
+            background-image: radial-gradient(circle at 50% 0%, rgba(184, 134, 11, 0.05) 0%, transparent 60%);
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            position: relative;
+        }
+        header::after {
+            content: '☩';
+            position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem; color: var(--acento); opacity: 0.6;
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem; color: var(--acento); margin: 0; font-weight: 700;
+        }
+        .subtitle {
+            font-weight: 300; font-style: italic; color: var(--primario);
+            margin-top: 15px; font-size: 1.15rem; max-width: 650px; margin-inline: auto;
+        }
+
+/* --- Animación de Corazón --- */
+@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+/* --- Botón Flotante y Modal Donaciones --- */
+.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+#modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+#modalDonar.show { display: flex; opacity: 1; }
+#modalDonar .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
+#modalDonar.show .modal-content { transform: scale(1); }
+#modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+#modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+#modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+/* NAVBAR GLOBAL */
+.navbar { position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); transition: background 0.3s; }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-brand i { color: var(--acento); }
+.nav-menu { display: flex; align-items: center; gap: 30px; }
+.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--acento); }
+.theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); display: flex; align-items: center; justify-content: center;}
+.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+    .nav-menu.active { left: 0; }
+    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-links a { font-size: 1.2rem; color: var(--texto); }
+}
+
+        /* --- Timeline --- */
+        .timeline-container {
+            max-width: 1000px; margin: 60px auto; padding: 0 20px;
+            position: relative;
+        }
+        .timeline-container::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            width: 2px; height: 100%; background: var(--linea-tiempo);
+            transform: translateX(-50%);
+        }
+
+        .misa-item {
+            display: flex; justify-content: flex-end; padding-right: 35px;
+            position: relative; margin-bottom: 60px; width: 50%;
+            opacity: 0; transform: translateY(40px) translateX(-20px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .misa-item:nth-child(even) {
+            align-self: flex-end; justify-content: flex-start;
+            padding-right: 0; padding-left: 35px; margin-left: 50%;
+            transform: translateY(40px) translateX(20px);
+        }
+        .misa-item.visible { opacity: 1; transform: translate(0, 0); }
+
+        .misa-item::before {
+            content: ''; position: absolute; top: 20px; right: -12px;
+            width: 24px; height: 24px; background: var(--acento);
+            border-radius: 50%; border: 4px solid var(--fondo);
+            z-index: 2; box-shadow: 0 0 10px rgba(184,134,11,0.4);
+        }
+        .misa-item:nth-child(even)::before { right: auto; left: -12px; }
+
+        .card {
+            background: var(--blanco); padding: 35px; border-radius: 15px;
+            box-shadow: var(--sombra); width: 100%; position: relative;
+            border-top: 3px solid transparent; transition: all 0.3s;
+        }
+        .card:hover { border-top: 3px solid var(--primario); transform: translateY(-5px); }
+
+        .card-icon { font-size: 2.2rem; color: var(--acento); margin-bottom: 15px; }
+        .card h2 {
+            font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+            color: var(--primario); margin: 0 0 10px; line-height: 1.1;
+        }
+        .card p { font-size: 0.95rem; color: var(--texto); margin-bottom: 20px; }
+        
+        .btn-leer {
+            background: transparent; border: none; color: var(--acento);
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.85rem;
+            text-transform: uppercase; cursor: pointer; padding: 0;
+            display: inline-flex; align-items: center; gap: 8px; letter-spacing: 1px;
+        }
+        .btn-leer:hover { color: var(--primario); }
+
+        /* --- Modal Expandido --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            z-index: 2000; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .modal.show { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background: var(--fondo); padding: 50px; border-radius: 15px;
+            max-width: 700px; width: 90%; position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform: scale(0.95); transition: transform 0.4s;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .modal.show .modal-content { transform: scale(1); }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 25px; font-size: 2rem;
+            color: var(--primario); cursor: pointer; line-height: 1;
+        }
+        .close-btn:hover { color: var(--acento); }
+
+        .modal-icon { text-align: center; font-size: 3rem; color: var(--acento); margin-bottom: 10px; }
+        .modal h2 {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.6rem;
+            text-align: center; color: var(--primario); margin: 0 0 20px;
+            line-height: 1.1;
+        }
+        .modal-text {
+            font-size: 1.05rem; line-height: 1.8; color: var(--texto); text-align: justify;
+        }
+        .modal-text strong { color: var(--primario); }
+        .frase-modal {
+            font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;
+            color: var(--acento); text-align: center; font-style: italic;
+            margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(184,134,11,0.2);
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--primario); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .timeline-container::before { left: 30px; }
+            .misa-item, .misa-item:nth-child(even) {
+                width: 100%; padding-left: 70px; padding-right: 0; margin-left: 0;
+                justify-content: flex-start; transform: translateY(30px);
+            }
+            .misa-item::before, .misa-item:nth-child(even)::before { left: 18px; right: auto; }
+            .modal-content { padding: 40px 25px; }
+            .modal h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-brand">
+        <i class="fa-solid fa-cross"></i> Capilla Santa Ana
+    </a>
+    
+    <div class="nav-menu">
+        <ul class="nav-links">
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="index.html">Profundizar</a></li>
+            <li><a href="ayudanos.html">Ayudanos</a></li>
+            <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
+        </ul>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleDarkMode()" aria-label="Cambiar tema">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
+    <button class="hamburger" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</nav>
+
+<header>
+    <h1>La Misa Tradicional</h1>
+    <p class="subtitle">Descubrí el misterio, los símbolos y el silencio del Rito Extraordinario paso a paso.</p>
+</header>
+
+<main class="timeline-container" id="timeline">
+    </main>
+
+<div id="misaModal" class="modal" onclick="cerrarModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="cerrarModal()">&times;</span>
+        <div class="modal-icon" id="mIcon"></div>
+        <h2 id="mTitle"></h2>
+        <div class="modal-text" id="mText"></div>
+        <div class="frase-modal" id="mFrase"></div>
+    </div>
+</div>
+
+<div class="float-container">
+    <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()">
+        <i class="fas fa-heart corazon-late"></i>
+    </button>
+</div>
+
+<!-- Modal Donaciones -->
+<div id="modalDonar">
+    <div class="modal-content">
+        <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
+            <i class="fas fa-times"></i>
+        </button>
+        <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+        <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+        <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; color: var(--texto);">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+        
+        <div class="alias-box" style="margin-bottom: 10px;">
+            <span id="alias-modal">capillas.fatima.ag</span>
+        </div>
+        <p style="font-size: 0.9rem; color: #555; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+        
+        <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+        
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+            <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+            <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+        </div>
+
+        <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+            <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Capilla Santa Ana | El Misterio de la Fe
+</footer>
+
+<script>
+    // --- DATOS DEL PASO A PASO (MISA TRADICIONAL) ---
+    const partesMisa = [
+        {
+            titulo: "El Sentido del Misterio (Ad Orientem)",
+            icono: "fa-compass",
+            resumen: "¿Por qué el sacerdote da la espalda? Descubrí cómo el altar es el centro de la brújula espiritual.",
+            historia: "En la Misa Tradicional, el sacerdote no está 'de espaldas al pueblo', sino que está <strong>'Ad Orientem' (Hacia el Oriente)</strong>. Todos, sacerdote y fieles, miran en la misma dirección: hacia la Cruz y el sagrario. Psicológicamente, esto nos recuerda que el sacerdote no es un animador mirándonos a nosotros, sino un capitán que lidera a su pueblo hacia Dios. Además, el uso del <strong>Latín</strong> crea un 'lenguaje sagrado', un velo de misterio que separa lo cotidiano (el idioma de la calle) de lo divino.",
+            frase: "No miramos al hombre, miramos todos juntos hacia el Señor."
+        },
+        {
+            titulo: "Oraciones al pie del Altar",
+            icono: "fa-stairs",
+            resumen: "El ascenso a la montaña sagrada. El reconocimiento de nuestra fragilidad antes de subir.",
+            historia: "La Misa no empieza arriba, empieza abajo. El sacerdote se detiene al pie de las gradas del altar y reza el Salmo 42 ('Juzga mi causa, oh Dios'). Luego, reza el <strong>Confiteor (Yo pecador)</strong>, golpeándose el pecho tres veces. Es un momento de profunda honestidad psicológica: antes de tocar lo sagrado, reconocemos que somos frágiles y que necesitamos sanación. Solo después de purificarse, el sacerdote tiene permiso para subir los escalones y besar el altar, donde están las reliquias de los santos.",
+            frase: "¿Quién subirá al monte del Señor? El de manos limpias y corazón puro."
+        },
+        {
+            titulo: "El Movimiento del Misal",
+            icono: "fa-book-bible",
+            resumen: "La Liturgia de la Palabra y el simbolismo del libro que cambia de lado en el altar.",
+            historia: "Durante la primera parte, el libro (el Misal) está del lado derecho (lado de la Epístola). Luego, el monaguillo lo cruza al lado izquierdo (lado del Evangelio) para la lectura de la vida de Jesús. Este gesto físico tiene un simbolismo histórico enorme: representa cómo el mensaje de Dios pasó del pueblo judío (antigua alianza) a los gentiles (el resto del mundo). Todos nos ponemos de pie, porque escuchar el Evangelio no es leer un libro antiguo, es recibir al Rey que entra en la sala.",
+            frase: "La Palabra se hizo carne y habitó entre nosotros."
+        },
+        {
+            titulo: "El Ofertorio Silencioso",
+            icono: "fa-hands-holding-circle",
+            resumen: "El velo del cáliz, la gota de agua en el vino y la ofrenda de nuestras propias vidas.",
+            historia: "El Ofertorio tradicional es muy profundo. El sacerdote levanta la hostia y el cáliz ofreciéndolos a Dios. Un detalle hermoso es que el sacerdote pone una <strong>pequeña gota de agua dentro del vino</strong>. El vino representa la divinidad de Cristo, y el agua representa nuestra humanidad frágil. Al mezclarse, ya no se pueden separar: nuestras vidas quedan unidas a la de Dios. En este momento, todo fiel debe poner mentalmente sus propios problemas, alegrías y dolores en ese cáliz para que sean transformados.",
+            frase: "Oh Dios, que maravillosamente creaste la dignidad humana, y más maravillosamente la reformaste."
+        },
+        {
+            titulo: "El Canon y el Gran Silencio",
+            icono: "fa-bell",
+            resumen: "El corazón de la Misa. El sacerdote susurra las palabras más sagradas mientras el mundo calla.",
+            historia: "Llegamos al momento cumbre: El Canon Romano. A diferencia de otras misas, aquí el sacerdote reza <strong>en voz baja, casi en un susurro</strong>. Este 'Gran Silencio' es impactante. Psicológicamente, el silencio nos saca de la sobreestimulación moderna y nos mete de lleno en el misterio. De repente, el silencio se rompe con el sonido de las campanillas. El sacerdote se arrodilla, eleva la Hostia blanca en medio del contraste oscuro, y luego el Cáliz. Es el momento en el que el tiempo se detiene y el Calvario se hace presente aquí y ahora.",
+            frase: "Hoc est enim Corpus meum. (Porque esto es mi Cuerpo)."
+        },
+        {
+            titulo: "La Comunión de Rodillas",
+            icono: "fa-hands-praying",
+            resumen: "La máxima receptividad del alma: recibir a Dios de rodillas y en la boca.",
+            historia: "Antes de comulgar, el sacerdote se golpea el pecho diciendo tres veces: <strong>'Domine non sum dignus'</strong> (Señor, no soy digno de que entres en mi casa). La comunión se recibe de rodillas en el reclinatorio y directamente en la boca. Este no es un gesto de humillación, sino de total receptividad (como un niño que es alimentado por su padre). Físicamente, ponernos de rodillas le enseña a nuestro cerebro y a nuestro cuerpo que estamos ante algo infinitamente más grande que nosotros mismos.",
+            frase: "Señor, no soy digno, pero una palabra tuya bastará para sanarme."
+        },
+        {
+            titulo: "El Último Evangelio",
+            icono: "fa-scroll",
+            resumen: "El Prólogo de San Juan y la genuflexión final para llevar la luz al mundo.",
+            historia: "La Misa Tradicional no termina con el 'Podéis ir en paz'. Termina con la lectura del Prólogo del Evangelio de San Juan, que cuenta cómo se creó el mundo y cómo la Luz brilló en las tinieblas. Al llegar a la frase <strong>'Et Verbum caro factum est' (Y el Verbo se hizo carne)</strong>, el sacerdote y todos los fieles clavan la rodilla en el suelo. Es el recordatorio final de que el Dios todopoderoso se hizo un bebé frágil por nosotros, y ahora nos toca llevar ese amor inmenso a nuestras casas y trabajos.",
+            frase: "Y la Luz brilla en las tinieblas, y las tinieblas no la comprendieron."
+        }
+    ];
+
+    // --- RENDERIZADO DEL TIMELINE ---
+    const timeline = document.getElementById('timeline');
+    
+    partesMisa.forEach((parte, index) => {
+        const item = document.createElement('div');
+        item.className = 'misa-item';
+        
+        item.innerHTML = `
+            <div class="card">
+                <i class="fa-solid ${parte.icono} card-icon"></i>
+                <h2>${parte.titulo}</h2>
+                <p>${parte.resumen}</p>
+                <button class="btn-leer" onclick="abrirModal(${index})">Profundizar <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        `;
+        timeline.appendChild(item);
+    });
+
+    // --- ANIMACIÓN AL SCROLLEAR ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.misa-item').forEach(el => observer.observe(el));
+
+    // --- LÓGICA DEL MODAL ---
+    function abrirModal(index) {
+        const parte = partesMisa[index];
+        document.getElementById('mIcon').innerHTML = `<i class="fa-solid ${parte.icono}"></i>`;
+        document.getElementById('mTitle').innerText = parte.titulo;
+        document.getElementById('mText').innerHTML = parte.historia;
+        document.getElementById('mFrase').innerText = `"${parte.frase}"`;
+        
+        const modal = document.getElementById('misaModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+        document.body.style.overflow = 'hidden'; // Bloquea el scroll del fondo
+    }
+
+    function cerrarModal() {
+        const modal = document.getElementById('misaModal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Devuelve el scroll
+        }, 400);
+    }
+
+    // --- MODO OSCURO ---
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.getElementById('themeIcon');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    window.onload = () => {
+        const savedTheme = localStorage.getItem('theme');
+        const icon = document.getElementById('themeIcon');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+    };
+
+    // --- Nuevas Funciones Navbar y Modales ---
+    function toggleMenu() {
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        navMenu.classList.toggle('active');
+        if (navMenu.classList.contains('active')) {
+            hamburgerIcon.classList.replace('fa-bars', 'fa-xmark');
+        } else {
+            hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu) navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        });
+    });
+
+    // Funciones del Modal Donar
+    function abrirModalDonar() {
+        document.getElementById('modalDonar').classList.add('show');
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = document.querySelector('.hamburger i');
+        if(navMenu && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+    }
+
+    function cerrarModalDonar() {
+        document.getElementById('modalDonar').classList.remove('show');
+    }
+
+    function copiarAliasModal(btn) {
+        const alias = document.getElementById('alias-modal').innerText;
+        navigator.clipboard.writeText(alias);
+        const oldTxt = btn.innerHTML;
+        btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+        btn.style.backgroundColor = "#25D366";
+        btn.style.color = "white";
+        setTimeout(() => {
+            btn.innerHTML = oldTxt;
+            btn.style.backgroundColor = "var(--acento)";
+        }, 3000);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if(e.key === "Escape") {
+            cerrarModal();
+            cerrarModalDonar();
+        }
+    });
+
+    document.getElementById('modalDonar').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalDonar')) {
+            cerrarModalDonar();
+        }
+    });
+</script>
+</body>
+</html>
