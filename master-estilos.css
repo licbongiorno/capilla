@@ -1,48 +1,45 @@
 /*
   ==========================================================================
-  CORRECCIONES DEFINITIVAS PARA MÓVIL (master-estilos.css)
-  Pega esto AL FINAL del archivo para sobreescribir estilos rotos.
+  CORRECCIONES DEFINITIVAS - VERSIÓN 2 (master-estilos.css)
   ==========================================================================
 */
 
-/* --- 1. ARREGLO DE FONDO DE PALABRAS CAÓTICAS (Imagen 2) --- */
-/* Forzamos que el fondo de palabras esté SIEMPRE DETRÁS de la cabecera y el contenido */
+/* --- 1. ARREGLO DE FONDO DE PALABRAS CAÓTICAS --- */
 #bg.bg-words {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: -1 !important; /* Envía esto al fondo absoluto */
+    z-index: -1 !important;
     overflow: hidden !important;
-    background: none !important; /* Asegura transparencia para el fondo real */
+    background: none !important;
 }
 
-/* Estilos base para las palabras flotantes (evita tamaños gigantes por accidente) */
 .floating-word {
     position: absolute;
     white-space: nowrap;
-    opacity: 0.15 !important; /* Muy sutil, como debe ser */
-    color: #4a3b32 !important; /* Color marron */
-    pointer-events: none !important; /* No interfiere con clicks */
+    opacity: 0.15 !important;
+    color: #4a3b32 !important;
+    pointer-events: none !important;
     font-family: 'Montserrat', sans-serif;
-    transform: translateZ(0); /* Mejora rendimiento */
+    transform: translateZ(0);
 }
 
-/* --- 2. ARREGLO DE BARRA SUPERIOR FIJA Y RESPONSIVA --- */
+/* --- 2. ARREGLO DE BARRA SUPERIOR FIJA --- */
 .top-nav {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100% !important;
-    height: 60px !important; /* Altura fija estándar */
+    height: 60px !important;
     padding: 0 20px !important;
     box-sizing: border-box !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    background-color: #fdfaf6 !important; /* Color de fondo */
-    z-index: 9999 !important; /* Por encima de todo, excepto el menú desplegado */
+    background-color: #fdfaf6 !important;
+    z-index: 9999 !important;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
 }
 
@@ -65,28 +62,38 @@
     gap: 15px !important;
 }
 
-/* Ocultar enlaces de escritorio y botón de modo oscuro en móvil por defecto */
-.top-nav .nav-links,
+/* --- 3. MENÚ VISIBLE EN PC (CORRECCIÓN) --- */
+.top-nav .nav-links {
+    display: flex !important; 
+    flex-direction: row !important;
+    gap: 20px !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
 .top-nav .icon-btn {
-    display: none !important;
+    display: block !important;
 }
 
-/* Empujar contenido principal para que no quede bajo la barra fija */
 .deck-container {
-    padding-top: 80px !important; /* 60px nav + 20px margen */
+    padding-top: 80px !important; 
 }
 
-/* --- 3. ARREGLO DE BOTÓN DE DONACIONES A LA DERECHA (FIJO) --- */
+/* --- 4. ARREGLO DE BOTÓN DE DONACIONES A LA DERECHA (FIJO) --- */
 .float-container {
     position: fixed !important;
-    right: 20px !important; /* FORZADO A LA DERECHA */
-    bottom: 20px !important; /* En la parte inferior */
-    left: auto !important; /* Cancela cualquier valor de 'left' previo */
-    top: auto !important; /* Cancela cualquier valor de 'top' previo */
-    z-index: 9998 !important; /* Justo debajo del nav, pero sobre la carta */
+    right: 20px !important; 
+    bottom: 20px !important; 
+    left: auto !important; 
+    top: auto !important; 
+    z-index: 9998 !important; 
 }
 
-/* Opcional: Estilo sutil para el botón si no está definido */
 .f-btn {
     display: flex;
     justify-content: center;
@@ -94,7 +101,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #d1bba4; /* Color beige/dorado */
+    background-color: #d1bba4;
     color: white;
     font-size: 24px;
     text-decoration: none;
@@ -102,12 +109,12 @@
 }
 
 /* ==========================================================================
-   MEDIA QUERY: VERSIÓN CELULAR BLINDADA (< 768px)
+   MEDIA QUERY: VERSIÓN CELULAR (< 768px)
    ==========================================================================
 */
 @media (max-width: 768px) {
-
-    /* Mostrar la hamburguesa */
+    
+    /* Mostrar hamburguesa solo en celu */
     .top-nav .menu-toggle {
         display: flex !important;
         flex-direction: column !important;
@@ -128,11 +135,15 @@
         border-radius: 5px !important;
     }
 
-    /* Menú desplegable oculto por defecto */
+    /* Ocultar el botón de la lunita suelto en celular */
+    .top-nav .icon-btn {
+        display: none !important;
+    }
+
+    /* Convertir el menú horizontal de PC en desplegable para celu */
     .top-nav .nav-links {
-        display: flex !important; /* Cambia a flex para el layout interno */
         position: fixed !important;
-        top: 60px !important; /* Justo debajo de la barra */
+        top: 60px !important; 
         left: 0 !important;
         width: 100% !important;
         height: auto !important;
@@ -142,15 +153,15 @@
         margin: 0 !important;
         box-shadow: 0 10px 10px rgba(0,0,0,0.1) !important;
 
-        /* Efecto de deslizar */
+        /* Efecto de deslizar oculto por defecto */
         transform: translateY(-200%) !important;
         opacity: 0 !important;
         visibility: hidden !important;
         transition: all 0.4s ease-in-out !important;
-        z-index: 9997 !important; /* Detrás de la hamburguesa */
+        z-index: 9997 !important; 
     }
 
-    /* Clase activada por Javascript al tocar la hamburguesa */
+    /* Se activa al tocar la hamburguesa */
     .top-nav .nav-links.active {
         transform: translateY(0) !important;
         opacity: 1 !important;
