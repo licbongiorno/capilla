@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#F5F5F0">
     <meta name="color-scheme" content="light dark">
     <meta name="author" content="Capilla Santa Ana">
-    <meta name="description" content="Ayudanos a sostener la Capilla Santa Ana. Necesitamos voluntarios para limpieza, elementos para el merendero, talentos artísticos y donaciones. Sumá tu granito de arena.">
+    <meta name="description" content="Ayudanos a sostener la Capilla Santa Ana. Necesitamos voluntarios para limpieza, talentos artísticos y donaciones. Sumá tu granito de arena.">
     <meta name="keywords" content="Ayuda, Donaciones, Voluntariado, Capilla Santa Ana, Merendero, Limpieza, Solidaridad, Córdoba">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.capillasantaana.com.ar/ayudanos">
@@ -22,7 +22,7 @@
     
     <meta property="og:locale" content="es_AR">
     <meta property="og:title" content="Ayudanos | Capilla Santa Ana">
-    <meta property="og:description" content="Nuestra casa se sostiene gracias al amor de la comunidad. Necesitamos voluntarios, elementos y donaciones. Sumate.">
+    <meta property="og:description" content="Nuestra casa se sostiene gracias al amor de la comunidad. Necesitamos voluntarios, talentos y donaciones. Sumate.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.capillasantaana.com.ar/ayudanos">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
@@ -219,6 +219,7 @@
                 <li><a href="index.html#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
                 <li><a href="index.html#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
                 <li><a href="index.html#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
+                <li><a href="https://www.capillasantaana.com.ar/profundiza" onclick="closeMenu()"><i class="fas fa-book-open"></i> Profundiza</a></li>
                 <li><a href="#" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
                 <li><a onclick="abrirModalDonar(); closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
             </ul>
@@ -288,21 +289,6 @@
                     
                     <a href="https://wa.me/5493547451672?text=Hola%20Patricia!%20Quiero%20sumarme%20como%20voluntario/a%20para%20ayudar%20con%20la%20Limpieza%20y%20el%20Orden%20de%20la%20Capilla." target="_blank" class="btn" style="background: var(--urgente); color: white; margin-top: auto; padding: 15px 20px; font-size: 0.9rem;">
                         <i class="fab fa-whatsapp"></i> Hablar con Patricia
-                    </a>
-                </div>
-
-                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
-                    <i class="fas fa-soup" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Mesa del Pan Compartido</h3>
-                    <p style="margin-bottom: 20px; flex-grow: 1;">Estamos organizando un espacio para que familias y hermanos puedan compartir el pan en la mesa del Señor. Para hacerlo realidad necesitamos: <strong>ollas grandes, utensilios, tuppers</strong> e insumos de cocina.</p>
-                    
-                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento); margin-bottom: 15px;">
-                        <strong>Coordinadora:</strong><br>
-                        Paola
-                    </div>
-                    
-                    <a href="https://wa.me/5493517023789?text=Hola%20Paola!%20Tengo%20cosas%20para%20donar%20para%20la%20Mesa%20del%20Pan%20Compartido%20(Cenas%20Comunitarias)%20de%20la%20Capilla." target="_blank" class="btn btn-primary" style="margin-top: auto; padding: 15px 20px; font-size: 0.9rem;">
-                        <i class="fab fa-whatsapp"></i> Hablar con Paola
                     </a>
                 </div>
 
@@ -457,9 +443,9 @@
         };
 
         // Cerrar modal con la tecla ESC
-        document.addEventListener('keydown', (e) => { 
-             if(e.key === "Escape") cerrarModalDonar(); 
-         });
+        document.addEventListener('keydown', (e) => {
+              if(e.key === "Escape") cerrarModalDonar();
+          });
     });
     
     function toggleMenu() {
@@ -490,10 +476,10 @@
         btn.style.backgroundColor = "var(--verde-wa)";
         btn.style.borderColor = "var(--verde-wa)";
         btn.style.color = "white";
-        setTimeout(() => { 
-             btn.innerHTML = oldTxt; 
-             btn.style.backgroundColor = "var(--acento)"; 
-             btn.style.borderColor = "var(--acento)";
+        setTimeout(() => {
+              btn.innerHTML = oldTxt;
+              btn.style.backgroundColor = "var(--acento)";
+              btn.style.borderColor = "var(--acento)";
             btn.style.color = "white";
         }, 3000);
     }
@@ -517,10 +503,10 @@
         btn.style.backgroundColor = "var(--verde-wa)";
         btn.style.borderColor = "var(--verde-wa)";
         btn.style.color = "white";
-        setTimeout(() => { 
-             btn.innerHTML = oldTxt; 
-             btn.style.backgroundColor = "var(--acento)"; 
-             btn.style.borderColor = "var(--acento)";
+        setTimeout(() => {
+              btn.innerHTML = oldTxt;
+              btn.style.backgroundColor = "var(--acento)";
+              btn.style.borderColor = "var(--acento)";
             btn.style.color = "white";
         }, 3000);
     }
