@@ -1,130 +1,103 @@
 /* =========================================
-   ESTILOS DE NAVEGACIÓN (PC Y BASE)
+   NUEVA BARRA DE NAVEGACIÓN - BLINDADA
    ========================================= */
 .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5%;
-    background-color: #fdfaf6; /* Reemplazá por el color exacto de tu fondo */
-    position: fixed; /* Mantiene la barra siempre arriba */
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000; /* Asegura que la barra esté por encima de las cartas */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombreado sutil */
-    box-sizing: border-box;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 15px 20px !important;
+    box-sizing: border-box !important;
+    position: fixed !important; /* Deja la barra fija arriba */
+    top: 0 !important;
+    left: 0 !important;
+    background-color: #fdfaf6 !important;
+    z-index: 9999 !important; /* Siempre por encima de las cartas */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important;
 }
 
 .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
 }
 
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-}
-
-/* Ocultamos el botón hamburguesa en PC */
+/* Ocultar menú hamburguesa en PC */
 .menu-toggle {
-    display: none; 
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 25px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1001;
+    display: none !important;
 }
 
-.menu-toggle span {
-    width: 100%;
-    height: 3px;
-    background-color: #4a3b32; /* Color de las rayitas del menú (marrón oscuro) */
-    border-radius: 5px;
-    transition: all 0.3s linear;
-}
-
-/* Empujar el contenido principal para que la barra no lo tape */
+/* Separar el contenedor de las cartas para que la barra no lo tape */
 .deck-container {
-    padding-top: 90px; /* Dale espacio para respirar debajo del menú */
-    min-height: 100vh;
-    box-sizing: border-box;
+    padding-top: 100px !important; 
 }
-
 
 /* =========================================
-   MEDIA QUERY: VERSIÓN CELULAR (Móvil)
+   MEDIA QUERY: VERSIÓN CELULAR BLINDADA
    ========================================= */
 @media (max-width: 768px) {
     
-    /* 1. Mostramos el botón de las 3 rayitas */
+    /* Mostrar la hamburguesa */
     .menu-toggle {
-        display: flex; 
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 25px !important;
+        height: 18px !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        z-index: 10000 !important;
     }
 
-    /* 2. Convertimos la lista de links en un menú desplegable oculto */
+    .menu-toggle span {
+        width: 100% !important;
+        height: 3px !important;
+        background-color: #4a3b32 !important; /* Color marroncito */
+        border-radius: 5px !important;
+    }
+
+    /* Menú desplegable oculto por defecto */
     .nav-links {
-        position: absolute;
-        top: 100%; /* Se posiciona justo debajo de la barra top-nav */
-        left: 0;
-        width: 100%;
-        background-color: #fdfaf6; /* Mismo color que la barra */
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        position: fixed !important;
+        top: 65px !important; /* Justo debajo de la barra */
+        left: 0 !important;
+        width: 100% !important;
+        background-color: #fdfaf6 !important;
+        flex-direction: column !important;
+        padding: 20px 0 !important;
+        margin: 0 !important;
+        box-shadow: 0 10px 10px rgba(0,0,0,0.1) !important;
         
-        /* Efecto de ocultar deslizando hacia arriba */
-        transform: translateY(-150%);
-        opacity: 0;
-        visibility: hidden;
-        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        /* Efecto de deslizar */
+        transform: translateY(-200%) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.4s ease-in-out !important;
+        z-index: 9998 !important;
     }
 
-    /* 3. Cuando JS agrega la clase 'active' al tocar el botón, el menú baja */
+    /* Clase que agrega Javascript al tocar la hamburguesa */
     .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-        padding-bottom: 20px; /* Espacio extra al final del menú desplegado */
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
+    /* Estilos de los links en celular */
     .nav-links li {
-        width: 100%;
-        text-align: center;
+        list-style: none !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
     }
 
     .nav-links a {
-        display: block;
-        padding: 15px 0;
-        font-size: 1.1rem;
-        color: #4a3b32; /* Tu color de texto */
-        text-decoration: none;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
+        font-size: 1.2rem !important;
+        text-decoration: none !important;
+        color: #4a3b32 !important;
+        display: block !important;
+        padding: 10px !important;
     }
-}
-
-/* =========================================
-   COMPATIBILIDAD MODO OSCURO (Opcional)
-   ========================================= */
-body.dark-mode .top-nav,
-body.dark-mode .nav-links {
-    background-color: #1a1a1a;
-}
-
-body.dark-mode .nav-links a {
-    color: #fdfaf6;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-body.dark-mode .menu-toggle span {
-    background-color: #fdfaf6;
 }
