@@ -41,34 +41,47 @@
         }
 
         /* NAVBAR GLOBAL */
-.navbar { position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); transition: background 0.3s; }
-.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav-brand i { color: var(--acento); }
-.nav-menu { display: flex; align-items: center; gap: 30px; }
-.nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
-.nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
-.nav-links a:hover, .nav-links a.active { color: var(--acento); }
-.theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); display: flex; align-items: center; justify-content: center;}
-.theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
-.hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
-@media (max-width: 768px) {
-    .hamburger { display: block; }
-    .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
-    .nav-menu.active { left: 0; }
-    .nav-links { flex-direction: column; text-align: center; gap: 30px; }
-    .nav-links a { font-size: 1.2rem; color: var(--texto); }
-}
+        .navbar { position: sticky; top: 0; z-index: 3000; background: var(--fondo); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); transition: background 0.3s; }
+        .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--primario); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-brand i { color: var(--acento); }
+        .nav-menu { display: flex; align-items: center; gap: 30px; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--acento); }
+        .theme-toggle { background: transparent; border: none; box-shadow: none; width: auto; height: auto; font-size: 1.2rem; cursor: pointer; color: var(--acento); display: flex; align-items: center; justify-content: center;}
+        .theme-toggle:hover { background: transparent; color: var(--acento); transform: scale(1.1); }
+        .hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--primario); cursor: pointer; }
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-menu { position: fixed; top: 65px; left: -100%; width: 100%; height: calc(100vh - 65px); background: var(--fondo); flex-direction: column; justify-content: center; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2999; }
+            .nav-menu.active { left: 0; }
+            .nav-links { flex-direction: column; text-align: center; gap: 30px; }
+            .nav-links a { font-size: 1.2rem; color: var(--texto); }
+        }
 
         /* CABECERA */
         header { text-align: center; padding: 40px 20px 20px; }
         h1 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primario); margin-bottom: 10px; }
         .subtitle { font-size: 1rem; color: var(--texto); opacity: 0.8; max-width: 500px; margin: 0 auto; line-height: 1.5; }
 
+        /* TÍTULOS DE CATEGORÍA */
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primario);
+            text-align: center;
+            margin: 30px auto 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(193, 154, 107, 0.3); /* Linea sutil acento */
+            max-width: 900px;
+            width: calc(100% - 40px);
+        }
+
         /* GRILLA DE HERRAMIENTAS */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px; padding: 20px; max-width: 900px; margin: 0 auto 30px; width: 100%;
+            gap: 20px; padding: 20px; max-width: 900px; margin: 0 auto 10px; width: 100%;
         }
 
         .tool-card {
@@ -120,35 +133,37 @@
         .f-title { font-weight: 700; font-size: 1rem; }
         .f-sub { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
 
-/* --- Animación de Corazón --- */
-@keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
-.corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
-/* --- Botón Flotante y Modal Donaciones --- */
-.float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
-.f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
-.f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
-@media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
-#modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
-#modalDonar.show { display: flex; opacity: 1; }
-#modalDonar .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
-#modalDonar.show .modal-content { transform: scale(1); }
-#modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
-#modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
-#modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+        /* --- Animación de Corazón --- */
+        @keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
+        .corazon-late { animation: latido 1.5s infinite; color: #e74c3c !important; display: inline-block; }
+        
+        /* --- Botón Flotante y Modal Donaciones --- */
+        .float-container { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; pointer-events: auto; }
+        .f-btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: none; cursor: pointer; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; font-size: 1.8rem; background: #FFF; border: 3px solid #e74c3c; }
+        .f-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6); }
+        @media (max-width: 768px) { .float-container { right: 15px; bottom: 20px; } .f-btn { width: 60px; height: 60px; font-size: 1.6rem; } }
+        
+        #modalDonar { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+        #modalDonar.show { display: flex; opacity: 1; }
+        #modalDonar .modal-content { background: var(--blanco); padding: 50px; border-radius: 20px; width: 100%; max-width: 550px; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: auto; }
+        #modalDonar.show .modal-content { transform: scale(1); }
+        #modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
+        #modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
+        #modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="../index.html" class="nav-brand">
+        <a href="/index.html" class="nav-brand">
             <i class="fa-solid fa-cross"></i> Capilla Santa Ana
         </a>
         
         <div class="nav-menu">
             <ul class="nav-links">
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="index.html" class="active">Profundizar</a></li>
-                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="/index.html">Inicio</a></li>
+                <li><a href="/profundiza/index.html" class="active">Profundizar</a></li>
+                <li><a href="/profundiza/ayudanos.html">Ayudanos</a></li>
                 <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
             </ul>
         </div>
@@ -167,83 +182,94 @@
         <p class="subtitle">Descubrí herramientas interactivas diseñadas para aprender, jugar y reflexionar en familia o de manera personal.</p>
     </header>
 
+    <h2 class="category-title">Catequesis y Conocimiento</h2>
     <div class="grid-container">
         
-        <a href="sabiasque.html" class="tool-card">
+        <a href="/profundiza/sabiasque.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-lightbulb"></i></div>
             <div class="tool-title">¿Sabías que...?</div>
             <div class="tool-desc">Descubrí datos curiosos, historia y misterios ocultos de nuestra fe católica. Ideal para compartir.</div>
             <div class="tool-btn">Explorar Datos</div>
         </a>
 
-        <a href="mazos.html" class="tool-card">
-            <div class="tool-icon"><i class="fas fa-layer-group"></i></div>
-            <div class="tool-title">Reflexión Interactiva</div>
-            <div class="tool-desc">Sacá una carta al azar para iluminar tu día con pasajes bíblicos, consejos de santos y reflexiones.</div>
-            <div class="tool-btn">Sacar una Carta</div>
-        </a>
-
-        <a href="quiz.html" class="tool-card">
-            <div class="tool-icon"><i class="fas fa-clipboard-question"></i></div>
-            <div class="tool-title">Desafíos por Edades</div>
-            <div class="tool-desc">Poné a prueba lo que sabés con trivias diseñadas para niños, adolescentes y adultos.</div>
-            <div class="tool-btn">Jugar Ahora</div>
-        </a>
-
-        <a href="calendario.html" class="tool-card">
+        <a href="/profundiza/calendario.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-calendar-alt"></i></div>
             <div class="tool-title">Calendario Litúrgico</div>
             <div class="tool-desc">Acompañá a la Iglesia en su caminar diario: tiempos, colores litúrgicos y fiestas importantes.</div>
             <div class="tool-btn">Ver Calendario</div>
         </a>
 
-        <a href="conecta.html" class="tool-card">
-            <div class="tool-icon"><i class="fas fa-plug"></i></div>
-            <div class="tool-title">Conecta con Dios</div>
-            <div class="tool-desc">Un momento de pausa. Reflexiones y guías prácticas para mejorar tu oración y elevar el corazón.</div>
-            <div class="tool-btn">Empezar a Orar</div>
-        </a>
-
-        <a href="glosario.html" class="tool-card">
+        <a href="/profundiza/glosario.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-book-open"></i></div>
             <div class="tool-title">Glosario de la Fe</div>
             <div class="tool-desc">Un diccionario simple y amigable para entender aquellas palabras de la Iglesia que a veces parecen difíciles.</div>
             <div class="tool-btn">Buscar Palabras</div>
         </a>
 
-        <a href="gratitud.html" class="tool-card">
-            <div class="tool-icon"><i class="fas fa-praying-hands"></i></div>
-            <div class="tool-title">Diario de Gratitud</div>
-            <div class="tool-desc">Un espacio personal para agradecer a Dios. Contemplá y guardá tus bendiciones diarias.</div>
-            <div class="tool-btn">Agradecer Hoy</div>
-        </a>
-
-        <a href="misas.html" class="tool-card">
+        <a href="/profundiza/misas.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-church"></i></div>
             <div class="tool-title">La Santa Misa</div>
             <div class="tool-desc">Descubrí el misterio, los símbolos y el profundo silencio de la Liturgia y el Rito Extraordinario.</div>
             <div class="tool-btn">Aprender más</div>
         </a>
 
-        <a href="vidas.html" class="tool-card">
+        <a href="/profundiza/vidas.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-dove"></i></div>
             <div class="tool-title">Vidas que Inspiran</div>
             <div class="tool-desc">Encuentros con los Santos y personas asombrosas que dejaron una huella imborrable en la eternidad.</div>
             <div class="tool-btn">Leer Testimonios</div>
         </a>
 
-        <a href="frases.html" class="tool-card">
-            <div class="tool-icon"><i class="fas fa-quote-right"></i></div>
-            <div class="tool-title">Sabiduría del Alma</div>
-            <div class="tool-desc">Consultá el oráculo espiritual. Recibí una frase de inspiración clínica, humana o religiosa para tu día.</div>
-            <div class="tool-btn">Recibir una Frase</div>
+    </div>
+
+    <h2 class="category-title">Oración y Espiritualidad</h2>
+    <div class="grid-container">
+
+        <a href="/profundiza/conecta.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-plug"></i></div>
+            <div class="tool-title">Conecta con Dios</div>
+            <div class="tool-desc">Un momento de pausa. Reflexiones y guías prácticas para mejorar tu oración y elevar el corazón.</div>
+            <div class="tool-btn">Empezar a Orar</div>
         </a>
-        
-        <a href="santoral.html" class="tool-card">
+
+        <a href="/profundiza/gratitud.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-praying-hands"></i></div>
+            <div class="tool-title">Diario de Gratitud</div>
+            <div class="tool-desc">Un espacio personal para agradecer a Dios. Contemplá y guardá tus bendiciones diarias.</div>
+            <div class="tool-btn">Agradecer Hoy</div>
+        </a>
+
+        <a href="/profundiza/santoral.html" class="tool-card">
             <div class="tool-icon"><i class="fas fa-briefcase-medical"></i></div>
             <div class="tool-title">Botiquín Espiritual</div>
             <div class="tool-desc">Buscá por tu necesidad específica y encontrá el intercesor y la oración indicada para este momento.</div>
             <div class="tool-btn">Buscar Intercesor</div>
+        </a>
+
+    </div>
+
+    <h2 class="category-title">Dinámicas y Reflexión</h2>
+    <div class="grid-container">
+
+        <a href="/profundiza/mazos.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-layer-group"></i></div>
+            <div class="tool-title">Reflexión Interactiva</div>
+            <div class="tool-desc">Sacá una carta al azar para iluminar tu día con pasajes bíblicos, consejos de santos y reflexiones.</div>
+            <div class="tool-btn">Sacar una Carta</div>
+        </a>
+
+        <a href="/profundiza/quiz.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-clipboard-question"></i></div>
+            <div class="tool-title">Desafíos por Edades</div>
+            <div class="tool-desc">Poné a prueba lo que sabés con trivias diseñadas para niños, adolescentes y adultos.</div>
+            <div class="tool-btn">Jugar Ahora</div>
+        </a>
+
+        <a href="/profundiza/frases.html" class="tool-card">
+            <div class="tool-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="tool-title">Luz para el Alma</div>
+            <div class="tool-desc">Recibí una frase de inspiración cristiana, bíblica o de los santos para iluminar tu día.</div>
+            <div class="tool-btn">Recibir una Frase</div>
         </a>
 
     </div>
@@ -262,7 +288,6 @@
         </button>
     </div>
 
-    <!-- Modal Donaciones -->
     <div id="modalDonar">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana">
@@ -285,7 +310,7 @@
             </div>
 
             <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
-                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+                <a href="/profundiza/ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
             </div>
         </div>
     </div>
