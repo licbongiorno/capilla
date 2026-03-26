@@ -274,6 +274,7 @@
                 <li><a href="#horarios" onclick="closeMenu()"><i class="fas fa-church"></i> Misas</a></li>
                 <li><a href="#comunidad" onclick="closeMenu()"><i class="fas fa-users"></i> Comunidad</a></li>
                 <li><a href="#contacto" onclick="closeMenu()"><i class="fas fa-map-marker-alt"></i> Contacto</a></li>
+                <li><a href="https://www.capillasantaana.com.ar/profundiza" onclick="closeMenu()"><i class="fas fa-book-open"></i> Profundiza</a></li>
                 <li><a href="/ayudanos" onclick="closeMenu()"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
                 <li><a onclick="abrirModalDonar(); closeMenu()"><i class="fas fa-heart corazon-late"></i> Sumá tu corazón</a></li>
             </ul>
@@ -616,9 +617,9 @@
         };
 
         // Cerrar modal con la tecla ESC
-        document.addEventListener('keydown', (e) => { 
-             if(e.key === "Escape") cerrarModalDonar(); 
-         });
+        document.addEventListener('keydown', (e) => {
+              if(e.key === "Escape") cerrarModalDonar();
+          });
     });
     
     function toggleMenu() {
@@ -672,10 +673,10 @@
         btn.style.backgroundColor = "var(--verde-wa)";
         btn.style.borderColor = "var(--verde-wa)";
         btn.style.color = "white";
-        setTimeout(() => { 
-             btn.innerHTML = oldTxt; 
-             btn.style.backgroundColor = "var(--acento)"; 
-             btn.style.borderColor = "var(--acento)";
+        setTimeout(() => {
+              btn.innerHTML = oldTxt;
+              btn.style.backgroundColor = "var(--acento)";
+              btn.style.borderColor = "var(--acento)";
             btn.style.color = "white";
         }, 3000);
     }
