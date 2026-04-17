@@ -1171,5 +1171,25 @@ const biografias = [
         resumen: "El hombre que preparó el camino para el Salvador y tuvo la humildad de dar un paso al costado.",
         historia: "Juan era un profeta de palabra dura que bautizaba en el río Jordán. Tenía miles de seguidores y mucha fama, pero cuando apareció Jesús, Juan no compitió por el protagonismo. Hizo algo dificilísimo para el ego humano: señalar a otro y retirarse, diciendo 'Conviene que Él crezca y yo disminuya'. Murió decapitado por decir la verdad ante un rey corrupto. Nos enseña sobre el manejo del ego: la verdadera grandeza de un líder no es acumular seguidores, sino guiar a las personas hacia la Verdad y saber cuándo retirarse.",
         frase: "Conviene que Él crezca, y que yo disminuya."
-    }
+    },
+  {
+        id: "v-joaq-01",
+        nombre: "San Joaquín",
+        titulo: "El Patriarca de la Esperanza",
+        origen: "Nazaret / Jerusalén",
+        fechas: "Siglo I a.C.",
+        resumen: "El hombre de fe que, tras años de esterilidad y juicio social, confió en la promesa de una descendencia santa.",
+        historia: "Joaquín era un hombre justo y generoso de la tribu de Judá. Durante mucho tiempo sufrió el dolor de no tener hijos, lo que en su época era visto como un deshonor. Cuenta la tradición que se retiró al desierto a ayunar y orar durante cuarenta días, pidiendo a Dios una señal. Su perseverancia y humildad fueron recompensadas con el anuncio de que sería padre de María. Nos enseña el valor de la paciencia y la confianza absoluta en los tiempos de Dios, recordándonos que el silencio y el retiro son a menudo la antesala de los grandes milagros.",
+        frase: "Señor, si me concedes un hijo, lo ofreceré a Tu servicio en el Templo."
+    },
+    {
+        id: "v-anna-01",
+        nombre: "Santa Ana",
+        titulo: "La Raíz de la Gracia",
+        origen: "Belén / Nazaret",
+        fechas: "Siglo I a.C.",
+        resumen: "La mujer que custodió la pureza y educó en la fe a la que sería la Madre del Redentor.",
+        historia: "Ana pasó gran parte de su vida adulta en la tristeza de la esterilidad, pero nunca dejó de orar con fervor. Tras recibir la visita de un ángel que le anunció su futura maternidad, consagró a su hija María desde el vientre. Fue la primera maestra de la Virgen, enseñándole a escuchar la voz de Dios en las Escrituras y en lo cotidiano. Es la patrona de las abuelas y de las mujeres trabajadoras. Su vida nos enseña que la labor más grande no siempre es la más visible, sino la de preparar el terreno y formar el corazón de las generaciones que cambiarán el mundo.",
+        frase: "Vive el Señor, que si tengo un hijo, lo presentaré como ofrenda al Señor mi Dios."
+    }  
 ];
