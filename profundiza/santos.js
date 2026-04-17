@@ -709,6 +709,26 @@ const santos = [
         icono: "fa-comments",
         tags: ["dialogo", "consejo", "verdad", "paz", "valentia", "mujeres", "politica", "discernimiento"],
         oracion: "Santa Catalina, mujer fuerte y consejera de Papas, que encontraste la luz en tu 'celda interior'. Intercede por nosotros cuando necesitemos un buen consejo o claridad para hablar. Que la luz de la verdad ilumine nuestra conciencia y nos dé valor para seguirla. Amén."
+    },
+
+    // --- FAMILIA Y ABUELOS ---
+    {
+        id: "san-joaquin",
+        nombre: "San Joaquín",
+        patronazgo: "Abuelos y Padres de Familia",
+        fecha: "26 de Julio",
+        icono: "fa-person-cane",
+        tags: ["familia", "abuelos", "paciencia", "esperanza", "padres", "ancianos"],
+        oracion: "San Joaquín, hombre de fe inquebrantable que en la vejez recibiste el regalo de la paternidad. Intercede por nuestros abuelos y por los padres de familia. Enséñanos a confiar en las promesas de Dios incluso cuando el tiempo parece agotarse, y a ser custodios de la fe en nuestros hogares. Amén."
+    },
+    {
+        id: "santa-ana",
+        nombre: "Santa Ana",
+        patronazgo: "Abuelas, Madres y Educadoras",
+        fecha: "26 de Julio",
+        icono: "fa-hands-holding-child",
+        tags: ["familia", "abuelas", "educacion", "niños", "madres", "enseñanza", "paciencia"],
+        oracion: "Santa Ana, tú que tuviste el honor de educar a la Madre de Dios. Te pedimos por todas las abuelas y madres, para que sean reflejo de ternura y sabiduría. Bendice a quienes enseñan a los niños el camino del bien y ayúdanos a cultivar en nuestras familias un corazón dispuesto a la voluntad del Señor. Amén."
     }
 ]; // <--- Este corchete cierra la lista de todos los santos
 
