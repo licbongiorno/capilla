@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es-AR" itemscope itemtype="https://schema.org/Church">
 <head>
@@ -73,9 +75,6 @@
         /* --- FADE UP ESCALONADO --- */
         .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .grid-cards .fade-up:nth-child(1) { transition-delay: 0.1s; }
-        .grid-cards .fade-up:nth-child(2) { transition-delay: 0.2s; }
-        .grid-cards .fade-up:nth-child(3) { transition-delay: 0.3s; }
 
         /* --- ANIMACIONES GLOBALES --- */
         @keyframes latido { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(1); } 60% { transform: scale(1.15); } 80% { transform: scale(1); } 100% { transform: scale(1); } }
@@ -292,11 +291,26 @@
                     </a>
                 </div>
 
+                <div class="card fade-up" style="border-top: 5px solid var(--acento);">
+                    <i class="fas fa-utensils" style="font-size: 3.5rem; color: var(--acento); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Manos a la Olla</h3>
+                    <p style="margin-bottom: 20px; flex-grow: 1;">El amor también se cocina y toda ayuda multiplica los panes. Podés acercar <strong>alimentos, utensilios o limpieza</strong>. Si tenés ganas de poner el cuerpo, tu tiempo es el mejor regalo: vení a <strong>cocinar, organizar la logística o entregar los platos</strong> a cada familia que lo necesita.</p>
+                    
+                    <div style="background: var(--fondo); padding: 15px; border-radius: 12px; font-size: 0.85rem; text-align: left; margin-top: auto; border-left: 4px solid var(--acento); margin-bottom: 15px;">
+                        <strong>Coordinadora:</strong><br>
+                        Lourdes Catro
+                    </div>
+                    
+                    <a href="https://wa.me/5493547614356?text=Hola%20Lourdes!%20Quiero%20colaborar%20con%20las%20Cenas%20Solidarias%20(donando%20insumos%20o%20mi%20tiempo)." target="_blank" class="btn" style="background: var(--acento); color: white; margin-top: auto; padding: 15px 20px; font-size: 0.9rem;">
+                        <i class="fab fa-whatsapp"></i> Sumar mi ayuda
+                    </a>
+                </div>
+
                 <div class="card fade-up" style="border-top: 5px solid var(--primario);">
                     <i class="fas fa-palette" style="font-size: 3.5rem; color: var(--primario); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Arte y Talentos</h3>
                     <p style="margin-bottom: 20px; flex-grow: 1;">¿Te gusta <strong>cantar, tocar un instrumento, pintar, dibujar o arreglar cosas</strong>? Queremos llenar nuestra comunidad de música, arte y color. ¡Dios te dio un talento para compartirlo!</p>
-                    <a href="https://wa.me/5493517023789?text=Hola!%20Me%20gustar%C3%ADa%20sumar%20mi%20talento%20y%20arte%20para%20ayudar%20en%20la%20Capilla." target="_blank" class="btn" style="background: var(--primario); color: white; margin-top: auto;">
+                    <a href="https://wa.me/5493517023789?text=Hola!%20Me%20gustar%C3%ADa%20sumar%20mi%20talento%20y%20arte%20para%20ayudar%20en%20la%20Capilla." target="_blank" class="btn" style="background: var(--primario); color: white; margin-top: auto; padding: 15px 20px; font-size: 0.9rem;">
                         <i class="fab fa-whatsapp"></i> Sumar mi talento
                     </a>
                 </div>
@@ -317,7 +331,7 @@
                 <p style="opacity: 0.9; font-size: 1.1rem; color: var(--texto);">Podés transferir el monto que sientas en tu corazón. Todo es administrado con total transparencia.</p>
                 
                 <div class="alias-box" style="margin: 25px 0 10px 0;">
-                    <span id="alias-text">capillas.fatima.ag</span>
+                    <span id="alias-text">parroquia.fatima.ag</span>
                 </div>
                 
                 <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
@@ -378,7 +392,7 @@
             </p>
             
             <div class="alias-box" style="margin-bottom: 10px;">
-                <span id="alias-modal">capillas.fatima.ag</span>
+                <span id="alias-modal">parroquia.fatima.ag</span>
             </div>
             
             <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">
@@ -484,7 +498,7 @@
         }, 3000);
     }
 
-    // Funciones del Modal Donar (Añadida animación smooth al abrir/cerrar)
+    // Funciones del Modal Donar
     function abrirModalDonar() {
         const modal = document.getElementById('modalDonar');
         modal.classList.add('show');
