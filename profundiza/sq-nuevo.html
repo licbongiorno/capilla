@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Sabías que... Nuevo Testamento | Capilla Santa Ana</title>
-    
+    <meta name="description" content="72 datos curiosos y reflexiones sobre el Nuevo Testamento: los Evangelios, Jesús, los Apóstoles y la Iglesia primitiva.">
+    <link rel="canonical" href="https://www.capillasantaana.com.ar/profundiza/sq-nuevo.html">
+    <meta property="og:title" content="Sabías que... Nuevo Testamento | Capilla Santa Ana">
+    <meta property="og:description" content="72 datos curiosos y reflexiones sobre el Nuevo Testamento: los Evangelios, Jesús, los Apóstoles y la Iglesia primitiva.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza/sq-nuevo.html">
+    <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
@@ -168,7 +175,7 @@
             <ul class="nav-links">
                 <li><a href="../index.html">Inicio</a></li>
                 <li><a href="index.html" class="active">Profundizar</a></li>
-                <li><a href="ayudanos.html">Ayudanos</a></li>
+                <li><a href="../ayudanos">Ayudanos</a></li>
                 <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
             </ul>
         </div>
@@ -237,7 +244,7 @@
             </div>
 
             <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
-                <a href="ayudanos.html" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+                <a href="../ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
             </div>
         </div>
     </div>\n<script>
@@ -395,13 +402,13 @@ async function shareFact() {
     
     // Control para uso en archivos locales
     if (window.location.protocol === 'file:') {
-        baseUrl = 'Enlace_Web_Aquí';
+        baseUrl = 'https://www.capillasantaana.com.ar/profundiza/sq-nuevo.html';
     }
-    
-    const shareUrl = baseUrl !== 'Enlace_Web_Aquí' ? `${baseUrl}?id=${item.id}` : 'Tu_Web';
+
+    const shareUrl = `${baseUrl}?id=${item.id}`;
     const textShare = `📜 ¿Sabías que...?\n\n"${item.fact}"\n\nDescubrí el porqué y más misterios del Nuevo Testamento entrando a este link de la Capilla Santa Ana: `;
 
-    if (navigator.share && baseUrl !== 'Enlace_Web_Aquí') {
+    if (navigator.share) {
         try {
             await navigator.share({
                 title: 'Dato Bíblico',
@@ -411,7 +418,7 @@ async function shareFact() {
         } catch (e) { console.log("Compartir cancelado"); }
     } else {
         // Copiar al portapapeles
-        navigator.clipboard.writeText(textShare + (baseUrl !== 'Enlace_Web_Aquí' ? shareUrl : '')).then(() => {
+        navigator.clipboard.writeText(textShare + shareUrl).then(() => {
             alert('¡Enlace copiado al portapapeles! Pasáselo a un amigo o a tu grupo.');
         });
     }
