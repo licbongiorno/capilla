@@ -109,6 +109,10 @@
         }
         .icon-adviento { color: #800080; } .icon-navidad { color: #D4AF37; } .icon-cuaresma { color: #800080; }
         .icon-pascua { color: #D4AF37; } .icon-ordinario { color: #228B22; }
+        /* Color litúrgico real visible en el borde de cada tarjeta, incluso colapsada */
+        .accordion.tema-adviento, .accordion.tema-cuaresma { border-left: 6px solid #800080; }
+        .accordion.tema-navidad, .accordion.tema-pascua { border-left: 6px solid #D4AF37; }
+        .accordion.tema-ordinario { border-left: 6px solid #228B22; }
         .accordion-header i.icon-main { font-size: 1.5rem; margin-right: 15px; width: 30px; text-align: center; }
         .accordion-header i.icon-arrow { font-size: 1rem; color: var(--texto); opacity: 0.5; transition: transform 0.3s; }
         .accordion-header.active i.icon-arrow { transform: rotate(180deg); color: var(--acento); opacity: 1; }
@@ -301,7 +305,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
 
     <div class="container">
         
-        <div class="accordion">
+        <div class="accordion tema-adviento">
             <button class="accordion-header">
                 <span style="display:flex; align-items:center;"><i class="fas fa-hourglass-half icon-main icon-adviento"></i> Adviento</span>
                 <i class="fas fa-chevron-down icon-arrow"></i>
@@ -327,7 +331,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             </div>
         </div>
 
-        <div class="accordion">
+        <div class="accordion tema-navidad">
             <button class="accordion-header">
                 <span style="display:flex; align-items:center;"><i class="fas fa-star icon-main icon-navidad"></i> Navidad</span>
                 <i class="fas fa-chevron-down icon-arrow"></i>
@@ -352,7 +356,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             </div>
         </div>
 
-        <div class="accordion">
+        <div class="accordion tema-cuaresma">
             <button class="accordion-header">
                 <span style="display:flex; align-items:center;"><i class="fas fa-cross icon-main icon-cuaresma"></i> Cuaresma</span>
                 <i class="fas fa-chevron-down icon-arrow"></i>
@@ -377,7 +381,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             </div>
         </div>
 
-        <div class="accordion">
+        <div class="accordion tema-pascua">
             <button class="accordion-header">
                 <span style="display:flex; align-items:center;"><i class="fas fa-sun icon-main icon-pascua"></i> Pascua</span>
                 <i class="fas fa-chevron-down icon-arrow"></i>
@@ -402,7 +406,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             </div>
         </div>
 
-        <div class="accordion">
+        <div class="accordion tema-ordinario">
             <button class="accordion-header">
                 <span style="display:flex; align-items:center;"><i class="fas fa-leaf icon-main icon-ordinario"></i> Tiempo Ordinario</span>
                 <i class="fas fa-chevron-down icon-arrow"></i>
