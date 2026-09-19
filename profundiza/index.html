@@ -2,6 +2,10 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Profundiza tu Fe | Capilla Santa Ana</title>
     <meta name="description" content="Explorá el espacio de formación de la Capilla Santa Ana: mazos de reflexión, quizzes por edad, glosario, santoral, calendario litúrgico y más para crecer en la fe.">
@@ -12,16 +16,14 @@
     <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
 
     <style>
         /* PALETA DE COLORES Y MODO OSCURO */
         :root {
             --primario: #5D4037; 
-            --acento: #C19A6B; 
+            --acento: #966F3F; 
             --fondo: #F5F5F0; 
             --blanco: #FFFFFF;
             --texto: #2D2D2D; 
@@ -157,6 +159,16 @@
         #modalDonar .modal-close { position: absolute; top: 25px; right: 25px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--texto); transition: 0.3s; }
         #modalDonar .modal-close:hover { color: #e74c3c; transform: rotate(90deg); }
         #modalDonar .alias-box { font-size: clamp(16px, 4vw, 24px); white-space: nowrap; overflow-x: auto; text-align: center; letter-spacing: 1px; padding: 15px; background-color: var(--fondo); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; color: var(--primario); font-weight: 700; font-family: monospace; }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>

@@ -2,13 +2,13 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Desafíos por Edades | Capilla Santa Ana</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
@@ -22,7 +22,7 @@
         /* PALETA DE COLORES ORIGINAL DE LA CAPILLA */
         :root {
             --primario: #5D4037; 
-            --acento: #C19A6B; 
+            --acento: #966F3F; 
             --fondo: #F5F5F0; 
             --blanco: #FFFFFF;
             --texto: #2D2D2D; 
@@ -156,6 +156,16 @@
         .f-btn:hover { transform: scale(1.1); }
 
         @media (max-width: 768px) { .grid-edades { padding: 40px 5%; } }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>

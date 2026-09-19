@@ -2,6 +2,8 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sabiduría del Alma | Inspiración Contemplativa</title>
     <meta name="description" content="Frases e inspiración contemplativa para el alma: citas de santos y pensadores católicos para meditar cada día.">
@@ -12,8 +14,8 @@
     <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza/frases.html">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     
     <style>
         :root {
@@ -327,6 +329,16 @@
         
         #toast { visibility: hidden; background-color: var(--charcoal); color: #fff; text-align: center; padding: 15px 25px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); border-radius: 50px; font-weight: 600; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 11000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>

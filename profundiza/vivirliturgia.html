@@ -2,18 +2,18 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Vivir la Liturgia | Sacramentos | Capilla Santa Ana</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
 
     <style>
         :root {
             --primario: #4A332D; /* Marrón profundo */
-            --acento: #B8860B;   /* Oro viejo */
+            --acento: #966D09;   /* Oro viejo */
             --fondo: #FDFCF0;    /* Pergamino claro */
             --blanco: #FFFFFF;
             --texto: #2C2C2C; 
@@ -192,6 +192,16 @@
             }
             .modal-content { padding: 40px 25px; }
             .modal h2 { font-size: 2.2rem; }
+        }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>

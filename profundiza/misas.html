@@ -2,6 +2,8 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>La Santa Misa Tradicional | Paso a Paso | Capilla Santa Ana</title>
     <meta name="description" content="Guía paso a paso de la Santa Misa: entendé cada parte de la liturgia católica y viví la celebración con más sentido y participación.">
@@ -12,16 +14,14 @@
     <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza/misas.html">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
 
     <style>
         /* Paleta solemne para la Misa Tradicional (Rojo Carmesí, Oro Oscuro y Pergamino) */
         :root {
             --primario: #5E2129; /* Rojo muy oscuro/Vino */
-            --acento: #B8860B;   /* Oro viejo */
+            --acento: #966D09;   /* Oro viejo */
             --fondo: #FDFCF0;    /* Pergamino claro */
             --blanco: #FFFFFF;
             --texto: #2C2C2C; 
@@ -220,6 +220,16 @@
             .misa-item::before, .misa-item:nth-child(even)::before { left: 18px; right: auto; }
             .modal-content { padding: 40px 25px; }
             .modal h2 { font-size: 2.2rem; }
+        }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>

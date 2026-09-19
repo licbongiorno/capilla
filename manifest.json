@@ -1,0 +1,17 @@
+{
+  "name": "Capilla Santa Ana",
+  "short_name": "Sta. Ana",
+  "description": "Horarios de misa, vida sacramental, ayuda social y recursos de formación en la fe de la Capilla Santa Ana, Villa Parque Santa Ana, Córdoba.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5F5F0",
+  "theme_color": "#5D4037",
+  "lang": "es-AR",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

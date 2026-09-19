@@ -4,6 +4,8 @@
 <head>
     <link rel="icon" type="image/svg+xml" href="icono.svg">
     <link rel="icon" type="image/png" href="icono.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -19,11 +21,8 @@
     <meta name="geo.position" content="-31.6826622;-64.4578168">
     <meta name="ICBM" content="-31.6826622, -64.4578168">
     <link rel="canonical" href="https://www.capillasantaana.com.ar/">
-        
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <title>Capilla Santa Ana | Tu Familia y Refugio en Córdoba</title>
         
     <meta property="og:locale" content="es_AR">
@@ -38,6 +37,35 @@
     <meta name="twitter:description" content="Horarios de misa, vida sacramental, ayuda social y un espacio de paz para vos en Villa Parque Santa Ana.">
     <meta name="twitter:image" content="https://www.capillasantaana.com.ar/1.webp">
 
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Church",
+      "name": "Capilla Santa Ana",
+      "alternateName": "Parroquia Nuestra Señora de Fátima - Capilla Santa Ana",
+      "description": "Capilla católica en Villa Parque Santa Ana, Córdoba. Horarios de misa, vida sacramental, Cáritas, ropero comunitario y vida en comunidad.",
+      "url": "https://www.capillasantaana.com.ar/",
+      "logo": "https://www.capillasantaana.com.ar/icono.png",
+      "image": "https://www.capillasantaana.com.ar/1.webp",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Villa Parque Santa Ana",
+        "addressRegion": "Córdoba",
+        "addressCountry": "AR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -31.6826622,
+        "longitude": -64.4578168
+      },
+      "sameAs": [
+        "https://www.facebook.com/share/1eNqdVNbnw/",
+        "https://www.instagram.com/capilla.santa.ana/",
+        "https://whatsapp.com/channel/0029VbBO1Ph0LKZApi4Rfq1L"
+      ]
+    }
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -48,7 +76,7 @@
 
     <style>
         :root {
-            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --primario: #5D4037; --acento: #966F3F; --fondo: #F5F5F0; --blanco: #FFFFFF;
             --texto: #2D2D2D; --verde-wa: #25D366; --google-maps: #4285F4;
             --gold-light: rgba(193, 154, 107, 0.2); --sombra: 0 10px 30px rgba(0,0,0,0.08);
             --sombra-fuerte: 0 15px 40px rgba(93, 64, 55, 0.15);
@@ -251,6 +279,16 @@
         .social-links { display: flex; justify-content: center; gap: 30px; margin: 35px 0; }
         .social-links a { color: #888; font-size: 2.2rem; transition: 0.3s; }
         .social-links a:hover { color: white; transform: translateY(-8px) scale(1.1); }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -271,7 +309,7 @@
         
     <nav>
         <a href="index.html" class="logo-container">
-            <img src="icono.png" alt="Cruz de la Capilla" class="nav-logo-img">
+            <img src="icono.png" alt="Cruz de la Capilla" class="nav-logo-img" width="1024" height="559">
             <span class="logo-texto">Capilla Santa Ana</span>
         </a>
                 
@@ -299,12 +337,12 @@
         <header class="hero">
             <picture>
                 <source media="(max-width: 768px)" srcset="2.webp">
-                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana">
+                <img src="1.webp" class="hero-bg" alt="Fachada de la Capilla Santa Ana en Villa Parque Santa Ana" width="528" height="431">
             </picture>
                         
             <div class="hero-content">
                 <div class="next-mass-banner fade-up"><i class="fas fa-hands-helping"></i> Un hogar de puertas abiertas</div>
-                <h1 class="fade-up" itemprop="name">Bienvenido a Casa</h1>
+                <h1 class="fade-up">Bienvenido a Casa</h1>
                 <h2 class="fade-up">Tu refugio espiritual está aquí. Un espacio de encuentro, paz y vida en comunidad en el corazón de Villa Parque Santa Ana.</h2>
                                 
                 <div class="quick-links fade-up">

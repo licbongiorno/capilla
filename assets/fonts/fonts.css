@@ -1,0 +1,49 @@
+/* Self-hosted subset (Latin) of Montserrat, Playfair Display, Cormorant Garamond and Fredoka.
+   Vendored locally so the site no longer depends on fonts.googleapis.com at runtime. */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url('Montserrat-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url('Playfair-Display-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('Playfair-Display-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('Cormorant-Garamond-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('Cormorant-Garamond-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Fredoka';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('Fredoka-normal.woff2') format('woff2');
+}

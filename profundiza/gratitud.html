@@ -2,6 +2,8 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../icono.svg">
+    <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Muro de la Gratitud | Capilla Santa Ana</title>
     <meta name="description" content="Sumate al Muro de la Gratitud de la Capilla Santa Ana: un espacio comunitario para agradecer y compartir las bendiciones recibidas.">
@@ -12,14 +14,12 @@
     <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza/gratitud.html">
     <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
 
     <style>
         :root {
-            --primario: #5D4037; --acento: #C19A6B; --fondo: #F5F5F0; --blanco: #FFFFFF;
+            --primario: #5D4037; --acento: #966F3F; --fondo: #F5F5F0; --blanco: #FFFFFF;
             --texto: #2D2D2D; --verde-wa: #25D366; --gold-light: rgba(193, 154, 107, 0.2); 
             --sombra: 0 10px 25px rgba(0,0,0,0.08);
         }
@@ -207,6 +207,16 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
         .modal-content::-webkit-scrollbar { width: 8px; }
         .modal-content::-webkit-scrollbar-track { background: var(--fondo); border-radius: 10px; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--acento); border-radius: 10px; }
+    
+        /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
