@@ -22,19 +22,19 @@
 <body>
     <div class="bg-words" id="bg"></div>
 
-    <nav class="top-nav">
-        <div class="nav-left">
-            <a href="../index.html" class="nav-logo">Santa Ana</a>
-        </div>
-        <div class="nav-right">
-            <ul class="nav-links" id="navLinks">
+    <nav class="navbar">
+        <a href="../index.html" class="nav-brand"><i class="fa-solid fa-cross"></i> Capilla Santa Ana</a>
+        <div class="nav-menu">
+            <ul class="nav-links">
                 <li><a href="../index.html"><i class="fas fa-home"></i> Inicio</a></li>
-                <li><a href="mazos.html"><i class="fas fa-layer-group"></i> Mazos</a></li>
+                <li><a href="mazos.html" class="active"><i class="fas fa-layer-group"></i> Mazos</a></li>
                 <li><a href="index.html"><i class="fas fa-book-open"></i> Profundizá</a></li>
+                <li><a href="../ayudanos"><i class="fas fa-hands-helping"></i> Ayudanos</a></li>
+                <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
             </ul>
-            <button class="icon-btn" onclick="toggleDarkMode()"><i class="fas fa-moon" id="darkIcon"></i></button>
-            <button class="menu-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche"><i class="fas fa-moon" id="darkIcon"></i></button>
         </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
     </nav>
     
     <main class="deck-container">
@@ -60,7 +60,26 @@
     </main>
 
     <div class="float-container">
-        <a href="https://capillasantaana.com.ar/ofrenda" class="f-btn" title="Donar"><i class="fas fa-hand-holding-heart"></i></a>
+        <button aria-label="Ayudar a la Capilla" class="f-btn" onclick="abrirModalDonar()"><i class="fas fa-heart corazon-late"></i></button>
+    </div>
+
+    <div id="modalDonar" class="modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarModalDonar()" aria-label="Cerrar ventana"><i class="fas fa-times"></i></button>
+            <i class="fas fa-hand-holding-heart corazon-late" style="font-size: 4rem; color: var(--acento); margin-bottom: 20px;"></i>
+            <h3 style="margin-bottom:15px; color: var(--primario); font-size: 2.2rem; font-family: 'Playfair Display', serif;">Sumá tu Corazón</h3>
+            <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">Cada aporte, grande o pequeño, es un abrazo a nuestra comunidad. Gracias a tu generosidad, mantenemos las puertas abiertas, sostenemos el ropero comunitario y Cáritas, y hacemos posible nuestra labor pastoral. <strong>¡Que Dios multiplique tu ayuda!</strong></p>
+            <div class="alias-box" style="margin-bottom: 10px;"><span id="alias-modal">capillas.fatima.ag</span></div>
+            <p style="font-size: 0.9rem; color: var(--texto); opacity: 0.8; margin-bottom: 25px; font-weight: 600;">Destinatario: Parroquia De Nuestra Señora De Fátima</p>
+            <button class="btn btn-primary" onclick="copiarAliasModal(this)" style="width: 100%; margin-bottom: 30px; font-size: 1.1rem; padding: 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--acento); color: white; font-weight: bold;"><i class="far fa-copy"></i> Copiar Alias</button>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px;">
+                <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; color: var(--texto);">Una vez hecha la transferencia, te pedimos que nos compartas el comprobante:</p>
+                <a href="https://wa.me/5493517023789?text=Hola!%20Les%20paso%20el%20comprobante%20de%20mi%20donaci%C3%B3n%20a%20la%20Capilla.%20%C2%A1Bendiciones!" target="_blank" style="background: #25D366; color: white; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold;"><i class="fab fa-whatsapp"></i> Compartir Comprobante</a>
+            </div>
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+                <a href="../ayudanos" style="color: var(--primario); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fas fa-hands-helping"></i> Ver otras formas de colaborar</a>
+            </div>
+        </div>
     </div>
 
     <script src="../config-global.js"></script>
@@ -72,7 +91,44 @@
             if (document.body.classList.contains('dark-mode')) { icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark'); }
             else { icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light'); }
         }
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) { hamburgerIcon.classList.replace('fa-bars', 'fa-xmark'); }
+            else { hamburgerIcon.classList.replace('fa-xmark', 'fa-bars'); }
+        }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const hamburgerIcon = document.querySelector('.hamburger i');
+                if(navMenu) navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+        function abrirModalDonar() {
+            document.getElementById('modalDonar').classList.add('show');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburgerIcon = document.querySelector('.hamburger i');
+            if(navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if(hamburgerIcon) hamburgerIcon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        }
+        function cerrarModalDonar() { document.getElementById('modalDonar').classList.remove('show'); }
+        function copiarAliasModal(btn) {
+            const alias = document.getElementById('alias-modal').innerText;
+            navigator.clipboard.writeText(alias);
+            const oldTxt = btn.innerHTML;
+            btn.innerHTML = "<i class='fas fa-check'></i> ¡ALIAS COPIADO!";
+            btn.style.backgroundColor = "#25D366";
+            btn.style.color = "white";
+            setTimeout(() => { btn.innerHTML = oldTxt; btn.style.backgroundColor = "var(--acento)"; }, 3000);
+        }
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") cerrarModalDonar(); });
+        document.getElementById('modalDonar').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalDonar')) cerrarModalDonar();
+        });
         
         let mazoPreguntas = typeof CARTAS_ECOLOGIA !== 'undefined' ? CARTAS_ECOLOGIA : [{ q: "Error: No se encontró la data de cartas.", a: "Soporte" }];
         let palabrasFondo = typeof PALABRAS_FONDO !== 'undefined' ? PALABRAS_FONDO : ['AMOR', 'FE', 'VIDA', 'PAZ'];
