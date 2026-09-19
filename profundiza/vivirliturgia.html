@@ -6,6 +6,13 @@
     <link rel="icon" type="image/png" href="../icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Vivir la Liturgia | Sacramentos | Capilla Santa Ana</title>
+    <meta name="description" content="Un recorrido por los 7 Sacramentos: Bautismo, Reconciliación, Eucaristía, Confirmación, Matrimonio, Orden Sagrado y Unción de los Enfermos, explicados en clave de vida.">
+    <link rel="canonical" href="https://www.capillasantaana.com.ar/profundiza/vivirliturgia.html">
+    <meta property="og:title" content="Vivir la Liturgia | Sacramentos | Capilla Santa Ana">
+    <meta property="og:description" content="Un recorrido por los 7 Sacramentos: Bautismo, Reconciliación, Eucaristía, Confirmación, Matrimonio, Orden Sagrado y Unción de los Enfermos, explicados en clave de vida.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.capillasantaana.com.ar/profundiza/vivirliturgia.html">
+    <meta property="og:image" content="https://www.capillasantaana.com.ar/1.webp">
 
     <link rel="stylesheet" href="../assets/fonts/fonts.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
@@ -71,6 +78,7 @@
         /* --- Controles --- */
         .controls {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
+            display: flex; gap: 10px;
         }
         .icon-btn {
             background: var(--blanco); border: 1px solid rgba(184,134,11,0.2);
@@ -208,7 +216,10 @@
 <body>
 
 <div class="controls">
-    <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Día / Noche">
+    <a href="index.html" class="icon-btn" title="Volver a Profundizá">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <button class="icon-btn" onclick="toggleDarkMode()" title="Modo Día / Noche" id="darkModeBtn">
         <i class="fa-solid fa-moon"></i>
     </button>
 </div>
@@ -348,12 +359,20 @@
     // --- MODO OSCURO ---
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
-        const icon = document.querySelector('.icon-btn i');
+        const icon = document.querySelector('#darkModeBtn i');
         if (document.body.classList.contains('dark-mode')) {
             icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
         } else {
             icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
         }
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        const icon = document.querySelector('#darkModeBtn i');
+        if (icon) icon.classList.replace('fa-moon', 'fa-sun');
     }
 </script>
 </body>
