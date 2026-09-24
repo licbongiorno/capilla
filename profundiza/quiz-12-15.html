@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="../assets/fonts/fonts.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="search-widget.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -225,6 +226,7 @@
                 <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
             </ul>
         </div>
+        <button class="search-toggle" onclick="abrirBusqueda()" aria-label="Buscar" title="Buscar"><i class="fas fa-magnifying-glass"></i></button>
         <button class="hamburger" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
@@ -536,5 +538,19 @@ document.getElementById("btn-share").onclick = shareQuestion;
 initBG();
 initQuiz();
 </script>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box" onclick="event.stopPropagation()">
+            <div class="search-input-wrap">
+                <i class="fas fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Buscar mazos, quizzes, sabías que, glosario..." autocomplete="off">
+                <button class="search-close-btn" onclick="cerrarBusqueda()" aria-label="Cerrar búsqueda"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script src="search-index.js"></script>
+    <script src="search-widget.js"></script>
 </body>
 </html>

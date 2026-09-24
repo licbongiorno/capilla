@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="../assets/fonts/fonts.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="search-widget.css">
 
     <style>
         /* PALETA DE COLORES Y MODO OSCURO */
@@ -248,6 +249,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             </button>
         </div>
 
+        <button class="search-toggle" onclick="abrirBusqueda()" aria-label="Buscar" title="Buscar"><i class="fas fa-magnifying-glass"></i></button>
         <button class="hamburger" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
@@ -541,5 +543,19 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
             }
         });
     </script>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box" onclick="event.stopPropagation()">
+            <div class="search-input-wrap">
+                <i class="fas fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Buscar mazos, quizzes, sabías que, glosario..." autocomplete="off">
+                <button class="search-close-btn" onclick="cerrarBusqueda()" aria-label="Cerrar búsqueda"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script src="search-index.js"></script>
+    <script src="search-widget.js"></script>
 </body>
 </html>

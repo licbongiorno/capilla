@@ -88,7 +88,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
                 
-        html, body { overflow-x: hidden; }
+        html { overflow-x: hidden; }
         html { scroll-behavior: smooth; scroll-padding-top: 100px; }
                 
         body {
@@ -201,6 +201,16 @@
             .nav-links a::after { display: none; }
             .nav-links a i { display: inline-block; font-size: 1.3rem; color: var(--acento); width: 25px; text-align: center; }
         }
+
+        /* --- MINI-NAV PEGAJOSO --- */
+        .mini-nav { position: sticky; top: 95px; z-index: 500; background: var(--blanco); box-shadow: var(--sombra); }
+        .mini-nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px; max-width: 1200px; margin: 0 auto; scrollbar-width: none; }
+        .mini-nav-scroll::-webkit-scrollbar { display: none; }
+        .mini-nav a { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 50px; border: 1px solid var(--gold-light); color: var(--texto); text-decoration: none; font-size: 0.85rem; font-weight: 700; white-space: nowrap; transition: all 0.25s ease; }
+        .mini-nav a i { color: var(--acento); font-size: 0.9rem; }
+        .mini-nav a:hover, .mini-nav a.active { background: var(--acento); border-color: var(--acento); color: #fff; }
+        .mini-nav a:hover i, .mini-nav a.active i { color: #fff; }
+        @media (max-width: 900px) { .mini-nav { top: 85px; } }
 
         /* --- HERO --- */
         .hero { position: relative; min-height: 85vh; padding: 120px 20px 80px; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; margin-top: 95px; }
@@ -352,6 +362,16 @@
                 </div>
             </div>
         </header>
+
+        <nav class="mini-nav" aria-label="Navegación rápida de secciones">
+            <div class="mini-nav-scroll">
+                <a href="#espiritual"><i class="fas fa-dove"></i> Espiritual</a>
+                <a href="#comunidad"><i class="fas fa-users"></i> Comunidad</a>
+                <a href="#horarios"><i class="fas fa-church"></i> Horarios</a>
+                <a href="#intenciones"><i class="fas fa-praying-hands"></i> Intenciones</a>
+                <a href="#contacto"><i class="fas fa-map-marker-alt"></i> Contacto</a>
+            </div>
+        </nav>
 
         <section id="espiritual">
             <div class="section-header fade-up">
@@ -709,7 +729,24 @@
         document.querySelectorAll('.fade-up').forEach((el) => {
             observer.observe(el);
         });
-        
+
+        // RESALTAR SECCIÓN ACTIVA EN EL MINI-NAV
+        const miniNavLinks = document.querySelectorAll('.mini-nav a');
+        if (miniNavLinks.length) {
+            const seccionesMiniNav = Array.from(miniNavLinks).map(a => document.querySelector(a.getAttribute('href')));
+            const miniNavObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const link = document.querySelector(`.mini-nav a[href="#${entry.target.id}"]`);
+                    if (!link) return;
+                    if (entry.isIntersecting) {
+                        miniNavLinks.forEach(a => a.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '-40% 0px -55% 0px' });
+            seccionesMiniNav.forEach(sec => { if (sec) miniNavObserver.observe(sec); });
+        }
+
         // BARRA DE PROGRESO DE LECTURA
         window.onscroll = () => {
             const bar = document.getElementById("myBar");
@@ -783,4 +820,3 @@
     </script>
 </body>
 </html>
-<script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_79fPqhfrH6d9pHqaGS2F2j9UXME9" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
