@@ -193,7 +193,13 @@
         .social-links { display: flex; justify-content: center; gap: 30px; margin: 35px 0; }
         .social-links a { color: #888; font-size: 2.2rem; transition: 0.3s; }
         .social-links a:hover { color: white; transform: translateY(-8px) scale(1.1); }
-    
+
+        .site-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; text-align: center; margin-top: 18px; }
+        .site-credit-text { font-size: 0.78rem; opacity: 0.7; }
+        .site-credit-text strong { opacity: 1; font-weight: 700; color: #ccc; }
+        .site-credit-wa { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: #fff; padding: 6px 14px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.75rem; transition: transform 0.2s ease, opacity 0.2s ease; white-space: nowrap; }
+        .site-credit-wa:hover { transform: translateY(-2px); opacity: 0.9; }
+
         /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -381,9 +387,12 @@
         <p style="font-size: 0.9rem; border-top: 1px solid #333; padding-top: 30px; margin-top: 20px;">
             © 2026 Todos los derechos reservados.
         </p>
-        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
-            Arquitectura Digital por Nicolás Bongiorno
-        </p>
+        <div class="site-credit">
+            <span class="site-credit-text">Sitio diseñado y desarrollado por <strong>Nicolás Bongiorno</strong> · ¿Querés uno para tu comunidad o negocio?</span>
+            <a href="https://wa.me/5493516575261?text=Hola%20Nico!%20Vi%20el%20sitio%20de%20la%20Capilla%20Santa%20Ana%20y%20quer%C3%ADa%20consultarte." target="_blank" rel="noopener" class="site-credit-wa" aria-label="Escribir a Nicolás Bongiorno por WhatsApp">
+                <i class="fab fa-whatsapp"></i> Hablemos
+            </a>
+        </div>
     </footer>
 
     <div class="float-container">
@@ -540,5 +549,6 @@
     }
     </script>
     <script src="/sw-register.js" defer></script>
+    <script src="../donacion-config.js"></script>
 </body>
 </html>

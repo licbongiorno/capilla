@@ -27,3 +27,11 @@
 .site-search-empty, .site-search-hint { text-align: center; padding: 30px 20px; opacity: 0.6; font-size: 0.95rem; }
 
 body.dark-mode .site-search-result-icon { background: rgba(212,163,115,0.15); }
+
+/* Crédito del desarrollador */
+.site-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; text-align: center; margin-top: 18px; }
+.site-credit.site-credit-standalone { margin: 30px auto 20px; padding: 18px 20px 0; max-width: 700px; border-top: 1px solid rgba(128,128,128,0.18); }
+.site-credit-text { font-size: 0.78rem; opacity: 0.6; }
+.site-credit-text strong { opacity: 1; font-weight: 700; }
+.site-credit-wa { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: #fff; padding: 6px 14px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.75rem; transition: transform 0.2s ease, opacity 0.2s ease; white-space: nowrap; }
+.site-credit-wa:hover { transform: translateY(-2px); opacity: 0.9; }

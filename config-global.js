@@ -4,7 +4,8 @@ const CONFIG_CAPILLA = {
     logo: "icono.png",
     whatsapp: "5493517023789", // Tu número real
     donaciones: {
-        alias: "capillas.fatima.ag",
+        // El alias vigente se administra en /donacion-config.js (DONACION_ALIAS), no acá.
+        alias: "parroquia.fatima.ag",
         mensajeWA: "Hola! Les comparto el comprobante de mi ofrenda/ayuda a la Capilla. ¡Bendiciones!"
     }
 };
