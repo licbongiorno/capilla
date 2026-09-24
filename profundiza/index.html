@@ -192,7 +192,7 @@
             <i class="fas fa-moon" id="themeIcon"></i>
         </button>
 
-        <button class="search-toggle" onclick="abrirBusqueda()" aria-label="Buscar" title="Buscar"><i class="fas fa-magnifying-glass"></i></button>
+        <button class="site-search-toggle" onclick="abrirBusqueda()" aria-label="Buscar" title="Buscar"><i class="fas fa-magnifying-glass"></i></button>
         <button class="hamburger" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
@@ -431,18 +431,19 @@
         });
     </script>
 
-    <div class="search-overlay" id="searchOverlay">
-        <div class="search-box" onclick="event.stopPropagation()">
-            <div class="search-input-wrap">
+    <div class="site-search-overlay" id="siteSearchOverlay">
+        <div class="site-search-box" onclick="event.stopPropagation()">
+            <div class="site-search-input-wrap">
                 <i class="fas fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar mazos, quizzes, sabías que, glosario..." autocomplete="off">
-                <button class="search-close-btn" onclick="cerrarBusqueda()" aria-label="Cerrar búsqueda"><i class="fas fa-xmark"></i></button>
+                <input type="text" id="siteSearchInput" placeholder="Buscar mazos, quizzes, sabías que, glosario..." autocomplete="off">
+                <button class="site-search-close-btn" onclick="cerrarBusqueda()" aria-label="Cerrar búsqueda"><i class="fas fa-xmark"></i></button>
             </div>
-            <div class="search-results" id="searchResults"></div>
+            <div class="site-search-results" id="siteSearchResults"></div>
         </div>
     </div>
 
     <script src="search-index.js"></script>
     <script src="search-widget.js"></script>
+    <script src="/sw-register.js" defer></script>
 </body>
 </html>

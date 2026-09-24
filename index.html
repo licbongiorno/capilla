@@ -66,6 +66,45 @@
     }
     </script>
 
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Santa Misa - Capilla Santa Ana",
+      "description": "Misa dominical de la Capilla Santa Ana. Confesiones antes de cada misa.",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "isAccessibleForFree": true,
+      "organizer": {
+        "@type": "Church",
+        "name": "Capilla Santa Ana",
+        "url": "https://www.capillasantaana.com.ar/"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Capilla Santa Ana",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Villa Parque Santa Ana",
+          "addressRegion": "Córdoba",
+          "addressCountry": "AR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -31.6826622,
+          "longitude": -64.4578168
+        }
+      },
+      "eventSchedule": {
+        "@type": "Schedule",
+        "byDay": "https://schema.org/Sunday",
+        "byMonthWeek": [2, 4],
+        "startTime": "18:30",
+        "scheduleTimezone": "America/Argentina/Cordoba"
+      }
+    }
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -818,5 +857,6 @@
         }, 3000);
     }
     </script>
+    <script src="/sw-register.js" defer></script>
 </body>
 </html>
