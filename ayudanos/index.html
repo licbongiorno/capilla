@@ -200,6 +200,12 @@
         .site-credit-wa { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: #fff; padding: 6px 14px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.75rem; transition: transform 0.2s ease, opacity 0.2s ease; white-space: nowrap; }
         .site-credit-wa:hover { transform: translateY(-2px); opacity: 0.9; }
 
+        /* Foco de teclado visible (accesibilidad) */
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+            outline: 2px solid var(--acento);
+            outline-offset: 2px;
+        }
+
         /* Respeta la preferencia del sistema de reducir animaciones (accesibilidad) */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -257,7 +263,7 @@
         <header class="hero">
             <picture>
                 <source media="(max-width: 768px)" srcset="2.webp">
-                <img src="../1.webp" class="hero-bg" alt="Interior de la Capilla Santa Ana" width="528" height="431">
+                <img src="../1.webp" class="hero-bg" alt="Interior de la Capilla Santa Ana" width="528" height="431" fetchpriority="high">
             </picture>
             
             <div class="hero-content">

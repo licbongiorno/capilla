@@ -177,5 +177,6 @@ main {
 .creador-firma { margin-top: 50px; padding-bottom: 20px; font-size: 0.8rem; color: var(--texto); opacity: 0.4; text-align: center; letter-spacing: 0.5px; }
 .float-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
 .f-btn { text-decoration: none !important; border: none !important; outline: none !important; cursor: pointer; background: transparent; }
+.f-btn:focus-visible { outline: 2px solid var(--acento) !important; outline-offset: 3px; }
 .f-btn i { color: var(--acento); font-size: 1.6rem; transition: color 0.5s ease; }
 .btn-outline { background: transparent; color: var(--primario); border: 2px solid var(--primario); width: 100%; justify-content: center; margin-bottom: 10px; }

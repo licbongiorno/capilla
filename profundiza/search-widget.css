@@ -28,6 +28,12 @@
 
 body.dark-mode .site-search-result-icon { background: rgba(212,163,115,0.15); }
 
+/* Foco de teclado visible (accesibilidad) */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}
+
 /* Crédito del desarrollador */
 .site-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; text-align: center; margin-top: 18px; }
 .site-credit.site-credit-standalone { margin: 30px auto 20px; padding: 18px 20px 0; max-width: 700px; border-top: 1px solid rgba(128,128,128,0.18); }

@@ -236,13 +236,13 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
                 <li><a href="../ayudanos">Ayudanos</a></li>
                 <li><a href="#" onclick="abrirModalDonar(); return false;"><i class="fas fa-heart corazon-late"></i> Donaciones</a></li>
             </ul>
-            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche">
+            <button class="icon-btn theme-toggle" onclick="toggleDarkMode()" title="Modo Día / Noche" aria-label="Cambiar modo día/noche">
                 <i class="fa-solid fa-moon"></i>
             </button>
         </div>
 
         <button class="site-search-toggle" onclick="abrirBusqueda()" aria-label="Buscar" title="Buscar"><i class="fas fa-magnifying-glass"></i></button>
-        <button class="hamburger" onclick="toggleMenu()">
+        <button class="hamburger" onclick="toggleMenu()" aria-label="Abrir menú">
             <i class="fa-solid fa-bars"></i>
         </button>
     </nav>
@@ -343,7 +343,7 @@ body.dark-mode .alias-box { background-color: #222; border-color: #333; color: v
 
     <div id="modalGratitud" class="modal-overlay" onclick="cerrarModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <button class="modal-close" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
             <div id="modalBody">
                 </div>
         </div>
